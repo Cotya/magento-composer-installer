@@ -64,5 +64,33 @@ class SymlinkTest extends DeploystrategyAbstractTest
 
     }
 
+    public function testGlobLink()
+    {
+        $glob_source = "modules/test.xml";
+        mkdir( $this->sourceDir.dirname(DIRECTORY_SEPARATOR.$glob_source) );
+        touch( $this->sourceDir.DIRECTORY_SEPARATOR.$glob_source );
+
+        $glob_dest = "modules";
+        mkdir( $this->destDir.DIRECTORY_SEPARATOR.$glob_dest );
+
+        $this->strategy->create($glob_source,$glob_dest);
+
+        $this->assertFileExists( $this->destDir.DIRECTORY_SEPARATOR.$glob_dest );
+    }
+
+    public function testGlobLinkSlash()
+    {
+        $glob_source = "modules/test.xml";
+        mkdir( $this->sourceDir.dirname(DIRECTORY_SEPARATOR.$glob_source) );
+        touch( $this->sourceDir.DIRECTORY_SEPARATOR.$glob_source );
+
+        $glob_dest = "modules/";
+
+        $this->strategy->create($glob_source, $glob_dest);
+        $this->strategy->create($glob_source, $glob_dest);
+
+        $this->assertFileExists( $this->destDir.DIRECTORY_SEPARATOR.$glob_dest );
+    }
+
 
 }
