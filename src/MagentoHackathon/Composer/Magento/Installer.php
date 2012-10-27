@@ -125,7 +125,7 @@ class Installer extends LibraryInstaller implements InstallerInterface
      */
     protected function getMappings()
     {
-        $parser = $this->getParser();
+        $parser = $this->getParser($this->_getSourceDir());
         return $parser->getMappings();
     }
 
