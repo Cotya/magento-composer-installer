@@ -54,8 +54,6 @@ class Installer extends LibraryInstaller implements InstallerInterface
 
         $extra = $composer->getPackage()->getExtra();
 
-        $this->_source_dir = $this->vendorDir.DIRECTORY_SEPARATOR.$composer->getPackage()->getPrettyName();
-
         if (isset($extra['magento-root-dir'])) {
             $this->magentoRootDir = trim($extra['magento-root-dir']);
         }
@@ -99,6 +97,7 @@ class Installer extends LibraryInstaller implements InstallerInterface
      */
     public function install(InstalledRepositoryInterface $repo, PackageInterface $package)
     {
+        $this->_source_dir = $this->vendorDir.DIRECTORY_SEPARATOR.$package->getPrettyName();
         $strategy = $this->getDeployStrategy();
         $strategy->setMappings($this->getParser()->getMappings());
         $strategy->deploy();
@@ -115,7 +114,7 @@ class Installer extends LibraryInstaller implements InstallerInterface
      */
     public function update(InstalledRepositoryInterface $repo, PackageInterface $initial, PackageInterface $target)
     {
-        die('OK');
+        $this->_source_dir = $this->vendorDir.DIRECTORY_SEPARATOR.$initial->getPrettyName();
         $this->install($repo, $initial, $target);
     }
 
