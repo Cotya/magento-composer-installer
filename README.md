@@ -16,7 +16,10 @@ symlinks are created.
 
 #### On Linux/Mac
 
+go to your project root directory
+
 ```
+mkdir bin
 $ curl -s https://getcomposer.org/installer | php -- --install-dir=bin
 ```
 
@@ -36,6 +39,7 @@ To change the policies:
 
 ### 2. Download composer.json template
 
+See Usage
 
 ### 3. Install Hackathon Magento Composer
 
@@ -93,7 +97,7 @@ How to set up your ```composer.json``` in your project:
 
 ## Testing
 
-First install dev-stuff:
+First clone magento composter installer, then install dev-stuff:
 
 ```
 ./bin/composer.phar install --dev
