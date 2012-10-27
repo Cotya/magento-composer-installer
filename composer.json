@@ -1,9 +1,9 @@
 {
     "name": "magento-hackathon/magento-composer-installer",
-	"description": "Composer installer for Magento modules",
+    "description": "Composer installer for Magento modules",
     "minimum-stability": "dev",
-	"type": "composer-installer",
-	"license": "OSL-3.0",
+    "type": "composer-installer",
+    "license": "OSL-3.0",
     "authors": [
         {
             "name": "Daniel Fahlke aka Flyingmana",
@@ -31,7 +31,6 @@
         }
     ],
     "require": {
-
     },
 	"autoload": {
 		"psr-0": {"MagentoHackathon\\Composer\\Magento": "src/"}
