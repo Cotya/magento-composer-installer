@@ -17,12 +17,27 @@ use Composer\Package\PackageInterface;
  */
 class Installer extends LibraryInstaller implements InstallerInterface
 {
-    protected $_magentoRootDir = null;
-    protected $_isForced = false;
-    protected $_target_dir;
+    /**
+     * The base directory of the magento installation
+     *
+     * @var string
+     */
+    protected $magentoRootDir = null;
 
     /**
-     * Initializes Magento Module installer.
+     * @var bool
+     */
+    protected $_isForced = false;
+
+    /**
+     * The module's base directory
+     *
+     * @var string
+     */
+    protected $_source_dir;
+
+    /**
+     * Initializes Magento Module installer
      *
      * @param \Composer\IO\IOInterface $io
      * @param \Composer\Composer $composer
@@ -32,29 +47,34 @@ class Installer extends LibraryInstaller implements InstallerInterface
     public function __construct(IOInterface $io, Composer $composer, $type = 'magento-module')
     {
         parent::__construct($io, $composer, $type);
+        $this->initializeVendorDir();
 
         $extra = $composer->getPackage()->getExtra();
 
-        $this->_target_dir = $composer->getPackage()->getTargetDir();
+        $this->_source_dir = $this->vendorDir.DIRECTORY_SEPARATOR.$composer->getPackage()->getPrettyName();
 
         if (isset($extra['magento-root-dir'])) {
             $this->magentoRootDir = trim($extra['magento-root-dir']);
         }
 
-        if (!is_dir($this->magentoRootDir) || empty($this->magentoRootDir)) {
+        if (!is_dir($this->_source_dir) || empty($this->magentoRootDir)) {
             throw new \ErrorException("magento root dir is not valid");
+        };
+
+        if ( isset( $extra['magento-force'] ) ) {
+            $this->_isForced = $extra['magento-force'];
         }
 
-        $this->_magentoRootDir = $extra['magento-root-dir'];
-        $this->_isForced = $extra['magento-force'];
     }
 
     /**
+     * Returns the strategy class used for deployment
+     *
      * @return \MagentoHackathon\Composer\Magento\Depolystrategy\DeploystrategyAbstract
      */
     public function getDeployStrategy()
     {
-        return new \MagentoHackathon\Composer\Magento\Depolystrategy\Symlink($this->_magentoRootDir, $this->_target_dir);
+        return new \MagentoHackathon\Composer\Magento\Depolystrategy\Symlink($this->magentoRootDir, $this->_target_dir);
     }
 
     /**
@@ -69,7 +89,7 @@ class Installer extends LibraryInstaller implements InstallerInterface
     }
 
     /**
-     * Installs specific package.
+     * Installs specific package
      *
      * @param InstalledRepositoryInterface $repo    repository in which to check
      * @param PackageInterface             $package package instance
@@ -82,7 +102,7 @@ class Installer extends LibraryInstaller implements InstallerInterface
     }
 
     /**
-     * Updates specific package.
+     * Updates specific package
      *
      * @param InstalledRepositoryInterface $repo    repository in which to check
      * @param PackageInterface             $initial already installed package version
@@ -92,6 +112,7 @@ class Installer extends LibraryInstaller implements InstallerInterface
      */
     public function update(InstalledRepositoryInterface $repo, PackageInterface $initial, PackageInterface $target)
     {
+        die('OK');
         $this->install($repo, $initial, $target);
     }
 
@@ -106,11 +127,14 @@ class Installer extends LibraryInstaller implements InstallerInterface
         parent::uninstall($repo, $package);
     }
 
+    /**
+     * Returns the modman parser for the vendor dir
+     *
+     * @return ModmanParser
+     */
     public function getParser()
     {
-        $parser = new ModmanParser($this->vendorDir);
+        $parser = new ModmanParser($this->_source_dir);
         return $parser;
     }
-
-
 }
