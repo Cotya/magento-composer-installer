@@ -4,24 +4,14 @@
 namespace MagentoHackathon\Composer\Magento;
 
 use Composer\Repository\InstalledRepositoryInterface;
+use Composer\IO\IOInterface;
+use Composer\Composer;
+use Composer\Installer\LibraryInstaller;
+use Composer\Installer\InstallerInterface;
 use Composer\Package\PackageInterface;
 
-class Installer extends \Composer\Installer\LibraryInstaller implements \Composer\Installer\InstallerInterface
+class Installer extends LibraryInstaller implements InstallerInterface
 {
-
-
-    protected $magentoRootDir;
-    protected $magentoBaseDir;
-    protected $magentoAppDir;
-    protected $magentoCodeDir;
-    protected $magentoDesignDir;
-    protected $magentoLocaleDir;
-    protected $magentoEtcDir;
-    protected $magentoMediaDir;
-    protected $magentoSkinDir;
-    protected $magentoVarDir;
-
-
     /**
      * Initializes Magento Module installer.
      *
@@ -33,16 +23,8 @@ class Installer extends \Composer\Installer\LibraryInstaller implements \Compose
     {
         parent::__construct($io, $composer, $type);
 
-        $this->magentoRootDir = rtrim($composer->getExtra()->get('magento-root-dir'), '/');
-        $this->magentoBaseDir = rtrim($composer->getExtra()->get('magento-base-dir'), '/');
-        $this->magentoAppDir = rtrim($composer->getExtra()->get('magento-app-dir'), '/');
-        $this->magentoCodeDir = rtrim($composer->getExtra()->get('magento-code-dir'), '/');
-        $this->magentoDesignDir = rtrim($composer->getExtra()->get('magento-design-dir'), '/');
-        $this->magentoLocaleDir = rtrim($composer->getExtra()->get('magento-locale-dir'), '/');
-        $this->magentoEtcDir = rtrim($composer->getExtra()->get('magento-etc-dir'), '/');
-        $this->magentoMediaDir = rtrim($composer->getExtra()->get('magento-media-dir'), '/');
-        $this->magentoSkinDir = rtrim($composer->getExtra()->get('magento-skin-dir'), '/');
-        $this->magentoVarDir = rtrim($composer->getExtra()->get('magento-var-dir'), '/');
+        $this->magentoRootDir = trim($composer->getExtra()->get('magento-root-dir'), '/');
+        $this->magentoCodePool =trim($composer->getExtra()->get());
     }
 
     /**
