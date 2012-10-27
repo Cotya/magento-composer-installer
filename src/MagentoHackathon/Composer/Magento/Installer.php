@@ -22,8 +22,12 @@ class Installer extends LibraryInstaller implements InstallerInterface
     {
         parent::__construct($io, $composer, $type);
 
-        $this->magentoRootDir = trim($composer->getPackage()->getExtra()->get('magento-root-dir'), '/');
-        $this->magentoCodePool =trim($composer->getPackage()->getExtra()->get());
+        $extra = $composer->getPackage()->getExtra();
+
+        $this->magentoRootDir = trim($extra['magento-root-dir']);
+        if ( !is_dir($this->magentoRootDir) || empty( $this->magentoRootDir ) ) {
+            throw new \ErrorException("magento root dir is not valid");
+        }
     }
 
     /**
