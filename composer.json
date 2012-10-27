@@ -8,6 +8,26 @@
         {
             "name": "Daniel Fahlke aka Flyingmana",
             "email": "daniel@digitalmanufaktur.com"
+        },
+        {
+            "name": "Jörg Weller",
+            "email": "weller@flagbit.de"
+        },
+        {
+            "name": "Karl Spies",
+            "email": "karl.spie@gmx.net"
+        },
+        {
+            "name": "Tobias Vogt",
+            "email": "tobi@@webguys.de"
+        },,
+        {
+            "name": "David Fuhr",
+            "email": "fuhr@flagbit.de"
+        },
+        {
+            "name": "Vinai Kopp",
+            "email": "vinai@netzarbeiter.com"
         }
     ],
     "require": {
