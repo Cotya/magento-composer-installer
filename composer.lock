@@ -1,5 +1,5 @@
 {
-    "hash": "b12f8f3f096362ccda06f327674f7cc0",
+    "hash": "f3a07a9fdc2ec38214a9e169f7515cfc",
     "packages": [
 
     ],
@@ -530,18 +530,18 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Console",
-                "reference": "3cbedb831164d5ce9e58995333e70a913864374e"
+                "reference": "bc0eaa4b024b3e3ad177a79c42b98a85f1861bd9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/symfony/Console/zipball/3cbedb831164d5ce9e58995333e70a913864374e",
-                "reference": "3cbedb831164d5ce9e58995333e70a913864374e",
+                "url": "https://github.com/symfony/Console/zipball/bc0eaa4b024b3e3ad177a79c42b98a85f1861bd9",
+                "reference": "bc0eaa4b024b3e3ad177a79c42b98a85f1861bd9",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.3"
             },
-            "time": "1351093287",
+            "time": "1351356054",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -624,18 +624,18 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Process",
-                "reference": "5e92828cdf76b650812c932cc43cae7500d8faea"
+                "reference": "b35a2a4fae02286df3275d7094a3d3d575122db8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/symfony/Process/zipball/5e92828cdf76b650812c932cc43cae7500d8faea",
-                "reference": "5e92828cdf76b650812c932cc43cae7500d8faea",
+                "url": "https://github.com/symfony/Process/zipball/b35a2a4fae02286df3275d7094a3d3d575122db8",
+                "reference": "b35a2a4fae02286df3275d7094a3d3d575122db8",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.3"
             },
-            "time": "1351093287",
+            "time": "1351356874",
             "type": "library",
             "extra": {
                 "branch-alias": {
