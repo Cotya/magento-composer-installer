@@ -97,7 +97,7 @@ How to set up your ```composer.json``` in your project:
 
 ## Testing
 
-First install dev-stuff:
+First clone magento composter installer, then install dev-stuff:
 
 ```
 ./bin/composer.phar install --dev
