@@ -22,6 +22,11 @@ class ModmanParser
 
     public function setModuleDir($moduleDir)
     {
+        // Remove trailing slash
+        if (in_array(substr($moduleDir, -1), array('/', '\\'))) {
+            $moduleDir = substr($moduleDir, 0, -1);
+        }
+
         $this->_moduleDir = $moduleDir;
         return $this;
     }
