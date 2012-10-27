@@ -19,7 +19,7 @@ class Installer extends LibraryInstaller implements InstallerInterface
 {
     protected $_magentoRootDir = null;
     protected $_isForced = false;
-    protected $_target_dir;
+    protected $_source_dir;
 
     /**
      * Initializes Magento Module installer.
@@ -32,22 +32,24 @@ class Installer extends LibraryInstaller implements InstallerInterface
     public function __construct(IOInterface $io, Composer $composer, $type = 'magento-module')
     {
         parent::__construct($io, $composer, $type);
+        $this->initializeVendorDir();
 
         $extra = $composer->getPackage()->getExtra();
 
-        $this->_target_dir = $composer->getPackage()->getTargetDir();
+        $this->_source_dir = $this->vendorDir.DIRECTORY_SEPARATOR.$composer->getPackage()->getPrettyName();
 
         if (isset($extra['magento-root-dir'])) {
             $this->magentoRootDir = trim($extra['magento-root-dir']);
         }
 
-        if (!is_dir($this->magentoRootDir) || empty($this->magentoRootDir)) {
+        if (!is_dir($this->_source_dir) || empty($this->magentoRootDir)) {
             throw new \ErrorException("magento root dir is not valid");
         };
 
         if ( isset( $extra['magento-force'] ) ) {
             $this->_isForced = $extra['magento-force'];
         }
+
     }
 
     /**
@@ -93,6 +95,7 @@ class Installer extends LibraryInstaller implements InstallerInterface
      */
     public function update(InstalledRepositoryInterface $repo, PackageInterface $initial, PackageInterface $target)
     {
+        die('OK');
         $this->install($repo, $initial, $target);
     }
 
@@ -109,7 +112,7 @@ class Installer extends LibraryInstaller implements InstallerInterface
 
     public function getParser()
     {
-        $parser = new ModmanParser($this->vendorDir);
+        $parser = new ModmanParser($this->_source_dir);
         return $parser;
     }
 
