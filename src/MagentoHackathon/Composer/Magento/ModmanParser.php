@@ -7,12 +7,12 @@ class ModmanParser
     /**
      * @var string Path to vendor module dir
      */
-    protected $_moduleDir = '';
+    protected $_moduleDir = null;
 
     /**
      * @var \SplFileObject The modman file
      */
-    protected $_file = '';
+    protected $_file = null;
 
     public function __construct($moduleDir = null)
     {
@@ -46,7 +46,11 @@ class ModmanParser
      */
     public function getModmanFile()
     {
-        return new \SplFileObject($this->_moduleDir . DIRECTORY_SEPARATOR . 'modman');
+        $file = null;
+        if (!is_null($this->_moduleDir)) {
+            $file = new \SplFileObject($this->_moduleDir . DIRECTORY_SEPARATOR . 'modman');
+        }
+        return $file;
     }
 
     /**
