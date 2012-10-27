@@ -25,6 +25,9 @@ class Installer extends LibraryInstaller implements InstallerInterface
     protected $magentoRootDir = null;
 
     /**
+     * If set overrides existing files
+     *
+     * @todo This is not yet implemented
      * @var bool
      */
     protected $_isForced = false;
@@ -51,20 +54,18 @@ class Installer extends LibraryInstaller implements InstallerInterface
 
         $extra = $composer->getPackage()->getExtra();
 
-        $this->_source_dir = $this->vendorDir.DIRECTORY_SEPARATOR.$composer->getPackage()->getPrettyName();
-
         if (isset($extra['magento-root-dir'])) {
             $this->magentoRootDir = trim($extra['magento-root-dir']);
         }
 
-        if (!is_dir($this->_source_dir) || empty($this->magentoRootDir)) {
-            throw new \ErrorException("magento root dir is not valid");
+
+        if (!is_dir($this->magentoRootDir) || empty($this->magentoRootDir)) {
+            throw new \ErrorException("magento root dir $this->magentoRootDir is not valid");
         };
 
         if ( isset( $extra['magento-force'] ) ) {
-            $this->_isForced = $extra['magento-force'];
+            $this->_isForced = (bool) $extra['magento-force'];
         }
-
     }
 
     /**
@@ -74,7 +75,7 @@ class Installer extends LibraryInstaller implements InstallerInterface
      */
     public function getDeployStrategy()
     {
-        return new \MagentoHackathon\Composer\Magento\Depolystrategy\Symlink($this->magentoRootDir, $this->_target_dir);
+        return new \MagentoHackathon\Composer\Magento\Deploystrategy\Symlink($this->magentoRootDir, $this->_source_dir);
     }
 
     /**
@@ -96,6 +97,8 @@ class Installer extends LibraryInstaller implements InstallerInterface
      */
     public function install(InstalledRepositoryInterface $repo, PackageInterface $package)
     {
+        parent::install($repo,$package);
+        $this->_source_dir = $this->vendorDir.DIRECTORY_SEPARATOR.$package->getName();
         $strategy = $this->getDeployStrategy();
         $strategy->setMappings($this->getParser()->getMappings());
         $strategy->deploy();
@@ -112,7 +115,8 @@ class Installer extends LibraryInstaller implements InstallerInterface
      */
     public function update(InstalledRepositoryInterface $repo, PackageInterface $initial, PackageInterface $target)
     {
-        die('OK');
+        self::update($repo,$initial,$target);
+        $this->_source_dir = $this->vendorDir.DIRECTORY_SEPARATOR.$initial->getName();
         $this->install($repo, $initial, $target);
     }
 
