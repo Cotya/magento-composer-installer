@@ -33,7 +33,8 @@
     "require": {
     },
     "require-dev": {
-        "phpunit/phpunit": "*"
+        "phpunit/phpunit": "*",
+        "composer/composer": "*"
     },
     "autoload": {
        "psr-0": {"MagentoHackathon\\Composer\\Magento": "src/"}
