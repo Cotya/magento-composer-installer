@@ -23,6 +23,17 @@ $ curl -s https://getcomposer.org/installer | php -- --install-dir=bin
 #### On Windows
 Please take a look at http://getcomposer.org/doc/00-intro.md#installation-windows
 
+Creation of symbolic links requires the SeCreateSymbolicLinkPrivilege (“Create symbolic links”), which is granted only to administrators by default (but you can change that using security policy).
+
+To change the policies:
+- Launch secpol.msc via Start or Start → Run.
+- Open Security Settings → Local Policies → User Rights Assignment.
+- In the list, find the "Create symbolic links" item, which represents SeCreateSymbolicLinkPrivilege.
+    Double-click on the item and add yourself (or the whole Users group) to the list.
+
+(Seen at http://superuser.com/questions/124679/how-do-i-create-an-mklink-in-windows-7-home-premium-as-a-regular-user#125981)
+
+
 ### 2. Download composer.json template
 
 
