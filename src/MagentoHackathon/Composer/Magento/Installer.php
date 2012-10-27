@@ -33,13 +33,6 @@ class Installer extends LibraryInstaller implements InstallerInterface
     protected $_isForced = false;
 
     /**
-     * The module's base directory
-     *
-     * @var string
-     */
-    protected $_source_dir;
-
-    /**
      * Initializes Magento Module installer
      *
      * @param \Composer\IO\IOInterface $io
@@ -72,9 +65,9 @@ class Installer extends LibraryInstaller implements InstallerInterface
      *
      * @return \MagentoHackathon\Composer\Magento\Deploystrategy\DeploystrategyAbstract
      */
-    public function getDeployStrategy()
+    public function getDeployStrategy( PackageInterface $package )
     {
-        return new \MagentoHackathon\Composer\Magento\Deploystrategy\Symlink($this->magentoRootDir->getRealPath(), $this->_source_dir);
+        return new \MagentoHackathon\Composer\Magento\Deploystrategy\Symlink($this->magentoRootDir->getRealPath(), $this->_getSourceDir( $package ));
     }
 
     /**
@@ -89,6 +82,18 @@ class Installer extends LibraryInstaller implements InstallerInterface
     }
 
     /**
+     * Return Source dir of package
+     *
+     * @param \Composer\Package\PackageInterface $package
+     * @return string
+     */
+    protected function _getSourceDir( PackageInterface $package )
+    {
+        $this->filesystem->ensureDirectoryExists($this->vendorDir);
+        return $this->vendorDir.DIRECTORY_SEPARATOR.$package->getName();
+    }
+
+    /**
      * Installs specific package
      *
      * @param InstalledRepositoryInterface $repo    repository in which to check
@@ -98,11 +103,8 @@ class Installer extends LibraryInstaller implements InstallerInterface
     {
         parent::install($repo,$package);
 
-        $this->_source_dir = $this->vendorDir.DIRECTORY_SEPARATOR.$package->getName();
-        $this->initializeVendorDir();
-
-        $strategy = $this->getDeployStrategy();
-        $strategy->setMappings($this->getParser()->getMappings());
+        $strategy = $this->getDeployStrategy( $package );
+        $strategy->setMappings($this->getParser( $package )->getMappings());
         $strategy->deploy();
     }
 
@@ -117,9 +119,7 @@ class Installer extends LibraryInstaller implements InstallerInterface
      */
     public function update(InstalledRepositoryInterface $repo, PackageInterface $initial, PackageInterface $target)
     {
-        $this->_source_dir = $this->vendorDir.DIRECTORY_SEPARATOR.$initial->getName();
-        $this->initializeVendorDir();
-
+        $this->getDeployStrategy()->clean( $this->magentoRootDir );
         $this->install($repo, $initial, $target);
     }
 
@@ -137,11 +137,12 @@ class Installer extends LibraryInstaller implements InstallerInterface
     /**
      * Returns the modman parser for the vendor dir
      *
+     * @param PackageInterface $package
      * @return ModmanParser
      */
-    public function getParser()
+    public function getParser( PackageInterface $package )
     {
-        $parser = new ModmanParser($this->_source_dir);
+        $parser = new ModmanParser( $this->_getSourceDir( $package ) );
         return $parser;
     }
 }
