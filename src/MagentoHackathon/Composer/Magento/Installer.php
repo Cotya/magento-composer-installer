@@ -106,6 +106,23 @@ class Installer extends LibraryInstaller implements InstallerInterface
         }
     }
 
+    /**
+     * @return array
+     */
+    protected function getMappings()
+    {
+        $parser = $this->getParser();
+        return $parser->getMappings();
+    }
+
+    /**
+     * @return ModmanParser
+     */
+    public function getParser()
+    {
+        return new ModmanParser($this->composer);
+    }
+
     protected function _getModuleDir()
     {
         return $this->magentoRootDir;
