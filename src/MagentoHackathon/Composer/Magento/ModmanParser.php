@@ -46,7 +46,7 @@ class ModmanParser
     }
 
     /**
-     * @param string $file
+     * @param string|SplFileObject $file
      * @return ModmanParser
      */
     public function setFile($file)
@@ -85,9 +85,11 @@ class ModmanParser
      */
     public function getMappings($file = null)
     {
-        if (null === $file) {
-            $file = $this->getFile();
+        if (null !== $file) {
+            $this->setFile($file);
         }
+        $file = $this->getFile();
+
         if (!$file->isReadable()) {
             throw new \ErrorException(sprintf('modman file "%s" not readable', $file->getPathname()));
         }

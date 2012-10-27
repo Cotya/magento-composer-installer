@@ -13,18 +13,14 @@ $ curl -s https://getcomposer.org/installer | php -- --install-dir=bin
 #### On Windows
 Please take a look at http://getcomposer.org/doc/00-intro.md#installation-windows
 
-### 2. Download composer.json template
 
-
-### 3. Install Hackathon Magento Composer
+### 2. Install Hackathon Magento Composer
 
 ```
 ./composer.phar install
 ```
 
-
-
-## Usage
+## 3. Usage
 
 How to set up your ```composer.json``` in your module:
 
@@ -70,3 +66,14 @@ How to set up your ```composer.json``` in your project:
     }
 }
 ```
+
+
+## Unit-Testing ##
+
+First install dev-stuff:
+
+```
+./bin/composer.phar install --dev
+```
+
+then run ```phpunit``` in projekt-root directory

@@ -20,7 +20,7 @@ class Symlink extends DeploystrategyAbstract
      * @todo implement file to dir modman target, e.g. Namespace_Module.csv => app/locale/de_DE/
      * @todo implement glob to dir mapping target, e.g. code/* => app/code/local/
      */
-    protected function create($source, $dest)
+    public function create($source, $dest)
     {
         $sourcePath = $this->_getSourceDir() . DIRECTORY_SEPARATOR . $source;
         $destPath = $this->_getDestDir() . DIRECTORY_SEPARATOR . $dest;
