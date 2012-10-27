@@ -33,7 +33,7 @@
     "require": {
     },
     "autoload": {
-        "psr-0": {"MagentoHackathon\\Composer\\Magento": "src/"}
+        "classmap": [ "src/" ]
     },
     "extra": {
         "class": "MagentoHackathon\\Composer\\Magento\\Installer"
