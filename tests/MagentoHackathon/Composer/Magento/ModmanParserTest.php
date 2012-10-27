@@ -46,6 +46,18 @@ class ModmanParserTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($dirName, $this->object->getModuleDir());
     }
 
+    public function setSetModuleDirWithTrailingSlash()
+    {
+        $this->object->setModuleDir('test/');
+        $this->assertSame('test', $this->object->getModuleDir());
+    }
+
+    public function setSetModuleDirWithTrailingBackslash()
+    {
+        $this->object->setModuleDir('test\\');
+        $this->assertSame('test', $this->object->getModuleDir());
+    }
+
     /**
      * @covers MagentoHackathon\Composer\Magento\ModmanParser::setFile
      * @covers MagentoHackathon\Composer\Magento\ModmanParser::getFile

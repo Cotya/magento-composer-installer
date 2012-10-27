@@ -25,6 +25,9 @@ class Installer extends LibraryInstaller implements InstallerInterface
     protected $magentoRootDir = null;
 
     /**
+     * If set overrides existing files
+     *
+     * @todo This is not yet implemented
      * @var bool
      */
     protected $_isForced = false;
@@ -63,9 +66,8 @@ class Installer extends LibraryInstaller implements InstallerInterface
         };
 
         if ( isset( $extra['magento-force'] ) ) {
-            $this->_isForced = $extra['magento-force'];
+            $this->_isForced = (bool) $extra['magento-force'];
         }
-
     }
 
     /**
