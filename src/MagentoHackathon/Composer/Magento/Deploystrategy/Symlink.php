@@ -20,8 +20,8 @@ class Symlink extends DeploystrategyAbstract
      */
     public function create($source, $dest)
     {
-        $sourcePath = $this->_getSourceDir() . DIRECTORY_SEPARATOR . $source;
-        $destPath = $this->_getDestDir() . DIRECTORY_SEPARATOR . $dest;
+        $sourcePath = $this->_getSourceDir() . DIRECTORY_SEPARATOR . $this->removeTrailingSlash($source);
+        $destPath = $this->_getDestDir() . DIRECTORY_SEPARATOR . $this->removeTrailingSlash($dest);
 
         // If source doesn't exist, check if it's a glob expression, otherwise we have nothing we can do
         if (!file_exists($sourcePath)) {
@@ -71,10 +71,6 @@ class Symlink extends DeploystrategyAbstract
                 throw new \ErrorException("Target $dest already exists and is not a symlink");
             }
         }
-
-        // Remove trailing slash, otherwise symlink will fail for target directories
-        $sourcePath = $this->removeTrailingSlash($sourcePath);
-        $destPath = $this->removeTrailingSlash($destPath);
 
         // Create symlink
         symlink($sourcePath, $destPath);
