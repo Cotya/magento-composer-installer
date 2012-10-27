@@ -24,7 +24,6 @@ class Installer extends LibraryInstaller implements InstallerInterface
         parent::__construct($io, $composer, $type);
 
         $this->magentoRootDir = trim($composer->getExtra()->get('magento-root-dir'), '/');
-        $this->magentoCodePool =trim($composer->getExtra()->get());
     }
 
     /**
@@ -109,7 +108,7 @@ class Installer extends LibraryInstaller implements InstallerInterface
 
     protected function _getModuleDir()
     {
-        return $this->magentoRootDir; // TODO
+        return $this->magentoRootDir;
     }
 
     protected function _getSourceDir()
