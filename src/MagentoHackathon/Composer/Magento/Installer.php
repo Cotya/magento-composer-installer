@@ -123,6 +123,8 @@ class Installer extends LibraryInstaller implements InstallerInterface
      * @param $source
      * @param $dest
      * @throws \ErrorException
+     * @todo implement file to dir modman target, e.g. Namespace_Module.csv => app/locale/de_DE/
+     * @todo implement glob to dir mapping target, e.g. code/* => app/code/local/
      */
     protected function _createSymlink($source, $dest)
     {
