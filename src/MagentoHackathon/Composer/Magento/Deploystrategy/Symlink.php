@@ -22,6 +22,9 @@ class Symlink extends DeploystrategyAbstract
      */
     public function create($source, $dest)
     {
+
+        echo $source.'---'.$dest."\n";
+
         $sourcePath = $this->_getSourceDir() . DIRECTORY_SEPARATOR . $source;
         $destPath = $this->_getDestDir() . DIRECTORY_SEPARATOR . $dest;
 
