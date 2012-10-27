@@ -1,5 +1,6 @@
 <?php
 
+
 namespace MagentoHackathon\Composer\Magento;
 
 use Composer\Repository\InstalledRepositoryInterface;
@@ -7,6 +8,8 @@ use Composer\Package\PackageInterface;
 
 class Installer extends \Composer\Installer\LibraryInstaller implements \Composer\Installer\InstallerInterface
 {
+
+
     protected $magentoRootDir;
     protected $magentoBaseDir;
     protected $magentoAppDir;
@@ -17,6 +20,7 @@ class Installer extends \Composer\Installer\LibraryInstaller implements \Compose
     protected $magentoMediaDir;
     protected $magentoSkinDir;
     protected $magentoVarDir;
+
 
     /**
      * Initializes Magento Module installer.
@@ -87,4 +91,70 @@ class Installer extends \Composer\Installer\LibraryInstaller implements \Compose
     {
         parent::uninstall($repo, $package);
     }
+
+    protected function _isForced()
+    {
+        // TODO: get forced flag
+        return false;
+    }
+
+    /**
+     * Creates a symlink with lots of error-checking
+     *
+     * @param $source
+     * @param $dest
+     * @throws \ErrorException
+     */
+    protected function _createSymlink($source, $dest)
+    {
+        if (!file_exists($source)) {
+            throw new \ErrorException("$source does not exists");
+        }
+
+        if (is_link($dest)) {
+            return true;
+        }
+
+        if (file_exists($dest)) {
+            if ($this->_isForced()) {
+                unlink($dest);
+            } else {
+                throw new \ErrorException("$dest already exists and is not a symlink");
+            }
+        }
+
+        link($source, $dest);
+        if (!is_link($dest)) {
+            throw new \ErrorException("could not create symlink $dest");
+        }
+
+    }
+
+    /**
+     * Similar to _createSymlink but copy files instead of using symlinks
+     * @param $source
+     * @param $dest
+     */
+    protected function _copyOver($source, $dest)
+    {
+        if (!file_exists($source)) {
+            throw new \ErrorException("$source does not exists");
+        }
+
+        if (is_link($dest)) {
+            if ($this->_isForced()) {
+                unlink($dest);
+            } else {
+                throw new \ErrorException("$dest already exists");
+            }
+        }
+
+        copy($source, $dest);
+        if (!file_exists($dest)) {
+            throw new \ErrorException("could not copy file $dest");
+        }
+
+    }
+
+
 }
