@@ -3,7 +3,7 @@
  * Composer Magento Installer
  */
 
-namespace MagentoHackathon\Composer\Magento\Depolystrategy;
+namespace MagentoHackathon\Composer\Magento\Deploystrategy;
 
 /**
  * Symlink deploy strategy
@@ -86,7 +86,7 @@ class Symlink extends DeploystrategyAbstract
      * Removes the links in the given path
      *
      * @param string $path
-     * @return \MagentoHackathon\Composer\Magento\Depolystrategy\DeploystrategyAbstract
+     * @return \MagentoHackathon\Composer\Magento\Deploystrategy\DeploystrategyAbstract
      * @throws \ErrorException
      */
     public function clean($path)

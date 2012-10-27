@@ -3,7 +3,7 @@
  * Composer Magento Installer
  */
 
-namespace MagentoHackathon\Composer\Magento\Depolystrategy;
+namespace MagentoHackathon\Composer\Magento\Deploystrategy;
 
 /**
  * Abstract deploy strategy
@@ -46,7 +46,7 @@ abstract class DeploystrategyAbstract
     /**
      * Executes the deployment strategy for each mapping
      *
-     * @return \MagentoHackathon\Composer\Magento\Depolystrategy\DeploystrategyAbstract
+     * @return \MagentoHackathon\Composer\Magento\Deploystrategy\DeploystrategyAbstract
      */
     public function deploy()
     {
@@ -120,7 +120,7 @@ abstract class DeploystrategyAbstract
      *
      * @param string $source
      * @param string $dest
-     * @return \MagentoHackathon\Composer\Magento\Depolystrategy\DeploystrategyAbstract
+     * @return \MagentoHackathon\Composer\Magento\Deploystrategy\DeploystrategyAbstract
      */
     abstract public function create($source, $dest);
 }
