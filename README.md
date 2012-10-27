@@ -128,3 +128,4 @@ and a project in VCS with existing composer.json, which is not yet on packagist.
    }
 ]
 ```
+
