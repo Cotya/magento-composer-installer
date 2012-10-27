@@ -108,12 +108,12 @@ class Installer extends LibraryInstaller implements InstallerInterface
 
     protected function _getModuleDir()
     {
-        return $this->magentoRootDir; // TODO
+        return $this->magentoRootDir;
     }
 
     protected function _getSourceDir()
     {
-        return "MHH???";
+        return $this->vendorDir;
     }
 
     /**
@@ -121,36 +121,69 @@ class Installer extends LibraryInstaller implements InstallerInterface
      *
      * @param $source
      * @param $dest
-     * @return bool
+     * @return void
      * @throws \ErrorException
-     * @todo implement file to dir modman target, e.g. Namespace_Module.csv => app/locale/de_DE/
-     * @todo implement glob to dir mapping target, e.g. code/* => app/code/local/
      */
     protected function _createSymlink($source, $dest)
     {
-        if (!file_exists($this->_getSourceDir() . DIRECTORY_SEPARATOR . $source)) {
-            throw new \ErrorException("$source does not exists");
+        $sourcePath = $this->_getSourceDir() . DIRECTORY_SEPARATOR . $source;
+        $destPath = $this->_getModuleDir() . DIRECTORY_SEPARATOR . $dest;
+
+        // If source doesn't exist, check if it's a glob expression, otherwise we have nothing we can do
+        if (!file_exists($sourcePath)) {
+            // Handle globing
+            $matches = glob($sourcePath);
+            if ($matches) {
+                foreach ($matches as $match) {
+                    $newDest = $destPath . DIRECTORY_SEPARATOR . basename($match);
+                    $this->_createSymlink($match, $newDest);
+                }
+                return;
+            }
+
+            // Source file isn't a valid file or glob
+            throw new \ErrorException("Source $source does not exists");
         }
 
-        if (is_link($this->_getModuleDir() . DIRECTORY_SEPARATOR . $dest)) {
-            return true;
+        // Symlink already exists, nothing to do
+        if (is_link($destPath)) {
+            // TODO Check if symlink still is valid!
+            return;
         }
 
-        if (file_exists($this->_getModuleDir() . DIRECTORY_SEPARATOR . $dest)) {
+        // Create all directories up to one below the target if they don't exist
+        $destDir = dirname($destPath);
+        if (! file_exists($destDir)) {
+            mkdir($destDir, 0777, true);
+        }
+
+        // Handle file to dir linking,
+        // e.g. Namespace_Module.csv => app/locale/de_DE/
+        if (file_exists($destPath) && is_dir($destPath) && is_file($sourcePath)) {
+            $newDest = $destPath . DIRECTORY_SEPARATOR . basename($source);
+            return $this->_createSymlink($source, $newDest);
+        }
+
+        // From now on $destPath can't be a directory, that case is already handled
+
+        // If file exists and is not a symlink, throw exception unless FORCE is set
+        if (file_exists($destPath)) {
             if ($this->_isForced()) {
-                unlink($this->_getModuleDir() . DIRECTORY_SEPARATOR . $dest);
+                unlink($destPath);
             } else {
-                throw new \ErrorException("$dest already exists and is not a symlink");
+                throw new \ErrorException("Target $dest already exists and is not a symlink");
             }
         }
 
-        link($this->_getSourceDir() . DIRECTORY_SEPARATOR . $source,
-            $this->_getModuleDir() . DIRECTORY_SEPARATOR . $dest);
+        // Create symlink
+        link($sourcePath, $destPath);
 
-        if (!is_link($$this->_getModuleDir() . DIRECTORY_SEPARATOR . dest)) {
-            throw new \ErrorException("could not create symlink $dest");
+        // Check we where able to create the symlink
+        if (!is_link($destPath)) {
+            throw new \ErrorException("Could not create symlink $dest");
         }
 
+        return;
     }
 
     /**
