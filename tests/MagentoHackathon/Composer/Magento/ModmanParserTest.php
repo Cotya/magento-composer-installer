@@ -58,17 +58,6 @@ class ModmanParserTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers MagentoHackathon\Composer\Magento\ModmanParser::getModmanFile
-     */
-    public function testGetModmanFile()
-    {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-            'This test has not been implemented yet.'
-        );
-    }
-
-    /**
      * @covers MagentoHackathon\Composer\Magento\ModmanParser::getMappings
      */
     public function testGetMappings()
