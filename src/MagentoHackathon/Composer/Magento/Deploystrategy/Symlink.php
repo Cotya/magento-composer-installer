@@ -20,8 +20,8 @@ class Symlink extends DeploystrategyAbstract
      */
     public function create($source, $dest)
     {
-        $sourcePath = $this->_getSourceDir() . DIRECTORY_SEPARATOR . $this->removeTrailingSlash($source);
-        $destPath = $this->_getDestDir() . DIRECTORY_SEPARATOR . $this->removeTrailingSlash($dest);
+        $sourcePath = $this->getSourceDir() . DIRECTORY_SEPARATOR . $this->removeTrailingSlash($source);
+        $destPath = $this->getDestDir() . DIRECTORY_SEPARATOR . $this->removeTrailingSlash($dest);
 
         // If source doesn't exist, check if it's a glob expression, otherwise we have nothing we can do
         if (!file_exists($sourcePath)) {
@@ -97,7 +97,7 @@ class Symlink extends DeploystrategyAbstract
      */
     public function clean($path)
     {
-        $iterator = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($this->_getDestDir()),
+        $iterator = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($this->getDestDir()),
             \RecursiveIteratorIterator::CHILD_FIRST);
         foreach ($iterator as $path) {
             if (is_link($path->__toString())) {

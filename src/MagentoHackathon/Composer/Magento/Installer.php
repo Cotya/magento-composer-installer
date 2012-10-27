@@ -30,7 +30,7 @@ class Installer extends LibraryInstaller implements InstallerInterface
      * @todo This is not yet implemented
      * @var bool
      */
-    protected $_isForced = false;
+    protected $isForced = false;
 
     /**
      * Initializes Magento Module installer
@@ -49,19 +49,20 @@ class Installer extends LibraryInstaller implements InstallerInterface
 
         if (isset($extra['magento-root-dir'])) {
 
-            $dir = rtrim( trim($extra['magento-root-dir']), DIRECTORY_SEPARATOR );
-            if ( !is_dir( $dir ) ) {
-                $dir = $this->vendorDir.DIRECTORY_SEPARATOR.$dir;
+            $dir = rtrim(trim($extra['magento-root-dir']), DIRECTORY_SEPARATOR);
+            if (!is_dir($dir)) {
+                $dir = $this->vendorDir . DIRECTORY_SEPARATOR . $dir;
             }
-            $this->magentoRootDir = new \SplFileInfo( $dir );
+            $this->magentoRootDir = new \SplFileInfo($dir);
         }
 
         if (is_null($this->magentoRootDir) || false === $this->magentoRootDir->isDir()) {
             throw new \ErrorException("magento root dir {$this->magentoRootDir->getPathname()} is not valid");
-        };
+        }
+        ;
 
-        if ( isset( $extra['magento-force'] ) ) {
-            $this->_isForced = (bool) $extra['magento-force'];
+        if (isset($extra['magento-force'])) {
+            $this->isForced = (bool)$extra['magento-force'];
         }
     }
 
@@ -70,9 +71,9 @@ class Installer extends LibraryInstaller implements InstallerInterface
      *
      * @return \MagentoHackathon\Composer\Magento\Deploystrategy\DeploystrategyAbstract
      */
-    public function getDeployStrategy( PackageInterface $package )
+    public function getDeployStrategy(PackageInterface $package)
     {
-        return new \MagentoHackathon\Composer\Magento\Deploystrategy\Symlink($this->magentoRootDir->getPathname(), $this->_getSourceDir( $package ));
+        return new \MagentoHackathon\Composer\Magento\Deploystrategy\Symlink($this->magentoRootDir->getPathname(), $this->getSourceDir($package));
     }
 
     /**
@@ -92,7 +93,7 @@ class Installer extends LibraryInstaller implements InstallerInterface
      * @param \Composer\Package\PackageInterface $package
      * @return string
      */
-    protected function _getSourceDir( PackageInterface $package )
+    protected function getSourceDir(PackageInterface $package)
     {
         $this->filesystem->ensureDirectoryExists($this->vendorDir);
         return $this->getInstallPath($package);
@@ -106,10 +107,10 @@ class Installer extends LibraryInstaller implements InstallerInterface
      */
     public function install(InstalledRepositoryInterface $repo, PackageInterface $package)
     {
-        parent::install($repo,$package);
+        parent::install($repo, $package);
 
-        $strategy = $this->getDeployStrategy( $package );
-        $strategy->setMappings($this->getParser( $package )->getMappings());
+        $strategy = $this->getDeployStrategy($package);
+        $strategy->setMappings($this->getParser($package)->getMappings());
         $strategy->deploy();
     }
 
@@ -124,7 +125,7 @@ class Installer extends LibraryInstaller implements InstallerInterface
      */
     public function update(InstalledRepositoryInterface $repo, PackageInterface $initial, PackageInterface $target)
     {
-        $this->getDeployStrategy()->clean( $this->magentoRootDir );
+        $this->getDeployStrategy()->clean($this->magentoRootDir);
         $this->install($repo, $initial, $target);
     }
 
@@ -145,9 +146,9 @@ class Installer extends LibraryInstaller implements InstallerInterface
      * @param PackageInterface $package
      * @return ModmanParser
      */
-    public function getParser( PackageInterface $package )
+    public function getParser(PackageInterface $package)
     {
-        $parser = new ModmanParser( $this->_getSourceDir( $package ) );
+        $parser = new ModmanParser($this->getSourceDir($package));
         return $parser;
     }
 }

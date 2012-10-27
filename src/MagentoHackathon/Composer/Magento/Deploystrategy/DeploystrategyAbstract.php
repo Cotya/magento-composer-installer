@@ -15,32 +15,32 @@ abstract class DeploystrategyAbstract
      *
      * @var array
      */
-    protected $_mappings = array();
+    protected $mappings = array();
 
     /**
      * The magento installation's base directory
      *
      * @var string
      */
-    protected $_dest_dir;
+    protected $destDir;
 
     /**
      * The module's base directory
      *
      * @var string
      */
-    protected $_source_dir;
+    protected $sourceDir;
 
     /**
      * Constructor
      *
-     * @param string $dest_dir
-     * @param string $source_dir
+     * @param string $destDir
+     * @param string $sourceDir
      */
-    public function __construct($dest_dir, $source_dir)
+    public function __construct($destDir, $sourceDir)
     {
-        $this->_dest_dir = $dest_dir;
-        $this->_source_dir = $source_dir;
+        $this->destDir = $destDir;
+        $this->sourceDir = $sourceDir;
     }
 
     /**
@@ -62,9 +62,9 @@ abstract class DeploystrategyAbstract
      *
      * @return string
      */
-    protected function _getDestDir()
+    protected function getDestDir()
     {
-        return $this->_dest_dir;
+        return $this->destDir;
     }
 
     /**
@@ -72,9 +72,9 @@ abstract class DeploystrategyAbstract
      *
      * @return mixed
      */
-    protected function _getSourceDir()
+    protected function getSourceDir()
     {
-        return $this->_source_dir;
+        return $this->sourceDir;
     }
 
     /**
@@ -95,7 +95,7 @@ abstract class DeploystrategyAbstract
      */
     public function getMappings()
     {
-        return $this->_mappings;
+        return $this->mappings;
     }
 
     /**
@@ -105,7 +105,7 @@ abstract class DeploystrategyAbstract
      */
     public function setMappings(array $mappings)
     {
-        $this->_mappings = $mappings;
+        $this->mappings = $mappings;
     }
 
     /**
