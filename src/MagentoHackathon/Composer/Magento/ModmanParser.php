@@ -66,7 +66,7 @@ class ModmanParser
     }
 
     /**
-     * @param $modmanData
+     * @param string $modmanData
      * @return array
      */
     protected function _parseMappings($modmanData)
