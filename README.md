@@ -66,7 +66,7 @@ How to set up your ```composer.json``` in your project:
         }
     ],
     "extra":{
-        "magento-root-dir": "/htdocs"
+        "magento-root-dir": "htdocs/"
     }
 }
 ```
