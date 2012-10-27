@@ -66,7 +66,7 @@ class ModmanParser
         foreach (explode("\n", $modmanData) as $row) {
             $line++;
             $row = trim($row);
-            if ('' === $row || in_array($row{0}, array('#', '@'))) {
+            if ('' === $row || in_array($row[0], array('#', '@'))) {
                 continue;
             }
             $parts = preg_split('/\s+/', $row, 2, PREG_SPLIT_NO_EMPTY);
