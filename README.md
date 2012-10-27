@@ -20,7 +20,7 @@ go to your project root directory
 
 ```
 mkdir bin
-$ curl -s https://getcomposer.org/installer | php -- --install-dir=bin
+curl -s https://getcomposer.org/installer | php -- --install-dir=bin
 ```
 
 #### On Windows

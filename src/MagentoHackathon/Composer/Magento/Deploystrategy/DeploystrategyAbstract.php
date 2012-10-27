@@ -109,6 +109,14 @@ abstract class DeploystrategyAbstract
     }
 
     /**
+     * Add a key value pair to mapping
+     */
+    public function addMapping($key, $value)
+    {
+        $this->_mappings[$key] = $value;
+    }
+
+    /**
      * Removes the module's files in the given path
      *
      * @param string $path

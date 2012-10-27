@@ -8,7 +8,7 @@ namespace MagentoHackathon\Composer\Magento\Deploystrategy;
 /**
  * Symlink deploy strategy
  */
-class Symlink extends DeploystrategyAbstract
+class Copy extends DeploystrategyAbstract
 {
     /**
      * Creates a symlink with lots of error-checking
@@ -20,8 +20,8 @@ class Symlink extends DeploystrategyAbstract
      */
     public function create($source, $dest)
     {
-        $sourcePath = $this->_getSourceDir() . DIRECTORY_SEPARATOR . $this->removeTrailingSlash($source);
-        $destPath = $this->_getDestDir() . DIRECTORY_SEPARATOR . $this->removeTrailingSlash($dest);
+        $sourcePath = $this->_getSourceDir() . DIRECTORY_SEPARATOR . $source;
+        $destPath = $this->_getDestDir() . DIRECTORY_SEPARATOR . $dest;
 
         $this->addMapping($source,$dest);
 
@@ -36,19 +36,10 @@ class Symlink extends DeploystrategyAbstract
                 }
                 return;
             }
-
             // Source file isn't a valid file or glob
             throw new \ErrorException("Source $sourcePath does not exists");
         }
 
-        // Symlink already exists
-        if (is_link($destPath)) {
-            if ( readlink($destPath) == realpath($sourcePath) ) {
-                // .. and is equal to current source-link
-                return;
-            }
-            unlink( $destPath );
-        }
 
         // Create all directories up to one below the target if they don't exist
         $destDir = dirname($destPath);
@@ -63,35 +54,23 @@ class Symlink extends DeploystrategyAbstract
             return $this->create($source, $newDest);
         }
 
-        // From now on $destPath can't be a directory, that case is already handled
-
-        // If file exists and is not a symlink, throw exception unless FORCE is set
-        if (file_exists($destPath)) {
-            if ($this->isForced()) {
-                unlink($destPath);
-            } else {
-                throw new \ErrorException("Target $dest already exists and is not a symlink");
-            }
-        }
+        // Remove trailing slash, otherwise symlink will fail for target directories
+        rtrim($sourcePath, ' /');
+        rtrim($destPath, ' /');
 
         // Create symlink
-        symlink($sourcePath, $destPath);
+        copy($sourcePath, $destPath);
 
         // Check we where able to create the symlink
-        if (!is_link($destPath)) {
+        if (!is_readable($destPath)) {
             throw new \ErrorException("Could not create symlink $destPath");
         }
 
         return $this;
     }
 
-    protected function removeTrailingSlash($path)
-    {
-       return rtrim($path, '\\/');
-    }
-
     /**
-     * Removes the links in the given path
+     * Removes all copied files in $dest
      *
      * @param string $path
      * @return \MagentoHackathon\Composer\Magento\Deploystrategy\DeploystrategyAbstract
@@ -99,20 +78,9 @@ class Symlink extends DeploystrategyAbstract
      */
     public function clean($path)
     {
-        $iterator = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($this->_getDestDir()),
-            \RecursiveIteratorIterator::CHILD_FIRST);
-        foreach ($iterator as $path) {
-            if (is_link($path->__toString())) {
-                $dest = readlink($path->__toString());
-                if ($dest === 0 || !is_readable($dest)) {
-                    $denied = @unlink($path->__toString());
-                    if ($denied) {
-                        throw new \ErrorException('Permission denied on ' . $path->__toString());
-                    }
-                }
-            }
+        foreach ($this->getMappings() as $source => $dest) {
+            @unlink($this->_getDestDir() . DIRECTORY_SEPARATOR . $dest);
         }
-
         return $this;
     }
 }
