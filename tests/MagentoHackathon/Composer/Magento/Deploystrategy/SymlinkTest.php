@@ -86,7 +86,10 @@ class SymlinkTest extends DeploystrategyAbstractTest
 
         $glob_dest = "modules/";
 
+        // first create will create symlink
         $this->strategy->create($glob_source, $glob_dest);
+
+        // second create has to identify symlink
         $this->strategy->create($glob_source, $glob_dest);
 
         $this->assertFileExists( $this->destDir.DIRECTORY_SEPARATOR.$glob_dest );
