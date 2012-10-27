@@ -20,7 +20,7 @@ class Installer extends LibraryInstaller implements InstallerInterface
     /**
      * The base directory of the magento installation
      *
-     * @var string
+     * @var \SplFileInfo
      */
     protected $magentoRootDir = null;
 
@@ -55,12 +55,11 @@ class Installer extends LibraryInstaller implements InstallerInterface
         $extra = $composer->getPackage()->getExtra();
 
         if (isset($extra['magento-root-dir'])) {
-            $this->magentoRootDir = trim($extra['magento-root-dir']);
+            $this->magentoRootDir = new \SplFileInfo(trim($extra['magento-root-dir']));
         }
 
-
-        if (!is_dir($this->magentoRootDir) || empty($this->magentoRootDir)) {
-            throw new \ErrorException("magento root dir $this->magentoRootDir is not valid");
+        if (is_null($this->magentoRootDir) || false === $this->magentoRootDir->isDir()) {
+            throw new \ErrorException("magento root dir {$this->magentoRootDir->getPathname()} is not valid");
         };
 
         if ( isset( $extra['magento-force'] ) ) {
@@ -75,7 +74,7 @@ class Installer extends LibraryInstaller implements InstallerInterface
      */
     public function getDeployStrategy()
     {
-        return new \MagentoHackathon\Composer\Magento\Deploystrategy\Symlink($this->magentoRootDir, $this->_source_dir);
+        return new \MagentoHackathon\Composer\Magento\Deploystrategy\Symlink($this->magentoRootDir->getRealPath(), $this->_source_dir);
     }
 
     /**
@@ -98,7 +97,10 @@ class Installer extends LibraryInstaller implements InstallerInterface
     public function install(InstalledRepositoryInterface $repo, PackageInterface $package)
     {
         parent::install($repo,$package);
+
         $this->_source_dir = $this->vendorDir.DIRECTORY_SEPARATOR.$package->getName();
+        $this->initializeVendorDir();
+
         $strategy = $this->getDeployStrategy();
         $strategy->setMappings($this->getParser()->getMappings());
         $strategy->deploy();
@@ -116,7 +118,10 @@ class Installer extends LibraryInstaller implements InstallerInterface
     public function update(InstalledRepositoryInterface $repo, PackageInterface $initial, PackageInterface $target)
     {
         self::update($repo,$initial,$target);
+
         $this->_source_dir = $this->vendorDir.DIRECTORY_SEPARATOR.$initial->getName();
+        $this->initializeVendorDir();
+
         $this->install($repo, $initial, $target);
     }
 
