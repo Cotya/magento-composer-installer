@@ -48,7 +48,12 @@ class Installer extends LibraryInstaller implements InstallerInterface
         $extra = $composer->getPackage()->getExtra();
 
         if (isset($extra['magento-root-dir'])) {
-            $this->magentoRootDir = new \SplFileInfo(trim($extra['magento-root-dir']));
+
+            $dir = rtrim( trim($extra['magento-root-dir']), DIRECTORY_SEPARATOR );
+            if ( !is_dir( $dir ) ) {
+                $dir = $this->vendorDir.DIRECTORY_SEPARATOR.$dir;
+            }
+            $this->magentoRootDir = new \SplFileInfo( $dir );
         }
 
         if (is_null($this->magentoRootDir) || false === $this->magentoRootDir->isDir()) {
