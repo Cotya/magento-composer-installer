@@ -1,14 +1,12 @@
 <?php
 
-
 namespace MagentoHackathon\Composer\Magento;
 
 use Composer\Repository\InstalledRepositoryInterface;
 use Composer\Package\PackageInterface;
 
-class Installer extends \Composer\Installer\LibraryInstaller implements \Composer\Installer\InstallerInterface{
-
-
+class Installer extends \Composer\Installer\LibraryInstaller implements \Composer\Installer\InstallerInterface
+{
     protected $magentoRootDir;
     protected $magentoBaseDir;
     protected $magentoAppDir;
@@ -19,7 +17,6 @@ class Installer extends \Composer\Installer\LibraryInstaller implements \Compose
     protected $magentoMediaDir;
     protected $magentoSkinDir;
     protected $magentoVarDir;
-
 
     /**
      * Initializes Magento Module installer.
@@ -42,7 +39,6 @@ class Installer extends \Composer\Installer\LibraryInstaller implements \Compose
         $this->magentoMediaDir = rtrim($composer->getExtra()->get('magento-media-dir'), '/');
         $this->magentoSkinDir = rtrim($composer->getExtra()->get('magento-skin-dir'), '/');
         $this->magentoVarDir = rtrim($composer->getExtra()->get('magento-var-dir'), '/');
-
     }
 
     /**
