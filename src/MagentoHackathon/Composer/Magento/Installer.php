@@ -118,8 +118,6 @@ class Installer extends LibraryInstaller implements InstallerInterface
      */
     public function update(InstalledRepositoryInterface $repo, PackageInterface $initial, PackageInterface $target)
     {
-        self::update($repo,$initial,$target);
-
         $this->_source_dir = $this->vendorDir.DIRECTORY_SEPARATOR.$initial->getName();
         $this->initializeVendorDir();
 
