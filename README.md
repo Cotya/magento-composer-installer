@@ -90,6 +90,8 @@ First install dev-stuff:
 
 then run ```phpunit``` in projekt-root directory
 
+Windows users please run ```phpunit``` with Administrator permissions.
+
 ## How to Overwrite Dependencies
 
 We don't want to use always the official repositories for specific dependencies.
