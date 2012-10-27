@@ -11,6 +11,9 @@ use Composer\Package\PackageInterface;
 
 class Installer extends LibraryInstaller implements InstallerInterface
 {
+
+    protected $magentoRootDir = null;
+
     /**
      * Initializes Magento Module installer.
      *
@@ -24,8 +27,11 @@ class Installer extends LibraryInstaller implements InstallerInterface
 
         $extra = $composer->getPackage()->getExtra();
 
-        $this->magentoRootDir = trim($extra['magento-root-dir']);
-        if ( !is_dir($this->magentoRootDir) || empty( $this->magentoRootDir ) ) {
+        if ( isset( $extra['magento-root-dir'] ) ) {
+            $this->magentoRootDir = trim($extra['magento-root-dir']);
+        }
+
+        if ( !is_dir($this->magentoRootDir) || empty( $this->magentoRootDir ) ) {
             throw new \ErrorException("magento root dir is not valid");
         }
     }
