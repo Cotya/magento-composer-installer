@@ -59,7 +59,7 @@ How to set up your ```composer.json``` in your project:
 
 ```
 {
-    "minimum-stability": "dev"
+    "minimum-stability": "dev",
     "require": {
         "firegento/germansetup": "dev-composer",
         "magento-hackathon/magento-composer-installer": "dev-master"

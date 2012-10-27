@@ -17,8 +17,6 @@ class Symlink extends DeploystrategyAbstract
      * @param $dest
      * @return bool
      * @throws \ErrorException
-     * @todo implement file to dir modman target, e.g. Namespace_Module.csv => app/locale/de_DE/
-     * @todo implement glob to dir mapping target, e.g. code/* => app/code/local/
      */
     public function create($source, $dest)
     {
