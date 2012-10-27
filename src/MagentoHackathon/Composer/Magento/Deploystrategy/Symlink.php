@@ -1,15 +1,21 @@
 <?php
+/**
+ * Composer Magento Installer
+ */
 
 namespace MagentoHackathon\Composer\Magento\Depolystrategy;
 
+/**
+ * Symlink deploy strategy
+ */
 class Symlink extends DeploystrategyAbstract
 {
-
     /**
      * Creates a symlink with lots of error-checking
      *
      * @param $source
      * @param $dest
+     * @return bool
      * @throws \ErrorException
      * @todo implement file to dir modman target, e.g. Namespace_Module.csv => app/locale/de_DE/
      * @todo implement glob to dir mapping target, e.g. code/* => app/code/local/
