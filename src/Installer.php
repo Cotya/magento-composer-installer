@@ -64,7 +64,10 @@ class Installer extends \Composer\Installer\LibraryInstaller implements \Compose
      */
     public function install(InstalledRepositoryInterface $repo, PackageInterface $package)
     {
-        parent::install($repo, $package);
+        $mapping = $this->getMapping();
+        foreach ($mapping AS $source => $dest) {
+            $this->_createSymlink($source, $dest);
+        }
     }
 
     /**
@@ -78,7 +81,8 @@ class Installer extends \Composer\Installer\LibraryInstaller implements \Compose
      */
     public function update(InstalledRepositoryInterface $repo, PackageInterface $initial, PackageInterface $target)
     {
-        $this->_cleanSymlinks();
+        $this->_cleanSymlinks($this->_getModuleDir());
+        $this->install($repo, $initial, $target);
     }
 
     /**
@@ -94,13 +98,31 @@ class Installer extends \Composer\Installer\LibraryInstaller implements \Compose
 
     protected function _isForced()
     {
-        // TODO: get forced flag
+        // TODO: get forced flag from config
         return false;
     }
 
-    protected function _cleanSymlinks()
+    protected function _cleanSymlinks($path)
     {
+        $mapping = $this->getMappings();
 
+        foreach (glob($path) AS $file) {
+            if (is_dir($file)) {
+                $this->_cleanSymlinks($file);
+            } elseif (is_link($file)) {
+                if (linkinfo($file) == -1) {
+                    // Symlink is dead, remove it
+                    unlink($file);
+                } else {
+                    $cleanFile = substr($file, strlen($this->_getModuleDir()));
+                    if (!in_array($cleanFile, $path)) {
+                        // Remove symlinks which are not mapped
+                        unlink($file);
+                    }
+
+                }
+            }
+        }
     }
 
     protected function _getModuleDir()
@@ -122,8 +144,6 @@ class Installer extends \Composer\Installer\LibraryInstaller implements \Compose
      */
     protected function _createSymlink($source, $dest)
     {
-
-
         if (!file_exists($this->_getSourceDir() . DIRECTORY_SEPARATOR . $source)) {
             throw new \ErrorException("$source does not exists");
         }
