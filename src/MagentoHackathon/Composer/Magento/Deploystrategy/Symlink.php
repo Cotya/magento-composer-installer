@@ -20,7 +20,6 @@ class Symlink extends DeploystrategyAbstract
      */
     public function create($source, $dest)
     {
-
         $sourcePath = $this->_getSourceDir() . DIRECTORY_SEPARATOR . $source;
         $destPath = $this->_getDestDir() . DIRECTORY_SEPARATOR . $dest;
 
@@ -37,7 +36,7 @@ class Symlink extends DeploystrategyAbstract
             }
 
             // Source file isn't a valid file or glob
-            throw new \ErrorException("Source $source does not exists");
+            throw new \ErrorException("Source $sourcePath does not exists");
         }
 
         // Symlink already exists, nothing to do
@@ -82,7 +81,7 @@ class Symlink extends DeploystrategyAbstract
             throw new \ErrorException("Could not create symlink $dest");
         }
 
-        return;
+        return $this;
     }
 
     protected function removeTrailingSlash(&$path)
@@ -101,11 +100,8 @@ class Symlink extends DeploystrategyAbstract
      */
     public function clean($path)
     {
-        $iterator = new RecursiveIteratorIterator(
-            new RecursiveDirectoryIterator($this->_getDestDir()),
-            RecursiveIteratorIterator::CHILD_FIRST
-        );
-
+        $iterator = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($this->_getDestDir()),
+            \RecursiveIteratorIterator::CHILD_FIRST);
         foreach ($iterator as $path) {
             if (is_link($path->__toString())) {
                 $dest = readlink($path->__toString());
