@@ -133,9 +133,7 @@ class ModmanParser
             if (count($parts) != 2) {
                 throw new \ErrorException(sprintf('Invalid row on line %d has %d parts, expected 2', $line, count($row)));
             }
-            list ($source, $target) = $parts;
-
-            $map[$source] = $target;
+            $map[] = $parts;
         }
         return $map;
     }

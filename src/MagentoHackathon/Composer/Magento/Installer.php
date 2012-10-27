@@ -71,7 +71,7 @@ class Installer extends LibraryInstaller implements InstallerInterface
     /**
      * Returns the strategy class used for deployment
      *
-     * @return \MagentoHackathon\Composer\Magento\Depolystrategy\DeploystrategyAbstract
+     * @return \MagentoHackathon\Composer\Magento\Deploystrategy\DeploystrategyAbstract
      */
     public function getDeployStrategy()
     {
