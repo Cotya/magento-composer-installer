@@ -16,8 +16,22 @@ class ModmanParser
 
     public function __construct($moduleDir = null)
     {
-        $this->_moduleDir = $moduleDir;
+        $this->setModuleDir($moduleDir);
         $this->setFile($this->getModmanFile());
+    }
+
+    public function setModuleDir($moduleDir)
+    {
+        $this->_moduleDir = $moduleDir;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getModuleDir()
+    {
+        return $this->_moduleDir;
     }
 
     /**
