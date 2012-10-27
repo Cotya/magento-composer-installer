@@ -5,7 +5,15 @@
 # Installation
 
 ## 1. Install PHP-Composer
-http://getcomposer.org/doc/00-intro.md
+
+### On Linux/Mac
+
+```
+$ curl -s https://getcomposer.org/installer | php -- --install-dir=bin
+```
+
+### On Windows
+Please take a look at http://getcomposer.org/doc/00-intro.md#installation-windows
 
 ## 2. Download composer.json template
 
