@@ -1,44 +1,47 @@
 {
-    "name": "magento-hackathon/magento-composer-installer",
-    "description": "Composer installer for Magento modules",
-    "minimum-stability": "dev",
-    "type": "composer-installer",
-    "license": "OSL-3.0",
-    "authors": [
+    "name":"magento-hackathon/magento-composer-installer",
+    "description":"Composer installer for Magento modules",
+    "minimum-stability":"dev",
+    "type":"composer-installer",
+    "license":"OSL-3.0",
+    "authors":[
         {
-            "name": "Daniel Fahlke aka Flyingmana",
-            "email": "daniel@digitalmanufaktur.com"
+            "name":"Daniel Fahlke aka Flyingmana",
+            "email":"daniel@digitalmanufaktur.com"
         },
         {
-            "name": "Jörg Weller",
-            "email": "weller@flagbit.de"
+            "name":"Jörg Weller",
+            "email":"weller@flagbit.de"
         },
         {
-            "name": "Karl Spies",
-            "email": "karl.spies@gmx.net"
+            "name":"Karl Spies",
+            "email":"karl.spies@gmx.net"
         },
         {
-            "name": "Tobias Vogt",
-            "email": "tobi@webguys.de"
+            "name":"Tobias Vogt",
+            "email":"tobi@webguys.de"
         },
         {
-            "name": "David Fuhr",
-            "email": "fuhr@flagbit.de"
+            "name":"David Fuhr",
+            "email":"fuhr@flagbit.de"
         },
         {
-            "name": "Vinai Kopp",
-            "email": "vinai@netzarbeiter.com"
+            "name":"Vinai Kopp",
+            "email":"vinai@netzarbeiter.com"
         }
     ],
-    "require": {
+    "require":{
     },
-    "require-dev": {
-        "phpunit/phpunit": "*"
+    "require-dev":{
+        "phpunit/phpunit":"*",
+        "composer/composer":"*"
     },
-    "autoload": {
-       "psr-0": {"MagentoHackathon\\Composer\\Magento": "src/"}
+    "autoload":{
+        "psr-0":{
+            "MagentoHackathon\\Composer\\Magento":"src/"
+        }
     },
-    "extra": {
-        "class": "MagentoHackathon\\Composer\\Magento\\Installer"
+    "extra":{
+        "class":"MagentoHackathon\\Composer\\Magento\\Installer"
     }
 }
