@@ -22,17 +22,27 @@ class ModmanParser
         $this->setFile($this->getModmanFile());
     }
 
+    /**
+     * @param string $file
+     * @return ModmanParser
+     */
     public function setFile($file)
     {
         $this->_file = $file;
         return $this;
     }
 
+    /**
+     * @return string
+     */
     public function getFile()
     {
         return $this->_file;
     }
 
+    /**
+     * @return string
+     */
     public function getModmanFile()
     {
         return $this->_composer->getConfig()->get('vendor-dir') . DIRECTORY_SEPARATOR . 'modman';
