@@ -81,7 +81,7 @@ How to set up your ```composer.json``` in your project:
 }
 ```
 
-## Unit-Testing ##
+## Testing ##
 
 First install dev-stuff:
 
