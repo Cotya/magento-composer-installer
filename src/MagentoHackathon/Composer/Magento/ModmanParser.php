@@ -2,23 +2,21 @@
 
 namespace MagentoHackathon\Composer\Magento;
 
-use \Composer;
-
 class ModmanParser
 {
+    /**
+     * @var string Path to vendor module dir
+     */
+    protected $_moduleDir = '';
+
     /**
      * @var string Path to the modman file
      */
     protected $_file = '';
 
-    /**
-     * @var \Composer\Composer
-     */
-    protected $_composer;
-
-    public function __construct(Composer $composer)
+    public function __construct($moduleDir = null)
     {
-        $this->_composer = $composer;
+        $this->_moduleDir = $moduleDir;
         $this->setFile($this->getModmanFile());
     }
 
@@ -45,7 +43,7 @@ class ModmanParser
      */
     public function getModmanFile()
     {
-        return $this->_composer->getConfig()->get('vendor-dir') . DIRECTORY_SEPARATOR . 'modman';
+        return $this->_moduleDir . DIRECTORY_SEPARATOR . 'modman';
     }
 
     /**
@@ -66,7 +64,7 @@ class ModmanParser
     }
 
     /**
-     * @param $modmanData
+     * @param string $modmanData
      * @return array
      */
     protected function _parseMappings($modmanData)
@@ -83,7 +81,9 @@ class ModmanParser
             if (count($parts) != 2) {
                 throw new \ErrorException(sprintf('Invalid row on line %d has %d parts, expected 2', $line, count($row)));
             }
-            $map[$parts[0]] = $parts[1];
+            list ($source, $target) = $parts;
+
+            $map[$source] = $target;
         }
         return $map;
     }
