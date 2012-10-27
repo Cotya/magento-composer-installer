@@ -36,6 +36,17 @@ class ModmanParserTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers MagentoHackathon\Composer\Magento\ModmanParser::setModuleDir
+     * @covers MagentoHackathon\Composer\Magento\ModmanParser::getModuleDir
+     */
+    public function testSetGetModuleDir()
+    {
+        $dirName = 'test/dummy/dir';
+        $this->object->setModuleDir($dirName);
+        $this->assertSame($dirName, $this->object->getModuleDir());
+    }
+
+    /**
      * @covers MagentoHackathon\Composer\Magento\ModmanParser::setFile
      * @covers MagentoHackathon\Composer\Magento\ModmanParser::getFile
      */
@@ -51,7 +62,7 @@ class ModmanParserTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetModmanFile()
     {
-        $this->object->setFile($this->modmanFileDir);
+        $this->object->setModuleDir($this->modmanFileDir);
         $this->assertSame($this->modmanFileDir . 'modman', $this->object->getModmanFile());
     }
 
