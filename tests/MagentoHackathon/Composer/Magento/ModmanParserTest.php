@@ -23,7 +23,8 @@ class ModmanParserTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $baseTestClassName = substr(basename(__FILE__), 0, -4);
-        $this->modmanFileDir = dirname(__FILE__) . 'data/' . $baseTestClassName . '/';
+
+        $this->modmanFileDir = __DIR__ . '/data/' . $baseTestClassName . '/';
         $this->object = new ModmanParser();
     }
 
@@ -71,9 +72,11 @@ class ModmanParserTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetMappings()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
+        $expected = array(
+            'line/with/tab' => 'record/one',
+            'line/with/space' => 'record/two',
+            'line/with/space/and/tab' => 'record/three'
         );
+        $this->assertSame($expected, $this->object->getMappings($this->modmanFileDir . 'modman'));
     }
 }
