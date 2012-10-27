@@ -20,7 +20,7 @@ class Installer extends LibraryInstaller implements InstallerInterface
     /**
      * The base directory of the magento installation
      *
-     * @var string
+     * @var \SplFileInfo
      */
     protected $magentoRootDir = null;
 
@@ -55,12 +55,11 @@ class Installer extends LibraryInstaller implements InstallerInterface
         $extra = $composer->getPackage()->getExtra();
 
         if (isset($extra['magento-root-dir'])) {
-            $this->magentoRootDir = trim($extra['magento-root-dir']);
+            $this->magentoRootDir = new \SplFileInfo(trim($extra['magento-root-dir']));
         }
 
-
-        if (!is_dir($this->magentoRootDir) || empty($this->magentoRootDir)) {
-            throw new \ErrorException("magento root dir $this->magentoRootDir is not valid");
+        if (is_null($this->magentoRootDir) || false === $this->magentoRootDir->isDir()) {
+            throw new \ErrorException("magento root dir {$this->magentoRootDir->getPathname()} is not valid");
         };
 
         if ( isset( $extra['magento-force'] ) ) {
@@ -71,11 +70,11 @@ class Installer extends LibraryInstaller implements InstallerInterface
     /**
      * Returns the strategy class used for deployment
      *
-     * @return \MagentoHackathon\Composer\Magento\Depolystrategy\DeploystrategyAbstract
+     * @return \MagentoHackathon\Composer\Magento\Deploystrategy\DeploystrategyAbstract
      */
     public function getDeployStrategy()
     {
-        return new \MagentoHackathon\Composer\Magento\Deploystrategy\Symlink($this->magentoRootDir, $this->_source_dir);
+        return new \MagentoHackathon\Composer\Magento\Deploystrategy\Symlink($this->magentoRootDir->getRealPath(), $this->_source_dir);
     }
 
     /**

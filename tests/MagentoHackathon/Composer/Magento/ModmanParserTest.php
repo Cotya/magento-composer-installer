@@ -46,13 +46,13 @@ class ModmanParserTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($dirName, $this->object->getModuleDir());
     }
 
-    public function setSetModuleDirWithTrailingSlash()
+    public function testSetSetModuleDirWithTrailingSlash()
     {
         $this->object->setModuleDir('test/');
         $this->assertSame('test', $this->object->getModuleDir());
     }
 
-    public function setSetModuleDirWithTrailingBackslash()
+    public function testSetSetModuleDirWithTrailingBackslash()
     {
         $this->object->setModuleDir('test\\');
         $this->assertSame('test', $this->object->getModuleDir());
@@ -75,9 +75,9 @@ class ModmanParserTest extends \PHPUnit_Framework_TestCase
     public function testGetMappings()
     {
         $expected = array(
-            'line/with/tab' => 'record/one',
-            'line/with/space' => 'record/two',
-            'line/with/space/and/tab' => 'record/three'
+            array('line/with/tab', 'record/one'),
+            array('line/with/space', 'record/two'),
+            array('line/with/space/and/tab', 'record/three')
         );
         $this->assertSame($expected, $this->object->getMappings($this->modmanFileDir . 'modman'));
     }

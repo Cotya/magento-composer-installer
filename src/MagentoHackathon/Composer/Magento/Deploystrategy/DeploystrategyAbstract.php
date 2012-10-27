@@ -50,7 +50,8 @@ abstract class DeploystrategyAbstract
      */
     public function deploy()
     {
-        foreach ($this->getMappings() as $source => $dest) {
+        foreach ($this->getMappings() as $data) {
+            list ($source, $dest) = $data;
             $this->create($source, $dest);
         }
         return $this;

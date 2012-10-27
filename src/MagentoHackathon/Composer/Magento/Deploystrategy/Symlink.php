@@ -13,8 +13,8 @@ class Symlink extends DeploystrategyAbstract
     /**
      * Creates a symlink with lots of error-checking
      *
-     * @param $source
-     * @param $dest
+     * @param string $source
+     * @param string $dest
      * @return bool
      * @throws \ErrorException
      */
@@ -23,9 +23,6 @@ class Symlink extends DeploystrategyAbstract
 
         $sourcePath = $this->_getSourceDir() . DIRECTORY_SEPARATOR . $source;
         $destPath = $this->_getDestDir() . DIRECTORY_SEPARATOR . $dest;
-
-        echo $sourcePath.'---'.$destPath."\n";
-
 
         // If source doesn't exist, check if it's a glob expression, otherwise we have nothing we can do
         if (!file_exists($sourcePath)) {
@@ -73,6 +70,10 @@ class Symlink extends DeploystrategyAbstract
             }
         }
 
+        // Remove trailing slash, otherwise symlink will fail for target directories
+        $this->removeTrailingSlash($sourcePath);
+        $this->removeTrailingSlash($destPath);
+
         // Create symlink
         symlink($sourcePath, $destPath);
 
@@ -82,6 +83,13 @@ class Symlink extends DeploystrategyAbstract
         }
 
         return;
+    }
+
+    protected function removeTrailingSlash(&$path)
+    {
+        if (in_array(substr($path, -1) ,array('/', '\\'))) {
+            $path = substr($path, 0, -1);
+        }
     }
 
     /**

@@ -105,25 +105,20 @@ class ModmanParser
             throw new \ErrorException(sprintf('modman file "%s" not readable', $file->getPathname()));
         }
 
-        $modmanRows = array();
-        while (!$file->eof()) {
-            $modmanRows[] = $file->fgets();
-        }
-
-        $map = $this->_parseMappings($modmanRows);
+        $map = $this->_parseMappings();
         return $map;
     }
 
     /**
-     * @param array $modmanRows
      * @throws \ErrorException
      * @return array
      */
-    protected function _parseMappings(array $modmanRows)
+    protected function _parseMappings()
     {
         $map = array();
         $line = 0;
-        foreach ($modmanRows as $row) {
+
+        foreach ($this->_file as $row) {
             $line++;
             $row = trim($row);
             if ('' === $row || in_array($row[0], array('#', '@'))) {
@@ -133,9 +128,7 @@ class ModmanParser
             if (count($parts) != 2) {
                 throw new \ErrorException(sprintf('Invalid row on line %d has %d parts, expected 2', $line, count($row)));
             }
-            list ($source, $target) = $parts;
-
-            $map[$source] = $target;
+            $map[] = $parts;
         }
         return $map;
     }
