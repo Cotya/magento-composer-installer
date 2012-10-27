@@ -20,17 +20,28 @@ class ModmanParser
      */
     protected $_file = null;
 
+    /**
+     * Constructor
+     *
+     * @param string $moduleDir
+     */
     public function __construct($moduleDir = null)
     {
         $this->setModuleDir($moduleDir);
         $this->setFile($this->getModmanFile());
     }
 
+    /**
+     * Sets the module directory where to search for the modman file
+     *
+     * @param string $moduleDir
+     * @return ModmanParser
+     */
     public function setModuleDir($moduleDir)
     {
         // Remove trailing slash
-        if (in_array(substr($moduleDir, -1), array('/', '\\'))) {
-            $moduleDir = substr($moduleDir, 0, -1);
+        if (!is_null($moduleDir)) {
+            $moduleDir = rtrim($moduleDir, '\\/');
         }
 
         $this->_moduleDir = $moduleDir;

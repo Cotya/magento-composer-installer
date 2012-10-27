@@ -43,11 +43,17 @@ abstract class DeploystrategyAbstract
         $this->_source_dir = $source_dir;
     }
 
+    /**
+     * Executes the deployment strategy for each mapping
+     *
+     * @return \MagentoHackathon\Composer\Magento\Depolystrategy\DeploystrategyAbstract
+     */
     public function deploy()
     {
-        foreach ($this->getMappings() AS $source => $dest) {
+        foreach ($this->getMappings() as $source => $dest) {
             $this->create($source, $dest);
         }
+        return $this;
     }
 
     /**
@@ -71,8 +77,10 @@ abstract class DeploystrategyAbstract
     }
 
     /**
-     * @return bool
+     * If set overrides existing files
+     *
      * @todo Implement method body
+     * @return bool
      */
     public function isForced()
     {
