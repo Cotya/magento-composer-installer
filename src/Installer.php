@@ -131,7 +131,7 @@ class Installer extends \Composer\Installer\LibraryInstaller implements \Compose
     }
 
     /**
-     * Similar to apply_modman_file but creates hardlinks instead of using symlinks
+     * Similar to _createSymlink but copy files instead of using symlinks
      * @param $source
      * @param $dest
      */
