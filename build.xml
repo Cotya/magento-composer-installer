@@ -6,7 +6,7 @@
         <property name="phpdoc" value="phpdoc" />
 
         <exec executable="${phpdoc}">
-            <arg line="-d src -t doc" />
+            <arg line="-d src -t doc --title=${ant.project.name}" />
         </exec>
     </target>
 

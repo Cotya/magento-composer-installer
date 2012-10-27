@@ -11,21 +11,29 @@ namespace MagentoHackathon\Composer\Magento\Depolystrategy;
 abstract class DeploystrategyAbstract
 {
     /**
+     * The path mappings to map project's directories to magento's directory structure
+     *
      * @var array
      */
     protected $_mappings = array();
 
     /**
+     * The magento installation's base directory
+     *
      * @var string
      */
     protected $_dest_dir;
 
     /**
+     * The module's base directory
+     *
      * @var string
      */
     protected $_source_dir;
 
     /**
+     * Constructor
+     *
      * @param string $dest_dir
      * @param string $source_dir
      */
@@ -43,7 +51,7 @@ abstract class DeploystrategyAbstract
     }
 
     /**
-     * Get the destination dir of the magento module
+     * Returns the destination dir of the magento module
      *
      * @return string
      */
@@ -53,7 +61,7 @@ abstract class DeploystrategyAbstract
     }
 
     /**
-     * Get the current path of the extension.
+     * Returns the current path of the extension
      *
      * @return mixed
      */
@@ -63,14 +71,17 @@ abstract class DeploystrategyAbstract
     }
 
     /**
-     * @return int
+     * @return bool
+     * @todo Implement method body
      */
     public function isForced()
     {
-        return 0; // TODO
+        return false;
     }
 
     /**
+     * Returns the path mappings to map project's directories to magento's directory structure
+     *
      * @return array
      */
     public function getMappings()
@@ -79,6 +90,8 @@ abstract class DeploystrategyAbstract
     }
 
     /**
+     * Sets path mappings to map project's directories to magento's directory structure
+     *
      * @param array $mappings
      */
     public function setMappings(array $mappings)
@@ -87,15 +100,19 @@ abstract class DeploystrategyAbstract
     }
 
     /**
+     * Removes the module's files in the given path
+     *
      * @param string $path
      * @return void
      */
     abstract public function clean($path);
 
     /**
+     * Create the module's files in the given destination
+     *
      * @param string $source
      * @param string $dest
-     * @return void
+     * @return \MagentoHackathon\Composer\Magento\Depolystrategy\DeploystrategyAbstract
      */
     abstract public function create($source, $dest);
 }
