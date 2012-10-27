@@ -1,6 +1,5 @@
 <?php
 
-
 namespace MagentoHackathon\Composer\Magento;
 
 use Composer\Repository\InstalledRepositoryInterface;
@@ -28,8 +27,12 @@ class Installer extends LibraryInstaller implements InstallerInterface
     {
         parent::__construct($io, $composer, $type);
 
-        $this->magentoRootDir = trim($composer->getExtra()->get('magento-root-dir'), '/');
-        $this->magentoCodePool =trim($composer->getExtra()->get());
+        $extra = $composer->getPackage()->getExtra();
+
+        $this->magentoRootDir = trim($extra['magento-root-dir']);
+        if ( !is_dir($this->magentoRootDir) || empty( $this->magentoRootDir ) ) {
+            throw new \ErrorException("magento root dir is not valid");
+        }
     }
 
     /**
@@ -228,6 +231,8 @@ class Installer extends LibraryInstaller implements InstallerInterface
      * Similar to _createSymlink but copy files instead of using symlinks
      * @param $source
      * @param $dest
+     * @throws \ErrorException
+     * @return void
      */
     protected function _copyOver($source, $dest)
     {
@@ -249,8 +254,5 @@ class Installer extends LibraryInstaller implements InstallerInterface
         if (!file_exists($this->_getModuleDir() . DIRECTORY_SEPARATOR . $dest)) {
             throw new \ErrorException("could not copy file $dest");
         }
-
     }
-
-
 }
