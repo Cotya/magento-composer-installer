@@ -95,7 +95,7 @@ class Installer extends LibraryInstaller implements InstallerInterface
     protected function _getSourceDir( PackageInterface $package )
     {
         $this->filesystem->ensureDirectoryExists($this->vendorDir);
-        return $this->vendorDir.DIRECTORY_SEPARATOR.$package->getName();
+        return $this->getInstallPath($package);
     }
 
     /**
