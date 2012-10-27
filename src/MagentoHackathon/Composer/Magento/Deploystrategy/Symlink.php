@@ -13,8 +13,8 @@ class Symlink extends DeploystrategyAbstract
     /**
      * Creates a symlink with lots of error-checking
      *
-     * @param $source
-     * @param $dest
+     * @param string $source
+     * @param string $dest
      * @return bool
      * @throws \ErrorException
      */
