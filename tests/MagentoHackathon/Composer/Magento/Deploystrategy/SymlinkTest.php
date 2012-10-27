@@ -45,4 +45,24 @@ class SymlinkTest extends DeploystrategyAbstractTest
         $this->strategy->clean($this->destDir . DIRECTORY_SEPARATOR . $dest);
         $this->assertFalse(is_readable($this->destDir . DIRECTORY_SEPARATOR . $dest));
     }
+
+    public function testChangeLink()
+    {
+        $wrong_file = 'wrong';
+        $right_file = 'right';
+        $link = 'link';
+
+        touch($this->sourceDir.DIRECTORY_SEPARATOR.$wrong_file);
+        touch($this->sourceDir.DIRECTORY_SEPARATOR.$right_file);
+        @unlink($this->destDir.DIRECTORY_SEPARATOR.$link);
+
+        symlink($this->sourceDir.DIRECTORY_SEPARATOR.$wrong_file, $this->destDir.DIRECTORY_SEPARATOR.$link);
+        $this->assertEquals( $this->sourceDir.DIRECTORY_SEPARATOR.$wrong_file, readlink($this->destDir.DIRECTORY_SEPARATOR.$link) );
+
+        $this->strategy->create( $right_file, $link );
+        $this->assertEquals( $this->sourceDir.DIRECTORY_SEPARATOR.$right_file, readlink($this->destDir.DIRECTORY_SEPARATOR.$link) );
+
+    }
+
+
 }

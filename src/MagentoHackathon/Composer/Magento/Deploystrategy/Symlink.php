@@ -41,7 +41,7 @@ class Symlink extends DeploystrategyAbstract
 
         // Symlink already exists
         if (is_link($destPath)) {
-            if ( linkinfo($destPath) == $sourcePath ) {
+            if ( readlink($destPath) == realpath($sourcePath) ) {
                 // .. and is equal to current source-link
                 return;
             }
