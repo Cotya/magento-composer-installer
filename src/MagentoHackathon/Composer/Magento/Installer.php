@@ -99,11 +99,6 @@ class Installer extends LibraryInstaller implements InstallerInterface
      */
     public function install(InstalledRepositoryInterface $repo, PackageInterface $package)
     {
-
-        var_dump( $package );
-        var_dump($repo);
-        exit;
-
         $strategy = $this->getDeployStrategy();
         $strategy->setMappings($this->getParser()->getMappings());
         $strategy->deploy();
