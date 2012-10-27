@@ -39,10 +39,13 @@ class Symlink extends DeploystrategyAbstract
             throw new \ErrorException("Source $sourcePath does not exists");
         }
 
-        // Symlink already exists, nothing to do
+        // Symlink already exists
         if (is_link($destPath)) {
-            // TODO Check if symlink still is valid!
-            return;
+            if ( readlink($destPath) == realpath($sourcePath) ) {
+                // .. and is equal to current source-link
+                return;
+            }
+            unlink( $destPath );
         }
 
         // Create all directories up to one below the target if they don't exist
@@ -70,25 +73,23 @@ class Symlink extends DeploystrategyAbstract
         }
 
         // Remove trailing slash, otherwise symlink will fail for target directories
-        $this->removeTrailingSlash($sourcePath);
-        $this->removeTrailingSlash($destPath);
+        $sourcePath = $this->removeTrailingSlash($sourcePath);
+        $destPath = $this->removeTrailingSlash($destPath);
 
         // Create symlink
         symlink($sourcePath, $destPath);
 
         // Check we where able to create the symlink
         if (!is_link($destPath)) {
-            throw new \ErrorException("Could not create symlink $dest");
+            throw new \ErrorException("Could not create symlink $destPath");
         }
 
         return $this;
     }
 
-    protected function removeTrailingSlash(&$path)
+    protected function removeTrailingSlash($path)
     {
-        if (in_array(substr($path, -1) ,array('/', '\\'))) {
-            $path = substr($path, 0, -1);
-        }
+       return rtrim($path, '\\/');
     }
 
     /**
