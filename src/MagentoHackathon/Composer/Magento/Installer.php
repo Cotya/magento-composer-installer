@@ -72,7 +72,7 @@ class Installer extends LibraryInstaller implements InstallerInterface
      */
     public function getDeployStrategy( PackageInterface $package )
     {
-        return new \MagentoHackathon\Composer\Magento\Deploystrategy\Symlink($this->magentoRootDir->getRealPath(), $this->_getSourceDir( $package ));
+        return new \MagentoHackathon\Composer\Magento\Deploystrategy\Symlink($this->magentoRootDir->getPathname(), $this->_getSourceDir( $package ));
     }
 
     /**
