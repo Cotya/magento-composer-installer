@@ -32,10 +32,10 @@
     ],
     "require": {
     },
-	"autoload": {
-		"psr-0": {"MagentoHackathon\\Composer\\Magento": "src/"}
-	},
-	"extra": {
-		"class": "MagentoHackathon\\Composer\\Magento\\Installer"
-	}
+    "autoload": {
+        "classmap": [ "src/" ]
+    },
+    "extra": {
+        "class": "MagentoHackathon\\Composer\\Magento\\Installer"
+    }
 }
