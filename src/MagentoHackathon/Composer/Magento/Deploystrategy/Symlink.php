@@ -39,10 +39,13 @@ class Symlink extends DeploystrategyAbstract
             throw new \ErrorException("Source $sourcePath does not exists");
         }
 
-        // Symlink already exists, nothing to do
+        // Symlink already exists
         if (is_link($destPath)) {
-            // TODO Check if symlink still is valid!
-            return;
+            if ( linkinfo($destPath) == $sourcePath ) {
+                // .. and is equal to current source-link
+                return;
+            }
+            unlink( $destPath );
         }
 
         // Create all directories up to one below the target if they don't exist
