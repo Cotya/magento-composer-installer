@@ -78,7 +78,7 @@ class Installer extends \Composer\Installer\LibraryInstaller implements \Compose
      */
     public function update(InstalledRepositoryInterface $repo, PackageInterface $initial, PackageInterface $target)
     {
-        parent::update($repo, $initial, $target);
+        $this->_cleanSymlinks();
     }
 
     /**
@@ -98,6 +98,21 @@ class Installer extends \Composer\Installer\LibraryInstaller implements \Compose
         return false;
     }
 
+    protected function _cleanSymlinks()
+    {
+
+    }
+
+    protected function _getModuleDir()
+    {
+        return $this->magentoRootDir; // TODO
+    }
+
+    protected function _getSourceDir()
+    {
+        return "MHH???";
+    }
+
     /**
      * Creates a symlink with lots of error-checking
      *
@@ -107,24 +122,28 @@ class Installer extends \Composer\Installer\LibraryInstaller implements \Compose
      */
     protected function _createSymlink($source, $dest)
     {
-        if (!file_exists($source)) {
+
+
+        if (!file_exists($this->_getSourceDir() . DIRECTORY_SEPARATOR . $source)) {
             throw new \ErrorException("$source does not exists");
         }
 
-        if (is_link($dest)) {
+        if (is_link($this->_getModuleDir() . DIRECTORY_SEPARATOR . $dest)) {
             return true;
         }
 
-        if (file_exists($dest)) {
+        if (file_exists($this->_getModuleDir() . DIRECTORY_SEPARATOR . $dest)) {
             if ($this->_isForced()) {
-                unlink($dest);
+                unlink($this->_getModuleDir() . DIRECTORY_SEPARATOR . $dest);
             } else {
                 throw new \ErrorException("$dest already exists and is not a symlink");
             }
         }
 
-        link($source, $dest);
-        if (!is_link($dest)) {
+        link($this->_getSourceDir() . DIRECTORY_SEPARATOR . $source,
+            $this->_getModuleDir() . DIRECTORY_SEPARATOR . $dest);
+
+        if (!is_link($$this->_getModuleDir() . DIRECTORY_SEPARATOR . dest)) {
             throw new \ErrorException("could not create symlink $dest");
         }
 
@@ -137,20 +156,22 @@ class Installer extends \Composer\Installer\LibraryInstaller implements \Compose
      */
     protected function _copyOver($source, $dest)
     {
-        if (!file_exists($source)) {
+        if (!file_exists($this->_getSourceDir() . DIRECTORY_SEPARATOR . $source)) {
             throw new \ErrorException("$source does not exists");
         }
 
-        if (is_link($dest)) {
+        if (is_link($this->_getModuleDir() . DIRECTORY_SEPARATOR . $dest)) {
             if ($this->_isForced()) {
-                unlink($dest);
+                unlink($this->_getModuleDir() . DIRECTORY_SEPARATOR . $dest);
             } else {
                 throw new \ErrorException("$dest already exists");
             }
         }
 
-        copy($source, $dest);
-        if (!file_exists($dest)) {
+        copy($this->_getSourceDir() . DIRECTORY_SEPARATOR . $source,
+            $this->_getModuleDir() . DIRECTORY_SEPARATOR . $dest);
+
+        if (!file_exists($this->_getModuleDir() . DIRECTORY_SEPARATOR . $dest)) {
             throw new \ErrorException("could not copy file $dest");
         }
 
