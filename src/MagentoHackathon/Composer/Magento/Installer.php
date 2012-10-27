@@ -22,7 +22,7 @@ class Installer extends LibraryInstaller implements InstallerInterface
      *
      * @var string
      */
-    protected $_magentoRootDir = null;
+    protected $magentoRootDir = null;
 
     /**
      * @var bool
@@ -74,7 +74,7 @@ class Installer extends LibraryInstaller implements InstallerInterface
      */
     public function getDeployStrategy()
     {
-        return new \MagentoHackathon\Composer\Magento\Depolystrategy\Symlink($this->_magentoRootDir, $this->_target_dir);
+        return new \MagentoHackathon\Composer\Magento\Depolystrategy\Symlink($this->magentoRootDir, $this->_target_dir);
     }
 
     /**
