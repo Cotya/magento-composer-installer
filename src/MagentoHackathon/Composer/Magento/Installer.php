@@ -1,6 +1,5 @@
 <?php
 
-
 namespace MagentoHackathon\Composer\Magento;
 
 use Composer\Repository\InstalledRepositoryInterface;
@@ -23,8 +22,8 @@ class Installer extends LibraryInstaller implements InstallerInterface
     {
         parent::__construct($io, $composer, $type);
 
-        $this->magentoRootDir = trim($composer->getExtra()->get('magento-root-dir'), '/');
-        $this->magentoCodePool =trim($composer->getExtra()->get());
+        $this->magentoRootDir = trim($composer->getPackage()->getExtra()->get('magento-root-dir'), '/');
+        $this->magentoCodePool =trim($composer->getPackage()->getExtra()->get());
     }
 
     /**
@@ -122,6 +121,7 @@ class Installer extends LibraryInstaller implements InstallerInterface
      *
      * @param $source
      * @param $dest
+     * @return bool
      * @throws \ErrorException
      * @todo implement file to dir modman target, e.g. Namespace_Module.csv => app/locale/de_DE/
      * @todo implement glob to dir mapping target, e.g. code/* => app/code/local/
@@ -157,6 +157,8 @@ class Installer extends LibraryInstaller implements InstallerInterface
      * Similar to _createSymlink but copy files instead of using symlinks
      * @param $source
      * @param $dest
+     * @throws \ErrorException
+     * @return void
      */
     protected function _copyOver($source, $dest)
     {
@@ -178,8 +180,5 @@ class Installer extends LibraryInstaller implements InstallerInterface
         if (!file_exists($this->_getModuleDir() . DIRECTORY_SEPARATOR . $dest)) {
             throw new \ErrorException("could not copy file $dest");
         }
-
     }
-
-
 }
