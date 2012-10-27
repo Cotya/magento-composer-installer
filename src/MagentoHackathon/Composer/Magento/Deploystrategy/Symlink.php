@@ -21,10 +21,11 @@ class Symlink extends DeploystrategyAbstract
     public function create($source, $dest)
     {
 
-        echo $source.'---'.$dest."\n";
-
         $sourcePath = $this->_getSourceDir() . DIRECTORY_SEPARATOR . $source;
         $destPath = $this->_getDestDir() . DIRECTORY_SEPARATOR . $dest;
+
+        echo $sourcePath.'---'.$destPath."\n";
+
 
         // If source doesn't exist, check if it's a glob expression, otherwise we have nothing we can do
         if (!file_exists($sourcePath)) {
