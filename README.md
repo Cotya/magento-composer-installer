@@ -59,7 +59,6 @@ How to set up your ```composer.json``` in your project:
 
 ```
 {
-    "name": "companyname/projectname",
     "minimum-stability": "dev"
     "require": {
         "firegento/germansetup": "dev-composer",
