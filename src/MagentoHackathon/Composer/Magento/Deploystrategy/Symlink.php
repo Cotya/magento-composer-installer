@@ -69,6 +69,10 @@ class Symlink extends DeploystrategyAbstract
             }
         }
 
+        // Remove trailing slash, otherwise symlink will fail for target directories
+        if (in_array(substr($destPath, -1) ,array('/', '\\'))) {
+            $destPath = substr($destPath, 0, -1);
+        }
         // Create symlink
         link($sourcePath, $destPath);
 
