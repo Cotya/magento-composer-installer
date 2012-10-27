@@ -82,21 +82,32 @@ class Symlink extends DeploystrategyAbstract
         return;
     }
 
+    /**
+     * Removes the links in the given path
+     *
+     * @param string $path
+     * @return \MagentoHackathon\Composer\Magento\Depolystrategy\DeploystrategyAbstract
+     * @throws \ErrorException
+     */
     public function clean($path)
     {
-        $iterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($this->_getDestDir()),
-            RecursiveIteratorIterator::CHILD_FIRST);
+        $iterator = new RecursiveIteratorIterator(
+            new RecursiveDirectoryIterator($this->_getDestDir()),
+            RecursiveIteratorIterator::CHILD_FIRST
+        );
+
         foreach ($iterator as $path) {
             if (is_link($path->__toString())) {
                 $dest = readlink($path->__toString());
                 if ($dest === 0 || !is_readable($dest)) {
                     $denied = @unlink($path->__toString());
                     if ($denied) {
-                        throw new \ErrorException("Permission denied");
+                        throw new \ErrorException('Permission denied on ' . $path->__toString());
                     }
                 }
             }
         }
-    }
 
+        return $this;
+    }
 }

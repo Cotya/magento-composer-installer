@@ -17,12 +17,27 @@ use Composer\Package\PackageInterface;
  */
 class Installer extends LibraryInstaller implements InstallerInterface
 {
+    /**
+     * The base directory of the magento installation
+     *
+     * @var string
+     */
     protected $_magentoRootDir = null;
+
+    /**
+     * @var bool
+     */
     protected $_isForced = false;
+
+    /**
+     * The module's base directory
+     *
+     * @var string
+     */
     protected $_target_dir;
 
     /**
-     * Initializes Magento Module installer.
+     * Initializes Magento Module installer
      *
      * @param \Composer\IO\IOInterface $io
      * @param \Composer\Composer $composer
@@ -50,6 +65,8 @@ class Installer extends LibraryInstaller implements InstallerInterface
     }
 
     /**
+     * Returns the strategy class used for deployment
+     *
      * @return \MagentoHackathon\Composer\Magento\Depolystrategy\DeploystrategyAbstract
      */
     public function getDeployStrategy()
@@ -69,7 +86,7 @@ class Installer extends LibraryInstaller implements InstallerInterface
     }
 
     /**
-     * Installs specific package.
+     * Installs specific package
      *
      * @param InstalledRepositoryInterface $repo    repository in which to check
      * @param PackageInterface             $package package instance
@@ -82,7 +99,7 @@ class Installer extends LibraryInstaller implements InstallerInterface
     }
 
     /**
-     * Updates specific package.
+     * Updates specific package
      *
      * @param InstalledRepositoryInterface $repo    repository in which to check
      * @param PackageInterface             $initial already installed package version
@@ -106,11 +123,14 @@ class Installer extends LibraryInstaller implements InstallerInterface
         parent::uninstall($repo, $package);
     }
 
+    /**
+     * Returns the modman parser for the vendor dir
+     *
+     * @return ModmanParser
+     */
     public function getParser()
     {
         $parser = new ModmanParser($this->vendorDir);
         return $parser;
     }
-
-
 }
