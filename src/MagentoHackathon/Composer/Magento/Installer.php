@@ -42,8 +42,9 @@ class Installer extends LibraryInstaller implements InstallerInterface
             $this->magentoRootDir = trim($extra['magento-root-dir']);
         }
 
-        if (!is_dir($this->_source_dir) || empty($this->magentoRootDir)) {
-            throw new \ErrorException("magento root dir is not valid");
+
+        if (!is_dir($this->magentoRootDir) || empty($this->magentoRootDir)) {
+            throw new \ErrorException("magento root dir $this->magentoRootDir is not valid");
         };
 
         if ( isset( $extra['magento-force'] ) ) {
