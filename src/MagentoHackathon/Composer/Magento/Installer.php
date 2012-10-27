@@ -98,7 +98,10 @@ class Installer extends LibraryInstaller implements InstallerInterface
     public function install(InstalledRepositoryInterface $repo, PackageInterface $package)
     {
         parent::install($repo,$package);
+
         $this->_source_dir = $this->vendorDir.DIRECTORY_SEPARATOR.$package->getName();
+        $this->initializeVendorDir();
+
         $strategy = $this->getDeployStrategy();
         $strategy->setMappings($this->getParser()->getMappings());
         $strategy->deploy();
@@ -116,7 +119,10 @@ class Installer extends LibraryInstaller implements InstallerInterface
     public function update(InstalledRepositoryInterface $repo, PackageInterface $initial, PackageInterface $target)
     {
         self::update($repo,$initial,$target);
+
         $this->_source_dir = $this->vendorDir.DIRECTORY_SEPARATOR.$initial->getName();
+        $this->initializeVendorDir();
+
         $this->install($repo, $initial, $target);
     }
 

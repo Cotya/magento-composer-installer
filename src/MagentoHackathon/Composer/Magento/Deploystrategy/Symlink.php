@@ -73,7 +73,7 @@ class Symlink extends DeploystrategyAbstract
         }
 
         // Create symlink
-        link($sourcePath, $destPath);
+        symlink($sourcePath, $destPath);
 
         // Check we where able to create the symlink
         if (!is_link($destPath)) {
