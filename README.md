@@ -31,7 +31,7 @@ How to set up your ```composer.json``` in your module:
 ```
 {
    "name": "firegento/germansetup",
-   "type": "library",
+   "type": "magento-module",
    "minimum-stability": "dev",
    "require": {
       "magento-hackathon/magento-composer-installer": "dev-master"
