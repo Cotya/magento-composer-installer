@@ -15,15 +15,15 @@ class Installer extends LibraryInstaller implements InstallerInterface
     /**
      * Initializes Magento Module installer.
      *
-     * @param IOInterface $io
-     * @param Composer    $composer
-     * @param string      $type
+     * @param \Composer\IO\IOInterface $io
+     * @param \Composer\Composer $composer
+     * @param string $type
      */
     public function __construct(IOInterface $io, Composer $composer, $type = 'magento-module')
     {
         parent::__construct($io, $composer, $type);
-
-        $this->magentoRootDir = trim($composer->getExtra()->get('magento-root-dir'), '/');
+        $this->magentoRootDir = rtrim($composer->getPackage()->getExtra()->get('magento-root-dir'), ' /');
+		$this->_isForced = $composer->getPackage()->getExtra()->get('magento-force');
     }
 
     /**
@@ -85,8 +85,6 @@ class Installer extends LibraryInstaller implements InstallerInterface
 
     protected function _cleanSymlinks($path)
     {
-        $mapping = $this->getMappings();
-
         foreach (glob($path) AS $file) {
             if (is_dir($file)) {
                 $this->_cleanSymlinks($file);
@@ -105,15 +103,23 @@ class Installer extends LibraryInstaller implements InstallerInterface
             }
         }
     }
-
+    /**
+     * Get the destination dir of the magento module
+     *
+     * @return string
+     */
     protected function _getModuleDir()
     {
         return $this->magentoRootDir;
     }
-
+    /**
+     * Get the current path of the extension.
+     *
+     * @return mixed
+     */
     protected function _getSourceDir()
     {
-        return "MHH???";
+        return rtrim($this->composer->getConfig()->get('vendor-dir').' /');
     }
 
     /**
@@ -127,7 +133,7 @@ class Installer extends LibraryInstaller implements InstallerInterface
      */
     protected function _createSymlink($source, $dest)
     {
-        if (!file_exists($this->_getSourceDir() . DIRECTORY_SEPARATOR . $source)) {
+        if (!is_readable($this->_getSourceDir() . DIRECTORY_SEPARATOR . $source)) {
             throw new \ErrorException("$source does not exists");
         }
 
@@ -135,9 +141,12 @@ class Installer extends LibraryInstaller implements InstallerInterface
             return true;
         }
 
-        if (file_exists($this->_getModuleDir() . DIRECTORY_SEPARATOR . $dest)) {
+        if (is_readable($this->_getModuleDir() . DIRECTORY_SEPARATOR . $dest)) {
             if ($this->_isForced()) {
-                unlink($this->_getModuleDir() . DIRECTORY_SEPARATOR . $dest);
+                $success = @unlink($this->_getModuleDir() . DIRECTORY_SEPARATOR . $dest);
+                if(!$success) {
+                    throw new \ErrorException("$dest permission denied!");
+                }
             } else {
                 throw new \ErrorException("$dest already exists and is not a symlink");
             }
@@ -159,13 +168,16 @@ class Installer extends LibraryInstaller implements InstallerInterface
      */
     protected function _copyOver($source, $dest)
     {
-        if (!file_exists($this->_getSourceDir() . DIRECTORY_SEPARATOR . $source)) {
+        if (!is_readable($this->_getSourceDir() . DIRECTORY_SEPARATOR . $source)) {
             throw new \ErrorException("$source does not exists");
         }
 
         if (is_link($this->_getModuleDir() . DIRECTORY_SEPARATOR . $dest)) {
             if ($this->_isForced()) {
-                unlink($this->_getModuleDir() . DIRECTORY_SEPARATOR . $dest);
+                $success = @unlink($this->_getModuleDir() . DIRECTORY_SEPARATOR . $dest);
+                if(!$success) {
+                    throw new \ErrorException("$dest permission denied!");
+				}
             } else {
                 throw new \ErrorException("$dest already exists");
             }
@@ -174,11 +186,9 @@ class Installer extends LibraryInstaller implements InstallerInterface
         copy($this->_getSourceDir() . DIRECTORY_SEPARATOR . $source,
             $this->_getModuleDir() . DIRECTORY_SEPARATOR . $dest);
 
-        if (!file_exists($this->_getModuleDir() . DIRECTORY_SEPARATOR . $dest)) {
+        if (!is_readable($this->_getModuleDir() . DIRECTORY_SEPARATOR . $dest)) {
             throw new \ErrorException("could not copy file $dest");
         }
 
     }
-
-
 }
