@@ -13,6 +13,11 @@ use Composer\Package\PackageInterface;
 class Installer extends LibraryInstaller implements InstallerInterface
 {
     /**
+     * @var ModmanParser
+     */
+    protected $_parser;
+
+    /**
      * Initializes Magento Module installer.
      *
      * @param IOInterface $io
@@ -78,6 +83,11 @@ class Installer extends LibraryInstaller implements InstallerInterface
         parent::uninstall($repo, $package);
     }
 
+    /**
+     * If true unlink existing files to symlink
+     *
+     * @return bool
+     */
     protected function _isForced()
     {
         // TODO: get forced flag from config
@@ -124,11 +134,21 @@ class Installer extends LibraryInstaller implements InstallerInterface
         return new ModmanParser($this->composer);
     }
 
+    /**
+     * Return Magento base path
+     *
+     * @return string
+     */
     protected function _getModuleDir()
     {
         return $this->magentoRootDir;
     }
 
+    /**
+     * Return absolute path to module vendor directory
+     *
+     * @return string
+     */
     protected function _getSourceDir()
     {
         return $this->vendorDir;
