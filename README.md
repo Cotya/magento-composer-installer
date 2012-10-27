@@ -64,6 +64,9 @@ How to set up your ```composer.json``` in your project:
             "type": "vcs",
             "url": "git://github.com/magento-hackathon/magento-composer-installer.git"
         }
-    ]
+    ],
+    "extra":{
+        "magento-root-dir": "/htdocs"
+    }
 }
 ```
