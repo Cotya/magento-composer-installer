@@ -12,6 +12,11 @@ use Composer\Package\PackageInterface;
 
 class Installer extends LibraryInstaller implements InstallerInterface
 {
+
+    protected $_magentoRootDir = null;
+    protected $_isForced = false;
+    protected $_target_dir;
+
     /**
      * Initializes Magento Module installer.
      *
@@ -22,8 +27,29 @@ class Installer extends LibraryInstaller implements InstallerInterface
     public function __construct(IOInterface $io, Composer $composer, $type = 'magento-module')
     {
         parent::__construct($io, $composer, $type);
-        $this->magentoRootDir = rtrim($composer->getPackage()->getExtra()->get('magento-root-dir'), ' /');
-        $this->_isForced = $composer->getPackage()->getExtra()->get('magento-force');
+
+        $extra = $composer->getPackage()->getExtra();
+
+        $this->_target_dir = $composer->getPackage()->getTargetDir();
+
+        if (isset($extra['magento-root-dir'])) {
+            $this->magentoRootDir = trim($extra['magento-root-dir']);
+        }
+
+        if (!is_dir($this->magentoRootDir) || empty($this->magentoRootDir)) {
+            throw new \ErrorException("magento root dir is not valid");
+        }
+
+        $this->_magentoRootDir = $extra['magento-root-dir'];
+        $this->_isForced = $extra['magento-force'];
+    }
+
+    /**
+     * @return \MagentoHackathon\Composer\Magento\Depolystrategy\DeploystrategyAbstract
+     */
+    public function getDeployStrategy()
+    {
+        return new \MagentoHackathon\Composer\Magento\Depolystrategy\Symlink($this->_magentoRootDir, $this->_target_dir);
     }
 
     /**
@@ -45,10 +71,9 @@ class Installer extends LibraryInstaller implements InstallerInterface
      */
     public function install(InstalledRepositoryInterface $repo, PackageInterface $package)
     {
-        $mapping = $this->getMapping();
-        foreach ($mapping AS $source => $dest) {
-            $this->_createSymlink($source, $dest);
-        }
+        $strategy = $this->getDeployStrategy();
+        $strategy->setMappings($this->getParser()->getMappings());
+        $strategy->deploy();
     }
 
     /**
@@ -62,7 +87,6 @@ class Installer extends LibraryInstaller implements InstallerInterface
      */
     public function update(InstalledRepositoryInterface $repo, PackageInterface $initial, PackageInterface $target)
     {
-        $this->_cleanSymlinks($this->_getModuleDir());
         $this->install($repo, $initial, $target);
     }
 
@@ -77,116 +101,11 @@ class Installer extends LibraryInstaller implements InstallerInterface
         parent::uninstall($repo, $package);
     }
 
-    protected function _isForced()
+    public function getParser()
     {
-        // TODO: get forced flag from config
-        return false;
+        $parser = new ModmanParser($this->vendorDir);
+        return $parser;
     }
 
-    protected function _cleanSymlinks($path)
-    {
-        $iterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($this->_getModuleDir()),
-            RecursiveIteratorIterator::CHILD_FIRST);
-        foreach ($iterator as $path) {
-            if (is_link($path->__toString())) {
-                $dest = readlink($path->__toString());
-                if ($dest === 0 || !is_readable($dest)) {
-                    $denied = @unlink($path->__toString());
-                    if ($denied) {
-                        throw new \ErrorException("Permission denied");
-                    }
-                }
-            }
-        }
-    }
 
-    /**
-     * Get the destination dir of the magento module
-     *
-     * @return string
-     */
-    protected function _getModuleDir()
-    {
-        return $this->magentoRootDir;
-    }
-
-    /**
-     * Get the current path of the extension.
-     *
-     * @return mixed
-     */
-    protected function _getSourceDir()
-    {
-        return rtrim($this->composer->getConfig()->get('vendor-dir') . ' /');
-    }
-
-    /**
-     * Creates a symlink with lots of error-checking
-     *
-     * @param $source
-     * @param $dest
-     * @throws \ErrorException
-     * @todo implement file to dir modman target, e.g. Namespace_Module.csv => app/locale/de_DE/
-     * @todo implement glob to dir mapping target, e.g. code/* => app/code/local/
-     */
-    protected function _createSymlink($source, $dest)
-    {
-        if (!is_readable($this->_getSourceDir() . DIRECTORY_SEPARATOR . $source)) {
-            throw new \ErrorException("$source does not exists");
-        }
-
-        if (is_link($this->_getModuleDir() . DIRECTORY_SEPARATOR . $dest)) {
-            return true;
-        }
-
-        if (is_readable($this->_getModuleDir() . DIRECTORY_SEPARATOR . $dest)) {
-            if ($this->_isForced()) {
-                $success = @unlink($this->_getModuleDir() . DIRECTORY_SEPARATOR . $dest);
-                if (!$success) {
-                    throw new \ErrorException("$dest permission denied!");
-                }
-            } else {
-                throw new \ErrorException("$dest already exists and is not a symlink");
-            }
-        }
-
-        link($this->_getSourceDir() . DIRECTORY_SEPARATOR . $source,
-                $this->_getModuleDir() . DIRECTORY_SEPARATOR . $dest);
-
-        if (!is_link($$this->_getModuleDir() . DIRECTORY_SEPARATOR . dest)) {
-            throw new \ErrorException("could not create symlink $dest");
-        }
-
-    }
-
-    /**
-     * Similar to _createSymlink but copy files instead of using symlinks
-     * @param $source
-     * @param $dest
-     */
-    protected function _copyOver($source, $dest)
-    {
-        if (!is_readable($this->_getSourceDir() . DIRECTORY_SEPARATOR . $source)) {
-            throw new \ErrorException("$source does not exists");
-        }
-
-        if (is_link($this->_getModuleDir() . DIRECTORY_SEPARATOR . $dest)) {
-            if ($this->_isForced()) {
-                $success = @unlink($this->_getModuleDir() . DIRECTORY_SEPARATOR . $dest);
-                if (!$success) {
-                    throw new \ErrorException("$dest permission denied!");
-                }
-            } else {
-                throw new \ErrorException("$dest already exists");
-            }
-        }
-
-        copy($this->_getSourceDir() . DIRECTORY_SEPARATOR . $source,
-                $this->_getModuleDir() . DIRECTORY_SEPARATOR . $dest);
-
-        if (!is_readable($this->_getModuleDir() . DIRECTORY_SEPARATOR . $dest)) {
-            throw new \ErrorException("could not copy file $dest");
-        }
-
-    }
 }
