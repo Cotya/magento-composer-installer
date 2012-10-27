@@ -1,5 +1,7 @@
 <?php
-
+/**
+ * Composer Magento Installer
+ */
 
 namespace MagentoHackathon\Composer\Magento;
 
@@ -10,9 +12,11 @@ use Composer\Installer\LibraryInstaller;
 use Composer\Installer\InstallerInterface;
 use Composer\Package\PackageInterface;
 
+/**
+ * Composer Magento Installer
+ */
 class Installer extends LibraryInstaller implements InstallerInterface
 {
-
     protected $_magentoRootDir = null;
     protected $_isForced = false;
     protected $_target_dir;
@@ -23,6 +27,7 @@ class Installer extends LibraryInstaller implements InstallerInterface
      * @param \Composer\IO\IOInterface $io
      * @param \Composer\Composer $composer
      * @param string $type
+     * @throws \ErrorException
      */
     public function __construct(IOInterface $io, Composer $composer, $type = 'magento-module')
     {

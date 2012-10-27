@@ -80,3 +80,13 @@ How to set up your ```composer.json``` in your project:
     }
 }
 ```
+
+## Unit-Testing ##
+
+First install dev-stuff:
+
+```
+./bin/composer.phar install --dev
+```
+
+then run ```phpunit``` in projekt-root directory

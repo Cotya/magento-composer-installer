@@ -1,7 +1,13 @@
 <?php
+/**
+ * Composer Magento Installer
+ */
 
 namespace MagentoHackathon\Composer\Magento;
 
+/**
+ * Parsers modman files
+ */
 class ModmanParser
 {
     /**

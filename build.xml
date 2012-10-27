@@ -1,0 +1,21 @@
+<project name="magento-composer-installer">
+    <target name="phpdoc">
+        <condition property="phpdoc" value="phpdoc.bat">
+            <os family="windows" />
+        </condition>
+        <property name="phpdoc" value="phpdoc" />
+
+        <exec executable="${phpdoc}">
+            <arg line="-d src -t doc" />
+        </exec>
+    </target>
+
+    <target name="phpunit">
+        <condition property="phpunit" value="vendor/bin/phpunit.bat">
+            <os family="windows" />
+        </condition>
+        <property name="phpunit" value="vendor/bin/phpunit" />
+
+        <exec executable="${phpunit}" />
+    </target>
+</project>
