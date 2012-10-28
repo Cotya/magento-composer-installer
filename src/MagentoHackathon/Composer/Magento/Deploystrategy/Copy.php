@@ -20,10 +20,8 @@ class Copy extends DeploystrategyAbstract
      */
     public function create($source, $dest)
     {
-        $sourcePath = $this->_getSourceDir() . DIRECTORY_SEPARATOR . $source;
-        $destPath = $this->_getDestDir() . DIRECTORY_SEPARATOR . $dest;
-
-        $this->addMapping($source,$dest);
+        $sourcePath = $this->getSourceDir() . DIRECTORY_SEPARATOR . $source;
+        $destPath = $this->getDestDir() . DIRECTORY_SEPARATOR . $dest;
 
         // If source doesn't exist, check if it's a glob expression, otherwise we have nothing we can do
         if (!file_exists($sourcePath)) {
@@ -40,30 +38,38 @@ class Copy extends DeploystrategyAbstract
             throw new \ErrorException("Source $sourcePath does not exists");
         }
 
-
-        // Create all directories up to one below the target if they don't exist
-        $destDir = dirname($destPath);
-        if (!file_exists($destDir)) {
-            mkdir($destDir, 0777, true);
-        }
-
         // Handle file to dir linking,
         // e.g. Namespace_Module.csv => app/locale/de_DE/
         if (file_exists($destPath) && is_dir($destPath) && is_file($sourcePath)) {
             $newDest = $destPath . DIRECTORY_SEPARATOR . basename($source);
+            $this->addMapping($source, $newDest);
             return $this->create($source, $newDest);
         }
 
-        // Remove trailing slash, otherwise symlink will fail for target directories
-        rtrim($sourcePath, ' /');
-        rtrim($destPath, ' /');
+        //file to file
+        if (!is_dir($sourcePath) && !is_dir($destPath)) {
+            $this->addMapping($sourcePath, $destPath);
+            copy($sourcePath, $destPath);
+        }
 
-        // Create symlink
-        copy($sourcePath, $destPath);
-
-        // Check we where able to create the symlink
-        if (!is_readable($destPath)) {
-            throw new \ErrorException("Could not create symlink $destPath");
+        //copy dir to dir
+        if (is_dir($sourcePath)) {
+            //first create destination folder
+            mkdir($destPath,0777,true);
+            $iterator = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($sourcePath),
+                \RecursiveIteratorIterator::SELF_FIRST);
+            foreach ($iterator as $name => $item) {
+                $subDestPath = $destPath . DIRECTORY_SEPARATOR . $iterator->getSubPathName();
+                if ($item->isDir()) {
+                    mkdir($subDestPath, 0777, true);
+                } else {
+                    $this->addMapping($item->__toString(), $subDestPath);
+                    copy($item, $subDestPath);
+                }
+                if (!is_readable($subDestPath)) {
+                    throw new \ErrorException("Could not create $subDestPath");
+                }
+            }
         }
 
         return $this;
@@ -79,7 +85,7 @@ class Copy extends DeploystrategyAbstract
     public function clean($path)
     {
         foreach ($this->getMappings() as $source => $dest) {
-            @unlink($this->_getDestDir() . DIRECTORY_SEPARATOR . $dest);
+            @unlink($dest);
         }
         return $this;
     }
