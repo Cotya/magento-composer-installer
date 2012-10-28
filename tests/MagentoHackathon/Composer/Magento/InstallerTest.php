@@ -89,8 +89,10 @@ class InstallerTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetDeployStrategyCopy()
     {
-        $package = $this->createPackageMock();
-        $this->assertInstanceOf('MagentoHackathon\Composer\Magento\Deploystrategy\Copy', $this->object->getDeployStrategy($package, 'copy'));
+        $package = $this->createPackageMock(array('magento-deploystrategy' => 'copy'));
+        $this->composer->setPackage($package);
+        $installer = new Installer($this->io, $this->composer);
+        $this->assertInstanceOf('MagentoHackathon\Composer\Magento\Deploystrategy\Copy', $installer->getDeployStrategy($package));
     }
 
     /**
@@ -98,8 +100,10 @@ class InstallerTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetDeployStrategySymlink()
     {
-        $package = $this->createPackageMock();
-        $this->assertInstanceOf('MagentoHackathon\Composer\Magento\Deploystrategy\Symlink', $this->object->getDeployStrategy($package, 'symlink'));
+        $package = $this->createPackageMock(array('magento-deploystrategy' => 'symlink'));
+        $this->composer->setPackage($package);
+        $installer = new Installer($this->io, $this->composer);
+        $this->assertInstanceOf('MagentoHackathon\Composer\Magento\Deploystrategy\Symlink', $installer->getDeployStrategy($package));
     }
 
     /**
