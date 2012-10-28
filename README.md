@@ -142,12 +142,11 @@ and a project in VCS with existing composer.json, which is not yet on packagist.
 ]
 ```
 
-```json
-
 If you don't like modman files you could use mapping per composer.json
 
 ### Mapping per JSON
 
+```json
     "extra": {
         "map" : {
             "themes/default/skin":"public/skin/frontend/foo/default",
