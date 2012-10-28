@@ -72,15 +72,23 @@ class Installer extends LibraryInstaller implements InstallerInterface
             $dir = $this->magentoRootDir instanceof \SplFileInfo ? $this->magentoRootDir->getPathname() : '';
             throw new \ErrorException("magento root dir \"{$dir}\" is not valid");
         }
-        ;
 
+        // Do not use force unless you have lots of time to fix things. Untested!
         if (isset($extra['magento-force'])) {
             $this->isForced = (bool)$extra['magento-force'];
         }
 
         if (isset($extra['magento-deploystrategy'])) {
-            $this->_deployStrategy = (string)$extra['magento-deploystrategy'];
+            $this->setDeployStrategy((string)$extra['magento-deploystrategy']);
         }
+    }
+
+    /**
+     * @param string $strategy
+     */
+    public function setDeployStrategy($strategy)
+    {
+        $this->_deployStrategy = $strategy;
     }
 
     /**
@@ -88,8 +96,11 @@ class Installer extends LibraryInstaller implements InstallerInterface
      *
      * @return \MagentoHackathon\Composer\Magento\Deploystrategy\DeploystrategyAbstract
      */
-    public function getDeployStrategy(PackageInterface $package, $strategy)
+    public function getDeployStrategy(PackageInterface $package, $strategy = null)
     {
+        if (null === $strategy) {
+            $strategy = $this->_deployStrategy;
+        }
         switch ($strategy) {
             case 'copy';
                 $impl = new \MagentoHackathon\Composer\Magento\Deploystrategy\Copy($this->magentoRootDir->getPathname(), $this->getSourceDir($package));
@@ -134,7 +145,7 @@ class Installer extends LibraryInstaller implements InstallerInterface
     {
         parent::install($repo, $package);
 
-        $strategy = $this->getDeployStrategy($package, $this->_deployStrategy);
+        $strategy = $this->getDeployStrategy($package);
         $strategy->setMappings($this->getParser($package)->getMappings());
         $strategy->deploy();
     }
