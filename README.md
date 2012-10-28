@@ -55,18 +55,18 @@ How to set up your ```composer.json``` in your module:
 
 ```
 {
-   "name": "firegento/germansetup",
-   "type": "magento-module",
-   "minimum-stability": "dev",
-   "require": {
-      "magento-hackathon/magento-composer-installer": "dev-master"
-   },
-   "repositories": [
-      {
-         "type": "vcs",
-         "url": "git://github.com/magento-hackathon/magento-composer-installer.git"
-      }
-   ]
+    "name": "firegento/germansetup",
+    "type": "magento-module",
+    "minimum-stability": "dev",
+    "require": {
+        "magento-hackathon/magento-composer-installer": "dev-master"
+    },
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "http://packages.firegento.com"
+        }
+    ]
 }
 ```
 
@@ -81,12 +81,8 @@ How to set up your ```composer.json``` in your project:
     },
     "repositories": [
         {
-            "type": "vcs",
-            "url": "git://github.com/firegento/firegento-germansetup.git"
-        },
-        {
-            "type": "vcs",
-            "url": "git://github.com/magento-hackathon/magento-composer-installer.git"
+            "type": "composer",
+            "url": "http://packages.firegento.com"
         }
     ],
     "extra":{

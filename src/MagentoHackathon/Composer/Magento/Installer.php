@@ -30,7 +30,7 @@ class Installer extends LibraryInstaller implements InstallerInterface
      * @todo This is not yet implemented
      * @var bool
      */
-    protected $_isForced = false;
+    protected $isForced = false;
 
     /**
      * The module's base directory
@@ -74,7 +74,7 @@ class Installer extends LibraryInstaller implements InstallerInterface
         ;
 
         if (isset($extra['magento-force'])) {
-            $this->_isForced = (bool)$extra['magento-force'];
+            $this->isForced = (bool)$extra['magento-force'];
         }
 
         if (isset($extra['magento-deploystrategy'])) {
@@ -117,10 +117,10 @@ class Installer extends LibraryInstaller implements InstallerInterface
      * @param \Composer\Package\PackageInterface $package
      * @return string
      */
-    protected function _getSourceDir(PackageInterface $package)
+    protected function getSourceDir(PackageInterface $package)
     {
         $this->filesystem->ensureDirectoryExists($this->vendorDir);
-        return $this->vendorDir . DIRECTORY_SEPARATOR . $package->getName();
+        return $this->getInstallPath($package);
     }
 
     /**
@@ -172,7 +172,7 @@ class Installer extends LibraryInstaller implements InstallerInterface
      */
     public function getParser(PackageInterface $package)
     {
-        $parser = new ModmanParser($this->_getSourceDir($package));
+        $parser = new ModmanParser($this->getSourceDir($package));
         return $parser;
     }
 }

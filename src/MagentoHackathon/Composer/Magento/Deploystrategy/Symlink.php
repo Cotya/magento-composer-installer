@@ -20,8 +20,8 @@ class Symlink extends DeploystrategyAbstract
      */
     public function create($source, $dest)
     {
-        $sourcePath = $this->_getSourceDir() . DIRECTORY_SEPARATOR . $this->removeTrailingSlash($source);
-        $destPath = $this->_getDestDir() . DIRECTORY_SEPARATOR . $this->removeTrailingSlash($dest);
+        $sourcePath = $this->getSourceDir() . DIRECTORY_SEPARATOR . $this->removeTrailingSlash($source);
+        $destPath = $this->getDestDir() . DIRECTORY_SEPARATOR . $this->removeTrailingSlash($dest);
 
         $this->addMapping($source,$dest);
 
@@ -99,7 +99,7 @@ class Symlink extends DeploystrategyAbstract
      */
     public function clean($path)
     {
-        $iterator = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($this->_getDestDir()),
+        $iterator = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($this->getDestDir()),
             \RecursiveIteratorIterator::CHILD_FIRST);
         foreach ($iterator as $path) {
             if (is_link($path->__toString())) {
