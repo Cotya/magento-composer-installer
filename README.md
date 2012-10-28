@@ -91,6 +91,8 @@ How to set up your ```composer.json``` in your project:
 }
 ```
 
+
+
 ## Testing
 
 First clone magento composter installer, then install dev-stuff:
@@ -164,5 +166,28 @@ If you don't like modman files you could use mapping per composer.json
         }
     }
 
+}
+```
+### Deploy per Copy
+
+There is a deploy per copy strategy, but it isn't recommended to use. Heavy testing is needed!
+
+```
+{
+    "minimum-stability": "dev",
+    "require": {
+        "firegento/germansetup": "dev-composer",
+        "magento-hackathon/magento-composer-installer": "dev-master"
+    },
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "http://packages.firegento.com"
+        }
+    ],
+    "extra":{
+        "magento-root-dir": "htdocs/",
+        "magento-deploystrategy": "copy"
+    }
 }
 ```
