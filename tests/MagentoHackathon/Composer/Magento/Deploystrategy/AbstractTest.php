@@ -27,15 +27,12 @@ abstract class AbstractTest extends \PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $mappingData = array();
-        $mappingData['test'] = 'test2';
         $this->filesystem = new \Composer\Util\Filesystem();
         $this->sourceDir = sys_get_temp_dir() . DIRECTORY_SEPARATOR . "module_dir";
         $this->destDir = sys_get_temp_dir() . DIRECTORY_SEPARATOR . "magento_dir";
         $this->filesystem->ensureDirectoryExists($this->sourceDir);
         $this->filesystem->ensureDirectoryExists($this->destDir);
         $this->strategy = $this->getTestDeployStrategy($this->destDir, $this->sourceDir);
-        $this->strategy->setMappings($mappingData);
     }
 
     /**
@@ -50,14 +47,20 @@ abstract class AbstractTest extends \PHPUnit_Framework_TestCase
 
     public function testGetMappings()
     {
+        $mappingData = array('test', 'test2');
+        $this->strategy->setMappings(array($mappingData));
         $this->assertTrue(is_array($this->strategy->getMappings()));
-        $this->assertArrayHasKey('test', $this->strategy->getMappings());
+        $first_value = $this->strategy->getMappings();
+        $this->assertEquals(array_pop($first_value), $mappingData);
     }
 
     public function testAddMapping()
     {
+        $this->strategy->setMappings(array());
         $this->strategy->addMapping('t1', 't2');
-        $this->assertArrayHasKey('t1', $this->strategy->getMappings());
+        $this->assertTrue(is_array($this->strategy->getMappings()));
+        $first_value = $this->strategy->getMappings();
+        $this->assertEquals(array_pop($first_value), array("t1", "t2"));
     }
 
     /**

@@ -113,7 +113,7 @@ abstract class DeploystrategyAbstract
      */
     public function addMapping($key, $value)
     {
-        $this->mappings[$key] = $value;
+        $this->mappings[] = array($key, $value);
     }
 
     /**
