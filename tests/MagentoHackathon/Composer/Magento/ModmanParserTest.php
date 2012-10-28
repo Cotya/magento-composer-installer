@@ -76,6 +76,7 @@ class ModmanParserTest extends \PHPUnit_Framework_TestCase
             array('line/wit =>/space', 'recrd/two'),
             array('line/with/space/ =>nd/tab', 'recor/three')
         );
-        $this->assertSame($expected, $this->object->getMappings($this->modmanFileDir . 'modman'));
+        $this->object->setFile($this->modmanFileDir . 'modman');
+        $this->assertSame($expected, $this->object->getMappings());
     }
 }

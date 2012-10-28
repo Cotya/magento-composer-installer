@@ -20,7 +20,7 @@ go to your project root directory
 
 ```
 mkdir bin
-$ curl -s https://getcomposer.org/installer | php -- --install-dir=bin
+curl -s https://getcomposer.org/installer | php -- --install-dir=bin
 ```
 
 #### On Windows
@@ -55,18 +55,18 @@ How to set up your ```composer.json``` in your module:
 
 ```
 {
-   "name": "firegento/germansetup",
-   "type": "magento-module",
-   "minimum-stability": "dev",
-   "require": {
-      "magento-hackathon/magento-composer-installer": "dev-master"
-   },
-   "repositories": [
-      {
-         "type": "vcs",
-         "url": "git://github.com/magento-hackathon/magento-composer-installer.git"
-      }
-   ]
+    "name": "firegento/germansetup",
+    "type": "magento-module",
+    "minimum-stability": "dev",
+    "require": {
+        "magento-hackathon/magento-composer-installer": "dev-master"
+    },
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "http://packages.firegento.com"
+        }
+    ]
 }
 ```
 
@@ -81,12 +81,8 @@ How to set up your ```composer.json``` in your project:
     },
     "repositories": [
         {
-            "type": "vcs",
-            "url": "git://github.com/firegento/firegento-germansetup.git"
-        },
-        {
-            "type": "vcs",
-            "url": "git://github.com/magento-hackathon/magento-composer-installer.git"
+            "type": "composer",
+            "url": "http://packages.firegento.com"
         }
     ],
     "extra":{
@@ -145,4 +141,28 @@ and a project in VCS with existing composer.json, which is not yet on packagist.
    }
 ]
 ```
+### Mapping per JSON
+If you don't like modman files you could use mapping per composer.json
 
+```json
+{
+   "name": "test/test",
+   "version": "dev-master",
+   "type": "magento-module",
+   "minimum-stability": "dev",
+   "require": {
+      "magento-hackathon/magento-composer-installer": "dev-mapping-parser"
+   },
+
+    "extra": {
+        "map" : {
+            "themes/default/skin":"public/skin/frontend/foo/default",
+            "themes/default/design":"public/app/design/frontend/foo/default",
+            "modules/My_Module/My_Module.xml":"public/app/etc/modules/My_Module.xml",
+            "modules/My_Module/code":"public/app/code/local/My/Module",
+            "modules/My_Module/frontend/layout/mymodule.xml":"public/app/design/frontend/base/default/layout/mymodule.xml"
+        }
+    }
+
+}
+```

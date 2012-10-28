@@ -8,7 +8,7 @@ namespace MagentoHackathon\Composer\Magento;
 /**
  * Parsers modman files
  */
-class ModmanParser
+class ModmanParser implements Parser
 {
     /**
      * @var string Path to vendor module dir
@@ -90,15 +90,11 @@ class ModmanParser
     }
 
     /**
-     * @param string $file
      * @return array
      * @throws \ErrorException
      */
-    public function getMappings($file = null)
+    public function getMappings()
     {
-        if (null !== $file) {
-            $this->setFile($file);
-        }
         $file = $this->getFile();
 
         if (!$file->isReadable()) {

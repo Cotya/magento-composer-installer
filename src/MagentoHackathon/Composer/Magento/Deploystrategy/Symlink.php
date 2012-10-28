@@ -23,6 +23,8 @@ class Symlink extends DeploystrategyAbstract
         $sourcePath = $this->getSourceDir() . DIRECTORY_SEPARATOR . $this->removeTrailingSlash($source);
         $destPath = $this->getDestDir() . DIRECTORY_SEPARATOR . $this->removeTrailingSlash($dest);
 
+        $this->addMapping($source,$dest);
+
         // If source doesn't exist, check if it's a glob expression, otherwise we have nothing we can do
         if (!file_exists($sourcePath)) {
             // Handle globing
@@ -85,7 +87,7 @@ class Symlink extends DeploystrategyAbstract
 
     protected function removeTrailingSlash($path)
     {
-       return rtrim($path, '\\/');
+       return rtrim($path, ' \\/');
     }
 
     /**

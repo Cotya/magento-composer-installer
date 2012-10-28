@@ -33,6 +33,18 @@ class Installer extends LibraryInstaller implements InstallerInterface
     protected $isForced = false;
 
     /**
+     * The module's base directory
+     *
+     * @var string
+     */
+    protected $_source_dir;
+
+    /**
+     * @var string
+     */
+    protected $_deployStrategy = "symlink";
+
+    /**
      * Initializes Magento Module installer
      *
      * @param \Composer\IO\IOInterface $io
@@ -65,6 +77,10 @@ class Installer extends LibraryInstaller implements InstallerInterface
         if (isset($extra['magento-force'])) {
             $this->isForced = (bool)$extra['magento-force'];
         }
+
+        if (isset($extra['magento-deploystrategy'])) {
+            $this->_deployStrategy = (string)$extra['magento-deploystrategy'];
+        }
     }
 
     /**
@@ -72,9 +88,17 @@ class Installer extends LibraryInstaller implements InstallerInterface
      *
      * @return \MagentoHackathon\Composer\Magento\Deploystrategy\DeploystrategyAbstract
      */
-    public function getDeployStrategy(PackageInterface $package)
+    public function getDeployStrategy(PackageInterface $package, $strategy)
     {
-        return new \MagentoHackathon\Composer\Magento\Deploystrategy\Symlink($this->magentoRootDir->getPathname(), $this->getSourceDir($package));
+        switch ($strategy) {
+            case 'copy';
+                $impl = new \MagentoHackathon\Composer\Magento\Deploystrategy\Copy($this->magentoRootDir->getPathname(), $this->_getSourceDir($package));
+                break;
+            case 'symlink':
+            default:
+                $impl = new \MagentoHackathon\Composer\Magento\Deploystrategy\Symlink($this->magentoRootDir->getPathname(), $this->_getSourceDir($package));
+        }
+        return $impl;
     }
 
     /**
@@ -110,7 +134,7 @@ class Installer extends LibraryInstaller implements InstallerInterface
     {
         parent::install($repo, $package);
 
-        $strategy = $this->getDeployStrategy($package);
+        $strategy = $this->getDeployStrategy($package, $this->_deployStrategy);
         $strategy->setMappings($this->getParser($package)->getMappings());
         $strategy->deploy();
     }
@@ -126,7 +150,7 @@ class Installer extends LibraryInstaller implements InstallerInterface
      */
     public function update(InstalledRepositoryInterface $repo, PackageInterface $initial, PackageInterface $target)
     {
-        $this->getDeployStrategy()->clean($this->magentoRootDir);
+        $this->getDeployStrategy($initial,$this->_deployStrategy)->clean($this->magentoRootDir);
         $this->install($repo, $initial, $target);
     }
 
@@ -145,11 +169,19 @@ class Installer extends LibraryInstaller implements InstallerInterface
      * Returns the modman parser for the vendor dir
      *
      * @param PackageInterface $package
-     * @return ModmanParser
+     * @return Parser
      */
     public function getParser(PackageInterface $package)
     {
-        $parser = new ModmanParser($this->getSourceDir($package));
-        return $parser;
+        $extra = $package->getExtra();
+
+        if ( isset( $extra['map'] ) ) {
+            $parser = new MapParser( $extra['map'] );
+            return $parser;
+        } else {
+            $parser = new ModmanParser($this->getSourceDir($package));
+            return $parser;
+        }
+
     }
 }
