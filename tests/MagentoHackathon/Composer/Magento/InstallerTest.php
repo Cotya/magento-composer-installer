@@ -69,15 +69,17 @@ class InstallerTest extends \PHPUnit_Framework_TestCase
         $this->fs->removeDirectory($this->magentoDir);
     }
 
-    protected function createPackageMock()
+    protected function createPackageMock(array $extra = array())
     {
         //$package= $this->getMockBuilder('Composer\Package\RootPackageInterface')
         $package = $this->getMockBuilder('Composer\Package\RootPackage')
                 ->setConstructorArgs(array(md5(rand()), '1.0.0.0', '1.0.0'))
                 ->getMock();
+        $extraData = array_merge(array('magento-root-dir' => $this->magentoDir), $extra);
+
         $package->expects($this->any())
                 ->method('getExtra')
-                ->will($this->returnValue(array('magento-root-dir' => $this->magentoDir)));
+                ->will($this->returnValue($extraData));
 
         return $package;
     }
@@ -113,16 +115,21 @@ class InstallerTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetModmanParser()
     {
-        $package = $this->createPackageMock();
-        $extra = $package->getExtra();
         // getParser returns a modman parser by default, if map isn't set
-        unset($extra['map']);
-        $package->expects($this->any())
-            ->method('getExtra')
-            ->will($this->returnValue($extra));
+        $package = $this->createPackageMock(array('map' => null));
 
         touch($this->vendorDir . DIRECTORY_SEPARATOR . 'modman');
 
         $this->assertInstanceOf('MagentoHackathon\Composer\Magento\ModmanParser', $this->object->getParser($package));
+    }
+
+    /**
+     * @covers MagentoHackathon\Composer\Magento\Installer::getParser
+     */
+    public function testGetMapParser()
+    {
+        $package = $this->createPackageMock(array('map' => array('test' => 'test')));
+
+        $this->assertInstanceOf('MagentoHackathon\Composer\Magento\MapParser', $this->object->getParser($package));
     }
 }
