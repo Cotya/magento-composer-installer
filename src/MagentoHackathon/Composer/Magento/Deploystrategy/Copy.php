@@ -55,10 +55,10 @@ class Copy extends DeploystrategyAbstract
         //copy dir to dir
         if (is_dir($sourcePath)) {
             //first create destination folder
-            mkdir($destPath,0777,true);
+            mkdir($destPath, 0777, true);
             $iterator = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($sourcePath),
                 \RecursiveIteratorIterator::SELF_FIRST);
-            foreach ($iterator as $name => $item) {
+            foreach ($iterator as $item) {
                 $subDestPath = $destPath . DIRECTORY_SEPARATOR . $iterator->getSubPathName();
                 if ($item->isDir()) {
                     mkdir($subDestPath, 0777, true);
@@ -80,13 +80,9 @@ class Copy extends DeploystrategyAbstract
      *
      * @param string $path
      * @return \MagentoHackathon\Composer\Magento\Deploystrategy\DeploystrategyAbstract
-     * @throws \ErrorException
      */
     public function clean($path)
     {
-        foreach ($this->getMappings() as $source => $dest) {
-            @unlink($dest);
-        }
         return $this;
     }
 }
