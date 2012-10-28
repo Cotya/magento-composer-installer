@@ -72,9 +72,9 @@ class ModmanParserTest extends \PHPUnit_Framework_TestCase
     public function testGetMappings()
     {
         $expected = array(
-            array('line/w =>th/tab', 'recrd/one'),
-            array('line/wit =>/space', 'recrd/two'),
-            array('line/with/space/ =>nd/tab', 'recor/three')
+            array('line/with/tab', 'record/one'),
+            array('line/with/space', 'record/two'),
+            array('line/with/space/and/tab', 'record/three')
         );
         $this->object->setFile($this->modmanFileDir . 'modman');
         $this->assertSame($expected, $this->object->getMappings());
