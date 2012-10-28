@@ -141,12 +141,18 @@ and a project in VCS with existing composer.json, which is not yet on packagist.
    }
 ]
 ```
-
-```json
-
+### Mapping per JSON
 If you don't like modman files you could use mapping per composer.json
 
-### Mapping per JSON
+```json
+{
+   "name": "test/test",
+   "version": "dev-master",
+   "type": "magento-module",
+   "minimum-stability": "dev",
+   "require": {
+      "magento-hackathon/magento-composer-installer": "dev-mapping-parser"
+   },
 
     "extra": {
         "map" : {
@@ -157,4 +163,6 @@ If you don't like modman files you could use mapping per composer.json
             "modules/My_Module/frontend/layout/mymodule.xml":"public/app/design/frontend/base/default/layout/mymodule.xml"
         }
     }
+
+}
 ```
