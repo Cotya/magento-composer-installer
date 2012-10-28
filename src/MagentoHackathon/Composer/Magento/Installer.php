@@ -168,11 +168,19 @@ class Installer extends LibraryInstaller implements InstallerInterface
      * Returns the modman parser for the vendor dir
      *
      * @param PackageInterface $package
-     * @return ModmanParser
+     * @return Parser
      */
     public function getParser(PackageInterface $package)
     {
-        $parser = new ModmanParser($this->getSourceDir($package));
-        return $parser;
+        $extra = $package->getExtra();
+
+        if ( isset( $extra['map'] ) ) {
+            $parser = new MapParser( $extra['map'] );
+            return $parser;
+        } else {
+            $parser = new ModmanParser($this->getSourceDir($package));
+            return $parser;
+        }
+
     }
 }
