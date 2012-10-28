@@ -92,11 +92,11 @@ class Installer extends LibraryInstaller implements InstallerInterface
     {
         switch ($strategy) {
             case 'copy';
-                $impl = new \MagentoHackathon\Composer\Magento\Deploystrategy\Copy($this->magentoRootDir->getPathname(), $this->_getSourceDir($package));
+                $impl = new \MagentoHackathon\Composer\Magento\Deploystrategy\Copy($this->magentoRootDir->getPathname(), $this->getSourceDir($package));
                 break;
             case 'symlink':
             default:
-                $impl = new \MagentoHackathon\Composer\Magento\Deploystrategy\Symlink($this->magentoRootDir->getPathname(), $this->_getSourceDir($package));
+                $impl = new \MagentoHackathon\Composer\Magento\Deploystrategy\Symlink($this->magentoRootDir->getPathname(), $this->getSourceDir($package));
         }
         return $impl;
     }

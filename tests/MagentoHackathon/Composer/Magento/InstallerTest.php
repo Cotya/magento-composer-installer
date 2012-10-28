@@ -85,10 +85,19 @@ class InstallerTest extends \PHPUnit_Framework_TestCase
     /**
      * @covers MagentoHackathon\Composer\Magento\Installer::getDeployStrategy
      */
-    public function testGetDeployStrategy()
+    public function testGetDeployStrategyCopy()
     {
         $package = $this->createPackageMock();
-        $this->assertInstanceOf('MagentoHackathon\Composer\Magento\Deploystrategy\DeploystrategyAbstract', $this->object->getDeployStrategy($package));
+        $this->assertInstanceOf('MagentoHackathon\Composer\Magento\Deploystrategy\Copy', $this->object->getDeployStrategy($package, 'copy'));
+    }
+
+    /**
+     * @covers MagentoHackathon\Composer\Magento\Installer::getDeployStrategy
+     */
+    public function testGetDeployStrategySymlink()
+    {
+        $package = $this->createPackageMock();
+        $this->assertInstanceOf('MagentoHackathon\Composer\Magento\Deploystrategy\Symlink', $this->object->getDeployStrategy($package, 'symlink'));
     }
 
     /**
@@ -102,9 +111,18 @@ class InstallerTest extends \PHPUnit_Framework_TestCase
     /**
      * @covers MagentoHackathon\Composer\Magento\Installer::getParser
      */
-    public function testGetParser()
+    public function testGetModmanParser()
     {
         $package = $this->createPackageMock();
+        $extra = $package->getExtra();
+        // getParser returns a modman parser by default, if map isn't set
+        unset($extra['map']);
+        $package->expects($this->any())
+            ->method('getExtra')
+            ->will($this->returnValue($extra));
+
+        touch($this->vendorDir . DIRECTORY_SEPARATOR . 'modman');
+
         $this->assertInstanceOf('MagentoHackathon\Composer\Magento\ModmanParser', $this->object->getParser($package));
     }
 }
