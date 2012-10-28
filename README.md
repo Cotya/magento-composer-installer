@@ -141,10 +141,8 @@ and a project in VCS with existing composer.json, which is not yet on packagist.
    }
 ]
 ```
-
-If you don't like modman files you could use mapping per composer.json
-
 ### Mapping per JSON
+If you don't like modman files you could use mapping per composer.json
 
 ```json
     "extra": {
