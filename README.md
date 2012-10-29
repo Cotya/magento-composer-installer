@@ -58,15 +58,16 @@ How to set up your ```composer.json``` in your module:
     "name": "firegento/germansetup",
     "type": "magento-module",
     "minimum-stability": "dev",
+    "license":"OSL-3.0",
+    "authors":[
+        {
+            "name":"Author Name",
+            "email":"author@example.com"
+        }
+    ],
     "require": {
         "magento-hackathon/magento-composer-installer": "dev-master"
-    },
-    "repositories": [
-        {
-            "type": "composer",
-            "url": "http://packages.firegento.com"
-        }
-    ]
+    }
 }
 ```
 
@@ -144,7 +145,7 @@ and a project in VCS with existing composer.json, which is not yet on packagist.
 ]
 ```
 ### Mapping per JSON
-If you don't like modman files you could use mapping per composer.json
+If you don't like modman files you could use mapping per composer.json (**VERY BETA**)
 
 ```json
 {
