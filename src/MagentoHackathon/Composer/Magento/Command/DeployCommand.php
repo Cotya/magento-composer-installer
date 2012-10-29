@@ -21,7 +21,7 @@ class DeployCommand extends \Composer\Command\Command
     {
         $this
             ->setName('magento-module-deploy')
-            ->setDescription('Deploy all Magento Modules loaded via Composer.json')
+            ->setDescription('Deploy all Magento modules loaded via composer.json')
             ->setDefinition(array(
             new InputOption('verbose', 'v', InputOption::VALUE_NONE, 'Show modified files for each directory that contains changes.'),
         ))
