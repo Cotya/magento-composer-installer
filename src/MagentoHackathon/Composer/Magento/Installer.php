@@ -102,8 +102,11 @@ class Installer extends LibraryInstaller implements InstallerInterface
             $strategy = $this->_deployStrategy;
         }
         switch ($strategy) {
-            case 'copy';
+            case 'copy':
                 $impl = new \MagentoHackathon\Composer\Magento\Deploystrategy\Copy($this->magentoRootDir->getPathname(), $this->getSourceDir($package));
+                break;
+            case 'link':
+                $impl = new \MagentoHackathon\Composer\Magento\Deploystrategy\Link($this->magentoRootDir->getPathname(), $this->getSourceDir($package));
                 break;
             case 'symlink':
             default:
