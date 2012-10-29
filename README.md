@@ -4,10 +4,11 @@ The purpose of this project is to enable composer to parse and execute
 [modman](https://github.com/colinmollenhour/modman) files.
 Magento modules are installable as long as they have a valid modman file.
 
+A repository of composer ready Magento modules can be found on http://packages.firegento.com/
+
 The Magento root directory must be specified in the ```composer.json``` under ```extra.magento-root-dir```.
 
-**NOTE:** modman's include and bash feature are currently not supported! Only
-symlinks are created.
+**NOTE:** modman's include and bash feature are currently not supported! Only symlinks are created.
 
 
 ## Installation
@@ -26,7 +27,8 @@ curl -s https://getcomposer.org/installer | php -- --install-dir=bin
 #### On Windows
 Please take a look at http://getcomposer.org/doc/00-intro.md#installation-windows
 
-Creation of symbolic links requires the SeCreateSymbolicLinkPrivilege (“Create symbolic links”), which is granted only to administrators by default (but you can change that using security policy).
+Creation of symbolic links requires the SeCreateSymbolicLinkPrivilege (“Create symbolic links”), which is granted only
+to administrators by default (but you can change that using security policy).
 
 To change the policies:
 - Launch secpol.msc via Start or Start → Run.
@@ -55,7 +57,7 @@ How to set up your ```composer.json``` in your module:
 
 ```
 {
-    "name": "firegento/germansetup",
+    "name": "your-vendor-name/module-name",
     "type": "magento-module",
     "minimum-stability": "dev",
     "license":"OSL-3.0",
@@ -77,8 +79,7 @@ How to set up your ```composer.json``` in your project:
 {
     "minimum-stability": "dev",
     "require": {
-        "firegento/germansetup": "dev-composer",
-        "magento-hackathon/magento-composer-installer": "dev-master"
+        "your-vendor-name/module-name": "dev-master"
     },
     "repositories": [
         {
@@ -92,6 +93,13 @@ How to set up your ```composer.json``` in your project:
 }
 ```
 
+If you would like to publish your module on http://packages.firegento.com/, please fork
+https://github.com/magento-hackathon/composer-repository, add your module to the satis.jason on the master branch and
+open a pull request.
+
+If you want to install your module without publishing it on http://packages.firegento.com/, you may add your repository
+to your projects composer.json directly and it will install, too. More information can be found at
+http://getcomposer.org/doc/05-repositories.md#vcs
 
 
 ## Testing
