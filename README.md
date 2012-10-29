@@ -55,7 +55,7 @@ See Usage
 
 How to set up your ```composer.json``` in your module:
 
-```
+```json
 {
     "name": "your-vendor-name/module-name",
     "type": "magento-module",
@@ -75,7 +75,7 @@ How to set up your ```composer.json``` in your module:
 
 How to set up your ```composer.json``` in your project:
 
-```
+```json
 {
     "minimum-stability": "dev",
     "require": {
@@ -181,7 +181,7 @@ If you don't like modman files you could use mapping per composer.json (**VERY B
 
 There is a deploy per copy strategy, but it isn't recommended to use. Heavy testing is needed!
 
-```
+```json
 {
     "minimum-stability": "dev",
     "require": {
