@@ -4,6 +4,7 @@
     "minimum-stability":"dev",
     "type":"composer-installer",
     "license":"OSL-3.0",
+    "homepage":"https://github.com/magento-hackathon/magento-composer-installer",
     "authors":[
         {
             "name":"Daniel Fahlke aka Flyingmana",
