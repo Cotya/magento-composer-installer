@@ -11,7 +11,7 @@ namespace MagentoHackathon\Composer\Magento\Deploystrategy;
 class Copy extends DeploystrategyAbstract
 {
     /**
-     * Creates a symlink with lots of error-checking
+     * copy files
      *
      * @param string $source
      * @param string $dest
@@ -76,7 +76,7 @@ class Copy extends DeploystrategyAbstract
     }
 
     /**
-     * Removes all copied files in $dest
+     * Removes all copied files in $dest - not implemented yet
      *
      * @param string $path
      * @return \MagentoHackathon\Composer\Magento\Deploystrategy\DeploystrategyAbstract
