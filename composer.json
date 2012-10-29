@@ -1,6 +1,7 @@
 {
     "name":"magento-hackathon/magento-composer-installer",
     "description":"Composer installer for Magento modules",
+    "keywords":[ "composer-installer", "magento"],
     "minimum-stability":"dev",
     "type":"composer-installer",
     "license":"OSL-3.0",
