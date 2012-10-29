@@ -61,6 +61,7 @@ How to set up your ```composer.json``` in your module:
     "type": "magento-module",
     "minimum-stability": "dev",
     "license":"OSL-3.0",
+    "description":"A short one line description of your module",
     "authors":[
         {
             "name":"Author Name",
