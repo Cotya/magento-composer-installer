@@ -6,12 +6,12 @@
 namespace MagentoHackathon\Composer\Magento\Deploystrategy;
 
 /**
- * Symlink deploy strategy
+ * Hardlink deploy strategy
  */
-class Copy extends DeploystrategyAbstract
+class Link extends DeploystrategyAbstract
 {
     /**
-     * copy files
+     * Creates a hardlink with lots of error-checking
      *
      * @param string $source
      * @param string $dest
@@ -49,7 +49,7 @@ class Copy extends DeploystrategyAbstract
         //file to file
         if (!is_dir($sourcePath) && !is_dir($destPath)) {
             $this->addMapping($sourcePath, $destPath);
-            copy($sourcePath, $destPath);
+            link($sourcePath, $destPath);
         }
 
         //copy dir to dir
@@ -64,7 +64,7 @@ class Copy extends DeploystrategyAbstract
                     mkdir($subDestPath, 0777, true);
                 } else {
                     $this->addMapping($item->__toString(), $subDestPath);
-                    copy($item, $subDestPath);
+                    link($item, $subDestPath);
                 }
                 if (!is_readable($subDestPath)) {
                     throw new \ErrorException("Could not create $subDestPath");
@@ -76,13 +76,28 @@ class Copy extends DeploystrategyAbstract
     }
 
     /**
-     * Removes all copied files in $dest - not implemented yet
+     * Removes the links in the given path
      *
      * @param string $path
      * @return \MagentoHackathon\Composer\Magento\Deploystrategy\DeploystrategyAbstract
+     * @throws \ErrorException
      */
     public function clean($path)
     {
+        $iterator = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($this->getDestDir()),
+            \RecursiveIteratorIterator::CHILD_FIRST);
+        foreach ($iterator as $path) {
+            if (is_link($path->__toString())) {
+                $dest = readlink($path->__toString());
+                if ($dest === 0 || !is_readable($dest)) {
+                    $denied = @unlink($path->__toString());
+                    if ($denied) {
+                        throw new \ErrorException('Permission denied on ' . $path->__toString());
+                    }
+                }
+            }
+        }
+
         return $this;
     }
 }
