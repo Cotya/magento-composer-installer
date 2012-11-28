@@ -36,8 +36,10 @@
     },
     "require-dev":{
         "phpunit/phpunit":"*",
-        "magento-hackathon/composer-command-integrator":"*",
         "composer/composer":"*"
+    },
+    "suggest":{
+        "magento-hackathon/composer-command-integrator":"*"
     },
     "autoload":{
         "psr-0":{
