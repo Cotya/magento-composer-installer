@@ -142,7 +142,8 @@ abstract class DeploystrategyAbstract
             if ($matches) {
                 foreach ($matches as $match) {
                     $newDest = substr($destPath . DIRECTORY_SEPARATOR . basename($match), strlen($this->getDestDir()));
-                    $this->create(substr($match, strlen($this->getSourceDir())), $newDest);
+                    $newDest = ltrim($newDest, ' \\/');
+                    $this->create(substr($match, strlen($this->getSourceDir())+1), $newDest);
                 }
                 return true;
             }
