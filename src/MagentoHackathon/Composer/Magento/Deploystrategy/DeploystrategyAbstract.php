@@ -133,7 +133,13 @@ abstract class DeploystrategyAbstract
     public function create($source, $dest)
     {
         $sourcePath = $this->getSourceDir() . DIRECTORY_SEPARATOR . $this->removeTrailingSlash($source);
-        $destPath = $this->getDestDir() . DIRECTORY_SEPARATOR . $this->removeTrailingSlash($dest);
+        $destPath = $this->getDestDir() . DIRECTORY_SEPARATOR . $dest;
+
+        // Create target directories if they end with a directory separator
+        if (! file_exists($destPath) && in_array(substr($destPath, -1), array('/', '\\'))) {
+            mkdir($destPath, 0777, true);
+            $destPath = $this->removeTrailingSlash($destPath);
+        }
 
         // If source doesn't exist, check if it's a glob expression, otherwise we have nothing we can do
         if (!file_exists($sourcePath)) {
