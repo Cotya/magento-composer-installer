@@ -135,8 +135,8 @@ abstract class DeploystrategyAbstract
         $sourcePath = $this->getSourceDir() . DIRECTORY_SEPARATOR . $this->removeTrailingSlash($source);
         $destPath = $this->getDestDir() . DIRECTORY_SEPARATOR . $dest;
 
-        // Create target directories if they end with a directory separator
-        if (! file_exists($destPath) && in_array(substr($destPath, -1), array('/', '\\'))) {
+        // Create target directory if it end with a directory separator
+        if (! file_exists($destPath) && in_array(substr($destPath, -1), array('/', '\\')) && ! is_dir($sourcePath)) {
             mkdir($destPath, 0777, true);
             $destPath = $this->removeTrailingSlash($destPath);
         }

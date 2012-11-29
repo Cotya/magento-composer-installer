@@ -25,7 +25,7 @@ class Copy extends DeploystrategyAbstract
 
         // Handle file to dir linking,
         // e.g. Namespace_Module.csv => app/locale/de_DE/
-        if (file_exists($destPath) && is_dir($destPath) && is_file($sourcePath)) {
+        if (file_exists($destPath) && is_dir($destPath)) {
             $newDest = $destPath . DIRECTORY_SEPARATOR . basename($source);
             $this->addMapping($source, $newDest);
             return $this->create($source, substr($newDest, strlen($this->getDestDir())+1));
