@@ -28,12 +28,16 @@ class Link extends DeploystrategyAbstract
         if (file_exists($destPath) && is_dir($destPath) && is_file($sourcePath)) {
             $newDest = $destPath . DIRECTORY_SEPARATOR . basename($source);
             $this->addMapping($source, $newDest);
-            return $this->create($source, substr($newDest, strlen($this->getDestDir())));
+            return $this->create($source, substr($newDest, strlen($this->getDestDir())+1));
         }
 
         //file to file
         if (!is_dir($sourcePath) && !is_dir($destPath)) {
             $this->addMapping($sourcePath, $destPath);
+            $destDir = dirname($destPath);
+            if (! file_exists($destDir)) {
+                mkdir($destDir, 0777, true);
+            }
             link($sourcePath, $destPath);
         }
 
