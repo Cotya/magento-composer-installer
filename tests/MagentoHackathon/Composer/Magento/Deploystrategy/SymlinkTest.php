@@ -12,11 +12,12 @@ class SymlinkTest extends AbstractTest
     }
 
     /**
+     * @param bool $isDir
      * @return string
      */
-    public function getTestDeployStrategyFiletype()
+    public function getTestDeployStrategyFiletype($isDir = false)
     {
-        return AbstractTest::TEST_FILETYPE_LINK;
+        return self::TEST_FILETYPE_LINK;
     }
 
     public function testClean()

@@ -35,9 +35,10 @@ abstract class AbstractTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @abstract
+     * @param bool $isDir
      * @return string
      */
-    abstract function getTestDeployStrategyFiletype();
+    abstract function getTestDeployStrategyFiletype($isDir = false);
 
     /**
      * Sets up the fixture, for example, opens a network connection.
@@ -74,6 +75,7 @@ abstract class AbstractTest extends \PHPUnit_Framework_TestCase
                 $result = is_file($file) && ! is_link($file);
                 break;
             case self::TEST_FILETYPE_LINK:
+                $file = rtrim($file, '/\\');
                 $result = is_link($file);
                 break;
             case self::TEST_FILETYPE_DIR:
@@ -85,6 +87,8 @@ abstract class AbstractTest extends \PHPUnit_Framework_TestCase
                 );
         }
         if (! $result) {
+            echo "\n$file\n";
+            passthru("ls -l " . $file);
             throw new \PHPUnit_Framework_AssertionFailedError(
               "Failed to assert that the $file is of type $type"
             );
@@ -96,8 +100,8 @@ abstract class AbstractTest extends \PHPUnit_Framework_TestCase
         $mappingData = array('test', 'test2');
         $this->strategy->setMappings(array($mappingData));
         $this->assertTrue(is_array($this->strategy->getMappings()));
-        $first_value = $this->strategy->getMappings();
-        $this->assertEquals(array_pop($first_value), $mappingData);
+        $firstValue = $this->strategy->getMappings();
+        $this->assertEquals(array_pop($firstValue), $mappingData);
     }
 
     public function testAddMapping()
@@ -105,8 +109,8 @@ abstract class AbstractTest extends \PHPUnit_Framework_TestCase
         $this->strategy->setMappings(array());
         $this->strategy->addMapping('t1', 't2');
         $this->assertTrue(is_array($this->strategy->getMappings()));
-        $first_value = $this->strategy->getMappings();
-        $this->assertEquals(array_pop($first_value), array("t1", "t2"));
+        $firstValue = $this->strategy->getMappings();
+        $this->assertEquals(array_pop($firstValue), array("t1", "t2"));
     }
 
     public function testCreate()
@@ -137,16 +141,16 @@ abstract class AbstractTest extends \PHPUnit_Framework_TestCase
 
     public function testGlobTargetDirExists()
     {
-        $glob_source = "sourcedir/test.xml";
-        mkdir($this->sourceDir . DIRECTORY_SEPARATOR . dirname($glob_source), 0777, true);
-        touch($this->sourceDir . DIRECTORY_SEPARATOR . $glob_source);
+        $globSource = "sourcedir/test.xml";
+        mkdir($this->sourceDir . DIRECTORY_SEPARATOR . dirname($globSource), 0777, true);
+        touch($this->sourceDir . DIRECTORY_SEPARATOR . $globSource);
 
-        $glob_dest = "targetdir"; // this dir should contain the target
-        mkdir($this->destDir . DIRECTORY_SEPARATOR . $glob_dest, 0777, true);
+        $dest = "targetdir"; // this dir should contain the target
+        mkdir($this->destDir . DIRECTORY_SEPARATOR . $dest, 0777, true);
 
-        $testTarget = $this->destDir . DIRECTORY_SEPARATOR . $glob_dest . DIRECTORY_SEPARATOR . basename($glob_source);
+        $testTarget = $this->destDir . DIRECTORY_SEPARATOR . $dest . DIRECTORY_SEPARATOR . basename($globSource);
 
-        $this->strategy->create($glob_source, $glob_dest);
+        $this->strategy->create($globSource, $dest);
 
         $this->assertFileType(dirname($testTarget), self::TEST_FILETYPE_DIR);
         $this->assertFileExists($testTarget);
@@ -155,15 +159,15 @@ abstract class AbstractTest extends \PHPUnit_Framework_TestCase
 
     public function testGlobTargetDirDoesNotExists()
     {
-        $glob_source = "sourcedir/test.xml";
-        mkdir($this->sourceDir . DIRECTORY_SEPARATOR . dirname($glob_source), 0777, true);
-        touch($this->sourceDir . DIRECTORY_SEPARATOR . $glob_source);
+        $globSource = "sourcedir/test.xml";
+        mkdir($this->sourceDir . DIRECTORY_SEPARATOR . dirname($globSource), 0777, true);
+        touch($this->sourceDir . DIRECTORY_SEPARATOR . $globSource);
 
-        $glob_dest = "targetdir"; // this will be the target!
+        $dest = "targetdir"; // this will be the target!
 
-        $testTarget = $this->destDir . DIRECTORY_SEPARATOR . $glob_dest;
+        $testTarget = $this->destDir . DIRECTORY_SEPARATOR . $dest;
 
-        $this->strategy->create($glob_source, $glob_dest);
+        $this->strategy->create($globSource, $dest);
 
         $this->assertFileType(dirname($testTarget), self::TEST_FILETYPE_DIR);
         $this->assertFileExists($testTarget);
@@ -172,17 +176,17 @@ abstract class AbstractTest extends \PHPUnit_Framework_TestCase
 
     public function testGlobSlashDirectoryExists()
     {
-        $glob_source = "sourcedir/test.xml";
-        mkdir($this->sourceDir . DIRECTORY_SEPARATOR . dirname($glob_source), 0777, true);
-        touch($this->sourceDir . DIRECTORY_SEPARATOR . $glob_source);
+        $globSource = "sourcedir/test.xml";
+        mkdir($this->sourceDir . DIRECTORY_SEPARATOR . dirname($globSource), 0777, true);
+        touch($this->sourceDir . DIRECTORY_SEPARATOR . $globSource);
 
-        $glob_dest = "targetdir/";
-        mkdir($this->destDir . DIRECTORY_SEPARATOR . $glob_dest, 0777, true);
+        $dest = "targetdir/";
+        mkdir($this->destDir . DIRECTORY_SEPARATOR . $dest, 0777, true);
 
-        $testTarget = $this->destDir . DIRECTORY_SEPARATOR . $glob_dest . basename($glob_source);
+        $testTarget = $this->destDir . DIRECTORY_SEPARATOR . $dest . basename($globSource);
 
         // second create has to identify symlink
-        $this->strategy->create($glob_source, $glob_dest);
+        $this->strategy->create($globSource, $dest);
 
         $this->assertFileType(dirname($testTarget), self::TEST_FILETYPE_DIR);
         $this->assertFileExists($testTarget);
@@ -191,16 +195,16 @@ abstract class AbstractTest extends \PHPUnit_Framework_TestCase
 
     public function testGlobSlashDirectoryDoesNotExists()
     {
-        $glob_source = "sourcedir/test.xml";
-        mkdir($this->sourceDir . DIRECTORY_SEPARATOR . dirname($glob_source), 0777, true);
-        touch($this->sourceDir . DIRECTORY_SEPARATOR . $glob_source);
+        $globSource = "sourcedir/test.xml";
+        mkdir($this->sourceDir . DIRECTORY_SEPARATOR . dirname($globSource), 0777, true);
+        touch($this->sourceDir . DIRECTORY_SEPARATOR . $globSource);
 
-        $glob_dest = "targetdir/"; // the target should be created inside this dir because of the slash
+        $dest = "targetdir/"; // the target should be created inside this dir because of the slash
 
-        $testTarget = $this->destDir . DIRECTORY_SEPARATOR . $glob_dest . basename($glob_source);
+        $testTarget = $this->destDir . DIRECTORY_SEPARATOR . $dest . basename($globSource);
 
         // second create has to identify symlink
-        $this->strategy->create($glob_source, $glob_dest);
+        $this->strategy->create($globSource, $dest);
 
         $this->assertFileType(dirname($testTarget), self::TEST_FILETYPE_DIR);
         $this->assertFileExists($testTarget);
@@ -209,25 +213,25 @@ abstract class AbstractTest extends \PHPUnit_Framework_TestCase
 
     public function testGlobWildcardTargetDirDoesNotExist()
     {
-        $glob_source = "sourcedir/*";
-        $glob_dir = dirname($glob_source);
+        $globSource = "sourcedir/*";
+        $glob_dir = dirname($globSource);
         $files = array('test1.xml', 'test2.xml');
         mkdir($this->sourceDir . DIRECTORY_SEPARATOR . $glob_dir, 0777, true);
         foreach ($files as $file) {
             touch($this->sourceDir . DIRECTORY_SEPARATOR . $glob_dir . DIRECTORY_SEPARATOR . $file);
         }
 
-        $glob_dest = "targetdir";
+        $dest = "targetdir";
 
-        $this->strategy->create($glob_source, $glob_dest);
+        $this->strategy->create($globSource, $dest);
 
-        $targetDir = $this->destDir . DIRECTORY_SEPARATOR . $glob_dest;
+        $targetDir = $this->destDir . DIRECTORY_SEPARATOR . $dest;
         $this->assertFileExists($targetDir);
         $this->assertFileType($targetDir, self::TEST_FILETYPE_DIR);
 
 
         foreach ($files as $file) {
-            $testTarget = $this->destDir . DIRECTORY_SEPARATOR . $glob_dest . DIRECTORY_SEPARATOR . $file;
+            $testTarget = $this->destDir . DIRECTORY_SEPARATOR . $dest . DIRECTORY_SEPARATOR . $file;
             $this->assertFileExists($testTarget);
             $this->assertFileType($testTarget, $this->getTestDeployStrategyFiletype());
 
@@ -236,28 +240,95 @@ abstract class AbstractTest extends \PHPUnit_Framework_TestCase
 
     public function testGlobWildcardTargetDirDoesExist()
     {
-        $glob_source = "sourcedir/*";
-        $glob_dir = dirname($glob_source);
+        $globSource = "sourcedir/*";
+        $glob_dir = dirname($globSource);
         $files = array('test1.xml', 'test2.xml');
         mkdir($this->sourceDir . DIRECTORY_SEPARATOR . $glob_dir, 0777, true);
         foreach ($files as $file) {
             touch($this->sourceDir . DIRECTORY_SEPARATOR . $glob_dir . DIRECTORY_SEPARATOR . $file);
         }
 
-        $glob_dest = "targetdir";
-        mkdir($this->destDir . DIRECTORY_SEPARATOR . $glob_dest);
+        $dest = "targetdir";
+        mkdir($this->destDir . DIRECTORY_SEPARATOR . $dest);
 
-        $this->strategy->create($glob_source, $glob_dest);
+        $this->strategy->create($globSource, $dest);
 
-        $targetDir = $this->destDir . DIRECTORY_SEPARATOR . $glob_dest;
+        $targetDir = $this->destDir . DIRECTORY_SEPARATOR . $dest;
         $this->assertFileExists($targetDir);
         $this->assertFileType($targetDir, self::TEST_FILETYPE_DIR);
 
 
         foreach ($files as $file) {
-            $testTarget = $this->destDir . DIRECTORY_SEPARATOR . $glob_dest . DIRECTORY_SEPARATOR . $file;
+            $testTarget = $this->destDir . DIRECTORY_SEPARATOR . $dest . DIRECTORY_SEPARATOR . $file;
             $this->assertFileExists($testTarget);
             $this->assertFileType($testTarget, $this->getTestDeployStrategyFiletype());
+        }
+    }
+
+    public function testSourceAndTargetAreDirsDoNotExist()
+    {
+        $fixtures = array(
+            array('sourcedir', 'targetdir'),
+            array('sourcedir', 'targetdir/'),
+            array('sourcedir/', 'targetdir/'),
+            array('sourcedir/', 'targetdir'),
+        );
+        foreach ($fixtures as $fixture) {
+            $this->tearDown();
+            $this->setUp();
+
+            list ($globSource, $dest) = $fixture;
+            $sourceDirContent = "test.xml";
+            mkdir($this->sourceDir . DIRECTORY_SEPARATOR . $globSource, 0777, true);
+            touch($this->sourceDir . DIRECTORY_SEPARATOR . $globSource . DIRECTORY_SEPARATOR . $sourceDirContent);
+
+            // The target should be created AS THE THIS DIRECTORY because the target dir doesn't exist
+
+            $testTarget = $this->destDir . DIRECTORY_SEPARATOR . $dest;
+            $testTargetContent = $testTarget . DIRECTORY_SEPARATOR . $sourceDirContent;
+
+            $this->strategy->create($globSource, $dest);
+
+            $this->assertFileExists($testTarget);
+            $this->assertFileType($testTarget, $this->getTestDeployStrategyFiletype(self::TEST_FILETYPE_DIR));
+
+            $this->assertFileExists($testTargetContent);
+            $this->assertFileType($testTargetContent, self::TEST_FILETYPE_FILE);
+        }
+    }
+
+    public function testSourceAndTargetAreDirsDoExist()
+    {
+        $fixtures = array(
+            array('sourcedir', 'targetdir'),
+            array('sourcedir', 'targetdir/'),
+            array('sourcedir/', 'targetdir/'),
+            array('sourcedir/', 'targetdir'),
+        );
+        foreach ($fixtures as $fixture) {
+            $this->tearDown();
+            $this->setUp();
+
+            list ($globSource, $dest) = $fixture;
+            $sourceDirContent = "test.xml";
+            mkdir($this->sourceDir . DIRECTORY_SEPARATOR . $globSource, 0777, true);
+            touch($this->sourceDir . DIRECTORY_SEPARATOR . $globSource . DIRECTORY_SEPARATOR . $sourceDirContent);
+
+            // The target should be created INSIDE the target directory because the target dir exists exist
+            // This is how bash commands (and therefore modman) process source and targer
+
+            $testTarget = $this->destDir . DIRECTORY_SEPARATOR . $dest . DIRECTORY_SEPARATOR . basename($globSource);
+            mkdir($this->destDir . DIRECTORY_SEPARATOR . $dest);
+
+            $testTargetContent = $testTarget . DIRECTORY_SEPARATOR . $sourceDirContent;
+
+            $this->strategy->create($globSource, $dest);
+
+            $this->assertFileExists($testTarget);
+            $this->assertFileType($testTarget, $this->getTestDeployStrategyFiletype(self::TEST_FILETYPE_DIR));
+
+            $this->assertFileExists($testTargetContent);
+            $this->assertFileType($testTargetContent, self::TEST_FILETYPE_FILE);
         }
     }
 }

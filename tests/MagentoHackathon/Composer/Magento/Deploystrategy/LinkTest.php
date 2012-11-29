@@ -14,10 +14,13 @@ class LinkTest extends AbstractTest
     }
 
     /**
+     * @param bool $isDir
      * @return string
      */
-    public function getTestDeployStrategyFiletype()
+    public function getTestDeployStrategyFiletype($isDir = false)
     {
-        return AbstractTest::TEST_FILETYPE_FILE;
+        if ($isDir) return self::TEST_FILETYPE_DIR;
+
+        return self::TEST_FILETYPE_FILE;
     }
 }
