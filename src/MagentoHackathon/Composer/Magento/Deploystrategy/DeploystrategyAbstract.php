@@ -116,13 +116,44 @@ abstract class DeploystrategyAbstract
         $this->mappings[] = array($key, $value);
     }
 
+    protected function removeTrailingSlash($path)
+    {
+       return rtrim($path, ' \\/');
+    }
+
     /**
-     * Removes the module's files in the given path
+     * Normalize mapping parameters using a glob wildcard.
      *
-     * @param string $path
-     * @return void
+     * Delegate the creation of the module's files in the given destination.
+     *
+     * @param string $source
+     * @param string $dest
+     * @return \MagentoHackathon\Composer\Magento\Deploystrategy\DeploystrategyAbstract
      */
-    abstract public function clean($path);
+    public function create($source, $dest)
+    {
+        $sourcePath = $this->getSourceDir() . DIRECTORY_SEPARATOR . $this->removeTrailingSlash($source);
+        $destPath = $this->getDestDir() . DIRECTORY_SEPARATOR . $this->removeTrailingSlash($dest);
+
+        $this->addMapping($source,$dest);
+
+        // If source doesn't exist, check if it's a glob expression, otherwise we have nothing we can do
+        if (!file_exists($sourcePath)) {
+            // Handle globing
+            $matches = glob($sourcePath);
+            if ($matches) {
+                foreach ($matches as $match) {
+                    $newDest = $destPath . DIRECTORY_SEPARATOR . basename($match);
+                    $this->create($match, $newDest);
+                }
+                return;
+            }
+
+            // Source file isn't a valid file or glob
+            throw new \ErrorException("Source $sourcePath does not exists");
+        }
+        return $this->createDelegate($source, $dest);
+    }
 
     /**
      * Create the module's files in the given destination
@@ -131,5 +162,13 @@ abstract class DeploystrategyAbstract
      * @param string $dest
      * @return \MagentoHackathon\Composer\Magento\Deploystrategy\DeploystrategyAbstract
      */
-    abstract public function create($source, $dest);
+    abstract protected function createDelegate($source, $dest);
+
+    /**
+     * Removes the module's files in the given path
+     *
+     * @param string $path
+     * @return void
+     */
+    abstract public function clean($path);
 }

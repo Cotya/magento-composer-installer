@@ -18,25 +18,10 @@ class Link extends DeploystrategyAbstract
      * @return bool
      * @throws \ErrorException
      */
-    public function create($source, $dest)
+    public function createDelegate($source, $dest)
     {
-        $sourcePath = $this->getSourceDir() . DIRECTORY_SEPARATOR . $source;
-        $destPath = $this->getDestDir() . DIRECTORY_SEPARATOR . $dest;
-
-        // If source doesn't exist, check if it's a glob expression, otherwise we have nothing we can do
-        if (!file_exists($sourcePath)) {
-            // Handle globing
-            $matches = glob($sourcePath);
-            if ($matches) {
-                foreach ($matches as $match) {
-                    $newDest = $destPath . DIRECTORY_SEPARATOR . basename($match);
-                    $this->create($match, $newDest);
-                }
-                return;
-            }
-            // Source file isn't a valid file or glob
-            throw new \ErrorException("Source $sourcePath does not exists");
-        }
+        $sourcePath = $this->getSourceDir() . DIRECTORY_SEPARATOR . $this->removeTrailingSlash($source);
+        $destPath = $this->getDestDir() . DIRECTORY_SEPARATOR . $this->removeTrailingSlash($dest);
 
         // Handle file to dir linking,
         // e.g. Namespace_Module.csv => app/locale/de_DE/
