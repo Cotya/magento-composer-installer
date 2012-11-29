@@ -42,7 +42,7 @@ class Symlink extends DeploystrategyAbstract
         // e.g. Namespace_Module.csv => app/locale/de_DE/
         if (file_exists($destPath) && is_dir($destPath) && is_file($sourcePath)) {
             $newDest = $destPath . DIRECTORY_SEPARATOR . basename($source);
-            return $this->create($source, substr($newDest, strlen($this->getDestDir())));
+            return $this->create($source, substr($newDest, strlen($this->getDestDir())+1));
         }
 
         // From now on $destPath can't be a directory, that case is already handled
