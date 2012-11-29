@@ -42,53 +42,147 @@ class CopyTest extends AbstractTest
         $this->assertTrue(is_readable($this->destDir . DIRECTORY_SEPARATOR . $dest . DIRECTORY_SEPARATOR . "local.xml"));
     }
 
-    public function testGlobLink()
+    public function testGlobCopyTargetDirExists()
     {
-        $glob_source = "modules/test.xml";
-        mkdir($this->sourceDir . dirname(DIRECTORY_SEPARATOR . $glob_source));
+        $glob_source = "sourcedir/test.xml";
+        mkdir($this->sourceDir . DIRECTORY_SEPARATOR . dirname($glob_source), 0777, true);
         touch($this->sourceDir . DIRECTORY_SEPARATOR . $glob_source);
 
-        $glob_dest = "modules";
-        mkdir($this->destDir . DIRECTORY_SEPARATOR . $glob_dest);
+        $glob_dest = "targetdir"; // this dir should contain the link
+        mkdir($this->destDir . DIRECTORY_SEPARATOR . $glob_dest, 0777, true);
+
+        $testTarget = $this->destDir . DIRECTORY_SEPARATOR . $glob_dest . DIRECTORY_SEPARATOR . basename($glob_source);
 
         $this->strategy->create($glob_source, $glob_dest);
 
-        $this->assertFileExists($this->destDir . DIRECTORY_SEPARATOR . $glob_dest);
+        $this->assertTrue(
+            is_dir(dirname($testTarget)), "Failed asserting that the target parent dir is a directory"
+        );
+        $this->assertFileExists($testTarget);
     }
 
-    public function testGlobLinkSlash()
+    public function testGlobCopyTargetDirDoesNotExists()
     {
-        $glob_source = "modules/test.xml";
-        mkdir($this->sourceDir . dirname(DIRECTORY_SEPARATOR . $glob_source));
+        $glob_source = "sourcedir/test.xml";
+        mkdir($this->sourceDir . DIRECTORY_SEPARATOR . dirname($glob_source), 0777, true);
         touch($this->sourceDir . DIRECTORY_SEPARATOR . $glob_source);
 
-        $glob_dest = "modules/";
+        $glob_dest = "targetdir"; // this will be the link!
 
-        // first create will create file
+        $testTarget = $this->destDir . DIRECTORY_SEPARATOR . $glob_dest;
+
         $this->strategy->create($glob_source, $glob_dest);
 
-        // second create has to identify file
-        $this->strategy->create($glob_source, $glob_dest);
-
-        $this->assertFileExists($this->destDir . DIRECTORY_SEPARATOR . $glob_dest);
+        $this->assertTrue(
+            is_dir(dirname($testTarget)), "Failed asserting that the target parent dir is a directory"
+        );
+        $this->assertFileExists($testTarget);
+        $this->assertTrue(
+            is_file($testTarget), "Failed asserting that file is a file"
+        );
     }
 
-    public function testGlobLinkWildcard()
+    public function testGlobCopySlashDirectoryExists()
     {
-        $glob_source = "modules/*";
+        $glob_source = "sourcedir/test.xml";
+        mkdir($this->sourceDir . dirname(DIRECTORY_SEPARATOR . $glob_source), 0777, true);
+        touch($this->sourceDir . DIRECTORY_SEPARATOR . $glob_source);
+
+        $glob_dest = "targetdir/";
+        mkdir($this->destDir . DIRECTORY_SEPARATOR . $glob_dest, 0777, true);
+
+        $testTarget = $this->destDir . DIRECTORY_SEPARATOR . $glob_dest . basename($glob_source);
+
+        // second create has to identify symlink
+        $this->strategy->create($glob_source, $glob_dest);
+
+        $this->assertTrue(
+            is_dir(dirname($testTarget)), "Failed asserting that the target dir is a directory"
+        );
+        $this->assertFileExists($testTarget);
+        $this->assertTrue(
+            is_file($testTarget), "Failed asserting that file is a file"
+        );
+    }
+
+    public function testGlobCopySlashDirectoryDoesNotExists()
+    {
+        $glob_source = "sourcedir/test.xml";
+        mkdir($this->sourceDir . dirname(DIRECTORY_SEPARATOR . $glob_source), 0777, true);
+        touch($this->sourceDir . DIRECTORY_SEPARATOR . $glob_source);
+
+        $glob_dest = "targetdir/"; // the target should be created inside this dir because of the slash
+
+        $testTarget = $this->destDir . DIRECTORY_SEPARATOR . $glob_dest . basename($glob_source);
+
+        // second create has to identify symlink
+        $this->strategy->create($glob_source, $glob_dest);
+
+        $this->assertTrue(
+            is_dir(dirname($testTarget)), "Failed asserting that the target parent dir is a directory"
+        );
+        $this->assertFileExists($testTarget);
+        $this->assertTrue(
+            is_file($testTarget), "Failed asserting that file is a file"
+        );
+    }
+
+    public function testGlobCopyWildcardTargetDirDoesNotExist()
+    {
+        $glob_source = "sourcedir/*";
         $glob_dir = dirname($glob_source);
         $files = array('test1.xml', 'test2.xml');
-        mkdir($this->sourceDir . DIRECTORY_SEPARATOR . $glob_dir);
+        mkdir($this->sourceDir . DIRECTORY_SEPARATOR . $glob_dir, 0777, true);
         foreach ($files as $file) {
             touch($this->sourceDir . DIRECTORY_SEPARATOR . $glob_dir . DIRECTORY_SEPARATOR . $file);
         }
 
-        $glob_dest = "modules/";
+        $glob_dest = "targetdir";
 
         $this->strategy->create($glob_source, $glob_dest);
 
+        $targetDir = $this->destDir . DIRECTORY_SEPARATOR . $glob_dest;
+        $this->assertFileExists($targetDir);
+        $this->assertTrue(
+            is_dir($targetDir), "Failed asserting target parent dir is a directory"
+        );
+
         foreach ($files as $file) {
-            $this->assertFileExists($this->destDir . DIRECTORY_SEPARATOR . $glob_dest . DIRECTORY_SEPARATOR . $file);
+            $testTarget = $this->destDir . DIRECTORY_SEPARATOR . $glob_dest . DIRECTORY_SEPARATOR . $file;
+            $this->assertFileExists($testTarget);
+            $this->assertTrue(
+                is_file($testTarget), "Failed asserting that file is a file"
+            );
+        }
+    }
+
+    public function testGlobCopyWildcardTargetDirDoesExist()
+    {
+        $glob_source = "sourcedir/*";
+        $glob_dir = dirname($glob_source);
+        $files = array('test1.xml', 'test2.xml');
+        mkdir($this->sourceDir . DIRECTORY_SEPARATOR . $glob_dir, 0777, true);
+        foreach ($files as $file) {
+            touch($this->sourceDir . DIRECTORY_SEPARATOR . $glob_dir . DIRECTORY_SEPARATOR . $file);
+        }
+
+        $glob_dest = "targetdir";
+        mkdir($this->destDir . DIRECTORY_SEPARATOR . $glob_dest);
+
+        $this->strategy->create($glob_source, $glob_dest);
+
+        $targetDir = $this->destDir . DIRECTORY_SEPARATOR . $glob_dest;
+        $this->assertFileExists($targetDir);
+        $this->assertTrue(
+            is_dir($targetDir), "Failed asserting target parent dir is a directory"
+        );
+
+        foreach ($files as $file) {
+            $testTarget = $this->destDir . DIRECTORY_SEPARATOR . $glob_dest . DIRECTORY_SEPARATOR . $file;
+            $this->assertFileExists($testTarget);
+            $this->assertTrue(
+                is_file($testTarget), "Failed asserting that file is a file"
+            );
         }
     }
 }
