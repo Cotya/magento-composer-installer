@@ -3,6 +3,10 @@ namespace MagentoHackathon\Composer\Magento\Deploystrategy;
 
 abstract class AbstractTest extends \PHPUnit_Framework_TestCase
 {
+    const TEST_FILETYPE_FILE = 'file';
+    const TEST_FILETYPE_LINK = 'link';
+    const TEST_FILETYPE_DIR  = 'dir';
+
     /**
      * @var DeploystrategyAbstract
      */
@@ -23,11 +27,17 @@ abstract class AbstractTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @abstract
-     * @param $dest
-     * @param $src
+     * @param string $dest
+     * @param string $src
      * @return DeploystrategyAbstract
      */
     abstract function getTestDeployStrategy($dest, $src);
+
+    /**
+     * @abstract
+     * @return string
+     */
+    abstract function getTestDeployStrategyFiletype();
 
     /**
      * Sets up the fixture, for example, opens a network connection.
@@ -51,6 +61,34 @@ abstract class AbstractTest extends \PHPUnit_Framework_TestCase
     {
         $this->filesystem->remove($this->sourceDir);
         $this->filesystem->remove($this->destDir);
+    }
+
+    /**
+     * @param string $file
+     * @param string $type
+     */
+    public function assertFileType($file, $type)
+    {
+        switch ($type) {
+            case self::TEST_FILETYPE_FILE:
+                $result = is_file($file) && ! is_link($file);
+                break;
+            case self::TEST_FILETYPE_LINK:
+                $result = is_link($file);
+                break;
+            case self::TEST_FILETYPE_DIR:
+                $result = is_dir($file) && ! is_link($file);
+                break;
+            default:
+                throw new \InvalidArgumentException(
+                    "Invalid file type argument: " . $type
+                );
+        }
+        if (! $result) {
+            throw new \PHPUnit_Framework_AssertionFailedError(
+              "Failed to assert that the $file is of type $type"
+            );
+        }
     }
 
     public function testGetMappings()
@@ -110,10 +148,10 @@ abstract class AbstractTest extends \PHPUnit_Framework_TestCase
 
         $this->strategy->create($glob_source, $glob_dest);
 
-        $this->assertTrue(
-            is_dir(dirname($testTarget)), "Failed asserting that the target parent dir is a directory"
-        );
+        $this->assertFileType(dirname($testTarget), self::TEST_FILETYPE_DIR);
         $this->assertFileExists($testTarget);
+        $this->assertFileType($testTarget, $this->getTestDeployStrategyFiletype());
+        $this->assertFileType($testTarget, $this->getTestDeployStrategyFiletype());
     }
 
     public function testGlobTargetDirDoesNotExists()
@@ -128,10 +166,9 @@ abstract class AbstractTest extends \PHPUnit_Framework_TestCase
 
         $this->strategy->create($glob_source, $glob_dest);
 
-        $this->assertTrue(
-            is_dir(dirname($testTarget)), "Failed asserting that the target parent dir is a directory"
-        );
+        $this->assertFileType(dirname($testTarget), self::TEST_FILETYPE_DIR);
         $this->assertFileExists($testTarget);
+        $this->assertFileType($testTarget, $this->getTestDeployStrategyFiletype());
     }
 
     public function testGlobSlashDirectoryExists()
@@ -148,10 +185,10 @@ abstract class AbstractTest extends \PHPUnit_Framework_TestCase
         // second create has to identify symlink
         $this->strategy->create($glob_source, $glob_dest);
 
-        $this->assertTrue(
-            is_dir(dirname($testTarget)), "Failed asserting that the target dir is a directory"
-        );
+        $this->assertFileType(dirname($testTarget), self::TEST_FILETYPE_DIR);
         $this->assertFileExists($testTarget);
+        $this->assertFileType($testTarget, $this->getTestDeployStrategyFiletype());
+
     }
 
     public function testGlobSlashDirectoryDoesNotExists()
@@ -167,10 +204,10 @@ abstract class AbstractTest extends \PHPUnit_Framework_TestCase
         // second create has to identify symlink
         $this->strategy->create($glob_source, $glob_dest);
 
-        $this->assertTrue(
-            is_dir(dirname($testTarget)), "Failed asserting that the target parent dir is a directory"
-        );
+        $this->assertFileType(dirname($testTarget), self::TEST_FILETYPE_DIR);
         $this->assertFileExists($testTarget);
+        $this->assertFileType($testTarget, $this->getTestDeployStrategyFiletype());
+
     }
 
     public function testGlobWildcardTargetDirDoesNotExist()
@@ -189,13 +226,14 @@ abstract class AbstractTest extends \PHPUnit_Framework_TestCase
 
         $targetDir = $this->destDir . DIRECTORY_SEPARATOR . $glob_dest;
         $this->assertFileExists($targetDir);
-        $this->assertTrue(
-            is_dir($targetDir), "Failed asserting target parent dir is a directory"
-        );
+        $this->assertFileType($targetDir, self::TEST_FILETYPE_DIR);
+
 
         foreach ($files as $file) {
             $testTarget = $this->destDir . DIRECTORY_SEPARATOR . $glob_dest . DIRECTORY_SEPARATOR . $file;
             $this->assertFileExists($testTarget);
+            $this->assertFileType($testTarget, $this->getTestDeployStrategyFiletype());
+
         }
     }
 
@@ -216,13 +254,13 @@ abstract class AbstractTest extends \PHPUnit_Framework_TestCase
 
         $targetDir = $this->destDir . DIRECTORY_SEPARATOR . $glob_dest;
         $this->assertFileExists($targetDir);
-        $this->assertTrue(
-            is_dir($targetDir), "Failed asserting target parent dir is a directory"
-        );
+        $this->assertFileType($targetDir, self::TEST_FILETYPE_DIR);
+
 
         foreach ($files as $file) {
             $testTarget = $this->destDir . DIRECTORY_SEPARATOR . $glob_dest . DIRECTORY_SEPARATOR . $file;
             $this->assertFileExists($testTarget);
+            $this->assertFileType($testTarget, $this->getTestDeployStrategyFiletype());
         }
     }
 }

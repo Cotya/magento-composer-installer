@@ -12,4 +12,12 @@ class LinkTest extends AbstractTest
     {
         return new Link($dest, $src);
     }
+
+    /**
+     * @return string
+     */
+    public function getTestDeployStrategyFiletype()
+    {
+        return AbstractTest::TEST_FILETYPE_FILE;
+    }
 }

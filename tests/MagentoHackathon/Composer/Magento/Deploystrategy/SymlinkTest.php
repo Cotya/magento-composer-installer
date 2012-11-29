@@ -11,6 +11,14 @@ class SymlinkTest extends AbstractTest
         return new Symlink($dest, $src);
     }
 
+    /**
+     * @return string
+     */
+    public function getTestDeployStrategyFiletype()
+    {
+        return AbstractTest::TEST_FILETYPE_LINK;
+    }
+
     public function testClean()
     {
         $src = 'local.xml';
