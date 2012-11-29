@@ -85,5 +85,26 @@ class SymlinkTest extends AbstractTest
         $this->assertFileExists( $this->destDir.DIRECTORY_SEPARATOR.$glob_dest );
     }
 
+    public function testGlobLinkWildcard()
+    {
+        $glob_source = "modules/*";
+        $glob_dir = dirname($glob_source);
+        $files = array('test1.xml', 'test2.xml');
+        mkdir($this->sourceDir.DIRECTORY_SEPARATOR.$glob_dir);
+        foreach ($files as $file) {
+            touch($this->sourceDir.DIRECTORY_SEPARATOR.$glob_dir.DIRECTORY_SEPARATOR.$file);
+        }
 
+        $glob_dest = "modules/";
+
+        // first create will create symlink
+        $this->strategy->create($glob_source, $glob_dest);
+
+        // second create has to identify symlink
+        $this->strategy->create($glob_source, $glob_dest);
+
+        foreach ($files as $file) {
+            $this->assertFileExists($this->destDir.DIRECTORY_SEPARATOR.$glob_dest.DIRECTORY_SEPARATOR.$file);
+        }
+    }
 }

@@ -22,13 +22,13 @@ class Copy extends DeploystrategyAbstract
     {
         $sourcePath = $this->getSourceDir() . DIRECTORY_SEPARATOR . $this->removeTrailingSlash($source);
         $destPath = $this->getDestDir() . DIRECTORY_SEPARATOR . $this->removeTrailingSlash($dest);
-        
+
         // Handle file to dir linking,
         // e.g. Namespace_Module.csv => app/locale/de_DE/
         if (file_exists($destPath) && is_dir($destPath) && is_file($sourcePath)) {
             $newDest = $destPath . DIRECTORY_SEPARATOR . basename($source);
             $this->addMapping($source, $newDest);
-            return $this->create($source, $newDest);
+            return $this->create($source, substr($newDest, strlen($this->getDestDir())));
         }
 
         //file to file
@@ -57,7 +57,7 @@ class Copy extends DeploystrategyAbstract
             }
         }
 
-        return $this;
+        return true;
     }
 
     /**

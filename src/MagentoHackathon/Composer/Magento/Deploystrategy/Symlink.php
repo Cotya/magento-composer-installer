@@ -29,7 +29,7 @@ class Symlink extends DeploystrategyAbstract
                 // .. and is equal to current source-link
                 return true;
             }
-            unlink( $destPath );
+            unlink($destPath);
         }
 
         // Create all directories up to one below the target if they don't exist
@@ -42,7 +42,7 @@ class Symlink extends DeploystrategyAbstract
         // e.g. Namespace_Module.csv => app/locale/de_DE/
         if (file_exists($destPath) && is_dir($destPath) && is_file($sourcePath)) {
             $newDest = $destPath . DIRECTORY_SEPARATOR . basename($source);
-            return $this->create($source, $newDest);
+            return $this->create($source, substr($newDest, strlen($this->getDestDir())));
         }
 
         // From now on $destPath can't be a directory, that case is already handled
@@ -64,7 +64,7 @@ class Symlink extends DeploystrategyAbstract
             throw new \ErrorException("Could not create symlink $destPath");
         }
 
-        return $this;
+        return true;
     }
 
     /**

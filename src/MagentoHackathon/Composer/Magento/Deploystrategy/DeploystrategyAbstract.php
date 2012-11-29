@@ -128,14 +128,12 @@ abstract class DeploystrategyAbstract
      *
      * @param string $source
      * @param string $dest
-     * @return \MagentoHackathon\Composer\Magento\Deploystrategy\DeploystrategyAbstract
+     * @return bool
      */
     public function create($source, $dest)
     {
         $sourcePath = $this->getSourceDir() . DIRECTORY_SEPARATOR . $this->removeTrailingSlash($source);
         $destPath = $this->getDestDir() . DIRECTORY_SEPARATOR . $this->removeTrailingSlash($dest);
-
-        $this->addMapping($source,$dest);
 
         // If source doesn't exist, check if it's a glob expression, otherwise we have nothing we can do
         if (!file_exists($sourcePath)) {
@@ -143,24 +141,28 @@ abstract class DeploystrategyAbstract
             $matches = glob($sourcePath);
             if ($matches) {
                 foreach ($matches as $match) {
-                    $newDest = $destPath . DIRECTORY_SEPARATOR . basename($match);
-                    $this->create($match, $newDest);
+                    $newDest = substr($destPath . DIRECTORY_SEPARATOR . basename($match), strlen($this->getDestDir()));
+                    $this->create(substr($match, strlen($this->getSourceDir())), $newDest);
                 }
-                return;
+                return true;
             }
 
             // Source file isn't a valid file or glob
             throw new \ErrorException("Source $sourcePath does not exists");
         }
+
+        $this->addMapping($source,$dest);
         return $this->createDelegate($source, $dest);
     }
 
     /**
-     * Create the module's files in the given destination
+     * Create the module's files in the given destination.
+     *
+     * NOTE: source and dest have to be passed as relative directories, like they are listed in the mapping
      *
      * @param string $source
      * @param string $dest
-     * @return \MagentoHackathon\Composer\Magento\Deploystrategy\DeploystrategyAbstract
+     * @return bool
      */
     abstract protected function createDelegate($source, $dest);
 
