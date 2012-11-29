@@ -151,7 +151,6 @@ abstract class AbstractTest extends \PHPUnit_Framework_TestCase
         $this->assertFileType(dirname($testTarget), self::TEST_FILETYPE_DIR);
         $this->assertFileExists($testTarget);
         $this->assertFileType($testTarget, $this->getTestDeployStrategyFiletype());
-        $this->assertFileType($testTarget, $this->getTestDeployStrategyFiletype());
     }
 
     public function testGlobTargetDirDoesNotExists()
@@ -174,7 +173,7 @@ abstract class AbstractTest extends \PHPUnit_Framework_TestCase
     public function testGlobSlashDirectoryExists()
     {
         $glob_source = "sourcedir/test.xml";
-        mkdir($this->sourceDir . dirname(DIRECTORY_SEPARATOR . $glob_source), 0777, true);
+        mkdir($this->sourceDir . DIRECTORY_SEPARATOR . dirname($glob_source), 0777, true);
         touch($this->sourceDir . DIRECTORY_SEPARATOR . $glob_source);
 
         $glob_dest = "targetdir/";
@@ -188,13 +187,12 @@ abstract class AbstractTest extends \PHPUnit_Framework_TestCase
         $this->assertFileType(dirname($testTarget), self::TEST_FILETYPE_DIR);
         $this->assertFileExists($testTarget);
         $this->assertFileType($testTarget, $this->getTestDeployStrategyFiletype());
-
     }
 
     public function testGlobSlashDirectoryDoesNotExists()
     {
         $glob_source = "sourcedir/test.xml";
-        mkdir($this->sourceDir . dirname(DIRECTORY_SEPARATOR . $glob_source), 0777, true);
+        mkdir($this->sourceDir . DIRECTORY_SEPARATOR . dirname($glob_source), 0777, true);
         touch($this->sourceDir . DIRECTORY_SEPARATOR . $glob_source);
 
         $glob_dest = "targetdir/"; // the target should be created inside this dir because of the slash
@@ -207,7 +205,6 @@ abstract class AbstractTest extends \PHPUnit_Framework_TestCase
         $this->assertFileType(dirname($testTarget), self::TEST_FILETYPE_DIR);
         $this->assertFileExists($testTarget);
         $this->assertFileType($testTarget, $this->getTestDeployStrategyFiletype());
-
     }
 
     public function testGlobWildcardTargetDirDoesNotExist()
