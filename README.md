@@ -200,3 +200,24 @@ There is a deploy per copy strategy, but it isn't recommended to use. Heavy test
     }
 }
 ```
+
+### Trigger deploy manually
+
+Sometimes you want trigger the deploy of magento modules without the need of an update/install process.
+
+In short, we have a optional dependency to https://github.com/magento-hackathon/composer-command-integrator/
+you need to add to your requirements of the project.
+
+If done and installed, you are able to use the commands:
+```
+./vendor/bin/composerCommandIntegrator.php
+./vendor/bin/composerCommandIntegrator.php list
+./vendor/bin/composerCommandIntegrator.php magento-module-deploy
+
+```
+
+because of a bug in composer, the automatic registration of the command is currently broken.
+So to be able to use it you need to edit the ./vendor/composer/installed.json
+Here you search for the entry containing ```"name": "magento-hackathon/magento-composer-installer",```
+and add ```"composer-command-registry": [ "MagentoHackathon\\Composer\\Magento\\Command\\DeployCommand" ],```
+to the ```extra:``` part.
