@@ -314,12 +314,12 @@ abstract class AbstractTest extends \PHPUnit_Framework_TestCase
             mkdir($this->sourceDir . DIRECTORY_SEPARATOR . $globSource, 0777, true);
             touch($this->sourceDir . DIRECTORY_SEPARATOR . $globSource . DIRECTORY_SEPARATOR . $sourceDirContent);
 
+            mkdir($this->destDir . DIRECTORY_SEPARATOR . $dest);
+
             // The target should be created INSIDE the target directory because the target dir exists exist
             // This is how bash commands (and therefore modman) process source and targer
 
             $testTarget = $this->destDir . DIRECTORY_SEPARATOR . $dest . DIRECTORY_SEPARATOR . basename($globSource);
-            mkdir($this->destDir . DIRECTORY_SEPARATOR . $dest);
-
             $testTargetContent = $testTarget . DIRECTORY_SEPARATOR . $sourceDirContent;
 
             $this->strategy->create($globSource, $dest);
