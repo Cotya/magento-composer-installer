@@ -16,11 +16,7 @@ class MapParser implements Parser {
 
     public function setMappings($mappings)
     {
-        $this->_mappings = array();
-        foreach( $mappings AS $source => $dest )
-        {
-            $this->_mappings[] = array( $source, $dest );
-        }
+        $this->_mappings = $mappings;
     }
 
     public function getMappings()
