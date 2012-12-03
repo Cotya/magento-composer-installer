@@ -216,8 +216,3 @@ If done and installed, you are able to use the commands:
 
 ```
 
-because of a bug in composer, the automatic registration of the command is currently broken.
-So to be able to use it you need to edit the ./vendor/composer/installed.json
-Here you search for the entry containing ```"name": "magento-hackathon/magento-composer-installer",```
-and add ```"composer-command-registry": [ "MagentoHackathon\\Composer\\Magento\\Command\\DeployCommand" ],```
-to the ```extra:``` part.
