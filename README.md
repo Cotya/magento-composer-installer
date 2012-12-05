@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/magento-hackathon/magento-composer-installer.png)](https://travis-ci.org/magento-hackathon/magento-composer-installer)
+
 # About Hackathon Magento Composer
 
 The purpose of this project is to enable composer to parse and execute

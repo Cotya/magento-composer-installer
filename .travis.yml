@@ -3,3 +3,22 @@ language: php
 php:
   - "5.4"
   - "5.3"
+
+before_script:
+  - composer install --dev
+
+#branches:
+#  only:
+#    - master
+
+notifications:
+  email:
+    recipients:
+      - flyingmana@googlemail.com
+    on_success: never
+    on_failure: always
+  irc:
+    channels:
+      - "irc.freenode.org#magento-de"
+    on_success: change # default: always
+    on_failure: always # default: always
