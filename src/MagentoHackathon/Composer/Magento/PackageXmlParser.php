@@ -21,6 +21,11 @@ class PackageXmlParser implements Parser
     protected $_file = null;
 
     /**
+     * @var array Map of package content types to path prefixes
+     */
+    protected $_targets = array();
+
+    /**
      * Constructor
      *
      * @param string $moduleDir
