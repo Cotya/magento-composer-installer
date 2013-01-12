@@ -104,13 +104,86 @@ class PackageXmlParser implements Parser
 
         /** @var $package SimpleXMLElement */
         $package = simplexml_load_file($this->getFile());
-
         if (isset($package)) {
             foreach ($package->xpath('//contents/target') as $target) {
-                var_dump($target);
+                try {
+                    $basePath = $this->getTargetPath($target);
+
+                    $elementPath = $this->getElementPath($this->getFirstChild($target)); // first child
+                    $relPath = $basePath . DIRECTORY_SEPARATOR . $elementPath;
+
+                    $map[] = array($relPath, $relPath);
+                }
+                catch (RuntimeException $e) {
+                    // Skip invalid targets
+                    //throw $e;
+                    continue;
+                }
             }
         }
 
         return $map;
+    }
+
+    /**
+     * @param SimpleXMLElement $target
+     * @return string
+     * @throws RuntimeException
+     */
+    protected function getTargetPath(SimpleXMLElement $target)
+    {
+        $name = (string) $target->attributes()->name;
+        $targets = $this->getTargetsDefinitions();
+        if (! isset($targets[$name])) {
+            throw new RuntimeException('Invalid target type ' . $name);
+        }
+        return $targets[$name];
+    }
+
+    /**
+     * @return array
+     */
+    protected function getTargetsDefinitions()
+    {
+        if (! $this->_targets) {
+
+            $targets = simplexml_load_file(dirname(__FILE__) . '/res/target.xml');
+            foreach ($targets as $target) {
+                $attributes = $target->attributes();
+                $this->_targets["{$attributes->name}"] = "{$attributes->uri}";
+            }
+        }
+        return $this->_targets;
+    }
+
+    /**
+     * @param SimpleXMLElement $element
+     * @return string
+     * @throws RuntimeException
+     */
+    protected function getElementPath(SimpleXMLElement $element) {
+        $type = $element->getName();
+        $name = $element->attributes()->name;
+
+        switch ($type) {
+            case 'dir':
+                if ($element->children()) {
+                    $name .= DIRECTORY_SEPARATOR . $this->getElementPath($this->getFirstChild($element));
+                }
+                return $name;
+            case 'file':
+                return $name;
+            default:
+                throw new RuntimeException('Unknown path type: ' . $type);
+        }
+    }
+
+    /**
+     * @param SimpleXMLElement $element
+     * @return SimpleXMLElement
+     */
+    protected function getFirstChild(SimpleXMLElement $element)
+    {
+        foreach ($element->children() as $child) return $child;
     }
 }
