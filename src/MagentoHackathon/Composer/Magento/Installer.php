@@ -164,8 +164,16 @@ class Installer extends LibraryInstaller implements InstallerInterface
      */
     public function update(InstalledRepositoryInterface $repo, PackageInterface $initial, PackageInterface $target)
     {
-        $this->getDeployStrategy($initial,$this->_deployStrategy)->clean($this->magentoRootDir);
-        $this->install($repo, $initial, $target);
+
+        $initialStrategy = $this->getDeployStrategy($initial);
+        $initialStrategy->setMappings($this->getParser($initial)->getMappings());
+        $initialStrategy->clean();
+
+        parent::update($repo, $initial, $target);
+
+        $targetStrategy = $this->getDeployStrategy($target);
+        $targetStrategy->setMappings($this->getParser($target)->getMappings());
+        $targetStrategy->deploy();
     }
 
     /**
@@ -176,6 +184,10 @@ class Installer extends LibraryInstaller implements InstallerInterface
      */
     public function uninstall(InstalledRepositoryInterface $repo, PackageInterface $package)
     {
+        $strategy = $this->getDeployStrategy($package);
+        $strategy->setMappings($this->getParser($package)->getMappings());
+        $strategy->clean();
+
         parent::uninstall($repo, $package);
     }
 

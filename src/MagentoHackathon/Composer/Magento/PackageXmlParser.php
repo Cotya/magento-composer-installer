@@ -114,19 +114,21 @@ class PackageXmlParser implements Parser
                 try {
                     $basePath = $this->getTargetPath($target);
 
-                    $elementPath = $this->getElementPath($this->getFirstChild($target)); // first child
-                    $relPath = $basePath . DIRECTORY_SEPARATOR . $elementPath;
+                    foreach ($target->children() as $child) {
+                        foreach ($this->getElementPaths($child) as $elementPath) {
+                            $relativePath = $basePath . DIRECTORY_SEPARATOR . $elementPath;
+                            $map[] = array($relativePath, $relativePath);
+                        }
+                    }
 
-                    $map[] = array($relPath, $relPath);
                 }
                 catch (RuntimeException $e) {
                     // Skip invalid targets
-                    //throw $e;
+                    throw $e;
                     continue;
                 }
             }
         }
-
         return $map;
     }
 
@@ -163,24 +165,36 @@ class PackageXmlParser implements Parser
 
     /**
      * @param \SimpleXMLElement $element
-     * @return string
+     * @return array
      * @throws RuntimeException
      */
-    protected function getElementPath(\SimpleXMLElement$element) {
+    protected function getElementPaths(\SimpleXMLElement $element) {
         $type = $element->getName();
         $name = $element->attributes()->name;
+        $elementPaths = array();
 
         switch ($type) {
             case 'dir':
                 if ($element->children()) {
-                    $name .= DIRECTORY_SEPARATOR . $this->getElementPath($this->getFirstChild($element));
+                    foreach ($element->children() as $child) {
+                        foreach ($this->getElementPaths($child) as $elementPath) {
+                            $elementPaths[] = $name . DIRECTORY_SEPARATOR . $elementPath;
+                        }
+                    }
+                } else {
+                    $elementPaths[] = $name;
                 }
-                return $name;
+                break;
+
             case 'file':
-                return $name;
+                $elementPaths[] = $name;
+                break;
+
             default:
                 throw new RuntimeException('Unknown path type: ' . $type);
         }
+
+        return $elementPaths;
     }
 
     /**

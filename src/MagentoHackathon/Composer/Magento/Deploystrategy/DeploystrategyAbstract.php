@@ -58,6 +58,20 @@ abstract class DeploystrategyAbstract
     }
 
     /**
+     * Removes the module's files in the given path from the target dir
+     *
+     * @return \MagentoHackathon\Composer\Magento\Deploystrategy\DeploystrategyAbstract
+     */
+    public function clean()
+    {
+        foreach ($this->getMappings() as $data) {
+            list ($source, $dest) = $data;
+            $this->remove($source, $dest);
+        }
+        return $this;
+    }
+
+    /**
      * Returns the destination dir of the magento module
      *
      * @return string
@@ -135,7 +149,29 @@ abstract class DeploystrategyAbstract
         $sourcePath = $this->getSourceDir() . DIRECTORY_SEPARATOR . $this->removeTrailingSlash($source);
         $destPath = $this->getDestDir() . DIRECTORY_SEPARATOR . $dest;
 
-        // Create target directory if it end with a directory separator
+        /*
+
+        Assume app/etc exists, app/etc/a does not exist unless specified differently
+
+        dir app/etc/a/ --> link app/etc/a to dir
+        dir app/etc/a  --> link app/etc/a to dir
+        dir app/etc/   --> link app/etc/dir to dir
+        dir app/etc    --> link app/etc/dir to dir
+
+        OK dir/* app/etc     --> for each dir/$file create a target link in app/etc
+        OK dir/* app/etc/    --> for each dir/$file create a target link in app/etc
+        OK dir/* app/etc/a   --> for each dir/$file create a target link in app/etc/a
+        OK dir/* app/etc/a/  --> for each dir/$file create a target link in app/etc/a
+
+        file app/etc    --> link app/etc/file to file
+        file app/etc/   --> link app/etc/file to file
+        file app/etc/a  --> link app/etc/a to file
+        file app/etc/a  --> if app/etc/a is a file throw exception unless force is set, in that case rm and see above
+        OK file app/etc/a/ --> link app/etc/a/file to file regardless if app/etc/a existst or not
+
+        */
+
+        // Create target directory if it ends with a directory separator
         if (! file_exists($destPath) && in_array(substr($destPath, -1), array('/', '\\')) && ! is_dir($sourcePath)) {
             mkdir($destPath, 0777, true);
             $destPath = $this->removeTrailingSlash($destPath);
@@ -157,10 +193,75 @@ abstract class DeploystrategyAbstract
             // Source file isn't a valid file or glob
             throw new \ErrorException("Source $sourcePath does not exists");
         }
-
-        $this->addMapping($source,$dest);
         return $this->createDelegate($source, $dest);
     }
+
+    /**
+     * Remove (unlink) the destination file
+     *
+     * @param string $source
+     * @param string $dest
+     * @return bool
+     * @throws \ErrorException
+     */
+    public function remove($source, $dest)
+    {
+        $sourcePath = $this->getSourceDir() . DIRECTORY_SEPARATOR . $this->removeTrailingSlash($source);
+        $destPath = $this->getDestDir() . DIRECTORY_SEPARATOR . $dest;
+
+        // If source doesn't exist, check if it's a glob expression, otherwise we have nothing we can do
+        if (!file_exists($sourcePath)) {
+            // Handle globing
+            $matches = glob($sourcePath);
+            if ($matches) {
+                foreach ($matches as $match) {
+                    $newDest = substr($destPath . DIRECTORY_SEPARATOR . basename($match), strlen($this->getDestDir()));
+                    $newDest = ltrim($newDest, ' \\/');
+                    $this->remove(substr($match, strlen($this->getSourceDir())+1), $newDest);
+                }
+                return true;
+            }
+
+            // Source file isn't a valid file or glob
+            throw new \ErrorException("Source $sourcePath does not exists");
+        }
+
+        return self::rmdirRecursive($destPath);
+    }
+
+    /**
+     * Recursively removes the specified directory or file
+     *
+     * @param $dir
+     * @return bool
+     */
+    public static function rmdirRecursive($dir)
+    {
+        if (is_dir($dir) && ! is_link($dir)) {
+
+            $iterator = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($dir),
+                                \RecursiveIteratorIterator::CHILD_FIRST);
+
+            foreach ($iterator as $item) {
+                $path = (string) $item;
+
+                if (!strcmp($path, '.') || !strcmp($path, '..')) {
+                    continue;
+                }
+
+                if (is_dir($path)) {
+                    self::rmdirRecursive($path);
+                } else {
+                    @unlink($path);
+                }
+            }
+            $result = @rmdir($dir);
+        } else {
+            $result = @unlink($dir);
+        }
+        return $result;
+    }
+
 
     /**
      * Create the module's files in the given destination.
@@ -173,11 +274,4 @@ abstract class DeploystrategyAbstract
      */
     abstract protected function createDelegate($source, $dest);
 
-    /**
-     * Removes the module's files in the given path
-     *
-     * @param string $path
-     * @return void
-     */
-    abstract public function clean($path);
 }

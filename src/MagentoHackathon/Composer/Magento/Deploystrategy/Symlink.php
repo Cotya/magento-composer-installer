@@ -23,6 +23,27 @@ class Symlink extends DeploystrategyAbstract
         $sourcePath = $this->getSourceDir() . DIRECTORY_SEPARATOR . $this->removeTrailingSlash($source);
         $destPath = $this->getDestDir() . DIRECTORY_SEPARATOR . $this->removeTrailingSlash($dest);
 
+        /*
+
+        Assume app/etc exists, app/etc/a does not exist unless specified differently
+
+        OK dir app/etc/a  --> link app/etc/a to dir
+        OK dir app/etc/   --> link app/etc/dir to dir
+        OK dir app/etc    --> link app/etc/dir to dir
+
+        OK dir/* app/etc     --> for each dir/$file create a target link in app/etc
+        OK dir/* app/etc/    --> for each dir/$file create a target link in app/etc
+        OK dir/* app/etc/a   --> for each dir/$file create a target link in app/etc/a
+        OK dir/* app/etc/a/  --> for each dir/$file create a target link in app/etc/a
+
+        OK file app/etc    --> link app/etc/file to file
+        OK file app/etc/   --> link app/etc/file to file
+        OK file app/etc/a  --> link app/etc/a to file
+        OK file app/etc/a  --> if app/etc/a is a file throw exception unless force is set, in that case rm and see above
+        OK file app/etc/a/ --> link app/etc/a/file to file regardless if app/etc/a existst or not
+
+        */
+
         // Symlink already exists
         if (is_link($destPath)) {
             if (readlink($destPath) == realpath($sourcePath) ) {
@@ -47,7 +68,8 @@ class Symlink extends DeploystrategyAbstract
 
         // From now on $destPath can't be a directory, that case is already handled
 
-        // If file exists and is not a symlink, throw exception unless FORCE is set
+        // If file exists and force is not specified, throw exception unless FORCE is set
+        // existing symlinks are already handled
         if (file_exists($destPath)) {
             if ($this->isForced()) {
                 unlink($destPath);
@@ -74,6 +96,7 @@ class Symlink extends DeploystrategyAbstract
      * @return \MagentoHackathon\Composer\Magento\Deploystrategy\DeploystrategyAbstract
      * @throws \ErrorException
      */
+    /*
     public function clean($path)
     {
         $iterator = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($this->getDestDir()),
@@ -92,4 +115,5 @@ class Symlink extends DeploystrategyAbstract
 
         return $this;
     }
+    */
 }
