@@ -189,8 +189,11 @@ class Installer extends LibraryInstaller implements InstallerInterface
     {
         $extra = $package->getExtra();
 
-        if ( isset( $extra['map'] ) ) {
-            $parser = new MapParser( $extra['map'] );
+        if (isset($extra['map'])) {
+            $parser = new MapParser($extra['map']);
+            return $parser;
+        } elseif (isset($extra['package-xml'])) {
+            $parser = new PackageXmlParser($this->getSourceDir($package), $extra['package-xml']);
             return $parser;
         } else {
             $parser = new ModmanParser($this->getSourceDir($package));
