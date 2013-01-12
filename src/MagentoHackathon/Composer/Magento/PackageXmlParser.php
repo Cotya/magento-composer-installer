@@ -147,7 +147,7 @@ class PackageXmlParser implements Parser
     {
         if (! $this->_targets) {
 
-            $targets = simplexml_load_file(dirname(__FILE__) . '/res/target.xml');
+            $targets = simplexml_load_file(__DIR__ . '/../../../../res/target.xml');
             foreach ($targets as $target) {
                 $attributes = $target->attributes();
                 $this->_targets["{$attributes->name}"] = "{$attributes->uri}";
