@@ -195,9 +195,11 @@ class Installer extends LibraryInstaller implements InstallerInterface
         } elseif (isset($extra['package-xml'])) {
             $parser = new PackageXmlParser($this->getSourceDir($package), $extra['package-xml']);
             return $parser;
-        } else {
+        } elseif (file_exists($this->getSourceDir($package) . DIRECTORY_SEPARATOR . 'modman')) {
             $parser = new ModmanParser($this->getSourceDir($package));
             return $parser;
+        } else {
+            throw new \ErrorException('Unable to find deploy strategy for module: no known mapping');
         }
 
     }
