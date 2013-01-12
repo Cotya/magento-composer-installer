@@ -126,11 +126,11 @@ class PackageXmlParser implements Parser
     }
 
     /**
-     * @param SimpleXMLElement $target
+     * @param \SimpleXMLElement $target
      * @return string
      * @throws RuntimeException
      */
-    protected function getTargetPath(SimpleXMLElement $target)
+    protected function getTargetPath(\SimpleXMLElement $target)
     {
         $name = (string) $target->attributes()->name;
         $targets = $this->getTargetsDefinitions();
@@ -157,11 +157,11 @@ class PackageXmlParser implements Parser
     }
 
     /**
-     * @param SimpleXMLElement $element
+     * @param \SimpleXMLElement $element
      * @return string
      * @throws RuntimeException
      */
-    protected function getElementPath(SimpleXMLElement $element) {
+    protected function getElementPath(\SimpleXMLElement$element) {
         $type = $element->getName();
         $name = $element->attributes()->name;
 
@@ -179,10 +179,10 @@ class PackageXmlParser implements Parser
     }
 
     /**
-     * @param SimpleXMLElement $element
+     * @param \SimpleXMLElement $element
      * @return SimpleXMLElement
      */
-    protected function getFirstChild(SimpleXMLElement $element)
+    protected function getFirstChild(\SimpleXMLElement$element)
     {
         foreach ($element->children() as $child) return $child;
     }
