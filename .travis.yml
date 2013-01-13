@@ -15,6 +15,7 @@ notifications:
   email:
     recipients:
       - flyingmana@googlemail.com
+      - vinai@netzarbeiter.com
     on_success: never
     on_failure: always
   irc:
