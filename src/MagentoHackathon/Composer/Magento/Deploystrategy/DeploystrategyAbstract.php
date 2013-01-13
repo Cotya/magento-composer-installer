@@ -149,7 +149,7 @@ abstract class DeploystrategyAbstract
         $sourcePath = $this->getSourceDir() . DIRECTORY_SEPARATOR . $this->removeTrailingSlash($source);
         $destPath = $this->getDestDir() . DIRECTORY_SEPARATOR . $dest;
 
-        /*
+        /* List of possible cases, keep around for now, might come in handy again
 
         Assume app/etc exists, app/etc/a does not exist unless specified differently
 
@@ -158,16 +158,16 @@ abstract class DeploystrategyAbstract
         dir app/etc/   --> link app/etc/dir to dir
         dir app/etc    --> link app/etc/dir to dir
 
-        OK dir/* app/etc     --> for each dir/$file create a target link in app/etc
-        OK dir/* app/etc/    --> for each dir/$file create a target link in app/etc
-        OK dir/* app/etc/a   --> for each dir/$file create a target link in app/etc/a
-        OK dir/* app/etc/a/  --> for each dir/$file create a target link in app/etc/a
+        dir/* app/etc     --> for each dir/$file create a target link in app/etc
+        dir/* app/etc/    --> for each dir/$file create a target link in app/etc
+        dir/* app/etc/a   --> for each dir/$file create a target link in app/etc/a
+        dir/* app/etc/a/  --> for each dir/$file create a target link in app/etc/a
 
         file app/etc    --> link app/etc/file to file
         file app/etc/   --> link app/etc/file to file
         file app/etc/a  --> link app/etc/a to file
         file app/etc/a  --> if app/etc/a is a file throw exception unless force is set, in that case rm and see above
-        OK file app/etc/a/ --> link app/etc/a/file to file regardless if app/etc/a existst or not
+        file app/etc/a/ --> link app/etc/a/file to file regardless if app/etc/a existst or not
 
         */
 
