@@ -67,6 +67,7 @@ abstract class DeploystrategyAbstract
         foreach ($this->getMappings() as $data) {
             list ($source, $dest) = $data;
             $this->remove($source, $dest);
+            $this->rmEmptyDirsRecursive(dirname($dest), $this->getDestDir());
         }
         return $this;
     }
@@ -230,6 +231,40 @@ abstract class DeploystrategyAbstract
     }
 
     /**
+     * Remove an empty directory branch up to $stopDir, or stop at the first non-empty parent.
+     *
+     * @param string $dir
+     * @param string $stopDir
+     */
+    public function rmEmptyDirsRecursive($dir, $stopDir = null)
+    {
+        $absoluteDir = $this->getDestDir() . DIRECTORY_SEPARATOR . $dir;
+        if (is_dir($absoluteDir)) {
+            $iterator = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($absoluteDir),
+                    \RecursiveIteratorIterator::CHILD_FIRST);
+
+            foreach ($iterator as $item) {
+                $path = (string) $item;
+                if (!strcmp($path, '.') || !strcmp($path, '..')) {
+                    continue;
+                }
+                // The directory contains something, do not remove
+                return;
+            }
+            // The specified directory is empty
+            if (@rmdir($absoluteDir)) {
+                // If the parent directory doesn't match the $stopDir and it's empty, remove it, too
+                $parentDir = dirname($dir);
+                $absoluteParentDir = $this->getDestDir() . DIRECTORY_SEPARATOR . $parentDir;
+                if (! isset($stopDir) || (realpath($stopDir) !== realpath($absoluteParentDir))) {
+                    // Remove the parent directory if it is empty
+                    $this->rmEmptyDirsRecursive($parentDir);
+                }
+            }
+        }
+    }
+
+    /**
      * Recursively removes the specified directory or file
      *
      * @param $dir
@@ -240,7 +275,7 @@ abstract class DeploystrategyAbstract
         if (is_dir($dir) && ! is_link($dir)) {
 
             $iterator = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($dir),
-                                \RecursiveIteratorIterator::CHILD_FIRST);
+                    \RecursiveIteratorIterator::CHILD_FIRST);
 
             foreach ($iterator as $item) {
                 $path = (string) $item;
