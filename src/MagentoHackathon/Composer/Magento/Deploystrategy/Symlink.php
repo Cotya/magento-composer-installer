@@ -23,6 +23,10 @@ class Symlink extends DeploystrategyAbstract
         $sourcePath = $this->getSourceDir() . DIRECTORY_SEPARATOR . $this->removeTrailingSlash($source);
         $destPath = $this->getDestDir() . DIRECTORY_SEPARATOR . $this->removeTrailingSlash($dest);
 
+        if (!is_file($sourcePath) && !is_dir($sourcePath)) {
+            throw new \ErrorException("Could not find path '$sourcePath'");
+        }
+
         /*
 
         Assume app/etc exists, app/etc/a does not exist unless specified differently
