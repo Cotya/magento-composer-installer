@@ -25,6 +25,13 @@ class Installer extends LibraryInstaller implements InstallerInterface
     protected $magentoRootDir = null;
 
     /**
+     * The base directory of the modman packages
+     *
+     * @var \SplFileInfo
+     */
+    protected $modmanRootDir = null;
+
+    /**
      * If set overrides existing files
      *
      * @todo This is not yet implemented
@@ -66,6 +73,18 @@ class Installer extends LibraryInstaller implements InstallerInterface
                 $dir = $this->vendorDir . DIRECTORY_SEPARATOR . $dir;
             }
             $this->magentoRootDir = new \SplFileInfo($dir);
+        }
+
+        if (isset($extra['modman-root-dir'])) {
+
+            $dir = rtrim(trim($extra['modman-root-dir']), DIRECTORY_SEPARATOR);
+            if (!is_dir($dir)) {
+                $dir = $this->vendorDir . DIRECTORY_SEPARATOR . $dir;
+            }
+            if (!is_dir($dir)) {
+                throw new \ErrorException("modman root dir \"{$dir}\" is not valid");
+            }
+            $this->modmanRootDir = new \SplFileInfo($dir);
         }
 
         if (is_null($this->magentoRootDir) || false === $this->magentoRootDir->isDir()) {
@@ -214,5 +233,24 @@ class Installer extends LibraryInstaller implements InstallerInterface
             throw new \ErrorException('Unable to find deploy strategy for module: no known mapping');
         }
 
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getInstallPath(PackageInterface $package)
+    {
+
+        if (!is_null($this->modmanRootDir) && true === $this->modmanRootDir->isDir()) {
+            $targetDir = $package->getTargetDir();
+            if (!$targetDir) {
+                list($vendor, $targetDir) = explode('/', $package->getPrettyName());
+            }
+            $installPath = $this->modmanRootDir . '/' . $targetDir;
+        } else {
+            $installPath = parent::getInstallPath($package);
+        }
+
+        return $installPath;
     }
 }
