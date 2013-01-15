@@ -25,12 +25,28 @@ class Installer extends LibraryInstaller implements InstallerInterface
     protected $magentoRootDir = null;
 
     /**
+     * The base directory of the modman packages
+     *
+     * @var \SplFileInfo
+     */
+    protected $modmanRootDir = null;
+
+    /**
      * If set overrides existing files
      *
      * @todo This is not yet implemented
      * @var bool
      */
     protected $isForced = false;
+
+    /**
+     * If set the package will not be deployed (with any DeployStrategy)
+     * Using a modman-root-dir is not supported yet but the modman-DeployStrategy so you might want to use the normal
+     * modman script for this
+     *
+     * @var bool
+     */
+    protected $skipPackageDeployment = false;
 
     /**
      * The module's base directory
@@ -68,6 +84,18 @@ class Installer extends LibraryInstaller implements InstallerInterface
             $this->magentoRootDir = new \SplFileInfo($dir);
         }
 
+        if (isset($extra['modman-root-dir'])) {
+
+            $dir = rtrim(trim($extra['modman-root-dir']), DIRECTORY_SEPARATOR);
+            if (!is_dir($dir)) {
+                $dir = $this->vendorDir . DIRECTORY_SEPARATOR . $dir;
+            }
+            if (!is_dir($dir)) {
+                throw new \ErrorException("modman root dir \"{$dir}\" is not valid");
+            }
+            $this->modmanRootDir = new \SplFileInfo($dir);
+        }
+
         if (is_null($this->magentoRootDir) || false === $this->magentoRootDir->isDir()) {
             $dir = $this->magentoRootDir instanceof \SplFileInfo ? $this->magentoRootDir->getPathname() : '';
             throw new \ErrorException("magento root dir \"{$dir}\" is not valid");
@@ -80,6 +108,10 @@ class Installer extends LibraryInstaller implements InstallerInterface
 
         if (isset($extra['magento-deploystrategy'])) {
             $this->setDeployStrategy((string)$extra['magento-deploystrategy']);
+        }
+
+        if (!empty($extra['skip-package-deployment'])) {
+            $this->skipPackageDeployment = true;
         }
     }
 
@@ -94,6 +126,8 @@ class Installer extends LibraryInstaller implements InstallerInterface
     /**
      * Returns the strategy class used for deployment
      *
+     * @param \Composer\Package\PackageInterface $package
+     * @param string $strategy
      * @return \MagentoHackathon\Composer\Magento\Deploystrategy\DeploystrategyAbstract
      */
     public function getDeployStrategy(PackageInterface $package, $strategy = null)
@@ -148,9 +182,11 @@ class Installer extends LibraryInstaller implements InstallerInterface
     {
         parent::install($repo, $package);
 
-        $strategy = $this->getDeployStrategy($package);
-        $strategy->setMappings($this->getParser($package)->getMappings());
-        $strategy->deploy();
+        if (!$this->skipPackageDeployment) {
+            $strategy = $this->getDeployStrategy($package);
+            $strategy->setMappings($this->getParser($package)->getMappings());
+            $strategy->deploy();
+        }
     }
 
     /**
@@ -165,15 +201,19 @@ class Installer extends LibraryInstaller implements InstallerInterface
     public function update(InstalledRepositoryInterface $repo, PackageInterface $initial, PackageInterface $target)
     {
 
-        $initialStrategy = $this->getDeployStrategy($initial);
-        $initialStrategy->setMappings($this->getParser($initial)->getMappings());
-        $initialStrategy->clean();
+        if (!$this->skipPackageDeployment) {
+            $initialStrategy = $this->getDeployStrategy($initial);
+            $initialStrategy->setMappings($this->getParser($initial)->getMappings());
+            $initialStrategy->clean();
+        }
 
         parent::update($repo, $initial, $target);
 
-        $targetStrategy = $this->getDeployStrategy($target);
-        $targetStrategy->setMappings($this->getParser($target)->getMappings());
-        $targetStrategy->deploy();
+        if (!$this->skipPackageDeployment) {
+            $targetStrategy = $this->getDeployStrategy($target);
+            $targetStrategy->setMappings($this->getParser($target)->getMappings());
+            $targetStrategy->deploy();
+        }
     }
 
     /**
@@ -184,9 +224,11 @@ class Installer extends LibraryInstaller implements InstallerInterface
      */
     public function uninstall(InstalledRepositoryInterface $repo, PackageInterface $package)
     {
-        $strategy = $this->getDeployStrategy($package);
-        $strategy->setMappings($this->getParser($package)->getMappings());
-        $strategy->clean();
+        if (!$this->skipPackageDeployment) {
+            $strategy = $this->getDeployStrategy($package);
+            $strategy->setMappings($this->getParser($package)->getMappings());
+            $strategy->clean();
+        }
 
         parent::uninstall($repo, $package);
     }
@@ -214,5 +256,24 @@ class Installer extends LibraryInstaller implements InstallerInterface
             throw new \ErrorException('Unable to find deploy strategy for module: no known mapping');
         }
 
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getInstallPath(PackageInterface $package)
+    {
+
+        if (!is_null($this->modmanRootDir) && true === $this->modmanRootDir->isDir()) {
+            $targetDir = $package->getTargetDir();
+            if (!$targetDir) {
+                list($vendor, $targetDir) = explode('/', $package->getPrettyName());
+            }
+            $installPath = $this->modmanRootDir . '/' . $targetDir;
+        } else {
+            $installPath = parent::getInstallPath($package);
+        }
+
+        return $installPath;
     }
 }
