@@ -20,6 +20,6 @@ notifications:
     on_failure: always
   irc:
     channels:
-      - "irc.freenode.org#magento-de"
+      - "irc.freenode.org#magento-composer"
     on_success: change # default: always
     on_failure: always # default: always
