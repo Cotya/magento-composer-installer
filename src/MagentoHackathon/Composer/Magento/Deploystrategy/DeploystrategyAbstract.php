@@ -34,10 +34,10 @@ abstract class DeploystrategyAbstract
     /**
      * Constructor
      *
-     * @param string $destDir
      * @param string $sourceDir
+     * @param string $destDir
      */
-    public function __construct($destDir, $sourceDir)
+    public function __construct($sourceDir, $destDir)
     {
         $this->destDir = $destDir;
         $this->sourceDir = $sourceDir;
@@ -147,8 +147,8 @@ abstract class DeploystrategyAbstract
      */
     public function create($source, $dest)
     {
-        $sourcePath = $this->getSourceDir() . DIRECTORY_SEPARATOR . $this->removeTrailingSlash($source);
-        $destPath = $this->getDestDir() . DIRECTORY_SEPARATOR . $dest;
+        $sourcePath = $this->getSourceDir() . '/' . $this->removeTrailingSlash($source);
+        $destPath = $this->getDestDir() . '/' . $dest;
 
         /* List of possible cases, keep around for now, might come in handy again
 
@@ -184,7 +184,7 @@ abstract class DeploystrategyAbstract
             $matches = glob($sourcePath);
             if ($matches) {
                 foreach ($matches as $match) {
-                    $newDest = substr($destPath . DIRECTORY_SEPARATOR . basename($match), strlen($this->getDestDir()));
+                    $newDest = substr($destPath . '/' . basename($match), strlen($this->getDestDir()));
                     $newDest = ltrim($newDest, ' \\/');
                     $this->create(substr($match, strlen($this->getSourceDir())+1), $newDest);
                 }
@@ -207,8 +207,8 @@ abstract class DeploystrategyAbstract
      */
     public function remove($source, $dest)
     {
-        $sourcePath = $this->getSourceDir() . DIRECTORY_SEPARATOR . $this->removeTrailingSlash($source);
-        $destPath = $this->getDestDir() . DIRECTORY_SEPARATOR . $dest;
+        $sourcePath = $this->getSourceDir() . '/' . $this->removeTrailingSlash($source);
+        $destPath = $this->getDestDir() . '/' . $dest;
 
         // If source doesn't exist, check if it's a glob expression, otherwise we have nothing we can do
         if (!file_exists($sourcePath)) {
@@ -216,7 +216,7 @@ abstract class DeploystrategyAbstract
             $matches = glob($sourcePath);
             if ($matches) {
                 foreach ($matches as $match) {
-                    $newDest = substr($destPath . DIRECTORY_SEPARATOR . basename($match), strlen($this->getDestDir()));
+                    $newDest = substr($destPath . '/' . basename($match), strlen($this->getDestDir()));
                     $newDest = ltrim($newDest, ' \\/');
                     $this->remove(substr($match, strlen($this->getSourceDir())+1), $newDest);
                 }
@@ -238,7 +238,7 @@ abstract class DeploystrategyAbstract
      */
     public function rmEmptyDirsRecursive($dir, $stopDir = null)
     {
-        $absoluteDir = $this->getDestDir() . DIRECTORY_SEPARATOR . $dir;
+        $absoluteDir = $this->getDestDir() . '/' . $dir;
         if (is_dir($absoluteDir)) {
             $iterator = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($absoluteDir),
                     \RecursiveIteratorIterator::CHILD_FIRST);
@@ -255,7 +255,7 @@ abstract class DeploystrategyAbstract
             if (@rmdir($absoluteDir)) {
                 // If the parent directory doesn't match the $stopDir and it's empty, remove it, too
                 $parentDir = dirname($dir);
-                $absoluteParentDir = $this->getDestDir() . DIRECTORY_SEPARATOR . $parentDir;
+                $absoluteParentDir = $this->getDestDir() . '/' . $parentDir;
                 if (! isset($stopDir) || (realpath($stopDir) !== realpath($absoluteParentDir))) {
                     // Remove the parent directory if it is empty
                     $this->rmEmptyDirsRecursive($parentDir);

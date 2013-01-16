@@ -84,7 +84,7 @@ class ModmanParser implements Parser
     {
         $file = null;
         if (!is_null($this->_moduleDir)) {
-            $file = new \SplFileObject($this->_moduleDir . DIRECTORY_SEPARATOR . 'modman');
+            $file = new \SplFileObject($this->_moduleDir . '/modman');
         }
         return $file;
     }

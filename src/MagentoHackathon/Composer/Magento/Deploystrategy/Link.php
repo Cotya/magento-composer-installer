@@ -20,8 +20,8 @@ class Link extends DeploystrategyAbstract
      */
     public function createDelegate($source, $dest)
     {
-        $sourcePath = $this->getSourceDir() . DIRECTORY_SEPARATOR . $this->removeTrailingSlash($source);
-        $destPath = $this->getDestDir() . DIRECTORY_SEPARATOR . $this->removeTrailingSlash($dest);
+        $sourcePath = $this->getSourceDir() . '/' . $this->removeTrailingSlash($source);
+        $destPath = $this->getDestDir() . '/' . $this->removeTrailingSlash($dest);
 
 
         // Create all directories up to one below the target if they don't exist
@@ -33,7 +33,7 @@ class Link extends DeploystrategyAbstract
         // Handle source to dir link,
         // e.g. Namespace_Module.csv => app/locale/de_DE/
         if (file_exists($destPath) && is_dir($destPath)){
-            $newDest = $destPath . DIRECTORY_SEPARATOR . basename($source);
+            $newDest = $destPath . '/' . basename($source);
             return $this->create($source, substr($newDest, strlen($this->getDestDir())+1));
         }
 
@@ -51,7 +51,7 @@ class Link extends DeploystrategyAbstract
         // File to file
         if (!is_dir($sourcePath)) {
             if (is_dir($destPath)) {
-                $destPath .= DIRECTORY_SEPARATOR . basename($sourcePath);
+                $destPath .= '/' . basename($sourcePath);
             }
             return link($sourcePath, $destPath);
         }
@@ -59,7 +59,7 @@ class Link extends DeploystrategyAbstract
         // Copy dir to dir
         // First create destination folder if it doesn't exist
         if (file_exists($destPath)) {
-            $destPath .= DIRECTORY_SEPARATOR . basename($sourcePath);
+            $destPath .= '/' . basename($sourcePath);
         }
         mkdir($destPath, 0777, true);
 
@@ -67,7 +67,7 @@ class Link extends DeploystrategyAbstract
             \RecursiveIteratorIterator::SELF_FIRST);
 
         foreach ($iterator as $item) {
-            $subDestPath = $destPath . DIRECTORY_SEPARATOR . $iterator->getSubPathName();
+            $subDestPath = $destPath . '/' . $iterator->getSubPathName();
             if ($item->isDir()) {
                 mkdir($subDestPath, 0777, true);
             } else {
