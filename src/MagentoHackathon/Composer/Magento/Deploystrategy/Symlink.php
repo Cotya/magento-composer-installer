@@ -83,7 +83,7 @@ class Symlink extends DeploystrategyAbstract
         }
 
         // Create symlink
-        symlink($sourcePath, $destPath);
+        symlink($this->getRelativePath($destPath, $sourcePath), $destPath);
 
         // Check we where able to create the symlink
         if (!is_link($destPath)) {
@@ -94,30 +94,39 @@ class Symlink extends DeploystrategyAbstract
     }
 
     /**
-     * Removes the links in the given path
+     * Returns the relative path from $from to $to
      *
-     * @param string $path
-     * @return \MagentoHackathon\Composer\Magento\Deploystrategy\DeploystrategyAbstract
-     * @throws \ErrorException
+     * This is utility method for symlink creation.
+     * Orig Source: http://stackoverflow.com/a/2638272/485589
      */
-    /*
-    public function clean($path)
+    public function getRelativePath($from, $to)
     {
-        $iterator = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($this->getDestDir()),
-            \RecursiveIteratorIterator::CHILD_FIRST);
-        foreach ($iterator as $path) {
-            if (is_link($path->__toString())) {
-                $dest = readlink($path->__toString());
-                if ($dest === 0 || !is_readable($dest)) {
-                    $denied = @unlink($path->__toString());
-                    if ($denied) {
-                        throw new \ErrorException('Permission denied on ' . $path->__toString());
-                    }
+        $from = str_replace(array('/./', '//'), '/', $from);
+        $from = explode('/', $from);
+
+        $to = str_replace(array('/./', '//'), '/', $to);
+        $to = explode('/', $to);
+
+        $relPath = $to;
+
+        foreach ($from as $depth => $dir) {
+            // find first non-matching dir
+            if ($dir === $to[$depth]) {
+                // ignore this directory
+                array_shift($relPath);
+            } else {
+                // get number of remaining dirs to $from
+                $remaining = count($from) - $depth;
+                if ($remaining > 1) {
+                    // add traversals up to first matching dir
+                    $padLength = (count($relPath) + $remaining - 1) * -1;
+                    $relPath = array_pad($relPath, $padLength, '..');
+                    break;
+                } else {
+                    $relPath[0] = './' . $relPath[0];
                 }
             }
         }
-
-        return $this;
+        return implode('/', $relPath);
     }
-    */
 }

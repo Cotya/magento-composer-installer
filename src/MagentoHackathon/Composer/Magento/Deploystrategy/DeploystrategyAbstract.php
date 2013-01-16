@@ -34,10 +34,10 @@ abstract class DeploystrategyAbstract
     /**
      * Constructor
      *
-     * @param string $destDir
      * @param string $sourceDir
+     * @param string $destDir
      */
-    public function __construct($destDir, $sourceDir)
+    public function __construct($sourceDir, $destDir)
     {
         $this->destDir = $destDir;
         $this->sourceDir = $sourceDir;

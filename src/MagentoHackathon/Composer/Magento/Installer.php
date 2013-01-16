@@ -135,16 +135,18 @@ class Installer extends LibraryInstaller implements InstallerInterface
         if (null === $strategy) {
             $strategy = $this->_deployStrategy;
         }
+        $targetDir = $this->getTargetDir();
+        $sourceDir = $this->getSourceDir($package);
         switch ($strategy) {
             case 'copy':
-                $impl = new \MagentoHackathon\Composer\Magento\Deploystrategy\Copy($this->magentoRootDir->getPathname(), $this->getSourceDir($package));
+                $impl = new \MagentoHackathon\Composer\Magento\Deploystrategy\Copy($sourceDir, $targetDir);
                 break;
             case 'link':
-                $impl = new \MagentoHackathon\Composer\Magento\Deploystrategy\Link($this->magentoRootDir->getPathname(), $this->getSourceDir($package));
+                $impl = new \MagentoHackathon\Composer\Magento\Deploystrategy\Link($sourceDir, $targetDir);
                 break;
             case 'symlink':
             default:
-                $impl = new \MagentoHackathon\Composer\Magento\Deploystrategy\Symlink($this->magentoRootDir->getPathname(), $this->getSourceDir($package));
+                $impl = new \MagentoHackathon\Composer\Magento\Deploystrategy\Symlink($sourceDir, $targetDir);
         }
         return $impl;
     }
@@ -170,6 +172,17 @@ class Installer extends LibraryInstaller implements InstallerInterface
     {
         $this->filesystem->ensureDirectoryExists($this->vendorDir);
         return $this->getInstallPath($package);
+    }
+
+    /**
+     * Return the absolute target directory path for package installation
+     *
+     * @return string
+     */
+    protected function getTargetDir()
+    {
+        $targetDir = realpath($this->magentoRootDir->getPathname());
+        return $targetDir;
     }
 
     /**
