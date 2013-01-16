@@ -274,6 +274,11 @@ class Installer extends LibraryInstaller implements InstallerInterface
             $installPath = parent::getInstallPath($package);
         }
 
+        // Make install path absolute. This is needed in the symlink deploy strategies.
+        if (DIRECTORY_SEPARATOR !== $installPath[0]) {
+            $installPath = getcwd() . "/$installPath";
+        }
+
         return $installPath;
     }
 }
