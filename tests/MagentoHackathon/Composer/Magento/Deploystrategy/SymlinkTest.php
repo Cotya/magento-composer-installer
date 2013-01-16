@@ -38,19 +38,18 @@ class SymlinkTest extends AbstractTest
 
     public function testChangeLink()
     {
-        $wrong_file = 'wrong';
-        $right_file = 'right';
-        $link = 'link';
+        $wrongFile = $this->sourceDir . DIRECTORY_SEPARATOR . 'wrong';
+        $rightFile = $this->sourceDir . DIRECTORY_SEPARATOR . 'right';
+        $link = $this->destDir . DIRECTORY_SEPARATOR . 'link';
 
-        touch($this->sourceDir . DIRECTORY_SEPARATOR . $wrong_file);
-        touch($this->sourceDir . DIRECTORY_SEPARATOR . $right_file);
-        @unlink($this->destDir . DIRECTORY_SEPARATOR . $link);
+        touch($wrongFile);
+        touch($rightFile);
+        @unlink($link);
 
-        symlink($this->sourceDir . DIRECTORY_SEPARATOR . $wrong_file, $this->destDir . DIRECTORY_SEPARATOR . $link);
-        $this->assertEquals($this->sourceDir . DIRECTORY_SEPARATOR . $wrong_file, readlink($this->destDir . DIRECTORY_SEPARATOR . $link));
+        symlink($wrongFile, $link);
+        $this->assertEquals($wrongFile, readlink($link));
 
-        $this->strategy->create($right_file, $link);
-        $this->assertEquals($this->sourceDir . DIRECTORY_SEPARATOR . $right_file, readlink($this->destDir . DIRECTORY_SEPARATOR . $link));
-
+        $this->strategy->create(basename($rightFile), basename($link));
+        $this->assertEquals(realpath($rightFile), realpath(dirname($rightFile) . DIRECTORY_SEPARATOR . readlink($link)));
     }
 }
