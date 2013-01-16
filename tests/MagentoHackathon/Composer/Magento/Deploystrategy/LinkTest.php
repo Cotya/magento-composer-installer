@@ -4,13 +4,13 @@ namespace MagentoHackathon\Composer\Magento\Deploystrategy;
 class LinkTest extends AbstractTest
 {
     /**
-     * @param $dest
      * @param $src
-     * @return Copy
+     * @param $dest
+     * @return Link
      */
-    public function getTestDeployStrategy($dest, $src)
+    public function getTestDeployStrategy($src, $dest)
     {
-        return new Link($dest, $src);
+        return new Link($src, $dest);
     }
 
     /**

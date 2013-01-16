@@ -4,11 +4,13 @@ namespace MagentoHackathon\Composer\Magento\Deploystrategy;
 class SymlinkTest extends AbstractTest
 {
     /**
-     * @return DeploystrategyAbstract
+     * @param string $src
+     * @param string $dest
+     * @return Symlink
      */
-    public function getTestDeployStrategy($dest, $src)
+    public function getTestDeployStrategy($src, $dest)
     {
-        return new Symlink($dest, $src);
+        return new Symlink($src, $dest);
     }
 
     /**

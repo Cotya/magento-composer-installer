@@ -27,11 +27,11 @@ abstract class AbstractTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @abstract
-     * @param string $dest
      * @param string $src
+     * @param string $dest
      * @return DeploystrategyAbstract
      */
-    abstract function getTestDeployStrategy($dest, $src);
+    abstract function getTestDeployStrategy($src, $dest);
 
     /**
      * @abstract
@@ -51,7 +51,7 @@ abstract class AbstractTest extends \PHPUnit_Framework_TestCase
         $this->destDir = sys_get_temp_dir() . DIRECTORY_SEPARATOR . "magento_dir";
         $this->filesystem->ensureDirectoryExists($this->sourceDir);
         $this->filesystem->ensureDirectoryExists($this->destDir);
-        $this->strategy = $this->getTestDeployStrategy($this->destDir, $this->sourceDir);
+        $this->strategy = $this->getTestDeployStrategy($this->sourceDir, $this->destDir);
     }
 
     /**

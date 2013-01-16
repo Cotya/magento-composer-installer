@@ -4,13 +4,13 @@ namespace MagentoHackathon\Composer\Magento\Deploystrategy;
 class CopyTest extends AbstractTest
 {
     /**
-     * @param string $dest
      * @param string $src
+     * @param string $dest
      * @return Copy
      */
-    public function getTestDeployStrategy($dest, $src)
+    public function getTestDeployStrategy($src, $dest)
     {
-        return new Copy($dest, $src);
+        return new Copy($src, $dest);
     }
 
     /**
