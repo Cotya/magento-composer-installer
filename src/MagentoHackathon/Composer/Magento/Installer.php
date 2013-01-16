@@ -77,18 +77,18 @@ class Installer extends LibraryInstaller implements InstallerInterface
 
         if (isset($extra['magento-root-dir'])) {
 
-            $dir = rtrim(trim($extra['magento-root-dir']), DIRECTORY_SEPARATOR);
+            $dir = rtrim(trim($extra['magento-root-dir']), '/\\');
             if (!is_dir($dir)) {
-                $dir = $this->vendorDir . DIRECTORY_SEPARATOR . $dir;
+                $dir = $this->vendorDir . "/$dir";
             }
             $this->magentoRootDir = new \SplFileInfo($dir);
         }
 
         if (isset($extra['modman-root-dir'])) {
 
-            $dir = rtrim(trim($extra['modman-root-dir']), DIRECTORY_SEPARATOR);
+            $dir = rtrim(trim($extra['modman-root-dir']), '/\\');
             if (!is_dir($dir)) {
-                $dir = $this->vendorDir . DIRECTORY_SEPARATOR . $dir;
+                $dir = $this->vendorDir . "/$dir";
             }
             if (!is_dir($dir)) {
                 throw new \ErrorException("modman root dir \"{$dir}\" is not valid");
@@ -249,7 +249,7 @@ class Installer extends LibraryInstaller implements InstallerInterface
         } elseif (isset($extra['package-xml'])) {
             $parser = new PackageXmlParser($this->getSourceDir($package), $extra['package-xml']);
             return $parser;
-        } elseif (file_exists($this->getSourceDir($package) . DIRECTORY_SEPARATOR . 'modman')) {
+        } elseif (file_exists($this->getSourceDir($package) . '/modman')) {
             $parser = new ModmanParser($this->getSourceDir($package));
             return $parser;
         } else {

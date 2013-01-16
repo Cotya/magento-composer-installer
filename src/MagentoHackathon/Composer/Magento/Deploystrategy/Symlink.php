@@ -20,8 +20,8 @@ class Symlink extends DeploystrategyAbstract
      */
     public function createDelegate($source, $dest)
     {
-        $sourcePath = $this->getSourceDir() . DIRECTORY_SEPARATOR . $this->removeTrailingSlash($source);
-        $destPath = $this->getDestDir() . DIRECTORY_SEPARATOR . $this->removeTrailingSlash($dest);
+        $sourcePath = $this->getSourceDir() . '/' . $this->removeTrailingSlash($source);
+        $destPath = $this->getDestDir() . '/' . $this->removeTrailingSlash($dest);
 
         if (!is_file($sourcePath) && !is_dir($sourcePath)) {
             throw new \ErrorException("Could not find path '$sourcePath'");
@@ -66,7 +66,7 @@ class Symlink extends DeploystrategyAbstract
         // Handle source to dir linking,
         // e.g. Namespace_Module.csv => app/locale/de_DE/
         if (file_exists($destPath) && is_dir($destPath)){
-            $newDest = $destPath . DIRECTORY_SEPARATOR . basename($source);
+            $newDest = $destPath . '/' . basename($source);
             return $this->create($source, substr($newDest, strlen($this->getDestDir())+1));
         }
 

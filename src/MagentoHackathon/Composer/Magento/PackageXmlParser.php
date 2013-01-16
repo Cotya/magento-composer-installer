@@ -34,7 +34,7 @@ class PackageXmlParser implements Parser
     public function __construct($moduleDir, $packageXmlFile)
     {
         $this->setModuleDir($moduleDir);
-        $this->setFile($this->getModuleDir() . DIRECTORY_SEPARATOR .  $packageXmlFile);
+        $this->setFile($this->getModuleDir() . '/' . $packageXmlFile);
     }
 
     /**
@@ -116,7 +116,7 @@ class PackageXmlParser implements Parser
 
                     foreach ($target->children() as $child) {
                         foreach ($this->getElementPaths($child) as $elementPath) {
-                            $relativePath = $basePath . DIRECTORY_SEPARATOR . $elementPath;
+                            $relativePath = $basePath . '/' . $elementPath;
                             $map[] = array($relativePath, $relativePath);
                         }
                     }
@@ -178,7 +178,7 @@ class PackageXmlParser implements Parser
                 if ($element->children()) {
                     foreach ($element->children() as $child) {
                         foreach ($this->getElementPaths($child) as $elementPath) {
-                            $elementPaths[] = $name . DIRECTORY_SEPARATOR . $elementPath;
+                            $elementPaths[] = $name . '/' . $elementPath;
                         }
                     }
                 } else {
