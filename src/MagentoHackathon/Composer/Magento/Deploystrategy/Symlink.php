@@ -101,6 +101,7 @@ class Symlink extends DeploystrategyAbstract
      */
     public function getRelativePath($from, $to)
     {
+        // Can't use realpath() here since the destination doesn't exist yet
         $from = str_replace(array('/./', '//'), '/', $from);
         $from = explode('/', $from);
 
