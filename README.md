@@ -218,3 +218,53 @@ If done and installed, you are able to use the commands:
 
 ```
 
+### Custom modman package location
+
+By default all modman packages will be installed in the configured "vendor-dir" (which is "vendor" by default).
+The package name will be used as a directory path and if there is a "target-dir" configured this will also be appended.
+This results in packaged being installed in a path like this one: vendor/colinmollenhour/cm_diehard.
+
+Originally modman packages "live" in a directory called ".modman". This directory can be inside your htdocs directory,
+next to it or whereever you want it to be.
+
+If you want magento-composer-installer to install your modman packages in a custom location this can be configured like this:
+
+```json
+{
+    ...
+
+    "extra":{
+        "magento-root-dir": "htdocs/",
+        "modman-root-dir": ".modman"
+    }
+
+    ...
+}
+```
+
+Make sure the .modman directory exists before updating. There is a fallback in place that will try to find the directory
+relative to your vendor dir if it wasn't found in the first place.
+
+If your modman-root-dir configuration is not "htdocs/.modman" you'll need a ".basedir" file inside ".modman" that
+specifies where to find the htdocs folder.
+
+Currently the PHP port of modman doesn't support these alternate paths. So deploying the packages to the Magento core
+will result in invalid symlinks. And as there might be some more feautures you've been
+using in your modman configuration files that may not be supported yet, there is still a valid reason to use Colin
+Mollenhour's original script to deploy the modman packages into you Magento core instead.
+
+In this case you will not want to have the magento-composer-installer deploy the packages. So this can be disables:
+
+```json
+{
+    ...
+
+    "extra":{
+        "magento-root-dir": "htdocs/",
+        "modman-root-dir": ".modman",
+        "skip-package-deployment": true
+    }
+
+    ...
+}
+```
