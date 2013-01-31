@@ -284,7 +284,7 @@ See Usage
 ### 3. Install Magento modules via composer
 
 ```
-php ./composer.phar install
+php bin/composer.phar install
 ```
 
 
