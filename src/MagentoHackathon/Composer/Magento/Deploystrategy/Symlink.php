@@ -82,12 +82,19 @@ class Symlink extends DeploystrategyAbstract
             }
         }
 
+        // Windows doesn't allow relative symlinks
+        if (strtoupper(substr(PHP_OS, 0, 3)) !== 'WIN') {
+            $sourcePath = $this->getRelativePath($destPath, $sourcePath);
+        }
+
         // Create symlink
-        symlink($this->getRelativePath($destPath, $sourcePath), $destPath);
+        if(false === symlink($sourcePath, $destPath)) {
+            throw new \ErrorException("An error occured while creating symlink" . $sourcePath);
+        }
 
         // Check we where able to create the symlink
-        if (!is_link($destPath)) {
-            throw new \ErrorException("Could not create symlink $destPath");
+        if(false === $destPath = readlink($destPath)){
+            throw new \ErrorException("Symlink $destPath points to target $destPath");
         }
 
         return true;
