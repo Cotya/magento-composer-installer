@@ -288,7 +288,7 @@ class Installer extends LibraryInstaller implements InstallerInterface
         }
 
         // Make install path absolute. This is needed in the symlink deploy strategies.
-        if (DIRECTORY_SEPARATOR !== $installPath[0]) {
+        if (DIRECTORY_SEPARATOR !== $installPath[0] && $installPath[1] !== ':') {
             $installPath = getcwd() . "/$installPath";
         }
 
