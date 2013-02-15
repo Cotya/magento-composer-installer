@@ -3,7 +3,7 @@
 # Magento Composer Installer
 
 The purpose of this project is to enable composer to install Magento modules, and automatically integrate them into
-a Magneto installation.
+a Magento installation.
 
 There are several ways how the mapping from files in the package into the Magento source is accomplished:
 
