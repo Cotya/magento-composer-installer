@@ -49,8 +49,14 @@ abstract class AbstractTest extends \PHPUnit_Framework_TestCase
         $this->filesystem = new \Composer\Util\Filesystem();
         $this->sourceDir = sys_get_temp_dir() . DIRECTORY_SEPARATOR . "module_dir";
         $this->destDir = sys_get_temp_dir() . DIRECTORY_SEPARATOR . "magento_dir";
+
+        // ensure the source and dest dir exist but are empty
+        // For some reason on travis-ci that isn't always the case *shrug*
+        $this->filesystem->remove($this->sourceDir);
+        $this->filesystem->remove($this->destDir);
         $this->filesystem->ensureDirectoryExists($this->sourceDir);
         $this->filesystem->ensureDirectoryExists($this->destDir);
+
         $this->strategy = $this->getTestDeployStrategy($this->sourceDir, $this->destDir);
     }
 
