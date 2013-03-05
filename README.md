@@ -3,7 +3,7 @@
 # Magento Composer Installer
 
 The purpose of this project is to enable composer to install Magento modules, and automatically integrate them into
-a Magneto installation.
+a Magento installation.
 
 There are several ways how the mapping from files in the package into the Magento source is accomplished:
 
@@ -101,13 +101,13 @@ If you don't like modman files, you can define mappings in a package composer.js
       "magento-hackathon/magento-composer-installer": "*"
    },
     "extra": {
-        "map" : {
+        "map": [
             ["themes/default/skin", "public/skin/frontend/foo/default"],
             ["themes/default/design", "public/app/design/frontend/foo/default"],
             ["modules/My_Module/My_Module.xml", "public/app/etc/modules/My_Module.xml"],
             ["modules/My_Module/code", "public/app/code/local/My/Module"],
             ["modules/My_Module/frontend/layout/mymodule.xml", "public/app/design/frontend/base/default/layout/mymodule.xml"]
-        }
+        ]
     }
 }
 ```
@@ -284,7 +284,7 @@ See Usage
 ### 3. Install Magento modules via composer
 
 ```
-php ./composer.phar install
+php bin/composer.phar install
 ```
 
 
