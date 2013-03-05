@@ -52,4 +52,49 @@ class SymlinkTest extends AbstractTest
         $this->strategy->create(basename($rightFile), basename($link));
         $this->assertEquals(realpath($rightFile), realpath(dirname($rightFile) . DIRECTORY_SEPARATOR . readlink($link)));
     }
+
+    public function testTargetDirWithChildDirExists()
+    {
+        $ds = DIRECTORY_SEPARATOR;
+        $globSource = 'sourcedir/childdir';
+        $sourceContents = "$globSource/test.xml";
+        mkdir($this->sourceDir . $ds . dirname($globSource), 0777, true);
+        mkdir($this->sourceDir . $ds . $globSource, 0777, true);
+        touch($this->sourceDir . $ds . $sourceContents);
+
+        $dest = "targetdir"; // this dir should contain the target child dir
+        mkdir($this->destDir . $ds . $dest, 0777, true);
+        mkdir($this->destDir . $ds . $dest . $ds . basename($globSource), 0777, true);
+
+        $testTarget = $this->destDir . $ds . $dest . $ds . basename($globSource) . $ds . basename($sourceContents);
+
+        $this->strategy->setIsForced(false);
+        $this->setExpectedException('ErrorException', "Target targetdir/childdir already exists");
+        $this->strategy->create($globSource, $dest);
+        //passthru("tree {$this->destDir}/$dest");
+    }
+
+    public function testTargetDirWithChildDirExistsForce()
+    {
+        $ds = DIRECTORY_SEPARATOR;
+        $globSource = 'sourcedir/childdir';
+        $sourceContents = "$globSource/test.xml";
+        mkdir($this->sourceDir . $ds . dirname($globSource), 0777, true);
+        mkdir($this->sourceDir . $ds . $globSource, 0777, true);
+        touch($this->sourceDir . $ds . $sourceContents);
+
+        $dest = "targetdir"; // this dir should contain the target child dir
+        mkdir($this->destDir . $ds . $dest, 0777, true);
+        mkdir($this->destDir . $ds . $dest . $ds . basename($globSource), 0777, true);
+
+        $testTarget = $this->destDir . $ds . $dest . $ds . basename($globSource) . $ds . basename($sourceContents);
+
+        $this->strategy->setIsForced(true);
+        $this->strategy->create($globSource, $dest);
+        //passthru("tree {$this->destDir}/$dest");
+
+        $this->assertFileExists($testTarget);
+        $this->assertFileType($testTarget, self::TEST_FILETYPE_FILE);
+        $this->assertFileType(dirname($testTarget), self::TEST_FILETYPE_LINK);
+    }
 }

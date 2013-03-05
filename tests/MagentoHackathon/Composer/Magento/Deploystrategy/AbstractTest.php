@@ -184,10 +184,8 @@ abstract class AbstractTest extends \PHPUnit_Framework_TestCase
         $this->strategy->create($globSource, $dest);
         //passthru("tree {$this->destDir}/$dest");
 
-        $this->assertFileType(dirname($testTarget), self::TEST_FILETYPE_DIR);
         $this->assertFileExists($testTarget);
         $this->assertFileType($testTarget, self::TEST_FILETYPE_FILE);
-        $this->assertFileType($testTarget, $this->getTestDeployStrategyFiletype());
     }
 
     public function testGlobTargetDirDoesNotExists()
