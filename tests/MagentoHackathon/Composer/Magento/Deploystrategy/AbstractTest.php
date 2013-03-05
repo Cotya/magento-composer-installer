@@ -188,6 +188,27 @@ abstract class AbstractTest extends \PHPUnit_Framework_TestCase
         $this->assertFileType($testTarget, self::TEST_FILETYPE_FILE);
     }
 
+    public function testTargetDirWithChildDirNotExists()
+    {
+        $ds = DIRECTORY_SEPARATOR;
+        $globSource = 'sourcedir/childdir';
+        $sourceContents = "$globSource/test.xml";
+        mkdir($this->sourceDir . $ds . dirname($globSource), 0777, true);
+        mkdir($this->sourceDir . $ds . $globSource, 0777, true);
+        touch($this->sourceDir . $ds . $sourceContents);
+
+        $dest = "targetdir"; // this dir should contain the target child dir
+        mkdir($this->destDir . $ds . $dest, 0777, true);
+
+        $testTarget = $this->destDir . $ds . $dest . $ds . basename($globSource) . $ds . basename($sourceContents);
+
+        $this->strategy->create($globSource, $dest);
+        //passthru("tree {$this->destDir}/$dest");
+
+        $this->assertFileExists($testTarget);
+        $this->assertFileType($testTarget, self::TEST_FILETYPE_FILE);
+    }
+
     public function testGlobTargetDirDoesNotExists()
     {
         $globSource = "sourcedir/test.xml";
