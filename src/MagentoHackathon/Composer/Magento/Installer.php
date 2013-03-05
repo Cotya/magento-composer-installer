@@ -34,7 +34,6 @@ class Installer extends LibraryInstaller implements InstallerInterface
     /**
      * If set overrides existing files
      *
-     * @todo This is not yet implemented
      * @var bool
      */
     protected $isForced = false;
@@ -148,6 +147,8 @@ class Installer extends LibraryInstaller implements InstallerInterface
             default:
                 $impl = new \MagentoHackathon\Composer\Magento\Deploystrategy\Symlink($sourceDir, $targetDir);
         }
+        // Inject isForced setting from extra config
+        $impl->setIsForced($this->isForced);
         return $impl;
     }
 

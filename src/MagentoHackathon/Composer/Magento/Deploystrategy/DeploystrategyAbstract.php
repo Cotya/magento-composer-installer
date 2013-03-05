@@ -32,6 +32,13 @@ abstract class DeploystrategyAbstract
     protected $sourceDir;
 
     /**
+     * If set overrides existing files
+     *
+     * @var bool
+     */
+    protected $isForced = false;
+
+    /**
      * Constructor
      *
      * @param string $sourceDir
@@ -95,12 +102,21 @@ abstract class DeploystrategyAbstract
     /**
      * If set overrides existing files
      *
-     * @todo Implement method body
      * @return bool
      */
     public function isForced()
     {
-        return false;
+        return $this->isForced;
+    }
+
+    /**
+     * Setter for isForced property
+     *
+     * @param bool $forced
+     */
+    public function setIsForced($forced = true)
+    {
+        $this->isForced = (bool) $forced;
     }
 
     /**
