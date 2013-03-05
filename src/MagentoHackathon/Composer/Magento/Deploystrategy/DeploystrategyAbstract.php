@@ -288,6 +288,9 @@ abstract class DeploystrategyAbstract
      */
     public static function rmdirRecursive($dir)
     {
+        $fs = new \Composer\Util\Filesystem();
+        return $fs->removeDirectory($dir);
+        /*
         if (is_dir($dir) && ! is_link($dir)) {
 
             $iterator = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($dir),
@@ -311,6 +314,7 @@ abstract class DeploystrategyAbstract
             $result = @unlink($dir);
         }
         return $result;
+        */
     }
 
 
