@@ -166,7 +166,7 @@ abstract class AbstractTest extends \PHPUnit_Framework_TestCase
         $this->assertFileType($testTarget, $this->getTestDeployStrategyFiletype());
     }
 
-    public function testTargetDirWithChildExists()
+    public function testTargetDirWithChildDirExists()
     {
         $ds = DIRECTORY_SEPARATOR;
         $globSource = 'sourcedir/childdir';
