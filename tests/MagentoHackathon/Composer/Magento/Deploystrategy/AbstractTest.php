@@ -87,10 +87,19 @@ abstract class AbstractTest extends \PHPUnit_Framework_TestCase
                 );
         }
         if (! $result) {
-            echo "\n$file\n";
-            passthru("ls -l " . $file);
+            //echo "\n$file\n";
+            //passthru("ls -l " . $file);
+            if (is_dir($file) && ! is_link($file)) {
+                $realType = 'dir';
+            } elseif (is_link($file)) {
+                $realType = 'link';
+            } elseif (is_file($file) && ! is_link($file)) {
+                $realType = 'file';
+            } else {
+                $realType = 'unknown';
+            }
             throw new \PHPUnit_Framework_AssertionFailedError(
-              "Failed to assert that the $file is of type $type"
+              "Failed to assert that the $file is of type $type, found type $realType instead."
             );
         }
     }
@@ -154,6 +163,30 @@ abstract class AbstractTest extends \PHPUnit_Framework_TestCase
 
         $this->assertFileType(dirname($testTarget), self::TEST_FILETYPE_DIR);
         $this->assertFileExists($testTarget);
+        $this->assertFileType($testTarget, $this->getTestDeployStrategyFiletype());
+    }
+
+    public function testTargetDirWithChildExists()
+    {
+        $ds = DIRECTORY_SEPARATOR;
+        $globSource = 'sourcedir/childdir';
+        $sourceContents = "$globSource/test.xml";
+        mkdir($this->sourceDir . $ds . dirname($globSource), 0777, true);
+        mkdir($this->sourceDir . $ds . $globSource, 0777, true);
+        touch($this->sourceDir . $ds . $sourceContents);
+
+        $dest = "targetdir"; // this dir should contain the target child dir
+        mkdir($this->destDir . $ds . $dest, 0777, true);
+        mkdir($this->destDir . $ds . $dest . $ds . basename($globSource), 0777, true);
+
+        $testTarget = $this->destDir . $ds . $dest . $ds . basename($globSource) . $ds . basename($sourceContents);
+
+        $this->strategy->create($globSource, $dest);
+        //passthru("tree {$this->destDir}/$dest");
+
+        $this->assertFileType(dirname($testTarget), self::TEST_FILETYPE_DIR);
+        $this->assertFileExists($testTarget);
+        $this->assertFileType($testTarget, self::TEST_FILETYPE_FILE);
         $this->assertFileType($testTarget, $this->getTestDeployStrategyFiletype());
     }
 
