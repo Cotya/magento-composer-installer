@@ -82,7 +82,9 @@ class Link extends DeploystrategyAbstract
         foreach ($iterator as $item) {
             $subDestPath = $destPath . '/' . $iterator->getSubPathName();
             if ($item->isDir()) {
-                mkdir($subDestPath, 0777, true);
+                if (! file_exists($subDestPath)) {
+                    mkdir($subDestPath, 0777, true);
+                }
             } else {
                 link($item, $subDestPath);
             }
