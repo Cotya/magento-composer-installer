@@ -32,9 +32,26 @@ class Copy extends DeploystrategyAbstract
 
         // Handle source to dir copy,
         // e.g. Namespace_Module.csv => app/locale/de_DE/
-        if (file_exists($destPath) && is_dir($destPath)){
-            $newDest = $destPath . '/' . basename($source);
-            return $this->create($source, substr($newDest, strlen($this->getDestDir())+1));
+        // Namespace/ModuleDir => Namespace/
+        // Namespace/ModuleDir => Namespace/, but Namespace/ModuleDir may exist
+        // Namespace/ModuleDir => Namespace/ModuleDir, but ModuleDir may exist
+
+        if (file_exists($destPath) && is_dir($destPath)) {
+            if (basename($sourcePath) === basename($destPath)) {
+                // copy each child of $sourcePath into $destPath
+                foreach (new \DirectoryIterator($sourcePath) as $item) {
+                    $item = (string) $item;
+                    if (!strcmp($item, '.') || !strcmp($item, '..')) {
+                        continue;
+                    }
+                    $childSource = $source . '/' . $item;
+                    $this->create($childSource, substr($destPath, strlen($this->getDestDir())+1));
+                }
+                return true;
+            } else {
+                $destPath .= '/' . basename($source);
+                return $this->create($source, substr($destPath, strlen($this->getDestDir())+1));
+            }
         }
 
         // From now on $destPath can't be a directory, that case is already handled

@@ -32,9 +32,22 @@ class Link extends DeploystrategyAbstract
 
         // Handle source to dir link,
         // e.g. Namespace_Module.csv => app/locale/de_DE/
-        if (file_exists($destPath) && is_dir($destPath)){
-            $newDest = $destPath . '/' . basename($source);
-            return $this->create($source, substr($newDest, strlen($this->getDestDir())+1));
+        if (file_exists($destPath) && is_dir($destPath)) {
+            if (basename($sourcePath) === basename($destPath)) {
+                // copy/link each child of $sourcePath into $destPath
+                foreach (new \DirectoryIterator($sourcePath) as $item) {
+                    $item = (string) $item;
+                    if (!strcmp($item, '.') || !strcmp($item, '..')) {
+                        continue;
+                    }
+                    $childSource = $source . '/' . $item;
+                    $this->create($childSource, substr($destPath, strlen($this->getDestDir())+1));
+                }
+                return true;
+            } else {
+                $destPath .= '/' . basename($source);
+                return $this->create($source, substr($destPath, strlen($this->getDestDir())+1));
+            }
         }
 
         // From now on $destPath can't be a directory, that case is already handled
