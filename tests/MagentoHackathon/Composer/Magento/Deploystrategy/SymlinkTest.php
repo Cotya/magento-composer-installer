@@ -38,9 +38,9 @@ class SymlinkTest extends AbstractTest
 
     public function testChangeLink()
     {
-        $wrongFile = $this->sourceDir . DIRECTORY_SEPARATOR . 'wrong';
-        $rightFile = $this->sourceDir . DIRECTORY_SEPARATOR . 'right';
-        $link = $this->destDir . DIRECTORY_SEPARATOR . 'link';
+        $wrongFile = $this->sourceDir . DS . 'wrong';
+        $rightFile = $this->sourceDir . DS . 'right';
+        $link = $this->destDir . DS . 'link';
 
         touch($wrongFile);
         touch($rightFile);
@@ -50,23 +50,22 @@ class SymlinkTest extends AbstractTest
         $this->assertEquals($wrongFile, readlink($link));
 
         $this->strategy->create(basename($rightFile), basename($link));
-        $this->assertEquals(realpath($rightFile), realpath(dirname($rightFile) . DIRECTORY_SEPARATOR . readlink($link)));
+        $this->assertEquals(realpath($rightFile), realpath(dirname($rightFile) . DS . readlink($link)));
     }
 
     public function testTargetDirWithChildDirExists()
     {
-        $ds = DIRECTORY_SEPARATOR;
         $globSource = 'sourcedir/childdir';
         $sourceContents = "$globSource/test.xml";
-        mkdir($this->sourceDir . $ds . dirname($globSource), 0777, true);
-        mkdir($this->sourceDir . $ds . $globSource, 0777, true);
-        touch($this->sourceDir . $ds . $sourceContents);
+        $this->mkdir($this->sourceDir . DS . dirname($globSource));
+        $this->mkdir($this->sourceDir . DS . $globSource);
+        touch($this->sourceDir . DS . $sourceContents);
 
         $dest = "targetdir"; // this dir should contain the target child dir
-        mkdir($this->destDir . $ds . $dest, 0777, true);
-        mkdir($this->destDir . $ds . $dest . $ds . basename($globSource), 0777, true);
+        $this->mkdir($this->destDir . DS . $dest);
+        $this->mkdir($this->destDir . DS . $dest . DS . basename($globSource));
 
-        $testTarget = $this->destDir . $ds . $dest . $ds . basename($globSource) . $ds . basename($sourceContents);
+        $testTarget = $this->destDir . DS . $dest . DS . basename($globSource) . DS . basename($sourceContents);
 
         $this->strategy->setIsForced(false);
         $this->setExpectedException('ErrorException', "Target targetdir/childdir already exists");
@@ -76,18 +75,17 @@ class SymlinkTest extends AbstractTest
 
     public function testTargetDirWithChildDirExistsForce()
     {
-        $ds = DIRECTORY_SEPARATOR;
         $globSource = 'sourcedir/childdir';
         $sourceContents = "$globSource/test.xml";
-        mkdir($this->sourceDir . $ds . dirname($globSource), 0777, true);
-        mkdir($this->sourceDir . $ds . $globSource, 0777, true);
-        touch($this->sourceDir . $ds . $sourceContents);
+        $this->mkdir($this->sourceDir . DS . dirname($globSource));
+        $this->mkdir($this->sourceDir . DS . $globSource);
+        touch($this->sourceDir . DS . $sourceContents);
 
         $dest = "targetdir"; // this dir should contain the target child dir
-        mkdir($this->destDir . $ds . $dest, 0777, true);
-        mkdir($this->destDir . $ds . $dest . $ds . basename($globSource), 0777, true);
+        $this->mkdir($this->destDir . DS . $dest);
+        $this->mkdir($this->destDir . DS . $dest . DS . basename($globSource));
 
-        $testTarget = $this->destDir . $ds . $dest . $ds . basename($globSource) . $ds . basename($sourceContents);
+        $testTarget = $this->destDir . DS . $dest . DS . basename($globSource) . DS . basename($sourceContents);
 
         $this->strategy->setIsForced(true);
         $this->strategy->create($globSource, $dest);
