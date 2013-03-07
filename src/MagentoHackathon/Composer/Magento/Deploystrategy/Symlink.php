@@ -74,7 +74,7 @@ class Symlink extends DeploystrategyAbstract
                 if ($this->isForced()) {
                     $this->rmdirRecursive($destPath);
                 } else {
-                    throw new \ErrorException("Target $dest already exists");
+                    throw new \ErrorException("Target $dest already exists (set extra.magento-force to override)");
                 }
             } else {
                 $destPath .= '/' . basename($source);
@@ -90,7 +90,7 @@ class Symlink extends DeploystrategyAbstract
             if ($this->isForced()) {
                 unlink($destPath);
             } else {
-                throw new \ErrorException("Target $dest already exists and is not a symlink");
+                throw new \ErrorException("Target $dest already exists and is not a symlink (set extra.magento-force to override)");
             }
         }
 

@@ -57,7 +57,7 @@ class Link extends DeploystrategyAbstract
             if ($this->isForced()) {
                 unlink($destPath);
             } else {
-                throw new \ErrorException("Target $dest already exists");
+                throw new \ErrorException("Target $dest already exists (set extra.magento-force to override)");
             }
         }
 
