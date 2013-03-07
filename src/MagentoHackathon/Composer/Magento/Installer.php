@@ -100,7 +100,6 @@ class Installer extends LibraryInstaller implements InstallerInterface
             throw new \ErrorException("magento root dir \"{$dir}\" is not valid");
         }
 
-        // Do not use force unless you have lots of time to fix things. Untested!
         if (isset($extra['magento-force'])) {
             $this->isForced = (bool)$extra['magento-force'];
         }
