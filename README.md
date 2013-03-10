@@ -23,6 +23,7 @@ The Magento root directory must be specified in the ```composer.json``` under ``
 **NOTE:** modman's include and bash feature are currently not supported!
 
 
+
 ## Usage
 
 See below for a generic instruction on how to install composer if you aren't familiar with it.
@@ -288,3 +289,31 @@ php bin/composer.phar install
 ```
 
 
+## Further Information
+
+### External Links
+
+* [Composer How to Screencast](http://www.youtube.com/watch?v=m_yprtQiFgk)
+* [Introducing Composer Blog on Magebase.com](http://magebase.com/magento-tutorials/composer-with-magento/)
+
+### Core Contributors
+
+* Daniel Fahlke aka Flyingmana (Maintainer)
+* Jörg Weller
+* Karl Spies
+* Tobias Vogt
+* David Fuhr
+* Vinai Kopp (Maintainer)
+
+
+### Current Status of Project
+
+Complete, fully working.
+
+#### Deficiencies
+
+1. No easy support for Commercial Modules because you would require private repositories.
+
+#### Possible Enhancements
+
+1. Support additional modman features (e.g. shell, includes)
