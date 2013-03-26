@@ -113,9 +113,10 @@ If you don't like modman files, you can define mappings in a package composer.js
 }
 ```
 
-### Deploy per Copy or Hardlink
+### Deploy per Copy instead of Symlink
 
-There is a deploy per copy strategy. This is how to use it for your deploys:
+There is a deploy per copy strategy. This can only be configured in the root composer.json, it can't be configured on a per-package level.
+Here is how to use it:
 
 ```json
 {
