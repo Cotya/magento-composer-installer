@@ -235,7 +235,7 @@ abstract class AbstractTest extends \PHPUnit_Framework_TestCase
 
     public function testGlobSlashDirectoryExists()
     {
-        $globSource = "sourcedir/test.xml";
+        $globSource = "sourcedir/test1.xml";
         $this->mkdir($this->sourceDir . DS . dirname($globSource));
         touch($this->sourceDir . DS . $globSource);
 
@@ -254,7 +254,7 @@ abstract class AbstractTest extends \PHPUnit_Framework_TestCase
 
     public function testGlobSlashDirectoryDoesNotExists()
     {
-        $globSource = "sourcedir/test.xml";
+        $globSource = "sourcedir/test2.xml";
         $this->mkdir($this->sourceDir . DS . dirname($globSource));
         touch($this->sourceDir . DS . $globSource);
 
@@ -274,7 +274,7 @@ abstract class AbstractTest extends \PHPUnit_Framework_TestCase
     {
         $globSource = "sourcedir/*";
         $glob_dir = dirname($globSource);
-        $files = array('test1.xml', 'test2.xml');
+        $files = array('test3.xml', 'test4.xml');
         $this->mkdir($this->sourceDir . DS . $glob_dir);
         foreach ($files as $file) {
             touch($this->sourceDir . DS . $glob_dir . DS . $file);
@@ -301,7 +301,7 @@ abstract class AbstractTest extends \PHPUnit_Framework_TestCase
     {
         $globSource = "sourcedir/*";
         $glob_dir = dirname($globSource);
-        $files = array('test1.xml', 'test2.xml');
+        $files = array('test5.xml', 'test6.xml');
         $this->mkdir($this->sourceDir . DS . $glob_dir);
         foreach ($files as $file) {
             touch($this->sourceDir . DS . $glob_dir . DS . $file);
@@ -337,7 +337,7 @@ abstract class AbstractTest extends \PHPUnit_Framework_TestCase
             $this->setUp();
 
             list ($globSource, $dest) = $fixture;
-            $sourceDirContent = "test.xml";
+            $sourceDirContent = "test7.xml";
             $this->mkdir($this->sourceDir . DS . $globSource);
             touch($this->sourceDir . DS . $globSource . DS . $sourceDirContent);
 
@@ -369,7 +369,7 @@ abstract class AbstractTest extends \PHPUnit_Framework_TestCase
             $this->setUp();
 
             list ($globSource, $dest) = $fixture;
-            $sourceDirContent = "test.xml";
+            $sourceDirContent = "test8.xml";
             $this->mkdir($this->sourceDir . DS . $globSource);
             touch($this->sourceDir . DS . $globSource . DS . $sourceDirContent);
 
