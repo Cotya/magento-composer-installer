@@ -49,8 +49,8 @@ abstract class AbstractTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->filesystem = new \Composer\Util\Filesystem();
-        $this->sourceDir = sys_get_temp_dir() . DS . "module_dir";
-        $this->destDir = sys_get_temp_dir() . DS . "magento_dir";
+        $this->sourceDir = sys_get_temp_dir() . DS . $this->getName() . DS . "module_dir";
+        $this->destDir = sys_get_temp_dir() . DS . $this->getName() . DS . "magento_dir";
         $this->filesystem->ensureDirectoryExists($this->sourceDir);
         $this->filesystem->ensureDirectoryExists($this->destDir);
 
@@ -70,6 +70,8 @@ abstract class AbstractTest extends \PHPUnit_Framework_TestCase
     /**
      * @param string $file
      * @param string $type
+     * @throws \InvalidArgumentException
+     * @throws \PHPUnit_Framework_AssertionFailedError
      */
     public function assertFileType($file, $type)
     {
@@ -139,7 +141,7 @@ abstract class AbstractTest extends \PHPUnit_Framework_TestCase
 
     public function testCreate()
     {
-        $src = 'local.xml';
+        $src = 'local1.xml';
         $dest = 'local2.xml';
         touch($this->sourceDir . DS . $src);
         $this->assertTrue(is_readable($this->sourceDir . DS . $src));
@@ -150,7 +152,7 @@ abstract class AbstractTest extends \PHPUnit_Framework_TestCase
 
     public function testCopyDirToDir()
     {
-        $src = "hello";
+        $src = "hello1";
         $dest = "hello2";
         $this->mkdir($this->sourceDir . DS . $src);
         touch($this->sourceDir . DS . $src . DS . "local.xml");
@@ -235,7 +237,7 @@ abstract class AbstractTest extends \PHPUnit_Framework_TestCase
 
     public function testGlobSlashDirectoryExists()
     {
-        $globSource = "sourcedir/test1.xml";
+        $globSource = "sourcedir/test.xml";
         $this->mkdir($this->sourceDir . DS . dirname($globSource));
         touch($this->sourceDir . DS . $globSource);
 
@@ -254,7 +256,7 @@ abstract class AbstractTest extends \PHPUnit_Framework_TestCase
 
     public function testGlobSlashDirectoryDoesNotExists()
     {
-        $globSource = "sourcedir/test2.xml";
+        $globSource = "sourcedir/test.xml";
         $this->mkdir($this->sourceDir . DS . dirname($globSource));
         touch($this->sourceDir . DS . $globSource);
 
@@ -274,7 +276,7 @@ abstract class AbstractTest extends \PHPUnit_Framework_TestCase
     {
         $globSource = "sourcedir/*";
         $glob_dir = dirname($globSource);
-        $files = array('test3.xml', 'test4.xml');
+        $files = array('test1.xml', 'test2.xml');
         $this->mkdir($this->sourceDir . DS . $glob_dir);
         foreach ($files as $file) {
             touch($this->sourceDir . DS . $glob_dir . DS . $file);
@@ -301,7 +303,7 @@ abstract class AbstractTest extends \PHPUnit_Framework_TestCase
     {
         $globSource = "sourcedir/*";
         $glob_dir = dirname($globSource);
-        $files = array('test5.xml', 'test6.xml');
+        $files = array('test1.xml', 'test2.xml');
         $this->mkdir($this->sourceDir . DS . $glob_dir);
         foreach ($files as $file) {
             touch($this->sourceDir . DS . $glob_dir . DS . $file);
@@ -337,7 +339,7 @@ abstract class AbstractTest extends \PHPUnit_Framework_TestCase
             $this->setUp();
 
             list ($globSource, $dest) = $fixture;
-            $sourceDirContent = "test7.xml";
+            $sourceDirContent = "test.xml";
             $this->mkdir($this->sourceDir . DS . $globSource);
             touch($this->sourceDir . DS . $globSource . DS . $sourceDirContent);
 
@@ -369,7 +371,7 @@ abstract class AbstractTest extends \PHPUnit_Framework_TestCase
             $this->setUp();
 
             list ($globSource, $dest) = $fixture;
-            $sourceDirContent = "test8.xml";
+            $sourceDirContent = "test.xml";
             $this->mkdir($this->sourceDir . DS . $globSource);
             touch($this->sourceDir . DS . $globSource . DS . $sourceDirContent);
 

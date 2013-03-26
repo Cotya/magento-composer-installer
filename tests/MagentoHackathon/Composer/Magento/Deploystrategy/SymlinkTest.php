@@ -24,7 +24,7 @@ class SymlinkTest extends AbstractTest
 
     public function testClean()
     {
-        $src = 'local.xml';
+        $src = 'local1.xml';
         $dest = 'local2.xml';
         touch($this->sourceDir . DIRECTORY_SEPARATOR . $src);
         $this->assertTrue(is_readable($this->sourceDir . DIRECTORY_SEPARATOR . $src));
