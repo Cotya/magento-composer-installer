@@ -108,7 +108,7 @@ class PackageXmlParser implements Parser
         $map = array();
 
         /** @var $package SimpleXMLElement */
-        $package = simplexml_load_file($this->getFile());
+        $package = simplexml_load_file($this->getFile()->getPathname());
         if (isset($package)) {
             foreach ($package->xpath('//contents/target') as $target) {
                 try {
