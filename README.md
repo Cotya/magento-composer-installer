@@ -28,7 +28,7 @@ The Magento root directory must be specified in the ```composer.json``` under ``
 
 See below for a generic instruction on how to install composer if you aren't familiar with it.
 
-If you want to use the pubic Magento module repository, set up your root ```composer.json``` in your project like this:
+If you want to use the public Magento module repository, set up your root ```composer.json``` in your project like this:
 
 ```json
 {
