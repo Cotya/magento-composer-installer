@@ -178,7 +178,7 @@ class PackageXmlParser implements Parser
                 if ($element->children()) {
                     foreach ($element->children() as $child) {
                         foreach ($this->getElementPaths($child) as $elementPath) {
-                            $elementPaths[] = $name . '/' . $elementPath;
+                            $elementPaths[] = $name == '.' ? $elementPath : $name . '/' . $elementPath;
                         }
                     }
                 } else {
