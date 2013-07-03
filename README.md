@@ -1,6 +1,4 @@
-[![Build Status](https://travis-ci.org/magento-hackathon/magento-composer-installer.png)](https://travis-ci.org/magento-hackathon/magento-composer-installer)
-
-# Magento Composer Installer
+# Magento Composer Installer [![Build Status](https://travis-ci.org/magento-hackathon/magento-composer-installer.png)](https://travis-ci.org/magento-hackathon/magento-composer-installer)
 
 The purpose of this project is to enable composer to install Magento modules, and automatically integrate them into
 a Magento installation.
