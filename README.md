@@ -67,7 +67,7 @@ To make a Magento module installable with composer, this is how to set up the ``
 
 
 If you would like to publish your module on http://packages.firegento.com/, please fork
-https://github.com/magento-hackathon/composer-repository, add your module to the satis.jason on the master branch and
+https://github.com/magento-hackathon/composer-repository, add your module to the [satis.json](https://github.com/magento-hackathon/composer-repository/blob/master/satis.json)  on the master branch and
 open a pull request.
 
 If you want to install your module without publishing it on http://packages.firegento.com/, you can add your repository
