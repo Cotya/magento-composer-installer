@@ -1,12 +1,13 @@
 # Magento Composer Installer [![Build Status](https://travis-ci.org/magento-hackathon/magento-composer-installer.png)](https://travis-ci.org/magento-hackathon/magento-composer-installer)
 
-The purpose of this project is to enable composer to install Magento modules, and automatically integrate them into
-a Magento installation.
+The purpose of this project is to 
+enable [composer](https://github.com/composer/composer) to install Magento modules,
+and automatically integrate them into a Magento installation.
 
 There are several ways how the mapping from files in the package into the Magento source is accomplished:
 
-1. [modman](https://github.com/colinmollenhour/modman) files.
-2. Magento-Connect package.xml files
+1. [modman](https://github.com/colinmollenhour/modman) file
+2. MagentoConnect package.xml file
 3. A mapping in the composer.json
 
 As long as one of these mappings can be found, Magento modules are installable.
@@ -24,9 +25,12 @@ The Magento root directory must be specified in the ```composer.json``` under ``
 
 ## Usage
 
-See below for a generic instruction on how to install composer if you aren't familiar with it.
+See below for a [generic instruction on how to install composer](#installation-of-composer) if you aren't familiar with it.
 
-If you want to use the public Magento module repository, set up your root ```composer.json``` in your project like this:
+### Install a module in your project
+
+If you want to use [the public Magento module repository](http://packages.firegento.com),
+set up your root ```composer.json``` in your project like this:
 
 ```json
 {
@@ -44,6 +48,40 @@ If you want to use the public Magento module repository, set up your root ```com
     }
 }
 ```
+
+If you want to use a github/git/svn/etc repository, 
+set up your root ```composer.json``` in your project like this:
+
+```json
+{
+    "require": {
+        "magento-hackathon/magento-composer-installer":"*",
+        "the-vendor-name/the-module-name": "*"
+    },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/magento-hackathon/magento-composer-installer"
+        },
+        {
+            "type": "vcs",
+            "url": "the/github/or/git/or/svn/etc/repository/uri-of-the-module"
+        }
+    ],
+    "extra":{
+        "magento-root-dir": "htdocs/"
+    }
+}
+```
+Notes:
+
+1. More information about VCS repositories can be found 
+   at [getcomposer.org](http://getcomposer.org/doc/05-repositories.md#vcs)
+3. Use ```dev-master``` version for ```magento-composer-installer``` on Windows environment
+
+
+### Make a module installable with composer
+
 
 To make a Magento module installable with composer, this is how to set up the ```composer.json``` for your extension:
 
@@ -129,7 +167,7 @@ Here is how to use it:
 
 ### Trigger deploy manually
 
-Om occasions you want trigger the deploy of magento modules without the need of an update/install process.
+On occasions you want trigger the deploy of magento modules without the need of an update/install process.
 
 In short, there is an optional dependency to https://github.com/magento-hackathon/composer-command-integrator/.
 To be able to use it, you need to add to your requirements of the project.
@@ -208,7 +246,7 @@ First clone the magento-composer-installer, then install the dev-stuff:
 
 then run ```phpunit``` in project-root directory.
 
-Windows users please run ```phpunit``` with Administrator permissions.
+Note: Windows users please run ```phpunit``` with Administrator permissions.
 
 
 ### How to overwrite dependencies
@@ -255,7 +293,7 @@ and a project in VCS with existing composer.json, which is not yet on packagist.
 
 #### On Linux/Mac
 
-go to your project root directory
+Go to your project root directory and run:
 
 ```
 mkdir bin
@@ -279,7 +317,8 @@ To change the policies:
 
 ### 2. Download composer.json template
 
-See Usage
+See [Usage](#usage).
+
 
 ### 3. Install Magento modules via composer
 
