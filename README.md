@@ -206,7 +206,7 @@ First clone the magento-composer-installer, then install the dev-stuff:
 ./bin/composer.phar install --dev
 ```
 
-then run ```phpunit``` in projekt-root directory.
+then run ```phpunit``` in project-root directory.
 
 Windows users please run ```phpunit``` with Administrator permissions.
 
