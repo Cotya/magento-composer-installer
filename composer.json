@@ -33,11 +33,11 @@
         }
     ],
     "require":{
+        "composer-plugin-api":"*"
     },
     "require-dev":{
         "phpunit/phpunit":"*",
-        "composer/composer":"*",
-        "composer-plugin-api":"*"
+        "composer/composer":"*"
     },
     "suggest":{
         "magento-hackathon/composer-command-integrator":"*"
