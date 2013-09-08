@@ -33,7 +33,7 @@
         }
     ],
     "require":{
-        "composer-plugin-api":"*"
+        "composer-plugin-api": "1.0.0"
     },
     "require-dev":{
         "phpunit/phpunit":"*",
