@@ -1,10 +1,10 @@
 
 
 The Magento Composer Installer has made a great development trough the last year.
-The first commit is from 2012-10-27. Today, on the 2013-10-21 we have 303 commits from 15 different [contributors](https://github.com/magento-hackathon/magento-composer-installer/graphs/contributors)
+The first commit is from 2012-10-27. Today, on the 2013-10-21 we have 303 commits from 15 different [contributors](https://github.com/magento-hackathon/magento-composer-installer/graphs/contributors).
 On 2013-09-07 we reached our main goal with a full working magento after executing ```composer.phar install```.
 But, we still have some bugs, a nearly cruel workflow and also can not benefit from most of composers features,
-like for example a working cleanup after update/remove a module.
+like for example a working cleanup after updating/removing a module.
 
 Seeing the current development progress of magento2 it feels like a waste of time to stupidly build solutions for the
 remaining problems.  
@@ -14,8 +14,8 @@ Instead I thought about possible alternatives.
 ### Solution 1
 
 The easiest solution would be, to ignore the problems and start to look at magento2.
-Thanks to the changes of Magento much of the problems we have currently will no exist there anymore.
-We dont need to symlink and can use the modules direct from the vendor directory.
+Thanks to the changes of Magento many of the problems we have currently will not exist there anymore.
+We don't need to symlink and can use the modules directly from the vendor directory.
 
 
 voting:
@@ -26,7 +26,7 @@ voting:
 
 ### Solution 2
 
-Like Solution 1, but we create a compatibility Layer afterwards to support magento1, too.
+Like Solution 1, but we create a compatibility layer afterwards to support magento1, too.
 
 
 voting:
