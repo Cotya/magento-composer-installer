@@ -1,4 +1,3 @@
-
 The Magento Composer Installer has made a great development trough the last year.
 The first commit is from 2012-10-27. Today, on the 2013-10-21 we have 303 commits from 15 different [contributors](https://github.com/magento-hackathon/magento-composer-installer/graphs/contributors).
 On 2013-09-07 we reached our main goal with a full working magento after executing ```composer.phar install```.
@@ -75,5 +74,12 @@ Simple add a line with your name/nick and a (+) for supporting and a (-) for bee
 You can vote once on every solution. You are also allowed to write a comment or limit your vote to specific conditions.
 
 Also, I suggest to wait with voting till the 2013-10-24, because we also allow changes to the subjects we vote about :)
+
+
+# Discussion
+
+Vinai: I think its too early to focus on Magento 2 exclusively. Even when it is released, it will be years where Magento 1 still should be supported.
+I don't think even new projects will be built on Magento 2 for about a year from now, assuming that the release date of earliy 2014 is kept.
+
 
 
