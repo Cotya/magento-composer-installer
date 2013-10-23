@@ -1,4 +1,3 @@
-
 # Solution 3 Draft
 
 
@@ -84,4 +83,6 @@ Similar for the other Design parts.
 its not possible anymore to overwrite classes by creating a class with same name in code/local.
 Codepools in general will not work.
 
+Probably the Magento compiler and the backup tool will need additional work to be able to work with the class files from other locations the the code-pools and lib.
+Of course it can be argued if they should be used at all, but I in practice they are used, so they should probably be supported, too.
 
