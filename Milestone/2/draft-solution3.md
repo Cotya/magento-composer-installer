@@ -32,7 +32,7 @@
             "module-etc":   "src/app/code/community/vendor-name/module-name/etc",
             "module-xml":   "src/etc/modules/something.xml",
             "admin-design": "src/app/design/adminhtml/default/something",
-            "design:        "src/app/design/frontend/default/something",
+            "design":       "src/app/design/frontend/default/something",
             "admin-skin":   "src/skin/adminhtml/default/something",
             "skin":         "src/skin/frontend/default/something",
             "js":           "src/js"
