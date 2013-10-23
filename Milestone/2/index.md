@@ -56,6 +56,9 @@ design gets a bit tricky, but with a few changes to magento they should also be 
 In the end this should be easily transferable to magento2
 
 Question (vinai): do you have some proof-of-concept code you could share? I would like to know more about your thoughts on this before casting my vote.
+Answer (Flyingmana): 
+I have a few out of context code snippets which play with the directory structure in general,
+but for this topic only a concept which i will explain a bit more in [draft-solution3.md](draft-solution3.md).
 
 
 voting:
