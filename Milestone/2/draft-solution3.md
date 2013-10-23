@@ -26,10 +26,10 @@
     },
     "require": {
         "magento-hackathon/magento-composer-installer": "*"
-    }
+    },
     "extra":{
         "magento-meta": [
-            "module-etc"    "src/app/code/community/vendor-name/module-name/etc"
+            "module-etc"    "src/app/code/community/vendor-name/module-name/etc",
             "module-xml"    "src/etc/modules/something.xml",
             "admin-design"  "src/app/design/adminhtml/default/something"
             "design"        "src/app/design/frontend/default/something"
