@@ -21,7 +21,7 @@
             "email":"author@example.com"
         }
     ],
-    autoload":{
+    "autoload":{
         "classmap": ["src/"]
     },
     "require": {
