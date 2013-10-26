@@ -1,0 +1,18 @@
+{
+	"require": {
+		"fbrnc/aoe_templatehints": "*",
+		"fbrnc/aoe_profiler": "dev-master",
+		"firegento/psr0autoloader": "dev-master",
+		"firegento/magesetup": "*"
+	},
+	"repositories": [
+		{
+			"type": "composer",
+			"url": "http://packages.firegento.com"
+		}
+	],
+	"extra":{
+		"magento-deploystrategy": "symlink",
+		"magento-root-dir": "../htdocs/"
+	}
+}

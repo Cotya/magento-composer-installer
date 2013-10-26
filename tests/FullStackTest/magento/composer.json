@@ -1,0 +1,16 @@
+{
+	"require": {
+		"connect20/mage_all_latest": "*"
+	},
+	"repositories": [
+		{
+			"type": "composer",
+			"url": "http://packages.firegento.com"
+		}
+	],
+	"extra":{
+		"magento-deploystrategy": "copy",
+		"magento-force": "override",
+		"magento-root-dir": "../htdocs/"
+	}
+}

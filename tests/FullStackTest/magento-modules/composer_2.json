@@ -1,0 +1,14 @@
+{
+	"require": {
+	},
+	"repositories": [
+		{
+			"type": "composer",
+			"url": "http://packages.firegento.com"
+		}
+	],
+	"extra":{
+		"magento-deploystrategy": "symlink",
+		"magento-root-dir": "../htdocs/"
+	}
+}
