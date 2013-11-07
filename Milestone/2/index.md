@@ -77,8 +77,6 @@ everyone should feel free to vote on this.
 Simple add a line with your name/nick and a (+) for supporting and a (-) for beeing against it.
 You can vote once on every solution. You are also allowed to write a comment or limit your vote to specific conditions.
 
-Also, I suggest to wait with voting till the 2013-10-24, because we also allow changes to the subjects we vote about :)
-
 
 # Discussion
 
