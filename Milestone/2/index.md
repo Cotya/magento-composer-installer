@@ -83,5 +83,8 @@ You can vote once on every solution. You are also allowed to write a comment or 
 Vinai: I think its too early to focus on Magento 2 exclusively. Even when it is released, it will be years where Magento 1 still should be supported.
 I don't think even new projects will be built on Magento 2 for about a year from now, assuming that the release date of earliy 2014 is kept.
 
-
+avstudnitz: I am of the same opinion like vinai: it's too early to support magento 2 yet. At the moment, 
+what I'd like to see most is improving workflow, fixing of bugs, supporting more of composer's functionality, 
+perhaps supporting different deployment methods in a single composer.json, things like that. All in all, I am 
+very content with the composer integration as it is now.
 
