@@ -72,6 +72,8 @@ class Installer extends LibraryInstaller implements InstallerInterface
         parent::__construct($io, $composer, $type);
         $this->initializeVendorDir();
 
+        $this->annoy( $io );
+
         $extra = $composer->getPackage()->getExtra();
 
         if (isset($extra['magento-root-dir'])) {
@@ -293,5 +295,19 @@ class Installer extends LibraryInstaller implements InstallerInterface
         }
 
         return $installPath;
+    }
+
+    /**
+     * this function is for annoying people with messages.
+     * 
+     * First usage: get people to vote about the future release of composer so later I can say "you wanted it this way"
+     * 
+     * @param IOInterface $io
+     */
+    public function annoy(IOInterface $io)
+    {
+        $io->write('<comment> time for voting about the future of the #magento #composer installer. </comment>', true);
+        $io->write('<comment> https://github.com/magento-hackathon/magento-composer-installer/blob/discussion-master/Milestone/2/index.md </comment>', true);
+        $io->write('<error> For the case you don\'t vote, I will ignore your problems till iam finished with the resulting release. </error>', true);
     }
 }
