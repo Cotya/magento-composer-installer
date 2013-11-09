@@ -1,7 +1,7 @@
 {
 	"require": {
 		"fbrnc/aoe_templatehints": "*",
-		"fbrnc/aoe_profiler": "dev-master",
+		"fbrnc/aoe_profiler": "*",
 		"firegento/psr0autoloader": "dev-master",
 		"firegento/magesetup": "*"
 	},
