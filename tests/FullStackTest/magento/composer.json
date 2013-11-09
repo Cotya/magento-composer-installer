@@ -1,5 +1,6 @@
 {
 	"require": {
+		"magento-hackathon/magento-composer-installer": "*",
 		"connect20/mage_all_latest": "*"
 	},
 	"repositories": [

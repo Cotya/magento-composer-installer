@@ -2,6 +2,7 @@
 	"require": {
 		"fbrnc/aoe_templatehints": "*",
 		"fbrnc/aoe_profiler": "*",
+		"magento-hackathon/magento-composer-installer": "*",
 		"firegento/psr0autoloader": "dev-master",
 		"firegento/magesetup": "*"
 	},
