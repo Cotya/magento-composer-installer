@@ -5,6 +5,10 @@
 		"firegento/psr0autoloader": "dev-master",
 		"firegento/magesetup": "*"
 	},
+	"require-dev": {
+		"magento-hackathon/composer-command-integrator": "*",
+		"composer/composer": "dev-master"
+	},
 	"repositories": [
 		{
 			"type": "composer",
