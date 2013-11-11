@@ -85,3 +85,7 @@ I don't think even new projects will be built on Magento 2 for about a year from
 
 
 
+nhp: I think Option 2 would be viable, because imho it it way to soon for option 1, like vinai and avstudnitz already said, it will take some time
+for magento 2 to get going and become widely used. Option 3 sounds very nice and most like "the composer way" and i have ssen it working in other projects
+but i could imagine, that the changes to magento could be more than anybody that wants updateability could accept.
+
