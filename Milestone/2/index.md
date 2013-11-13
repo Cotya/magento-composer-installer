@@ -21,7 +21,7 @@ We don't need to symlink and can use the modules directly from the vendor direct
 voting:
 
 * Flyingmana (+)
-* 
+* bragento (-)
 * 
 
 ### Solution 2
@@ -32,7 +32,7 @@ Like Solution 1, but we create a compatibility layer afterwards to support magen
 voting:
 
 * Flyingmana (+)
-* 
+* bragento (+)
 * 
 
 ### Solution 3
@@ -88,3 +88,6 @@ what I'd like to see most is improving workflow, fixing of bugs, supporting more
 perhaps supporting different deployment methods in a single composer.json, things like that. All in all, I am 
 very content with the composer integration as it is now.
 
+bragento: You shouldn't exclude Magento 1 in any case. The community is just embracing the Idea of using the Composer for Magento projects and should be able to rely on the Composer Installer in the near future.
+Even when customers start switching to Magento 2, some customers won't be willing to do so anytime soon. As we are working towards standartizing our deployment processes throughout all releases, we would much appreciate to keep the same (or at least a simmilar) workflow.
+Of course you could always start working on a magento2-composer-installer whilst sharing parts of the package with the magento1 version and optimizing other parts for Magento 2.
