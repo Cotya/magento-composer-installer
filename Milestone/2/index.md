@@ -21,7 +21,7 @@ We don't need to symlink and can use the modules directly from the vendor direct
 voting:
 
 * Flyingmana (+)
-* 
+* bragento (-)
 * 
 
 ### Solution 2
@@ -32,7 +32,7 @@ Like Solution 1, but we create a compatibility layer afterwards to support magen
 voting:
 
 * Flyingmana (+)
-* 
+* bragento (+)
 * 
 
 ### Solution 3
@@ -83,9 +83,19 @@ You can vote once on every solution. You are also allowed to write a comment or 
 Vinai: I think its too early to focus on Magento 2 exclusively. Even when it is released, it will be years where Magento 1 still should be supported.
 I don't think even new projects will be built on Magento 2 for about a year from now, assuming that the release date of earliy 2014 is kept.
 
-
+avstudnitz: I am of the same opinion like vinai: it's too early to support magento 2 yet. At the moment, 
+what I'd like to see most is improving workflow, fixing of bugs, supporting more of composer's functionality, 
+perhaps supporting different deployment methods in a single composer.json, things like that. All in all, I am 
+very content with the composer integration as it is now.
 
 nhp: I think Option 2 would be viable, because imho it it way to soon for option 1, like vinai and avstudnitz already said, it will take some time
 for magento 2 to get going and become widely used. Option 3 sounds very nice and most like "the composer way" and i have ssen it working in other projects
 but i could imagine, that the changes to magento could be more than anybody that wants updateability could accept.
+
+bragento: You shouldn't exclude Magento 1 in any case. The community is just embracing the Idea of using the Composer for Magento projects and should be able to rely on the Composer Installer in the near future.
+Even when customers start switching to Magento 2, some customers won't be willing to do so anytime soon. As we are working towards standartizing our deployment processes throughout all releases, we would much appreciate to keep the same (or at least a simmilar) workflow.
+Of course you could always start working on a magento2-composer-installer whilst sharing parts of the package with the magento1 version and optimizing other parts for Magento 2.
+
+
+
 
