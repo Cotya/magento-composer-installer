@@ -23,6 +23,7 @@ voting:
 * Flyingmana (+)
 * bragento (-)
 * Rud5G (-)
+* therouv (-)
 * 
 
 ### Solution 2
@@ -35,7 +36,8 @@ voting:
 * Flyingmana (+)
 * bragento (+)
 * Rud5G (+)
-* 
+* therouv (+)
+*
 
 ### Solution 3
 
