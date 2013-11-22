@@ -26,7 +26,7 @@ voting:
 * therouv (-)
 * joshribakoff (-)
 * diglin (-)
-* 
+* gperriard (-)
 
 ### Solution 2
 
@@ -42,7 +42,7 @@ voting:
 * jasperdecbe (+)
 * joshribakoff (+)
 * diglin (+)
-* 
+* gperriard (+)
 
 ### Solution 3
 
