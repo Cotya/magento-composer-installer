@@ -37,7 +37,8 @@ voting:
 * bragento (+)
 * Rud5G (+)
 * therouv (+)
-*
+* jasperdecbe (+)
+* 
 
 ### Solution 3
 
