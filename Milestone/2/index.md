@@ -42,6 +42,7 @@ voting:
 * jasperdecbe (+)
 * joshribakoff (+)
 * diglin (+)
+* kalenjordan (+)
 * 
 
 ### Solution 3
