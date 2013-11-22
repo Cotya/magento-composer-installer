@@ -70,7 +70,7 @@ but for this topic only a concept which i will explain a bit more in [draft-solu
 voting:
 
 * Flyingmana (+) - under the condition, we get 30 positive votes on this 
-* 
+* Rud5G(+) - for the implementation of composer features
 * 
 
 
