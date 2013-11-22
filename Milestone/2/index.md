@@ -24,6 +24,8 @@ voting:
 * bragento (-)
 * Rud5G (-)
 * therouv (-)
+* joshribakoff (-)
+* diglin (-)
 * 
 
 ### Solution 2
@@ -38,6 +40,8 @@ voting:
 * Rud5G (+)
 * therouv (+)
 * jasperdecbe (+)
+* joshribakoff (+)
+* diglin (+)
 * 
 
 ### Solution 3
@@ -71,6 +75,8 @@ voting:
 
 * Flyingmana (+) - under the condition, we get 30 positive votes on this 
 * Rud5G(+) - for the implementation of composer features
+* joshribakoff (-) - isn't something ideal for end user distribution.
+* diglin (+)
 * 
 
 
