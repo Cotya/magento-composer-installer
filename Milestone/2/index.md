@@ -26,6 +26,7 @@ voting:
 * therouv (-)
 * joshribakoff (-)
 * diglin (-)
+* vinai (+) (under the condition that solution 3 is implemented for Magento 1)
 * 
 
 ### Solution 2
@@ -43,6 +44,7 @@ voting:
 * joshribakoff (+)
 * diglin (+)
 * kalenjordan (+)
+* vinai (-) (I prefer solution 3 for Magento 1 composer availability)
 * 
 
 ### Solution 3
@@ -78,6 +80,7 @@ voting:
 * Rud5G(+) - for the implementation of composer features
 * joshribakoff (-) - isn't something ideal for end user distribution.
 * diglin (+)
+* vinai (+)
 * 
 
 
