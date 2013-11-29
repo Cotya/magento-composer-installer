@@ -28,6 +28,7 @@ voting:
 * diglin (-)
 * vinai (+) (under the condition that solution 3 is implemented for Magento 1)
 * gperriard (-)
+* ajbonner(+)
 * 
 
 ### Solution 2
@@ -47,6 +48,7 @@ voting:
 * kalenjordan (+)
 * vinai (-) (I prefer solution 3 for Magento 1 composer availability)
 * gperriard (+)
+* ajbonner (-)
 * 
 
 ### Solution 3
@@ -83,6 +85,7 @@ voting:
 * joshribakoff (-) - isn't something ideal for end user distribution.
 * diglin (+)
 * vinai (+)
+* ajbonner (-) 
 * 
 
 
@@ -114,3 +117,10 @@ Even when customers start switching to Magento 2, some customers won't be willin
 Of course you could always start working on a magento2-composer-installer whilst sharing parts of the package with the magento1 version and optimizing other parts for Magento 2.
 
 maderlock: I'm with avstudnitz. There are parts of the current integration that I like more than option 3 even if given a free choice. For exampkle, having symlinks into the code folders lets me see at a glance what is installed, and those of my team less used to composer can work more or less as they used to. I have therefore not voted, as my vote would be for option 4: continue support of version 1 in a similar vein to at present.
+
+ajbonner: First thing, I don't like the idea of trying to support magento 1 & 2 within the same tool. As mentioned magento 2 fixes a lot of the problems that make composer integration hard and I think it will needlessly complicate the codebase. I feel there should be a composer installer for mage 1, and a version for mage 2, they can share some code, but they ultimately should be two different projects. As per the above comments, I can't see Magento 1 going anywhere anytime soon. I know my company wont adopt magento 2 anytime soon and large e-tailers are not going to be able/want to move quickly to mage2. Composer and composer installer offer such big wins for managing dependencies that it would be a shame too if development simple ceased or slowed down for it in favour of mage 2. So I hope that the problems that exist within composer installer can be looked at as it will benefit more people in the medium term that work that benefits mage 2.
+
+
+
+
+
