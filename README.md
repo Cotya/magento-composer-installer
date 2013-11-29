@@ -129,6 +129,38 @@ More information can be found at
 http://getcomposer.org/doc/05-repositories.md#vcs
 
 
+### Change the Vendor/Name of your Module
+
+sometimes it will happen, that you change the name or the vendor of a package.
+For example you developed a module in your own namespace and later moved it to an organization, or you moved it
+from one to another organization.
+In this cases you should change your ```composer.json``` a bit to make it for users easier.
+Look for the ```replace``` statement
+
+
+```json
+{
+    "name": "your-new-vendor-name/module-name",
+    "type": "magento-module",
+    "license":"OSL-3.0",
+    "description":"A short one line description of your module",
+    "authors":[
+        {
+            "name":"Author Name",
+            "email":"author@example.com"
+        }
+    ],
+    "require": {
+        "magento-hackathon/magento-composer-installer": "*"
+    }
+    "replace": {
+        "your-vendor-name/module-name":"*"
+    }
+}
+```
+
+
+
 ### Mapping per JSON
 If you don't like modman files, you can define mappings in a package composer.json file instead.
 
