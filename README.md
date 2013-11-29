@@ -4,6 +4,8 @@ The purpose of this project is to
 enable [composer](https://github.com/composer/composer) to install Magento modules,
 and automatically integrate them into a Magento installation.
 
+We strongly recommend you to also read the general composer documentations on [getcomposer.org](http://getcomposer.org) 
+
 There are several ways how the mapping from files in the package into the Magento source is accomplished:
 
 1. [modman](https://github.com/colinmollenhour/modman) file
@@ -19,7 +21,7 @@ A repository of composer ready Magento modules can be found on http://packages.f
 
 The Magento root directory must be specified in the ```composer.json``` under ```extra.magento-root-dir```.
 
-**NOTE:** modman's include and bash feature are currently not supported!
+**NOTE:** modman's include and bash feature will never get supported!
 
 
 
