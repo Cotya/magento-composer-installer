@@ -111,6 +111,4 @@ bragento: You shouldn't exclude Magento 1 in any case. The community is just emb
 Even when customers start switching to Magento 2, some customers won't be willing to do so anytime soon. As we are working towards standartizing our deployment processes throughout all releases, we would much appreciate to keep the same (or at least a simmilar) workflow.
 Of course you could always start working on a magento2-composer-installer whilst sharing parts of the package with the magento1 version and optimizing other parts for Magento 2.
 
-
-
-
+maderlock: I'm with avstudnitz. There are parts of the current integration that I like more than option 3 even if given a free choice. For exampkle, having symlinks into the code folders lets me see at a glance what is installed, and those of my team less used to composer can work more or less as they used to. I have therefore not voted, as my vote would be for option 4: continue support of version 1 in a similar vein to at present.
