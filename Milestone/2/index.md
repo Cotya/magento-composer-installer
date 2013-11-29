@@ -27,6 +27,7 @@ voting:
 * joshribakoff (-)
 * diglin (-)
 * vinai (+) (under the condition that solution 3 is implemented for Magento 1)
+* gperriard (-)
 * 
 
 ### Solution 2
@@ -45,6 +46,7 @@ voting:
 * diglin (+)
 * kalenjordan (+)
 * vinai (-) (I prefer solution 3 for Magento 1 composer availability)
+* gperriard (+)
 * 
 
 ### Solution 3
