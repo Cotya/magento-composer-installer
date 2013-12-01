@@ -382,7 +382,4 @@ php bin/composer.phar install
 
 Complete, fully working.
 
-#### Deficiencies
-
-1. No easy support for Commercial Modules because you would require private repositories.
 
