@@ -383,3 +383,18 @@ php bin/composer.phar install
 Complete, fully working.
 
 
+### support contacts
+
+* irc: freenode the channels #magento #magento-composer and for german speaking people #magento-de 
+
+
+If you need training or help to introduce Composer into your companies workflow,
+you have the chance to hire one of the following people/companies.
+
+* Daniel Fahlke aka Flyingmana (Maintainer): flyingmana@googlemail.com
+* Your Name here
+* Your Name here
+* Your Company Name here
+* Your Company Name here
+
+
