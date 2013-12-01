@@ -386,6 +386,3 @@ Complete, fully working.
 
 1. No easy support for Commercial Modules because you would require private repositories.
 
-#### Possible Enhancements
-
-1. Support additional modman features (e.g. shell, includes)
