@@ -306,8 +306,15 @@ class Installer extends LibraryInstaller implements InstallerInterface
      */
     public function annoy(IOInterface $io)
     {
+
+        /**
+         * No <error> in future, as some people look for error lines inside of CI Applications, which annoys them 
+         */
+        /*
         $io->write('<comment> time for voting about the future of the #magento #composer installer. </comment>', true);
         $io->write('<comment> https://github.com/magento-hackathon/magento-composer-installer/blob/discussion-master/Milestone/2/index.md </comment>', true);
         $io->write('<error> For the case you don\'t vote, I will ignore your problems till iam finished with the resulting release. </error>', true);
+         * 
+         **/
     }
 }
