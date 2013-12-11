@@ -31,6 +31,7 @@ voting:
 * ajbonner(+)
 * brenbl(-)
 * SchumacherFM(+)
+* pbrouwers (-)
 *
 
 ### Solution 2
@@ -53,6 +54,7 @@ voting:
 * ajbonner (-)
 * brenbl (-)
 * SchumacherFM (-)
+* pbrouwers (+)
 *
 
 ### Solution 3
