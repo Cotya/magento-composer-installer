@@ -370,7 +370,7 @@ class Installer extends LibraryInstaller implements InstallerInterface
      * this function is for annoying people with messages.
      *
      * First usage: get people to vote about the future release of composer so later I can say "you wanted it this way"
-     *
+     * 
      * @param IOInterface $io
      */
     public function annoy(IOInterface $io)

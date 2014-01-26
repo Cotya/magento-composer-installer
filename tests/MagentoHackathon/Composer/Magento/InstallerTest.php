@@ -52,8 +52,8 @@ class InstallerTest extends \PHPUnit_Framework_TestCase
         ));
 
         $this->dm = $this->getMockBuilder('Composer\Downloader\DownloadManager')
-            ->disableOriginalConstructor()
-            ->getMock();
+               ->disableOriginalConstructor()
+               ->getMock();
         $this->composer->setDownloadManager($this->dm);
 
         $this->repository = $this->getMock('Composer\Repository\InstalledRepositoryInterface');
@@ -73,13 +73,13 @@ class InstallerTest extends \PHPUnit_Framework_TestCase
     {
         //$package= $this->getMockBuilder('Composer\Package\RootPackageInterface')
         $package = $this->getMockBuilder('Composer\Package\RootPackage')
-            ->setConstructorArgs(array(md5(rand()), '1.0.0.0', '1.0.0'))
-            ->getMock();
+                ->setConstructorArgs(array(md5(rand()), '1.0.0.0', '1.0.0'))
+                ->getMock();
         $extraData = array_merge(array('magento-root-dir' => $this->magentoDir), $extra);
 
         $package->expects($this->any())
-            ->method('getExtra')
-            ->will($this->returnValue($extraData));
+                ->method('getExtra')
+                ->will($this->returnValue($extraData));
 
         return $package;
     }
