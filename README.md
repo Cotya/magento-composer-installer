@@ -268,7 +268,26 @@ magento-composer-installer deploy the packages. So this can be disabled:
     ...
 }
 ```
+### Auto add files to .gitignore
 
+If you want to have the deployed files automatically added to your .gitignore file, then you can can just set the `auto-append-gitignore` key to true:
+
+```json
+{
+    ...
+    "extra":{
+        "magento-root-dir": "htdocs/",
+        auto-append-gitignore": true
+    }
+    ...
+}
+```
+
+The `.gitignore` file will be loaded from the current directory, and if it does not exist, it will be created. Every set of module files, will have a comment above them
+describing the module name for clarity.
+
+Multiple deploys will not add additional lines to your .gitignore, they will only ever be added once.
+ 
 
 ### Testing
 

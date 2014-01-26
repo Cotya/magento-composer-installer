@@ -60,6 +60,13 @@ class Installer extends LibraryInstaller implements InstallerInterface
     protected $_deployStrategy = "symlink";
 
     /**
+     * If set the deployed files will be added to the projects .gitignore file
+     *
+     * @var bool
+     */
+    protected $appendGitIgnore = false;
+
+    /**
      * Initializes Magento Module installer
      *
      * @param \Composer\IO\IOInterface $io
@@ -113,6 +120,11 @@ class Installer extends LibraryInstaller implements InstallerInterface
         if (!empty($extra['skip-package-deployment'])) {
             $this->skipPackageDeployment = true;
         }
+
+        if (!empty($extra['auto-append-gitignore'])) {
+            $this->appendGitIgnore = true;
+        }
+
     }
 
     /**
@@ -202,6 +214,58 @@ class Installer extends LibraryInstaller implements InstallerInterface
             $strategy->setMappings($this->getParser($package)->getMappings());
             $strategy->deploy();
         }
+
+        if ($this->appendGitIgnore) {
+            $this->appendGitIgnore($package, $this->getGitIgnoreFileLocation());
+        }
+    }
+
+    /**
+     * Get .gitignore file location
+     *
+     * @return string
+     */
+    public function getGitIgnoreFileLocation()
+    {
+        $ignoreFile = realpath('.gitignore');
+
+        if(false == $ignoreFile) {
+            $ignoreFile = realpath('.') . '/.gitignore';
+        }
+
+        return $ignoreFile;
+    }
+
+    /**
+     * Add all the files which are to be deployed
+     * to the .gitignore file, if it doesn't
+     * exist then create a new one
+     *
+     * @param PackageInterface $package
+     * @param string $ignoreFile
+     */
+    public function appendGitIgnore(PackageInterface $package, $ignoreFile)
+    {
+        $contents = array();
+        if(file_exists($ignoreFile)) {
+            $contents = file($ignoreFile, FILE_IGNORE_NEW_LINES);
+        }
+
+        $additions = array();
+        foreach($this->getParser($package)->getMappings() as $map) {
+            $dest   = $map[1];
+            $ignore = sprintf("%s/%s", basename($this->getTargetDir()), $dest);
+            if(!in_array($ignore, $contents)) {
+                $additions[] = $ignore;
+            }
+        }
+
+        if(!empty($additions)) {
+            array_unshift($additions, '#' . $package->getName());
+            $contents = array_merge($contents, $additions);
+            file_put_contents($ignoreFile, implode("\n", $contents));
+        }
+
     }
 
     /**
@@ -229,6 +293,10 @@ class Installer extends LibraryInstaller implements InstallerInterface
             $targetStrategy->setMappings($this->getParser($target)->getMappings());
             $targetStrategy->deploy();
         }
+
+        if($this->appendGitIgnore) {
+            $this->appendGitIgnore($target, $this->getGitIgnoreFileLocation());
+        }
     }
 
     /**
@@ -253,6 +321,7 @@ class Installer extends LibraryInstaller implements InstallerInterface
      *
      * @param PackageInterface $package
      * @return Parser
+     * @throws \ErrorException
      */
     public function getParser(PackageInterface $package)
     {
@@ -299,16 +368,16 @@ class Installer extends LibraryInstaller implements InstallerInterface
 
     /**
      * this function is for annoying people with messages.
-     * 
+     *
      * First usage: get people to vote about the future release of composer so later I can say "you wanted it this way"
-     * 
+     *
      * @param IOInterface $io
      */
     public function annoy(IOInterface $io)
     {
 
         /**
-         * No <error> in future, as some people look for error lines inside of CI Applications, which annoys them 
+         * No <error> in future, as some people look for error lines inside of CI Applications, which annoys them
          */
         /*
         $io->write('<comment> time for voting about the future of the #magento #composer installer. </comment>', true);
