@@ -5,18 +5,20 @@
 
 namespace MagentoHackathon\Composer\Magento;
 
-class MapParser implements Parser {
+class MapParser extends PathTranslationParser {
 
     protected $_mappings = array();
 
-    function __construct( $mappings )
+    function __construct( $mappings, $translations = array() )
     {
+        parent::__construct($translations);
+
         $this->setMappings($mappings);
     }
 
     public function setMappings($mappings)
     {
-        $this->_mappings = $mappings;
+        $this->_mappings = $this->translatePathMappings($mappings);
     }
 
     public function getMappings()

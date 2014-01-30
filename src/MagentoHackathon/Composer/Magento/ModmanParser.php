@@ -8,7 +8,7 @@ namespace MagentoHackathon\Composer\Magento;
 /**
  * Parsers modman files
  */
-class ModmanParser implements Parser
+class ModmanParser extends PathTranslationParser
 {
     /**
      * @var string Path to vendor module dir
@@ -25,8 +25,10 @@ class ModmanParser implements Parser
      *
      * @param string $moduleDir
      */
-    public function __construct($moduleDir = null)
+    public function __construct($moduleDir = null, $translations = array())
     {
+        parent::__construct($translations);
+
         $this->setModuleDir($moduleDir);
         $this->setFile($this->getModmanFile());
     }
@@ -102,6 +104,7 @@ class ModmanParser implements Parser
         }
 
         $map = $this->_parseMappings();
+        $map = $this->translatePathMappings($map);
         return $map;
     }
 

@@ -136,4 +136,115 @@ class InstallerTest extends \PHPUnit_Framework_TestCase
 
         $this->assertInstanceOf('MagentoHackathon\Composer\Magento\MapParser', $this->object->getParser($package));
     }
+
+    /*
+     * Test that path mapping translation code doesn't have any effect when no
+     * translations are specified.
+     */
+
+    protected function createPathMappingTranslationMock()
+    {
+        return $this->createPackageMock(
+            array(
+                'map' => array(
+                    array('src/app/etc/modules/Example_Name.xml',   'app/etc/modules/Example_Name.xml'),
+                    array('src/app/code/community/Example/Name',    'app/code/community/Example/Name'),
+                    array('src/skin',                               'skin/frontend/default/default/examplename'),
+                    array('src/js',                                 'js/examplename'),
+                    array('src/media/images',                       'media/examplename_images'),
+                    array('src2/skin',                              './skin/frontend/default/default/examplename'),
+                    array('src2/js',                                './js/examplename'),
+                    array('src2/media/images',                      './media/examplename_images'),
+                )
+            )
+        );
+    }
+
+    /**
+     * @covers MagentoHackathon\Composer\Magento\Installer::getMappings
+     */
+    public function testEtcPathMappingTranslation()
+    {
+        $package = $this->createPathMappingTranslationMock();
+        $mappings = $this->object->getParser($package)->getMappings();
+
+        $this->assertContains(array('src/app/etc/modules/Example_Name.xml', 'app/etc/modules/Example_Name.xml'), $mappings);
+    }
+
+    /**
+     * @covers MagentoHackathon\Composer\Magento\Installer::getMappings
+     */
+    public function testCodePathMappingTranslation()
+    {
+        $package = $this->createPathMappingTranslationMock();
+        $mappings = $this->object->getParser($package)->getMappings();
+
+        $this->assertContains(array('src/app/code/community/Example/Name', 'app/code/community/Example/Name'), $mappings);
+    }
+
+    /**
+     * @covers MagentoHackathon\Composer\Magento\Installer::getMappings
+     */
+    public function testJSPathMappingTranslation()
+    {
+        $package = $this->createPathMappingTranslationMock();
+        $mappings = $this->object->getParser($package)->getMappings();
+
+        $this->assertContains(array('src/js', 'js/examplename'), $mappings);
+    }
+
+    /**
+     * @covers MagentoHackathon\Composer\Magento\Installer::getMappings
+     */
+    public function testSkinPathMappingTranslation()
+    {
+        $package = $this->createPathMappingTranslationMock();
+        $mappings = $this->object->getParser($package)->getMappings();
+
+        $this->assertContains(array('src/skin', 'skin/frontend/default/default/examplename'), $mappings);
+    }
+
+    /**
+     * @covers MagentoHackathon\Composer\Magento\Installer::getMappings
+     */
+    public function testMediaPathMappingTranslation()
+    {
+        $package = $this->createPathMappingTranslationMock();
+        $mappings = $this->object->getParser($package)->getMappings();
+
+        $this->assertContains(array('src/media/images', 'media/examplename_images'), $mappings);
+    }
+
+    /**
+     * @covers MagentoHackathon\Composer\Magento\Installer::getMappings
+     */
+    public function testJSPathMappingTranslation2()
+    {
+        $package = $this->createPathMappingTranslationMock();
+        $mappings = $this->object->getParser($package)->getMappings();
+
+        $this->assertContains(array('src2/js', './js/examplename'),$mappings);
+    }
+
+    /**
+     * @covers MagentoHackathon\Composer\Magento\Installer::getMappings
+     */
+    public function testSkinPathMappingTranslation2()
+    {
+        $package = $this->createPathMappingTranslationMock();
+        $mappings = $this->object->getParser($package)->getMappings();
+
+        $this->assertContains(array('src2/skin', './skin/frontend/default/default/examplename'), $mappings);
+    }
+
+    /**
+     * @covers MagentoHackathon\Composer\Magento\Installer::getMappings
+     */
+    public function testMediaPathMappingTranslation2()
+    {
+        $package = $this->createPathMappingTranslationMock();
+        $mappings = $this->object->getParser($package)->getMappings();
+
+        $this->assertContains(array('src2/media/images', './media/examplename_images'), $mappings);
+    }
 }
