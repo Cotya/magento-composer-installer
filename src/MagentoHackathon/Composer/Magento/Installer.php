@@ -97,6 +97,10 @@ class Installer extends LibraryInstaller implements InstallerInterface
             $this->modmanRootDir = new \SplFileInfo($dir);
         }
 
+        if (isset($extra['magento-deploystrategy'])) {
+            $this->_deployStrategy = (string)$extra['magento-deploystrategy'];
+        }
+
         if ((is_null($this->magentoRootDir) || false === $this->magentoRootDir->isDir())
             && $this->_deployStrategy != 'none'
         ) {
