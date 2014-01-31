@@ -97,7 +97,9 @@ class Installer extends LibraryInstaller implements InstallerInterface
             $this->modmanRootDir = new \SplFileInfo($dir);
         }
 
-        if (is_null($this->magentoRootDir) || false === $this->magentoRootDir->isDir()) {
+        if ((is_null($this->magentoRootDir) || false === $this->magentoRootDir->isDir())
+            && $this->_deployStrategy != 'none'
+        ) {
             $dir = $this->magentoRootDir instanceof \SplFileInfo ? $this->magentoRootDir->getPathname() : '';
             throw new \ErrorException("magento root dir \"{$dir}\" is not valid");
         }
