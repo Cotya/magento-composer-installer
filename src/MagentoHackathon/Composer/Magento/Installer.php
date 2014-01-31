@@ -144,6 +144,9 @@ class Installer extends LibraryInstaller implements InstallerInterface
             case 'link':
                 $impl = new \MagentoHackathon\Composer\Magento\Deploystrategy\Link($sourceDir, $targetDir);
                 break;
+            case 'none':
+                $impl = new \MagentoHackathon\Composer\Magento\Deploystrategy\None($sourceDir, $targetDir);
+                break;
             case 'symlink':
             default:
                 $impl = new \MagentoHackathon\Composer\Magento\Deploystrategy\Symlink($sourceDir, $targetDir);
