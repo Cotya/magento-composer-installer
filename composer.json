@@ -36,7 +36,8 @@
     },
     "require-dev":{
         "phpunit/phpunit":"*",
-        "composer/composer":"*"
+        "composer/composer":"*",
+        "mikey179/vfsStream":"*"
     },
     "suggest":{
         "magento-hackathon/composer-command-integrator":"*"
