@@ -22,6 +22,14 @@ class None extends DeploystrategyAbstract
         return true;
     }
 
+    /**
+     * Deploy nothing
+     *
+     * @param string $source
+     * @param string $dest
+     *
+     * @return bool
+     */
     public function create($source, $dest)
     {
         return true;
