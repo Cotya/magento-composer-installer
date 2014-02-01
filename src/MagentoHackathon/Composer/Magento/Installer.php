@@ -97,7 +97,13 @@ class Installer extends LibraryInstaller implements InstallerInterface
             $this->modmanRootDir = new \SplFileInfo($dir);
         }
 
-        if (is_null($this->magentoRootDir) || false === $this->magentoRootDir->isDir()) {
+        if (isset($extra['magento-deploystrategy'])) {
+            $this->_deployStrategy = (string)$extra['magento-deploystrategy'];
+        }
+
+        if ((is_null($this->magentoRootDir) || false === $this->magentoRootDir->isDir())
+            && $this->_deployStrategy != 'none'
+        ) {
             $dir = $this->magentoRootDir instanceof \SplFileInfo ? $this->magentoRootDir->getPathname() : '';
             throw new \ErrorException("magento root dir \"{$dir}\" is not valid");
         }
@@ -143,6 +149,9 @@ class Installer extends LibraryInstaller implements InstallerInterface
                 break;
             case 'link':
                 $impl = new \MagentoHackathon\Composer\Magento\Deploystrategy\Link($sourceDir, $targetDir);
+                break;
+            case 'none':
+                $impl = new \MagentoHackathon\Composer\Magento\Deploystrategy\None($sourceDir, $targetDir);
                 break;
             case 'symlink':
             default:
