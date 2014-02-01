@@ -21,4 +21,9 @@ class None extends DeploystrategyAbstract
     {
         return true;
     }
+
+    public function create($source, $dest)
+    {
+        return true;
+    }
 }
