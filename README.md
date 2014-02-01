@@ -199,6 +199,19 @@ Here is how to use it:
 }
 ```
 
+### None Deploy
+If you only want to place packages into the vendor directory with no linking/copying into Magento's folder structure use this deploy strategy.
+
+```json
+{
+    ...
+    "extra":{
+        "magento-deploystrategy": "none"
+    }
+    ...
+}
+```
+
 ### Trigger deploy manually
 
 On occasions you want trigger the deploy of magento modules without the need of an update/install process.
