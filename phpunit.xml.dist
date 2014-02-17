@@ -13,7 +13,7 @@
         >
     <testsuites>
         <testsuite name="Magentohackathon Magento Installer Test Suite">
-            <directory>./tests/</directory>
+            <directory>./tests/MagentoHackathon</directory>
         </testsuite>
     </testsuites>
 
