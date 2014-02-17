@@ -85,25 +85,14 @@ class InstallerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers MagentoHackathon\Composer\Magento\Installer::getDeployStrategy
+     * @dataProvider deployMethodProvider
      */
-    public function testGetDeployStrategyCopy()
+    public function testGetDeployStrategy($strategy,$expectedClass)
     {
-        $package = $this->createPackageMock(array('magento-deploystrategy' => 'copy'));
+        $package = $this->createPackageMock(array('magento-deploystrategy' => $strategy));
         $this->composer->setPackage($package);
         $installer = new Installer($this->io, $this->composer);
-        $this->assertInstanceOf('MagentoHackathon\Composer\Magento\Deploystrategy\Copy', $installer->getDeployStrategy($package));
-    }
-
-    /**
-     * @covers MagentoHackathon\Composer\Magento\Installer::getDeployStrategy
-     */
-    public function testGetDeployStrategySymlink()
-    {
-        $package = $this->createPackageMock(array('magento-deploystrategy' => 'symlink'));
-        $this->composer->setPackage($package);
-        $installer = new Installer($this->io, $this->composer);
-        $this->assertInstanceOf('MagentoHackathon\Composer\Magento\Deploystrategy\Symlink', $installer->getDeployStrategy($package));
+        $this->assertInstanceOf($expectedClass, $installer->getDeployStrategy($package));
     }
 
     /**
@@ -135,5 +124,27 @@ class InstallerTest extends \PHPUnit_Framework_TestCase
         $package = $this->createPackageMock(array('map' => array('test' => 'test')));
 
         $this->assertInstanceOf('MagentoHackathon\Composer\Magento\MapParser', $this->object->getParser($package));
+    }
+    
+    public function deployMethodProvider()
+    {
+        return array(
+            array(
+                'method' => 'copy',
+                'expectedClass' => 'MagentoHackathon\Composer\Magento\Deploystrategy\Copy',
+            ),
+            array(
+                'method' => 'symlink',
+                'expectedClass' => 'MagentoHackathon\Composer\Magento\Deploystrategy\Symlink',
+            ),
+            array(
+                'method' => 'link',
+                'expectedClass' => 'MagentoHackathon\Composer\Magento\Deploystrategy\Link',
+            ),
+            array(
+                'method' => 'none',
+                'expectedClass' => 'MagentoHackathon\Composer\Magento\Deploystrategy\None',
+            ),
+        );
     }
 }
