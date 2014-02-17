@@ -32,7 +32,8 @@ voting:
 * brenbl(-)
 * SchumacherFM(+)
 * pbrouwers (-)
-*
+* MikeyMJCO (-)
+* 
 
 ### Solution 2
 
@@ -55,7 +56,8 @@ voting:
 * brenbl (-)
 * SchumacherFM (-)
 * pbrouwers (+)
-*
+* MikeyMJCO (+)
+* 
 
 ### Solution 3
 
@@ -93,6 +95,7 @@ voting:
 * vinai (+)
 * ajbonner (-) 
 * brenbl (+)
+* MikeyMJCO (+) - same reasoning as Rud5G
 *
 
 
