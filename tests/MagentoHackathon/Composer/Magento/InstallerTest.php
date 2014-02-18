@@ -69,7 +69,7 @@ class InstallerTest extends \PHPUnit_Framework_TestCase
         $this->fs->removeDirectory($this->magentoDir);
     }
 
-    protected function createPackageMock(array $extra = array())
+    protected function createPackageMock(array $extra = array(), $name = 'example/test')
     {
         //$package= $this->getMockBuilder('Composer\Package\RootPackageInterface')
         $package = $this->getMockBuilder('Composer\Package\RootPackage')
@@ -80,6 +80,10 @@ class InstallerTest extends \PHPUnit_Framework_TestCase
         $package->expects($this->any())
                 ->method('getExtra')
                 ->will($this->returnValue($extraData));
+        
+        $package->expects($this->any())
+            ->method('getName')
+            ->will($this->returnValue($name));
 
         return $package;
     }
@@ -87,9 +91,11 @@ class InstallerTest extends \PHPUnit_Framework_TestCase
     /**
      * @dataProvider deployMethodProvider
      */
-    public function testGetDeployStrategy($strategy,$expectedClass)
+    public function testGetDeployStrategy( $strategy, $expectedClass, $composerExtra = array(), $packageName )
     {
-        $package = $this->createPackageMock(array('magento-deploystrategy' => $strategy));
+        $extra = array('magento-deploystrategy' => $strategy);
+        $extra = array_merge($composerExtra, $extra);
+        $package = $this->createPackageMock($extra,$packageName);
         $this->composer->setPackage($package);
         $installer = new Installer($this->io, $this->composer);
         $this->assertInstanceOf($expectedClass, $installer->getDeployStrategy($package));
@@ -128,22 +134,47 @@ class InstallerTest extends \PHPUnit_Framework_TestCase
     
     public function deployMethodProvider()
     {
+        $deployOverwrite = array(
+            'example/test2' => 'symlink',
+            'example/test3' => 'none',
+        );
+        
         return array(
             array(
                 'method' => 'copy',
                 'expectedClass' => 'MagentoHackathon\Composer\Magento\Deploystrategy\Copy',
+                'composerExtra' => array(  ),
+                'packageName'   => 'example/test1',
             ),
             array(
                 'method' => 'symlink',
                 'expectedClass' => 'MagentoHackathon\Composer\Magento\Deploystrategy\Symlink',
+                'composerExtra' => array(  ),
+                'packageName'   => 'example/test1',
             ),
             array(
                 'method' => 'link',
                 'expectedClass' => 'MagentoHackathon\Composer\Magento\Deploystrategy\Link',
+                'composerExtra' => array(  ),
+                'packageName'   => 'example/test1',
             ),
             array(
                 'method' => 'none',
                 'expectedClass' => 'MagentoHackathon\Composer\Magento\Deploystrategy\None',
+                'composerExtra' => array(  ),
+                'packageName'   => 'example/test1',
+            ),
+            array(
+                'method' => 'symlink',
+                'expectedClass' => 'MagentoHackathon\Composer\Magento\Deploystrategy\Symlink',
+                'composerExtra' => array( 'magento-deploystrategy-overwrite' => $deployOverwrite ),
+                'packageName'   => 'example/test2',
+            ),
+            array(
+                'method' => 'symlink',
+                'expectedClass' => 'MagentoHackathon\Composer\Magento\Deploystrategy\None',
+                'composerExtra' => array( 'magento-deploystrategy-overwrite' => $deployOverwrite ),
+                'packageName'   => 'example/test3',
             ),
         );
     }
