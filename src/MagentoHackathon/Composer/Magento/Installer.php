@@ -273,8 +273,18 @@ class Installer extends LibraryInstaller implements InstallerInterface
     public function getParser(PackageInterface $package)
     {
         $extra = $package->getExtra();
+        $moduleSpecificMap = $this->composer->getPackage()->getExtra();
+        if( isset($moduleSpecificMap['magento-map-overwrite']) ){
+            $moduleSpecificMap = $moduleSpecificMap['magento-map-overwrite'];
+            if( isset($moduleSpecificMap[$package->getName()]) ){
+                $map = $moduleSpecificMap[$package->getName()];
+            }
+        }
 
-        if (isset($extra['map'])) {
+        if (isset($map)) {
+            $parser = new MapParser($map);
+            return $parser;
+        } elseif (isset($extra['map'])) {
             $parser = new MapParser($extra['map']);
             return $parser;
         } elseif (isset($extra['package-xml'])) {
