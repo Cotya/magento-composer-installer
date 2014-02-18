@@ -39,15 +39,6 @@ class Installer extends LibraryInstaller implements InstallerInterface
     protected $isForced = false;
 
     /**
-     * If set the package will not be deployed (with any DeployStrategy)
-     * Using a modman-root-dir is not supported yet but the modman-DeployStrategy so you might want to use the normal
-     * modman script for this
-     *
-     * @var bool
-     */
-    protected $skipPackageDeployment = false;
-
-    /**
      * The module's base directory
      *
      * @var string
@@ -114,10 +105,6 @@ class Installer extends LibraryInstaller implements InstallerInterface
 
         if (isset($extra['magento-deploystrategy'])) {
             $this->setDeployStrategy((string)$extra['magento-deploystrategy']);
-        }
-
-        if (!empty($extra['skip-package-deployment'])) {
-            $this->skipPackageDeployment = true;
         }
     }
 
@@ -213,11 +200,9 @@ class Installer extends LibraryInstaller implements InstallerInterface
     {
         parent::install($repo, $package);
 
-        if (!$this->skipPackageDeployment) {
-            $strategy = $this->getDeployStrategy($package);
-            $strategy->setMappings($this->getParser($package)->getMappings());
-            $strategy->deploy();
-        }
+        $strategy = $this->getDeployStrategy($package);
+        $strategy->setMappings($this->getParser($package)->getMappings());
+        $strategy->deploy();
     }
 
     /**
@@ -232,19 +217,15 @@ class Installer extends LibraryInstaller implements InstallerInterface
     public function update(InstalledRepositoryInterface $repo, PackageInterface $initial, PackageInterface $target)
     {
 
-        if (!$this->skipPackageDeployment) {
-            $initialStrategy = $this->getDeployStrategy($initial);
-            $initialStrategy->setMappings($this->getParser($initial)->getMappings());
-            $initialStrategy->clean();
-        }
+        $initialStrategy = $this->getDeployStrategy($initial);
+        $initialStrategy->setMappings($this->getParser($initial)->getMappings());
+        $initialStrategy->clean();
 
         parent::update($repo, $initial, $target);
 
-        if (!$this->skipPackageDeployment) {
-            $targetStrategy = $this->getDeployStrategy($target);
-            $targetStrategy->setMappings($this->getParser($target)->getMappings());
-            $targetStrategy->deploy();
-        }
+        $targetStrategy = $this->getDeployStrategy($target);
+        $targetStrategy->setMappings($this->getParser($target)->getMappings());
+        $targetStrategy->deploy();
     }
 
     /**
@@ -255,11 +236,9 @@ class Installer extends LibraryInstaller implements InstallerInterface
      */
     public function uninstall(InstalledRepositoryInterface $repo, PackageInterface $package)
     {
-        if (!$this->skipPackageDeployment) {
-            $strategy = $this->getDeployStrategy($package);
-            $strategy->setMappings($this->getParser($package)->getMappings());
-            $strategy->clean();
-        }
+        $strategy = $this->getDeployStrategy($package);
+        $strategy->setMappings($this->getParser($package)->getMappings());
+        $strategy->clean();
 
         parent::uninstall($repo, $package);
     }

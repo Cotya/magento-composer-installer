@@ -276,7 +276,7 @@ magento-composer-installer deploy the packages. So this can be disabled:
     "extra":{
         "magento-root-dir": "htdocs/",
         "modman-root-dir": ".modman",
-        "skip-package-deployment": true
+        "magento-deploystrategy": "none"
     }
     ...
 }
