@@ -14,6 +14,7 @@ class InstallerTest extends \PHPUnit_Framework_TestCase
      */
     protected $object;
 
+    /** @var  Composer */
     protected $composer;
     protected $config;
     protected $vendorDir;
@@ -110,26 +111,16 @@ class InstallerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers MagentoHackathon\Composer\Magento\Installer::getParser
+     * @dataProvider parserTypeProvider
      */
-    public function testGetModmanParser()
+    public function testGetParser( $packageExtra, $expectedClass, $composerExtra, $packageName, $prepareCallback )
     {
-        // getParser returns a modman parser by default, if map isn't set
-        $package = $this->createPackageMock(array('map' => null));
-
-        touch($this->vendorDir . DIRECTORY_SEPARATOR . 'modman');
-
-        $this->assertInstanceOf('MagentoHackathon\Composer\Magento\ModmanParser', $this->object->getParser($package));
-    }
-
-    /**
-     * @covers MagentoHackathon\Composer\Magento\Installer::getParser
-     */
-    public function testGetMapParser()
-    {
-        $package = $this->createPackageMock(array('map' => array('test' => 'test')));
-
-        $this->assertInstanceOf('MagentoHackathon\Composer\Magento\MapParser', $this->object->getParser($package));
+        $composerExtra = array_merge( $composerExtra, $this->composer->getPackage()->getExtra() );
+        $this->composer->setPackage($this->createPackageMock($composerExtra));
+        
+        $package = $this->createPackageMock( $packageExtra, $packageName );
+        $prepareCallback($this->vendorDir);
+        $this->assertInstanceOf($expectedClass, $this->object->getParser($package));
     }
     
     public function deployMethodProvider()
@@ -175,6 +166,70 @@ class InstallerTest extends \PHPUnit_Framework_TestCase
                 'expectedClass' => 'MagentoHackathon\Composer\Magento\Deploystrategy\None',
                 'composerExtra' => array( 'magento-deploystrategy-overwrite' => $deployOverwrite ),
                 'packageName'   => 'example/test3',
+            ),
+        );
+    }
+    
+    public function parserTypeProvider()
+    {
+        $mapOverwrite = array(
+            'example/test2' => array('test' => 'test2'),
+            'example/test3' => array('test' => 'test3'),
+        );
+        return array(
+            array(
+                'packageExtra'  => array('map' => array('test' => 'test')),
+                'expectedClass' => 'MagentoHackathon\Composer\Magento\MapParser',
+                'composerExtra' => array( 'magento-map-overwrite' => $mapOverwrite  ),
+                'packageName'   => 'example/test1',
+                'prepareCallback' => function($vendorDir){
+                        
+                    },
+            ),
+            array(
+                'packageExtra'  => array('map' => null),
+                'expectedClass' => 'MagentoHackathon\Composer\Magento\ModmanParser',
+                'composerExtra' => array( 'magento-map-overwrite' => $mapOverwrite  ),
+                'packageName'   => 'example/test1',
+                'prepareCallback' => function($vendorDir){
+                        touch($vendorDir . DIRECTORY_SEPARATOR . 'modman');
+                    },
+            ),
+            array(
+                'packageExtra'  => array('map' => null, 'package-xml' => 'package.xml'),
+                'expectedClass' => 'MagentoHackathon\Composer\Magento\PackageXmlParser',
+                'composerExtra' => array( 'magento-map-overwrite' => $mapOverwrite  ),
+                'packageName'   => 'example/test1',
+                'prepareCallback' => function($vendorDir){
+                        touch($vendorDir . DIRECTORY_SEPARATOR . 'package.xml');
+                    },
+            ),
+            array(
+                'packageExtra'  => array('map' => array('test' => 'test')),
+                'expectedClass' => 'MagentoHackathon\Composer\Magento\MapParser',
+                'composerExtra' => array( 'magento-map-overwrite' => $mapOverwrite  ),
+                'packageName'   => 'example/test1',
+                'prepareCallback' => function($vendorDir){
+
+                    },
+            ),
+            array(
+                'packageExtra'  => array('map' => null),
+                'expectedClass' => 'MagentoHackathon\Composer\Magento\ModmanParser',
+                'composerExtra' => array( 'magento-map-overwrite' => $mapOverwrite  ),
+                'packageName'   => 'example/test1',
+                'prepareCallback' => function($vendorDir){
+                        touch($vendorDir . DIRECTORY_SEPARATOR . 'modman');
+                    },
+            ),
+            array(
+                'packageExtra'  => array('map' => null),
+                'expectedClass' => 'MagentoHackathon\Composer\Magento\MapParser',
+                'composerExtra' => array( 'magento-map-overwrite' => $mapOverwrite  ),
+                'packageName'   => 'example/test2',
+                'prepareCallback' => function($vendorDir){
+                        touch($vendorDir . DIRECTORY_SEPARATOR . 'modman');
+                    },
             ),
         );
     }
