@@ -141,6 +141,13 @@ class Installer extends LibraryInstaller implements InstallerInterface
         if (null === $strategy) {
             $strategy = $this->_deployStrategy;
         }
+        $moduleSpecificDeployStrategys = $this->composer->getPackage()->getExtra();
+        if( isset($moduleSpecificDeployStrategys['magento-deploystrategy-overwrite']) ){
+            $moduleSpecificDeployStrategys = $moduleSpecificDeployStrategys['magento-deploystrategy-overwrite'];
+            if( isset($moduleSpecificDeployStrategys[$package->getName()]) ){
+                $strategy = $moduleSpecificDeployStrategys[$package->getName()];
+            }
+        }
         $targetDir = $this->getTargetDir();
         $sourceDir = $this->getSourceDir($package);
         switch ($strategy) {
