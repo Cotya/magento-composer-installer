@@ -33,6 +33,7 @@ voting:
 * SchumacherFM(+)
 * pbrouwers (-)
 * MikeyMJCO (-)
+* davidalger (+) (same condition as vinai)
 * 
 
 ### Solution 2
@@ -57,6 +58,7 @@ voting:
 * SchumacherFM (-)
 * pbrouwers (+)
 * MikeyMJCO (+)
+* davidalger (-)
 * 
 
 ### Solution 3
@@ -96,6 +98,7 @@ voting:
 * ajbonner (-) 
 * brenbl (+)
 * MikeyMJCO (+) - same reasoning as Rud5G
+* davidalger (+)
 *
 
 
@@ -131,4 +134,6 @@ maderlock: I'm with avstudnitz. There are parts of the current integration that 
 ajbonner: First thing, I don't like the idea of trying to support magento 1 & 2 within the same tool. As mentioned magento 2 fixes a lot of the problems that make composer integration hard and I think it will needlessly complicate the codebase. I feel there should be a composer installer for mage 1, and a version for mage 2, they can share some code, but they ultimately should be two different projects. As per the above comments, I can't see Magento 1 going anywhere anytime soon. I know my company wont adopt magento 2 anytime soon and large e-tailers are not going to be able/want to move quickly to mage2. Composer and composer installer offer such big wins for managing dependencies that it would be a shame too if development simple ceased or slowed down for it in favour of mage 2. So I hope that the problems that exist within composer installer can be looked at as it will benefit more people in the medium term that work that benefits mage 2.
 
 SchumacherFM: +1 for ajbonner
+
+davidalger: Agree with Vinai, it's too early to focus exclusively on Magento 2. Althougth I've known this project has existed for some time, we are just picking it up for use on some currently internal only work and will be using it for quit some time on the 1.x line. Also found a bug which I will hopefully solve and PR this / next week... ;) Let's keep this baby active and working well on 1.x.
 
