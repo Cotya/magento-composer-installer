@@ -56,6 +56,12 @@ class Installer extends LibraryInstaller implements InstallerInterface
      * @var bool
      */
     protected $appendGitIgnore = false;
+    
+    /**
+     * @var array Path mapping prefixes that need to be translated (i.e. to
+     * use a public directory as the web server root).
+     */
+    protected $_pathMappingTranslations = array();
 
     /**
      * Initializes Magento Module installer
@@ -116,6 +122,10 @@ class Installer extends LibraryInstaller implements InstallerInterface
 
         if (!empty($extra['auto-append-gitignore'])) {
             $this->appendGitIgnore = true;
+        }
+
+        if (!empty($extra['path-mapping-translations'])) {
+            $this->_pathMappingTranslations = (array)$extra['path-mapping-translations'];
         }
 
     }
@@ -332,16 +342,16 @@ class Installer extends LibraryInstaller implements InstallerInterface
         }
 
         if (isset($map)) {
-            $parser = new MapParser($map);
+            $parser = new MapParser($map, $this->_pathMappingTranslations);
             return $parser;
         } elseif (isset($extra['map'])) {
-            $parser = new MapParser($extra['map']);
+            $parser = new MapParser($extra['map'], $this->_pathMappingTranslations);
             return $parser;
         } elseif (isset($extra['package-xml'])) {
-            $parser = new PackageXmlParser($this->getSourceDir($package), $extra['package-xml']);
+            $parser = new PackageXmlParser($this->getSourceDir($package), $extra['package-xml'], $this->_pathMappingTranslations);
             return $parser;
         } elseif (file_exists($this->getSourceDir($package) . '/modman')) {
-            $parser = new ModmanParser($this->getSourceDir($package));
+            $parser = new ModmanParser($this->getSourceDir($package), $this->_pathMappingTranslations);
             return $parser;
         } else {
             throw new \ErrorException('Unable to find deploy strategy for module: no known mapping');
