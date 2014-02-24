@@ -239,11 +239,7 @@ class Installer extends LibraryInstaller implements InstallerInterface
      */
     public function getGitIgnoreFileLocation()
     {
-        $ignoreFile = realpath('.gitignore');
-
-        if(false == $ignoreFile) {
-            $ignoreFile = realpath('.') . '/.gitignore';
-        }
+        $ignoreFile = $this->magentoRootDir->getPathname() . '/.gitignore';
 
         return $ignoreFile;
     }
