@@ -59,7 +59,7 @@ voting:
 * pbrouwers (+)
 * MikeyMJCO (+)
 * davidalger (-)
-* 
+* BigL (+)
 
 ### Solution 3
 
