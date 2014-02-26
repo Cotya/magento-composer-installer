@@ -36,7 +36,7 @@ class GitIgnoreGeneratorTest extends InstallerTest
         $installer->appendGitIgnore($package, $gitIgnoreFile);
 
         $this->assertFileExists($gitIgnoreFile);
-        $expectedContent = sprintf("vendor\n.idea\n#%s\ncomposer-test-magento/test1\ncomposer-test-magento/testfolder1/testfile1", $package->getName());
+        $expectedContent = sprintf("vendor\n.idea\n#%s\n/test1\n/testfolder1/testfile1", $package->getName());
         $this->assertSame(file_get_contents($gitIgnoreFile), $expectedContent);
         unlink($gitIgnoreFile);
     }
@@ -57,7 +57,7 @@ class GitIgnoreGeneratorTest extends InstallerTest
         $installer->appendGitIgnore($package, $gitIgnoreFile);
 
         $this->assertFileExists($gitIgnoreFile);
-        $expectedContent = sprintf("#%s\ncomposer-test-magento/test1\ncomposer-test-magento/testfolder1/testfile1", $package->getName());
+        $expectedContent = sprintf("#%s\n/test1\n/testfolder1/testfile1", $package->getName());
         $this->assertSame(file_get_contents($gitIgnoreFile), $expectedContent);
         unlink($gitIgnoreFile);
     }
