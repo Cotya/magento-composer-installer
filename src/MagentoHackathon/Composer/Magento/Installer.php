@@ -263,6 +263,7 @@ class Installer extends LibraryInstaller implements InstallerInterface
         foreach($this->getParser($package)->getMappings() as $map) {
             $dest   = $map[1];
             $ignore = sprintf("/%s", $dest);
+            $ignore = str_replace('/./','/', $ignore);
             if(!in_array($ignore, $contents)) {
                 $additions[] = $ignore;
             }
