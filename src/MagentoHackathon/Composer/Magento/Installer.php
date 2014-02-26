@@ -264,6 +264,8 @@ class Installer extends LibraryInstaller implements InstallerInterface
             $dest   = $map[1];
             $ignore = sprintf("/%s", $dest);
             $ignore = str_replace('/./','/', $ignore);
+            $ignore = str_replace('//','/', $ignore);
+            $ignore = rtrim($ignore,'/');
             if(!in_array($ignore, $contents)) {
                 $additions[] = $ignore;
             }
