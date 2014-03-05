@@ -37,7 +37,7 @@ class Copy extends DeploystrategyAbstract
         // Namespace/ModuleDir => Namespace/ModuleDir, but ModuleDir may exist
 
         if (file_exists($destPath) && is_dir($destPath)) {
-            if (basename($sourcePath) === basename($destPath)) {
+            if (strcmp($dest, $source) === 0) {
                 // copy each child of $sourcePath into $destPath
                 foreach (new \DirectoryIterator($sourcePath) as $item) {
                     $item = (string) $item;
