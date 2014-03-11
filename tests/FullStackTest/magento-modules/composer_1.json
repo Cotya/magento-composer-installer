@@ -2,7 +2,7 @@
 	"require": {
 		"fbrnc/aoe_templatehints": "*",
 		"fbrnc/aoe_profiler": "*",
-		"magento-hackathon/magento-composer-installer": "*",
+		"magento-hackathon/magento-composer-installer": "dev-master@dev",
 		"firegento/psr0autoloader": "dev-master",
 		"firegento/magesetup": "*"
 	},
@@ -11,6 +11,10 @@
 		"composer/composer": "dev-master"
 	},
 	"repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/magento-hackathon/magento-composer-installer"
+        },
 		{
 			"type": "composer",
 			"url": "http://packages.firegento.com"
@@ -18,6 +22,7 @@
 	],
 	"extra":{
 		"magento-deploystrategy": "symlink",
+        "auto-append-gitignore": true,
 		"magento-root-dir": "../htdocs/"
 	}
 }

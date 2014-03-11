@@ -8,7 +8,7 @@ namespace MagentoHackathon\Composer\Magento;
 /**
  * Parses Magento Connect 2.0 package.xml files
  */
-class PackageXmlParser implements Parser
+class PackageXmlParser extends PathTranslationParser
 {
     /**
      * @var string Path to vendor module dir
@@ -31,8 +31,10 @@ class PackageXmlParser implements Parser
      * @param string $moduleDir
      * @param string $packageXmlFile
      */
-    public function __construct($moduleDir, $packageXmlFile)
+    public function __construct($moduleDir, $packageXmlFile, $translations = array())
     {
+        parent::__construct($translations);
+
         $this->setModuleDir($moduleDir);
         $this->setFile($this->getModuleDir() . '/' . $packageXmlFile);
     }
@@ -96,6 +98,7 @@ class PackageXmlParser implements Parser
         }
 
         $map = $this->_parseMappings();
+        $map = $this->translatePathMappings($map);
         return $map;
     }
 

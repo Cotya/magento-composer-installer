@@ -51,6 +51,19 @@ class Installer extends LibraryInstaller implements InstallerInterface
     protected $_deployStrategy = "symlink";
 
     /**
+     * If set the deployed files will be added to the projects .gitignore file
+     *
+     * @var bool
+     */
+    protected $appendGitIgnore = false;
+    
+    /**
+     * @var array Path mapping prefixes that need to be translated (i.e. to
+     * use a public directory as the web server root).
+     */
+    protected $_pathMappingTranslations = array();
+
+    /**
      * Initializes Magento Module installer
      *
      * @param \Composer\IO\IOInterface $io
@@ -106,6 +119,15 @@ class Installer extends LibraryInstaller implements InstallerInterface
         if (isset($extra['magento-deploystrategy'])) {
             $this->setDeployStrategy((string)$extra['magento-deploystrategy']);
         }
+
+        if (!empty($extra['auto-append-gitignore'])) {
+            $this->appendGitIgnore = true;
+        }
+
+        if (!empty($extra['path-mapping-translations'])) {
+            $this->_pathMappingTranslations = (array)$extra['path-mapping-translations'];
+        }
+
     }
 
     /**
@@ -203,6 +225,58 @@ class Installer extends LibraryInstaller implements InstallerInterface
         $strategy = $this->getDeployStrategy($package);
         $strategy->setMappings($this->getParser($package)->getMappings());
         $strategy->deploy();
+
+        if ($this->appendGitIgnore) {
+            $this->appendGitIgnore($package, $this->getGitIgnoreFileLocation());
+        }
+
+    }
+
+    /**
+     * Get .gitignore file location
+     *
+     * @return string
+     */
+    public function getGitIgnoreFileLocation()
+    {
+        $ignoreFile = $this->magentoRootDir->getPathname() . '/.gitignore';
+
+        return $ignoreFile;
+    }
+
+    /**
+     * Add all the files which are to be deployed
+     * to the .gitignore file, if it doesn't
+     * exist then create a new one
+     *
+     * @param PackageInterface $package
+     * @param string $ignoreFile
+     */
+    public function appendGitIgnore(PackageInterface $package, $ignoreFile)
+    {
+        $contents = array();
+        if(file_exists($ignoreFile)) {
+            $contents = file($ignoreFile, FILE_IGNORE_NEW_LINES);
+        }
+
+        $additions = array();
+        foreach($this->getParser($package)->getMappings() as $map) {
+            $dest   = $map[1];
+            $ignore = sprintf("/%s", $dest);
+            $ignore = str_replace('/./','/', $ignore);
+            $ignore = str_replace('//','/', $ignore);
+            $ignore = rtrim($ignore,'/');
+            if(!in_array($ignore, $contents)) {
+                $additions[] = $ignore;
+            }
+        }
+
+        if(!empty($additions)) {
+            array_unshift($additions, '#' . $package->getName());
+            $contents = array_merge($contents, $additions);
+            file_put_contents($ignoreFile, implode("\n", $contents));
+        }
+
     }
 
     /**
@@ -226,6 +300,11 @@ class Installer extends LibraryInstaller implements InstallerInterface
         $targetStrategy = $this->getDeployStrategy($target);
         $targetStrategy->setMappings($this->getParser($target)->getMappings());
         $targetStrategy->deploy();
+
+        if($this->appendGitIgnore) {
+            $this->appendGitIgnore($target, $this->getGitIgnoreFileLocation());
+        }
+
     }
 
     /**
@@ -248,6 +327,7 @@ class Installer extends LibraryInstaller implements InstallerInterface
      *
      * @param PackageInterface $package
      * @return Parser
+     * @throws \ErrorException
      */
     public function getParser(PackageInterface $package)
     {
@@ -261,16 +341,16 @@ class Installer extends LibraryInstaller implements InstallerInterface
         }
 
         if (isset($map)) {
-            $parser = new MapParser($map);
+            $parser = new MapParser($map, $this->_pathMappingTranslations);
             return $parser;
         } elseif (isset($extra['map'])) {
-            $parser = new MapParser($extra['map']);
+            $parser = new MapParser($extra['map'], $this->_pathMappingTranslations);
             return $parser;
         } elseif (isset($extra['package-xml'])) {
-            $parser = new PackageXmlParser($this->getSourceDir($package), $extra['package-xml']);
+            $parser = new PackageXmlParser($this->getSourceDir($package), $extra['package-xml'], $this->_pathMappingTranslations);
             return $parser;
         } elseif (file_exists($this->getSourceDir($package) . '/modman')) {
-            $parser = new ModmanParser($this->getSourceDir($package));
+            $parser = new ModmanParser($this->getSourceDir($package), $this->_pathMappingTranslations);
             return $parser;
         } else {
             throw new \ErrorException('Unable to find deploy strategy for module: no known mapping');
@@ -304,7 +384,7 @@ class Installer extends LibraryInstaller implements InstallerInterface
 
     /**
      * this function is for annoying people with messages.
-     * 
+     *
      * First usage: get people to vote about the future release of composer so later I can say "you wanted it this way"
      * 
      * @param IOInterface $io
@@ -313,7 +393,7 @@ class Installer extends LibraryInstaller implements InstallerInterface
     {
 
         /**
-         * No <error> in future, as some people look for error lines inside of CI Applications, which annoys them 
+         * No <error> in future, as some people look for error lines inside of CI Applications, which annoys them
          */
         /*
         $io->write('<comment> time for voting about the future of the #magento #composer installer. </comment>', true);

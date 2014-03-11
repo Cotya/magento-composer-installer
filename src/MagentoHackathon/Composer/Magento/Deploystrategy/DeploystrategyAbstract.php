@@ -218,7 +218,6 @@ abstract class DeploystrategyAbstract
      *
      * @param string $source
      * @param string $dest
-     * @return bool
      * @throws \ErrorException
      */
     public function remove($source, $dest)
@@ -236,14 +235,19 @@ abstract class DeploystrategyAbstract
                     $newDest = ltrim($newDest, ' \\/');
                     $this->remove(substr($match, strlen($this->getSourceDir())+1), $newDest);
                 }
-                return true;
+                return;
             }
 
             // Source file isn't a valid file or glob
             throw new \ErrorException("Source $sourcePath does not exists");
         }
 
-        return self::rmdirRecursive($destPath);
+        // MP Avoid removing whole folders in case the modman file is not 100% well-written
+        // e.g. app/etc/modules/Testmodule.xml  app/etc/modules/ installs correctly, but would otherwise delete the whole app/etc/modules folder!
+        if (basename($sourcePath) !== basename($destPath)) {
+            $destPath .= '/' . basename($source);
+        }
+        self::rmdirRecursive($destPath);
     }
 
     /**
@@ -284,37 +288,17 @@ abstract class DeploystrategyAbstract
      * Recursively removes the specified directory or file
      *
      * @param $dir
-     * @return bool
      */
     public static function rmdirRecursive($dir)
     {
         $fs = new \Composer\Util\Filesystem();
-        return $fs->removeDirectory($dir);
-        /*
-        if (is_dir($dir) && ! is_link($dir)) {
-
-            $iterator = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($dir),
-                    \RecursiveIteratorIterator::CHILD_FIRST);
-
-            foreach ($iterator as $item) {
-                $path = (string) $item;
-
-                if (!strcmp($path, '.') || !strcmp($path, '..')) {
-                    continue;
-                }
-
-                if (is_dir($path)) {
-                    self::rmdirRecursive($path);
-                } else {
-                    @unlink($path);
-                }
-            }
-            $result = @rmdir($dir);
-        } else {
-            $result = @unlink($dir);
+        if(is_dir($dir)){
+            $result = $fs->removeDirectory($dir);
+        }else{
+            @unlink($dir);
         }
-        return $result;
-        */
+        
+        return;
     }
 
 
