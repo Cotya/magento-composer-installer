@@ -20,6 +20,11 @@ class Copy extends DeploystrategyAbstract
      */
     public function createDelegate($source, $dest)
     {
+        list($mapSource, $mapDest) = $this->getCurrentMapping();
+        $mapSource = $this->removeTrailingSlash($mapSource);
+        $mapDest = $this->removeTrailingSlash($mapDest);
+        $cleanDest = $this->removeTrailingSlash($dest);
+
         $sourcePath = $this->getSourceDir() . '/' . $this->removeTrailingSlash($source);
         $destPath = $this->getDestDir() . '/' . $this->removeTrailingSlash($dest);
 
@@ -37,19 +42,19 @@ class Copy extends DeploystrategyAbstract
         // Namespace/ModuleDir => Namespace/ModuleDir, but ModuleDir may exist
 
         if (file_exists($destPath) && is_dir($destPath)) {
-            if (strcmp($dest, $source) === 0) {
+            if (strcmp(substr($cleanDest, strlen($mapDest)+1), substr($source, strlen($mapSource)+1)) === 0) {
                 // copy each child of $sourcePath into $destPath
                 foreach (new \DirectoryIterator($sourcePath) as $item) {
                     $item = (string) $item;
                     if (!strcmp($item, '.') || !strcmp($item, '..')) {
                         continue;
                     }
-                    $childSource = $source . '/' . $item;
+                    $childSource = $this->removeTrailingSlash($source) . '/' . $item;
                     $this->create($childSource, substr($destPath, strlen($this->getDestDir())+1));
                 }
                 return true;
             } else {
-                $destPath .= '/' . basename($source);
+                $destPath = $this->removeTrailingSlash($destPath) . '/' . basename($source);
                 return $this->create($source, substr($destPath, strlen($this->getDestDir())+1));
             }
         }
