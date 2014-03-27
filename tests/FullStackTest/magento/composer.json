@@ -1,17 +1,17 @@
 {
 	"require": {
-		"magento-hackathon/magento-composer-installer": "dev-master@dev",
+		"magento-hackathon/magento-composer-installer": "*",
 		"connect20/mage_all_latest": "*"
 	},
 	"repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/magento-hackathon/magento-composer-installer"
-        },
 		{
 			"type": "composer",
 			"url": "http://packages.firegento.com"
-		}
+		},
+        {
+            "type": "artifact",
+            "url": "../artifact/"
+        }
 	],
 	"extra":{
 		"magento-deploystrategy": "copy",

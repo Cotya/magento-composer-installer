@@ -17,6 +17,10 @@ rm -rf ./magento/composer.lock
 rm -rf ./magento-modules/vendor
 rm -rf ./magento-modules/composer.lock
 
+sed -i 's/"test_version"/"version"/g' ../../composer.json
+composer.phar archive --working-dir="../../" --format=zip --dir="tests/FullStackTest/artifact" -vvv
+sed -i 's/"version"/"test_version"/g' ../../composer.json
+
 composer.phar install --prefer-dist --no-dev --no-progress --no-interaction --profile --working-dir="./magento"
 
 cp -f ./magento-modules/composer_1.json ./magento-modules/composer.json 

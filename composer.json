@@ -47,6 +47,12 @@
             "MagentoHackathon\\Composer\\Magento":"src/"
         }
     },
+    "archive": {
+        "exclude": [
+            "/tests/FullStackTest"
+        ]
+    },
+    "test_version":"999.0.0",
     "extra":{
         "composer-command-registry": [ "MagentoHackathon\\Composer\\Magento\\Command\\DeployCommand" ],
         "class":"MagentoHackathon\\Composer\\Magento\\Installer"
