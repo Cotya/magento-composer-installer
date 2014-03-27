@@ -26,9 +26,15 @@ composer.phar install --prefer-dist --no-dev --no-progress --no-interaction --pr
 cp -f ./magento-modules/composer_1.json ./magento-modules/composer.json 
 composer.phar install --prefer-dist --no-dev --no-progress --no-interaction --profile --optimize-autoloader --working-dir="./magento-modules"
 
+php ../testAfterModuleInstall.php
+
 cp -f ./magento-modules/composer_2.json ./magento-modules/composer.json 
 composer.phar update --prefer-dist --no-dev --no-progress --no-interaction --profile --optimize-autoloader --working-dir="./magento-modules"
 
+php ../testAfterModuleRemove.php
+
 cp -f ./magento-modules/composer_1.json ./magento-modules/composer.json 
 composer.phar update --prefer-dist --no-dev --no-progress --no-interaction --profile --optimize-autoloader --working-dir="./magento-modules"
+
+php ../testAfterModuleInstall.php
 
