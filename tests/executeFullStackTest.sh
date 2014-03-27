@@ -18,23 +18,23 @@ rm -rf ./magento-modules/vendor
 rm -rf ./magento-modules/composer.lock
 
 sed -i 's/"test_version"/"version"/g' ../../composer.json
-composer.phar archive --working-dir="../../" --format=zip --dir="tests/FullStackTest/artifact" -vvv
+../../composer.phar archive --working-dir="../../" --format=zip --dir="tests/FullStackTest/artifact" -vvv
 sed -i 's/"version"/"test_version"/g' ../../composer.json
 
-composer.phar install --prefer-dist --no-dev --no-progress --no-interaction --profile --working-dir="./magento"
+../../composer.phar install --prefer-dist --no-dev --no-progress --no-interaction --profile --working-dir="./magento"
 
 cp -f ./magento-modules/composer_1.json ./magento-modules/composer.json 
-composer.phar install --prefer-dist --no-dev --no-progress --no-interaction --profile --optimize-autoloader --working-dir="./magento-modules"
+../../composer.phar install --prefer-dist --no-dev --no-progress --no-interaction --profile --optimize-autoloader --working-dir="./magento-modules"
 
 php ../testAfterModuleInstall.php
 
 cp -f ./magento-modules/composer_2.json ./magento-modules/composer.json 
-composer.phar update --prefer-dist --no-dev --no-progress --no-interaction --profile --optimize-autoloader --working-dir="./magento-modules"
+../../composer.phar update --prefer-dist --no-dev --no-progress --no-interaction --profile --optimize-autoloader --working-dir="./magento-modules"
 
 php ../testAfterModuleRemove.php
 
 cp -f ./magento-modules/composer_1.json ./magento-modules/composer.json 
-composer.phar update --prefer-dist --no-dev --no-progress --no-interaction --profile --optimize-autoloader --working-dir="./magento-modules"
+../../composer.phar update --prefer-dist --no-dev --no-progress --no-interaction --profile --optimize-autoloader --working-dir="./magento-modules"
 
 php ../testAfterModuleInstall.php
 
