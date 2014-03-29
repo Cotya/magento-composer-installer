@@ -26,9 +26,9 @@ class FullStackTest extends \PHPUnit_Framework_TestCase
         $fs->ensureDirectoryExists( self::getBasePath().'/htdocs' );
 
         $fs->removeDirectory( self::getBasePath().'/magento/vendor' );
-        $fs->removeDirectory( self::getBasePath().'/magento/composer.lock' );
+        $fs->remove( self::getBasePath().'/magento/composer.lock' );
         $fs->removeDirectory( self::getBasePath().'/magento-modules/vendor' );
-        $fs->removeDirectory( self::getBasePath().'/magento-modules/composer.lock' );
+        $fs->remove( self::getBasePath().'/magento-modules/composer.lock' );
 
 
         $process = new Process(
@@ -41,6 +41,12 @@ class FullStackTest extends \PHPUnit_Framework_TestCase
             self::getProjectRoot()
         );
         $process->run();
+        if( $process->getExitCode() !== 0){
+            $message = 'process for <code>'.$process->getCommandLine().'</code> exited with '.$process->getExitCode().': '.$process->getExitCodeText();
+            $message .= PHP_EOL.'Error Message:'.PHP_EOL.$process->getErrorOutput();
+            $message .= PHP_EOL.'Output:'.PHP_EOL.$process->getOutput();
+            echo $message;
+        }
     }
     
     public static function tearDownAfterClass()
@@ -71,6 +77,14 @@ class FullStackTest extends \PHPUnit_Framework_TestCase
     protected static function getComposerArgs(){
         return '--prefer-dist --no-dev --no-progress --no-interaction --profile';
     }
+    
+    public function assertProcess(Process $process)
+    {
+        $message = 'process for <code>'.$process->getCommandLine().'</code> exited with '.$process->getExitCode().': '.$process->getExitCodeText();
+        $message .= PHP_EOL.'Error Message:'.PHP_EOL.$process->getErrorOutput();
+        $message .= PHP_EOL.'Output:'.PHP_EOL.$process->getOutput();
+        $this->assertEquals(0, $process->getExitCode(), $message);
+    }
 
     public function testFirstInstall()
     {
@@ -80,6 +94,7 @@ class FullStackTest extends \PHPUnit_Framework_TestCase
         );
         $process->setTimeout(300);
         $process->run();
+        $this->assertProcess($process);
         
         $magentoModuleComposerFile = self::getBasePath().'/magento-modules/composer.json';
         if(file_exists($magentoModuleComposerFile)){
@@ -96,6 +111,7 @@ class FullStackTest extends \PHPUnit_Framework_TestCase
         );
         $process->setTimeout(300);
         $process->run();
+        $this->assertProcess($process);
     }
     
     protected function getFirstFileTestSet()
@@ -135,6 +151,7 @@ class FullStackTest extends \PHPUnit_Framework_TestCase
         );
         $process->setTimeout(300);
         $process->run();
+        $this->assertProcess($process);
     }
 
     /**
@@ -167,6 +184,7 @@ class FullStackTest extends \PHPUnit_Framework_TestCase
         );
         $process->setTimeout(300);
         $process->run();
+        $this->assertProcess($process);
     }
 
     /**
