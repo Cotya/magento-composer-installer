@@ -4,6 +4,10 @@
 		"fbrnc/aoe_profiler": "*",
 		"magento-hackathon/magento-composer-installer": "*",
 		"firegento/psr0autoloader": "dev-master",
+        "connect20/aw_blog": "*",
+        "connect20/aw_onpulse": "*",
+        "connect20/aw_aheadmetrics": "*",
+        "connect20/aw_fps": "*",
 		"firegento/magesetup": "*"
 	},
 	"require-dev": {
