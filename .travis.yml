@@ -12,7 +12,6 @@ before_script:
   
 script:
   - ./vendor/bin/phpunit
-  - ./tests/executeFullStackTest.sh
 
 notifications:
   email:
