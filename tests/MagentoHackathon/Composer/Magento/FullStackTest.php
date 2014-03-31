@@ -69,7 +69,7 @@ class FullStackTest extends \PHPUnit_Framework_TestCase
     protected static function getComposerCommand(){
         $command = 'composer.phar';
         if( getenv('TRAVIS') == "true" ){
-            $command = 'composer';
+            $command = self::getProjectRoot().'/composer.phar';
         }
         return $command;
     }
@@ -88,6 +88,7 @@ class FullStackTest extends \PHPUnit_Framework_TestCase
 
     public function testFirstInstall()
     {
+        $this->assertFileExists( self::getBasePath().'/artifact/magento-hackathon-magento-composer-installer-999.0.0.zip' );
         $process = new Process(
             self::getComposerCommand().' install '.self::getComposerArgs().' --working-dir="./magento"',
             self::getBasePath()
