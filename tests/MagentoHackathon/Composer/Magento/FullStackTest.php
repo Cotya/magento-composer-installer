@@ -90,8 +90,8 @@ class FullStackTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertFileExists( self::getBasePath().'/artifact/magento-hackathon-magento-composer-installer-999.0.0.zip' );
         $process = new Process(
-            self::getComposerCommand().' install '.self::getComposerArgs().' --working-dir="./magento"',
-            self::getBasePath()
+            self::getComposerCommand().' install '.self::getComposerArgs().' --working-dir="./"',
+            self::getBasePath().'/magento'
         );
         $process->setTimeout(300);
         $process->run();
@@ -107,8 +107,8 @@ class FullStackTest extends \PHPUnit_Framework_TestCase
         );
         
         $process = new Process(
-            self::getComposerCommand().' install '.self::getComposerArgs().' --optimize-autoloader --working-dir="./magento-modules"',
-            self::getBasePath()
+            self::getComposerCommand().' install '.self::getComposerArgs().' --optimize-autoloader --working-dir="./"',
+            self::getBasePath().'/magento-modules'
         );
         $process->setTimeout(300);
         $process->run();
@@ -147,8 +147,8 @@ class FullStackTest extends \PHPUnit_Framework_TestCase
         );
 
         $process = new Process(
-            self::getComposerCommand().' update '.self::getComposerArgs().' --optimize-autoloader --working-dir="./magento-modules"',
-            self::getBasePath()
+            self::getComposerCommand().' update '.self::getComposerArgs().' --optimize-autoloader --working-dir="./"',
+            self::getBasePath().'/magento-modules'
         );
         $process->setTimeout(300);
         $process->run();
@@ -180,8 +180,8 @@ class FullStackTest extends \PHPUnit_Framework_TestCase
         );
 
         $process = new Process(
-            self::getComposerCommand().' update '.self::getComposerArgs().' --optimize-autoloader --working-dir="./magento-modules"',
-            self::getBasePath()
+            self::getComposerCommand().' update '.self::getComposerArgs().' --optimize-autoloader --working-dir="./"',
+            self::getBasePath().'/magento-modules'
         );
         $process->setTimeout(300);
         $process->run();
