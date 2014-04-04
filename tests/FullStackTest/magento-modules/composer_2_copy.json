@@ -1,0 +1,19 @@
+{
+	"require": {
+	},
+	"repositories": [
+		{
+			"type": "composer",
+			"url": "http://packages.firegento.com"
+		},
+        {
+            "type": "artifact",
+            "url": "../artifact/"
+        }
+	],
+	"extra":{
+		"magento-deploystrategy": "copy",
+        "auto-append-gitignore": true,
+		"magento-root-dir": "../htdocs/"
+	}
+}
