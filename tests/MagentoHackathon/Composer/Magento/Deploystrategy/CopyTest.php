@@ -42,15 +42,8 @@ class CopyTest extends AbstractTest
         $this->strategy->create($sourceRoot, $dest);
         $this->assertFileExists($testTarget);
 
-        // echo "\n\n -- 1st pass tree\n";
-        // passthru("tree {$this->destDir}/$dest");
-
         $this->strategy->setIsForced(true);
         $this->strategy->create($sourceRoot, $dest);
-
-
-        // echo "\n\n -- 2nd pass tree\n";
-        // passthru("tree {$this->destDir}/$dest");
 
         $this->assertFileNotExists(dirname(dirname($testTarget)) . DS . basename($testTarget));
     }
