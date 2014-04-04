@@ -41,8 +41,8 @@ class Copy extends DeploystrategyAbstract
         // Namespace/ModuleDir => Namespace/, but Namespace/ModuleDir may exist
         // Namespace/ModuleDir => Namespace/ModuleDir, but ModuleDir may exist
 
-        // first iteration through, we need to handle Namespace/ModuleDir => Namespace/ type glob
-        if ($mapSource == $source && $mapDest == $this->removeTrailingSlash($dest)) {
+        // first iteration through, we need to update the mappings to correctly handle mismatch globs
+        if ($mapSource == $this->removeTrailingSlash($source) && $mapDest == $this->removeTrailingSlash($dest)) {
             if (basename($sourcePath) !== basename($destPath)) {
                 $this->setCurrentMapping(array($mapSource, $mapDest . '/' . basename($source)));
                 $cleanDest = $cleanDest . '/' . basename($source);
