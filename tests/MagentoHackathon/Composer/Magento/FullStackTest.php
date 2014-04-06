@@ -158,14 +158,26 @@ class FullStackTest extends \PHPUnit_Framework_TestCase
         return $array;
     }
     
-    public function testEverything()
+    public function methodProvider()
+    {
+        return array(
+            array('symlink'),
+            array('copy'),
+            array('copy_force'),
+        );
+    }
+
+    /**
+     * @dataProvider methodProvider
+     */
+    public function testEverything( $method )
     {
 
         $this->assertFileExists( self::getBasePath().'/artifact/magento-hackathon-magento-composer-installer-999.0.0.zip' );
 
         $methods = $this->getMethodRunConfigs();
         
-        foreach( $methods as $method=>$runs ){
+        $runs = $methods[$method];
             
             $this->prepareCleanDirectories();
 
@@ -198,7 +210,6 @@ class FullStackTest extends \PHPUnit_Framework_TestCase
 
             }
             
-        }
 
         
     }
