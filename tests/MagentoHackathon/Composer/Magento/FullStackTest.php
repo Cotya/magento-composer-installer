@@ -141,6 +141,17 @@ class FullStackTest extends \PHPUnit_Framework_TestCase
                     'module_composer_json' => "composer_1_copy.json",
                 ),
             ),
+            'copy_force' => array(
+                1 => array(
+                    'module_composer_json' => "composer_1_copy_force.json",
+                ),
+                2 => array(
+                    'module_composer_json' => "composer_2_copy_force.json",
+                ),
+                3 => array(
+                    'module_composer_json' => "composer_1_copy_force.json",
+                ),
+            ),
             
         );
         

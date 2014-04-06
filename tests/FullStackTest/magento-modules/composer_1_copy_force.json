@@ -1,0 +1,34 @@
+{
+	"require": {
+		"fbrnc/aoe_templatehints": "*",
+		"fbrnc/aoe_profiler": "*",
+		"magento-hackathon/magento-composer-installer": "*",
+		"firegento/psr0autoloader": "dev-master",
+        "connect20/aw_blog": "*",
+        "connect20/aw_onpulse": "*",
+        "connect20/aw_aheadmetrics": "*",
+        "connect20/aw_fps": "*",
+        "magento-hackathon/magento-composer-installer-test-issue-87": "1.*",
+		"firegento/magesetup": "*"
+	},
+	"require-dev": {
+		"magento-hackathon/composer-command-integrator": "*",
+		"composer/composer": "dev-master"
+	},
+	"repositories": [
+		{
+			"type": "composer",
+			"url": "http://packages.firegento.com"
+		},
+        {
+            "type": "artifact",
+            "url": "../artifact/"
+        }
+	],
+	"extra":{
+		"magento-deploystrategy": "copy",
+        "magento-force": true,
+        "auto-append-gitignore": true,
+		"magento-root-dir": "../htdocs/"
+	}
+}
