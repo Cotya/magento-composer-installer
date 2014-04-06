@@ -20,17 +20,6 @@ class FullStackTest extends \PHPUnit_Framework_TestCase
 
     public static function setUpBeforeClass()
     {
-        $fs = new Filesystem();
-        
-        $fs->removeDirectory( self::getBasePath().'/htdocs' );
-        $fs->ensureDirectoryExists( self::getBasePath().'/htdocs' );
-
-        $fs->removeDirectory( self::getBasePath().'/magento/vendor' );
-        $fs->remove( self::getBasePath().'/magento/composer.lock' );
-        $fs->removeDirectory( self::getBasePath().'/magento-modules/vendor' );
-        $fs->remove( self::getBasePath().'/magento-modules/composer.lock' );
-
-
         $process = new Process(
             'sed -i \'s/"test_version"/"version"/g\' ./composer.json',
             self::getProjectRoot() 
@@ -103,10 +92,21 @@ class FullStackTest extends \PHPUnit_Framework_TestCase
         $message .= PHP_EOL.'Output:'.PHP_EOL.$process->getOutput();
         $this->assertEquals(0, $process->getExitCode(), $message);
     }
-
-    public function testFirstInstall()
+    
+    protected function prepareCleanDirectories()
     {
-        $this->assertFileExists( self::getBasePath().'/artifact/magento-hackathon-magento-composer-installer-999.0.0.zip' );
+        $fs = new Filesystem();
+        $fs->removeDirectory( self::getBasePath().'/htdocs' );
+        $fs->ensureDirectoryExists( self::getBasePath().'/htdocs' );
+
+        $fs->removeDirectory( self::getBasePath().'/magento/vendor' );
+        $fs->remove( self::getBasePath().'/magento/composer.lock' );
+        $fs->removeDirectory( self::getBasePath().'/magento-modules/vendor' );
+        $fs->remove( self::getBasePath().'/magento-modules/composer.lock' );
+    }
+    
+    protected function installBaseMagento()
+    {
         $process = new Process(
             self::getComposerCommand().' install '.self::getComposerArgs().' --working-dir="./"',
             self::getBasePath().'/magento'
@@ -114,26 +114,85 @@ class FullStackTest extends \PHPUnit_Framework_TestCase
         $process->setTimeout(300);
         $process->run();
         $this->assertProcess($process);
-        
-        $magentoModuleComposerFile = self::getBasePath().'/magento-modules/composer.json';
-        if(file_exists($magentoModuleComposerFile)){
-            unlink($magentoModuleComposerFile);
-        }
-        copy(
-            self::getBasePath().'/magento-modules/composer_1.json',
-            $magentoModuleComposerFile
-        );
-        
-        $process = new Process(
-            self::getComposerCommand().' install '.self::getComposerArgs().' --optimize-autoloader --working-dir="./"',
-            self::getBasePath().'/magento-modules'
-        );
-        $process->setTimeout(300);
-        $process->run();
-        $this->assertProcess($process);
     }
     
-    protected function changeModuleComposerFileAndUpdate($file)
+    protected function getMethodRunConfigs()
+    {
+        $array = array(
+            'symlink' => array(
+                1 => array(
+                    'module_composer_json' => "composer_1.json",
+                ),
+                2 => array(
+                    'module_composer_json' => "composer_2.json",
+                ),
+                3 => array(
+                    'module_composer_json' => "composer_1.json",
+                ),
+            ),
+            'copy' => array(
+                1 => array(
+                    'module_composer_json' => "composer_1_copy.json",
+                ),
+                2 => array(
+                    'module_composer_json' => "composer_2_copy.json",
+                ),
+                3 => array(
+                    'module_composer_json' => "composer_1_copy.json",
+                ),
+            ),
+            
+        );
+        
+        return $array;
+    }
+    
+    public function testEverything()
+    {
+
+        $this->assertFileExists( self::getBasePath().'/artifact/magento-hackathon-magento-composer-installer-999.0.0.zip' );
+
+        $methods = $this->getMethodRunConfigs();
+        
+        foreach( $methods as $method=>$runs ){
+            
+            $this->prepareCleanDirectories();
+
+            $this->installBaseMagento();
+
+            foreach( $runs as $run => $value){
+                $this->changeModuleComposerFileAndUpdate(
+                    $value['module_composer_json'],
+                    ($run===1) ? 'install' : 'update'
+                );
+
+                switch($run){
+                    case 1:
+                    case 3:
+                        foreach($this->getFirstFileTestSet() as $file){
+                            $this->assertFileExists( self::getBasePath().'/htdocs/'.$file );
+                        }
+                        foreach($this->getFirstNotExistTestSet() as $file){
+                            $this->assertFileNotExists( self::getBasePath().'/htdocs/'.$file );
+                        }
+                        break;
+                    case 2:
+                        if($method==="symlink"){
+                            foreach($this->getFirstFileTestSet() as $file){
+                                $this->assertFileNotExists( self::getBasePath().'/htdocs/'.$file );
+                            }
+                        }
+                        break;
+                }
+
+            }
+            
+        }
+
+        
+    }
+    
+    protected function changeModuleComposerFileAndUpdate($file, $command = "update")
     {
         $magentoModuleComposerFile = self::getBasePath().'/magento-modules/composer.json';
         if(file_exists($magentoModuleComposerFile)){
@@ -145,7 +204,7 @@ class FullStackTest extends \PHPUnit_Framework_TestCase
         );
 
         $process = new Process(
-            self::getComposerCommand().' update '.self::getComposerArgs().' --optimize-autoloader --working-dir="./"',
+            self::getComposerCommand().' '.$command.' '.self::getComposerArgs().' --optimize-autoloader --working-dir="./"',
             self::getBasePath().'/magento-modules'
         );
         $process->setTimeout(300);
@@ -168,132 +227,6 @@ class FullStackTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    /**
-     * @depends testFirstInstall
-     */
-    public function testAfterFirstInstall()
-    {
-        foreach($this->getFirstFileTestSet() as $file){
-            $this->assertFileExists( self::getBasePath().'/htdocs/'.$file );
-        }
-        foreach($this->getFirstNotExistTestSet() as $file){
-            $this->assertFileNotExists( self::getBasePath().'/htdocs/'.$file );
-        }
-    }
-
-    /**
-     * @depends testAfterFirstInstall
-     */
-    public function testFirstUpdate()
-    {
-        $this->changeModuleComposerFileAndUpdate('composer_2.json');
-    }
-
-    /**
-     * @depends testFirstUpdate
-     */
-    public function testAfterFirstUpdate()
-    {
-        foreach($this->getFirstFileTestSet() as $file){
-            $this->assertFileNotExists( self::getBasePath().'/htdocs/'.$file );
-        }
-    }
-
-    /**
-     * @depends testAfterFirstUpdate
-     */
-    public function testSecondUpdate()
-    {
-        $this->changeModuleComposerFileAndUpdate('composer_1.json');
-    }
-
-    /**
-     * @depends testSecondUpdate
-     */
-    public function testAfterSecondUpdate()
-    {
-        foreach($this->getFirstFileTestSet() as $file){
-            $this->assertFileExists( self::getBasePath().'/htdocs/'.$file );
-        }
-        foreach($this->getFirstNotExistTestSet() as $file){
-            $this->assertFileNotExists( self::getBasePath().'/htdocs/'.$file );
-        }
-    }
-
-    /**
-     * @depends testAfterSecondUpdate
-     */
-    public function testChangeFromSymlinkToCopy()
-    {
-        $this->changeModuleComposerFileAndUpdate('composer_2.json');
-        $fsIterator = new \RecursiveIteratorIterator(
-            new \RecursiveDirectoryIterator( self::getBasePath().'/htdocs',
-            \FilesystemIterator::FOLLOW_SYMLINKS | \FilesystemIterator::SKIP_DOTS
-            ),
-            1
-        );
-        while($fsIterator->valid()){
-            if( $fsIterator->current()->isLink() ){
-                //echo $fsIterator->key().PHP_EOL;
-                unlink($fsIterator->key());
-            }
-            $fsIterator->next();
-        }
-        $this->changeModuleComposerFileAndUpdate('composer_1_copy.json');
-    }
-
-    /**
-     * @depends testChangeFromSymlinkToCopy
-     */
-    public function testAfterFirstCopyInstall()
-    {
-        foreach($this->getFirstFileTestSet() as $file){
-            $this->assertFileExists( self::getBasePath().'/htdocs/'.$file );
-        }
-        foreach($this->getFirstNotExistTestSet() as $file){
-            $this->assertFileNotExists( self::getBasePath().'/htdocs/'.$file );
-        }
-    }
-
-    /**
-     * @depends testAfterFirstCopyInstall
-     */
-    public function testFirstCopyUpdate()
-    {
-        $this->changeModuleComposerFileAndUpdate('composer_2_copy.json');
-    }
-
-    /**
-     * @depends testFirstCopyUpdate
-     */
-    public function testAfterFirstCopyUpdate()
-    {
-        foreach($this->getFirstFileTestSet() as $file){
-            //rm for copy does not work
-            //$this->assertFileNotExists( self::getBasePath().'/htdocs/'.$file );
-        }
-    }
-
-    /**
-     * @depends testAfterFirstCopyUpdate
-     */
-    public function testSecondCopyUpdate()
-    {
-        $this->changeModuleComposerFileAndUpdate('composer_1_copy.json');
-    }
-
-    /**
-     * @depends testSecondCopyUpdate
-     */
-    public function testAfterSecondCopyUpdate()
-    {
-        foreach($this->getFirstFileTestSet() as $file){
-            $this->assertFileExists( self::getBasePath().'/htdocs/'.$file );
-        }
-        foreach($this->getFirstNotExistTestSet() as $file){
-            $this->assertFileNotExists( self::getBasePath().'/htdocs/'.$file );
-        }
-    }
 
 
 
