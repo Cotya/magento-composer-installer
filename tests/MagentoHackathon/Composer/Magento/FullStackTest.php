@@ -246,6 +246,7 @@ class FullStackTest extends \PHPUnit_Framework_TestCase
     {
         return array(
             'app/design/frontend/test/default/issue76/subdir/issue76.phtml',
+            'app/design/frontend/test/default/issue76/design/subdir/subdir/issue76.phtml',
         );
     }
 
