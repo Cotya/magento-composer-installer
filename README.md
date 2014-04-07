@@ -290,7 +290,7 @@ If you want to have the deployed files automatically added to your .gitignore fi
     ...
     "extra":{
         "magento-root-dir": "htdocs/",
-        auto-append-gitignore": true
+        "auto-append-gitignore": true
     }
     ...
 }

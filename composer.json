@@ -2,7 +2,7 @@
     "name":"magento-hackathon/magento-composer-installer",
     "description":"Composer installer for Magento modules",
     "keywords":[ "composer-installer", "magento"],
-    "minimum-stability":"dev",
+    "minimum-stability":"stable",
     "type":"composer-installer",
     "license":"OSL-3.0",
     "homepage":"https://github.com/magento-hackathon/magento-composer-installer",
@@ -36,7 +36,8 @@
     },
     "require-dev":{
         "phpunit/phpunit":"*",
-        "composer/composer":"*",
+        "composer/composer":"*@dev",
+        "symfony/process":"*",
         "mikey179/vfsStream":"*"
     },
     "suggest":{
@@ -47,6 +48,12 @@
             "MagentoHackathon\\Composer\\Magento":"src/"
         }
     },
+    "archive": {
+        "exclude": [
+            "/tests/FullStackTest"
+        ]
+    },
+    "test_version":"999.0.0",
     "extra":{
         "composer-command-registry": [ "MagentoHackathon\\Composer\\Magento\\Command\\DeployCommand" ],
         "class":"MagentoHackathon\\Composer\\Magento\\Installer"
