@@ -244,7 +244,7 @@ class FullStackTest extends \PHPUnit_Framework_TestCase
     {
         return array(
             'app/etc/modules/Aoe_Profiler.xml',
-            'app/design/frontend/test/default/issue76/subdir/subdir/issue76.phtml',
+            'app/design/frontend/test/default/issue76/Foobar/issue76.phtml',
 //            'app/design/frontend/test/default/updateFileRemove/design/test2.phtml',
         );
     }
@@ -252,8 +252,7 @@ class FullStackTest extends \PHPUnit_Framework_TestCase
     protected function getFirstNotExistTestSet()
     {
         return array(
-            'app/design/frontend/test/default/issue76/subdir/issue76.phtml',
-            'app/design/frontend/test/default/issue76/design/subdir/subdir/issue76.phtml',
+            'app/design/frontend/test/default/issue76/Foobar/Foobar/issue76.phtml',
 //            'app/design/frontend/test/default/updateFileRemove/design/test2.phtml',
 //            'app/design/frontend/test/default/updateFileRemove/test2.phtml',
         );
