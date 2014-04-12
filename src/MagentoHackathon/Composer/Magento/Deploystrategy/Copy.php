@@ -20,6 +20,11 @@ class Copy extends DeploystrategyAbstract
      */
     public function createDelegate($source, $dest)
     {
+        list($mapSource, $mapDest) = $this->getCurrentMapping();
+        $mapSource = $this->removeTrailingSlash($mapSource);
+        $mapDest = $this->removeTrailingSlash($mapDest);
+        $cleanDest = $this->removeTrailingSlash($dest);
+
         $sourcePath = $this->getSourceDir() . '/' . $this->removeTrailingSlash($source);
         $destPath = $this->getDestDir() . '/' . $this->removeTrailingSlash($dest);
 
@@ -36,20 +41,28 @@ class Copy extends DeploystrategyAbstract
         // Namespace/ModuleDir => Namespace/, but Namespace/ModuleDir may exist
         // Namespace/ModuleDir => Namespace/ModuleDir, but ModuleDir may exist
 
+        // first iteration through, we need to update the mappings to correctly handle mismatch globs
+        if ($mapSource == $this->removeTrailingSlash($source) && $mapDest == $this->removeTrailingSlash($dest)) {
+            if (basename($sourcePath) !== basename($destPath)) {
+                $this->setCurrentMapping(array($mapSource, $mapDest . '/' . basename($source)));
+                $cleanDest = $cleanDest . '/' . basename($source);
+            }
+        }
+
         if (file_exists($destPath) && is_dir($destPath)) {
-            if (basename($sourcePath) === basename($destPath)) {
+            if (strcmp(substr($cleanDest, strlen($mapDest)+1), substr($source, strlen($mapSource)+1)) === 0) {
                 // copy each child of $sourcePath into $destPath
                 foreach (new \DirectoryIterator($sourcePath) as $item) {
                     $item = (string) $item;
                     if (!strcmp($item, '.') || !strcmp($item, '..')) {
                         continue;
                     }
-                    $childSource = $source . '/' . $item;
+                    $childSource = $this->removeTrailingSlash($source) . '/' . $item;
                     $this->create($childSource, substr($destPath, strlen($this->getDestDir())+1));
                 }
                 return true;
             } else {
-                $destPath .= '/' . basename($source);
+                $destPath = $this->removeTrailingSlash($destPath) . '/' . basename($source);
                 return $this->create($source, substr($destPath, strlen($this->getDestDir())+1));
             }
         }

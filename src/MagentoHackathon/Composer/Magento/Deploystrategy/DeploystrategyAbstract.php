@@ -18,6 +18,13 @@ abstract class DeploystrategyAbstract
     protected $mappings = array();
 
     /**
+     * The current mapping of the deployment iteration
+     *
+     * @var array
+     */
+    protected $currentMapping = array();
+
+    /**
      * The magento installation's base directory
      *
      * @var string
@@ -59,6 +66,7 @@ abstract class DeploystrategyAbstract
     {
         foreach ($this->getMappings() as $data) {
             list ($source, $dest) = $data;
+            $this->setCurrentMapping($data);
             $this->create($source, $dest);
         }
         return $this;
@@ -140,6 +148,26 @@ abstract class DeploystrategyAbstract
     }
 
     /**
+     * Gets the current mapping used on the deployment iteration
+     *
+     * @return array
+     */
+    public function getCurrentMapping()
+    {
+        return $this->currentMapping;
+    }
+
+    /**
+     * Sets the current mapping used on the deployment iteration
+     *
+     * @param array $mapping
+     */
+    public function setCurrentMapping($mapping)
+    {
+        $this->currentMapping = $mapping;
+    }
+
+    /**
      * Add a key value pair to mapping
      */
     public function addMapping($key, $value)
@@ -159,6 +187,7 @@ abstract class DeploystrategyAbstract
      *
      * @param string $source
      * @param string $dest
+     * @throws \ErrorException
      * @return bool
      */
     public function create($source, $dest)
@@ -184,7 +213,7 @@ abstract class DeploystrategyAbstract
         file app/etc/   --> link app/etc/file to file
         file app/etc/a  --> link app/etc/a to file
         file app/etc/a  --> if app/etc/a is a file throw exception unless force is set, in that case rm and see above
-        file app/etc/a/ --> link app/etc/a/file to file regardless if app/etc/a existst or not
+        file app/etc/a/ --> link app/etc/a/file to file regardless if app/etc/a exists or not
 
         */
 
