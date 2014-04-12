@@ -1,0 +1,6 @@
+{
+    "name":"magento-hackathon/magento-composer-installer-test-updateFileRemove",
+    "minimum-stability":"stable",
+    "type":"magento-module",
+    "version":"2.0.0"
+}

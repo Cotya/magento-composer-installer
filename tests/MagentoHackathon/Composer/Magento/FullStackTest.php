@@ -192,7 +192,10 @@ class FullStackTest extends \PHPUnit_Framework_TestCase
                 switch($run){
                     case 1:
                     case 3:
-                        foreach($this->getFirstFileTestSet() as $file){
+                        foreach( 
+                            $this->getFirstOnlyFileTestSet()
+                            + $this->getFirstExistTestSet()
+                            as $file){
                             $this->assertFileExists( self::getBasePath().'/htdocs/'.$file );
                         }
                         foreach($this->getFirstNotExistTestSet() as $file){
@@ -201,9 +204,12 @@ class FullStackTest extends \PHPUnit_Framework_TestCase
                         break;
                     case 2:
                         if($method==="symlink"){
-                            foreach($this->getFirstFileTestSet() as $file){
+                            foreach($this->getFirstOnlyFileTestSet() as $file){
                                 $this->assertFileNotExists( self::getBasePath().'/htdocs/'.$file );
                             }
+                        }
+                        foreach($this->getSecondExistTestSet() as $file){
+                            $this->assertFileExists( self::getBasePath().'/htdocs/'.$file );
                         }
                         break;
                 }
@@ -234,11 +240,12 @@ class FullStackTest extends \PHPUnit_Framework_TestCase
         $this->assertProcess($process);
     }
     
-    protected function getFirstFileTestSet()
+    protected function getFirstOnlyFileTestSet()
     {
         return array(
             'app/etc/modules/Aoe_Profiler.xml',
             'app/design/frontend/test/default/issue76/subdir/subdir/issue76.phtml',
+//            'app/design/frontend/test/default/updateFileRemove/design/test2.phtml',
         );
     }
 
@@ -247,6 +254,23 @@ class FullStackTest extends \PHPUnit_Framework_TestCase
         return array(
             'app/design/frontend/test/default/issue76/subdir/issue76.phtml',
             'app/design/frontend/test/default/issue76/design/subdir/subdir/issue76.phtml',
+//            'app/design/frontend/test/default/updateFileRemove/design/test2.phtml',
+//            'app/design/frontend/test/default/updateFileRemove/test2.phtml',
+        );
+    }
+
+    protected function getFirstExistTestSet()
+    {
+        return array(
+//            'app/design/frontend/test/default/updateFileRemove/design/test1.phtml',
+//            'app/design/frontend/test/default/updateFileRemove/design/test2.phtml',
+        );
+    }
+
+    protected function getSecondExistTestSet()
+    {
+        return array(
+//            'app/design/frontend/test/default/updateFileRemove/design/test1.phtml',
         );
     }
 
