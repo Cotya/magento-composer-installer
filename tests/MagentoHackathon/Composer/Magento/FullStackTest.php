@@ -25,6 +25,13 @@ class FullStackTest extends \PHPUnit_Framework_TestCase
             self::getProjectRoot() 
         );
         $process->run();
+        if ($process->getExitCode() !== 0) {
+            $message = 'process for <code>'.$process->getCommandLine().'</code> exited with '.$process->getExitCode().': '.$process->getExitCodeText();
+            $message .= PHP_EOL.'Error Message:'.PHP_EOL.$process->getErrorOutput();
+            $message .= PHP_EOL.'Output:'.PHP_EOL.$process->getOutput();
+            echo $message;
+        }
+        
         $process = new Process(
             self::getComposerCommand().' archive --format=zip --dir="tests/FullStackTest/artifact" -vvv',
             self::getProjectRoot()
@@ -63,6 +70,12 @@ class FullStackTest extends \PHPUnit_Framework_TestCase
             self::getProjectRoot()
         );
         $process->run();
+        if ($process->getExitCode() !== 0) {
+            $message = 'process for <code>'.$process->getCommandLine().'</code> exited with '.$process->getExitCode().': '.$process->getExitCodeText();
+            $message .= PHP_EOL.'Error Message:'.PHP_EOL.$process->getErrorOutput();
+            $message .= PHP_EOL.'Output:'.PHP_EOL.$process->getOutput();
+            echo $message;
+        }
     }
     
     protected static function getBasePath(){
