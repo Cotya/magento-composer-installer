@@ -11,6 +11,7 @@
         "magento-hackathon/magento-composer-installer-test-issue-87": "1.*",
         "magento-hackathon/magento-composer-installer-test-updateFileRemove": "1.*",
         "magento-hackathon/magento-composer-installer-test-wildcard": "1.*",
+        "magento-hackathon/magento-composer-installer-test-wildcard2": "1.*",
 		"firegento/magesetup": "*"
 	},
 	"require-dev": {

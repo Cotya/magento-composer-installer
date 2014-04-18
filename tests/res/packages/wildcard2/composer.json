@@ -1,0 +1,6 @@
+{
+    "name":"magento-hackathon/magento-composer-installer-test-wildcard2",
+    "minimum-stability":"stable",
+    "type":"magento-module",
+    "version":"1.0.0"
+}

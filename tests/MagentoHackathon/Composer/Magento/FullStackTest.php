@@ -255,6 +255,7 @@ class FullStackTest extends \PHPUnit_Framework_TestCase
         return array(
             'app/design/frontend/test/default/issue76/Foobar/Foobar/issue76.phtml',
             'app/design/frontend/frontend/wildcard/wildcard.phtml',
+            'app/app/code/test.php',
 //            'app/design/frontend/test/default/updateFileRemove/design/test2.phtml',
 //            'app/design/frontend/test/default/updateFileRemove/test2.phtml',
         );
