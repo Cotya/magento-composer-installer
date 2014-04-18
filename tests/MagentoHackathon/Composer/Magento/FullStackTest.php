@@ -245,6 +245,7 @@ class FullStackTest extends \PHPUnit_Framework_TestCase
         return array(
             'app/etc/modules/Aoe_Profiler.xml',
             'app/design/frontend/test/default/issue76/Foobar/issue76.phtml',
+            'app/design/frontend/wildcard/wildcard.phtml',
 //            'app/design/frontend/test/default/updateFileRemove/design/test2.phtml',
         );
     }
@@ -253,6 +254,7 @@ class FullStackTest extends \PHPUnit_Framework_TestCase
     {
         return array(
             'app/design/frontend/test/default/issue76/Foobar/Foobar/issue76.phtml',
+            'app/design/frontend/frontend/wildcard/wildcard.phtml',
 //            'app/design/frontend/test/default/updateFileRemove/design/test2.phtml',
 //            'app/design/frontend/test/default/updateFileRemove/test2.phtml',
         );
