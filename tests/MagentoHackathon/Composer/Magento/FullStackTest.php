@@ -21,7 +21,7 @@ class FullStackTest extends \PHPUnit_Framework_TestCase
     public static function setUpBeforeClass()
     {
         $process = new Process(
-            'sed -i \'s/"test_version"/"version"/g\' ./composer.json',
+            'perl -pi -e \'s/"test_version"/"version"/g\' ./composer.json',
             self::getProjectRoot() 
         );
         $process->run();
@@ -66,7 +66,7 @@ class FullStackTest extends \PHPUnit_Framework_TestCase
     public static function tearDownAfterClass()
     {
         $process = new Process(
-            'sed -i \'s/"version"/"test_version"/g\' ./composer.json',
+            'perl -pi -e \'s/"version"/"test_version"/g\' ./composer.json',
             self::getProjectRoot()
         );
         $process->run();
