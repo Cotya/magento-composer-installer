@@ -74,6 +74,8 @@ class GitIgnoreGeneratorTest extends InstallerTest
             ->setConstructorArgs(array($this->io, $this->composer))
             ->setMethods(array('appendGitIgnore'))
             ->getMock();
+        
+        $mockInstaller->setDeployManager( new DeployManager( $this->io ) );
 
         $mockInstaller->expects($this->never())
             ->method('appendGitIgnore');
@@ -103,6 +105,8 @@ class GitIgnoreGeneratorTest extends InstallerTest
         $mockInstaller->expects($this->once())
             ->method('appendGitIgnore')
             ->with($package, $gitIgnoreFile);
+
+        $mockInstaller->setDeployManager( new DeployManager( $this->io ) );
 
         $mockInstaller->install($this->repository, $package);
     }

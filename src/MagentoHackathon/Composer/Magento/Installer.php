@@ -11,6 +11,7 @@ use Composer\Composer;
 use Composer\Installer\LibraryInstaller;
 use Composer\Installer\InstallerInterface;
 use Composer\Package\PackageInterface;
+use MagentoHackathon\Composer\Magento\Deploy\Manager\Entry;
 
 /**
  * Composer Magento Installer
@@ -49,6 +50,11 @@ class Installer extends LibraryInstaller implements InstallerInterface
      * @var string
      */
     protected $_deployStrategy = "symlink";
+
+    /**
+     * @var DeployManager
+     */
+    protected $deployManager;
 
     /**
      * If set the deployed files will be added to the projects .gitignore file
@@ -130,6 +136,24 @@ class Installer extends LibraryInstaller implements InstallerInterface
 
     }
 
+
+    /**
+     * @param DeployManager $deployManager
+     */
+    public function setDeployManager( DeployManager $deployManager)
+    {
+        $this->deployManager = $deployManager;
+    }
+
+
+    /**
+     * @return DeployManager
+     */
+    public function getDeployManager()
+    {
+        return $this->deployManager;
+    }
+    
     /**
      * @param string $strategy
      */
@@ -224,7 +248,10 @@ class Installer extends LibraryInstaller implements InstallerInterface
 
         $strategy = $this->getDeployStrategy($package);
         $strategy->setMappings($this->getParser($package)->getMappings());
-        $strategy->deploy();
+        $deployManagerEntry = new Entry();
+        $deployManagerEntry->setPackageName($package->getName());
+        $deployManagerEntry->setDeployStrategy($strategy);
+        $this->deployManager->addPackage($deployManagerEntry);
 
         if ($this->appendGitIgnore) {
             $this->appendGitIgnore($package, $this->getGitIgnoreFileLocation());
@@ -299,7 +326,10 @@ class Installer extends LibraryInstaller implements InstallerInterface
 
         $targetStrategy = $this->getDeployStrategy($target);
         $targetStrategy->setMappings($this->getParser($target)->getMappings());
-        $targetStrategy->deploy();
+        $deployManagerEntry = new Entry();
+        $deployManagerEntry->setPackageName($target->getName());
+        $deployManagerEntry->setDeployStrategy($targetStrategy);
+        $this->deployManager->addPackage($deployManagerEntry);
 
         if($this->appendGitIgnore) {
             $this->appendGitIgnore($target, $this->getGitIgnoreFileLocation());
