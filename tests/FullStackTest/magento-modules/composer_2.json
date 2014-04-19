@@ -1,5 +1,6 @@
 {
 	"require": {
+        "magento-hackathon/magento-composer-installer": "*",
         "magento-hackathon/magento-composer-installer-test-updateFileRemove": "2.*"
 	},
 	"repositories": [
