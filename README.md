@@ -37,7 +37,8 @@ set up your root ```composer.json``` in your project like this:
 ```json
 {
     "require": {
-        "your-vendor-name/module-name": "*"
+        "your-vendor-name/module-name": "*",
+        "magento-hackathon/magento-composer-installer": "*"
     },
     "repositories": [
         {
@@ -98,10 +99,7 @@ To make a Magento module installable with composer, this is how to set up the ``
             "name":"Author Name",
             "email":"author@example.com"
         }
-    ],
-    "require": {
-        "magento-hackathon/magento-composer-installer": "*"
-    }
+    ]
 }
 ```
 
@@ -150,9 +148,6 @@ Look for the ```replace``` statement
             "email":"author@example.com"
         }
     ],
-    "require": {
-        "magento-hackathon/magento-composer-installer": "*"
-    }
     "replace": {
         "your-vendor-name/module-name":"*"
     }
@@ -168,9 +163,6 @@ If you don't like modman files, you can define mappings in a package composer.js
 {
    "name": "test/test",
    "type": "magento-module",
-   "require": {
-      "magento-hackathon/magento-composer-installer": "*"
-   },
     "extra": {
         "map": [
             ["themes/default/skin", "public/skin/frontend/foo/default"],
@@ -199,6 +191,25 @@ Here is how to use it:
 }
 ```
 
+### overwrite deploy method per module
+
+Caution: this feature is new, so doku may be wrong, not uptodate or we have a bug somewhere.
+please test and give feedback.
+
+```json
+{
+	"extra":{
+		"magento-root-dir": "../htdocs/",
+		"magento-deploystrategy": "symlink",
+        "magento-deploystrategy-overwrite": {
+            "magento-hackathon/magento-composer-installer-test-sort1": "copy",
+            "magento-hackathon/magento-composer-installer-test-sort2": "copy"
+        }
+	}
+}
+```
+
+
 ### Define order in which you want your magento packages deployed
 
 In some cases you may want to deploy your magento modules in specific order.
@@ -222,7 +233,8 @@ As this makes most sense when you use copy with allowed force overwrite, here an
 ```
 
 As we also have the earlier described `magento-deploystrategy-overwrite` you can build some interesting stuff.  
-For note: no priority defined means 100, 
+For note: no priority defined means 100, if its deploy strategy copy, we use 101 as default.
+So copy gets per default deployed before the symlinked modules now.
 
 
 ### None Deploy
