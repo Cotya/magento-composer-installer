@@ -199,6 +199,32 @@ Here is how to use it:
 }
 ```
 
+### Define order in which you want your magento packages deployed
+
+In some cases you may want to deploy your magento modules in specific order.
+For example when you have conflicting files and you know which module should be the overwriting one.
+As this makes most sense when you use copy with allowed force overwrite, here an example.
+
+ 
+```json
+{
+	"extra":{
+		"magento-root-dir": "../htdocs/",
+		"magento-deploystrategy": "copy",
+        "magento-force": true,
+        "magento-deploy-sort-priority": {
+            "magento-hackathon/magento-composer-installer-test-sort1": "200",
+            "magento-hackathon/magento-composer-installer-test-sort2": "400",
+            "magento-hackathon/magento-composer-installer-test-sort3": "200"
+        }
+	}
+}
+```
+
+As we also have the earlier described `magento-deploystrategy-overwrite` you can build some interesting stuff.  
+For note: no priority defined means 100, 
+
+
 ### None Deploy
 If you only want to place packages into the vendor directory with no linking/copying into Magento's folder structure use this deploy strategy.
 

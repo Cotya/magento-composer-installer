@@ -201,6 +201,16 @@ class FullStackTest extends \PHPUnit_Framework_TestCase
                         foreach($this->getFirstNotExistTestSet() as $file){
                             $this->assertFileNotExists( self::getBasePath().'/htdocs/'.$file );
                         }
+                        if($method==="copy_force"){
+                            $this->assertStringEqualsFile(
+                                self::getBasePath().'/htdocs/'.'app/design/frontend/test/default/installSort/test1.phtml'
+                                ,'testcontent2'
+                            );
+                            $this->assertStringEqualsFile(
+                                self::getBasePath().'/htdocs/'.'app/design/frontend/test/default/installSort/test2.phtml'
+                                ,'testcontent3'
+                            );
+                        }
                         break;
                     case 2:
                         if($method==="symlink"){

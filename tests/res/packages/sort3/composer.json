@@ -1,0 +1,6 @@
+{
+    "name":"magento-hackathon/magento-composer-installer-test-sort3",
+    "minimum-stability":"stable",
+    "type":"magento-module",
+    "version":"1.0.0"
+}

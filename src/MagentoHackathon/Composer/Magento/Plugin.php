@@ -27,12 +27,24 @@ class Plugin implements PluginInterface, EventSubscriberInterface{
      * @var DeployManager
      */
     protected $deployManager;
+    
+    
+    protected function initDeployManager(Composer $composer, IOInterface $io)
+    {
+        $this->deployManager = new DeployManager( $io );
+        
+        $extra          = $composer->getPackage()->getExtra();
+        $sortPriority   = isset($extra['magento-deploy-sort-priority']) ? $extra['magento-deploy-sort-priority'] : [];
+        $this->deployManager->setSortPriority( $sortPriority );
+        
+    }
+    
 
     public function activate(Composer $composer, IOInterface $io)
     {
+        $this->io  = $io;
         $installer = new Installer($io, $composer);
-        $this->deployManager = new DeployManager( $io );
-        $this->io            = $io;
+        $this->initDeployManager($composer, $io);
         $installer->setDeployManager( $this->deployManager );
         if( $this->io->isDebug() ){
             $this->io->write('activate magento plugin');
