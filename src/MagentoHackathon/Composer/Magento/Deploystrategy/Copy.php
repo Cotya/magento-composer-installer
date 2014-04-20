@@ -50,6 +50,7 @@ class Copy extends DeploystrategyAbstract
         }
 
         if (file_exists($destPath) && is_dir($destPath)) {
+            $mapSource = rtrim($mapSource,'*');
             if (strcmp(substr($cleanDest, strlen($mapDest)+1), substr($source, strlen($mapSource)+1)) === 0) {
                 // copy each child of $sourcePath into $destPath
                 foreach (new \DirectoryIterator($sourcePath) as $item) {
