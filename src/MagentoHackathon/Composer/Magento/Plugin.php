@@ -34,7 +34,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface{
         $this->deployManager = new DeployManager( $io );
         
         $extra          = $composer->getPackage()->getExtra();
-        $sortPriority   = isset($extra['magento-deploy-sort-priority']) ? $extra['magento-deploy-sort-priority'] : [];
+        $sortPriority   = isset($extra['magento-deploy-sort-priority']) ? $extra['magento-deploy-sort-priority'] : array();
         $this->deployManager->setSortPriority( $sortPriority );
         
     }
