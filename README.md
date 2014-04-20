@@ -236,6 +236,28 @@ As we also have the earlier described `magento-deploystrategy-overwrite` you can
 For note: no priority defined means 100, if its deploy strategy copy, we use 101 as default.
 So copy gets per default deployed before the symlinked modules now.
 
+### Prevent single Files from Deploy
+ 
+In some cases, you may only want single files/directories not get deployed,
+for this you can use `magento-deploy-ignore` which works either global or on module level.
+
+
+```json
+{
+	"extra":{
+		"magento-root-dir": "../htdocs/",
+		"magento-deploystrategy": "copy",
+        "magento-force": true,
+        "magento-deploy-ignore": {
+            "*": ["/index.php"],
+            "connect20/mage_core_modules": ["/shell/compiler.php"]
+        },
+	}
+}
+```
+
+may not work for symlink, when file/directory is content of a symlinked directory
+ 
 
 ### None Deploy
 If you only want to place packages into the vendor directory with no linking/copying into Magento's folder structure use this deploy strategy.

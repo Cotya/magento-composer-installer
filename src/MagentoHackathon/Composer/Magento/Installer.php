@@ -174,11 +174,23 @@ class Installer extends LibraryInstaller implements InstallerInterface
         if (null === $strategy) {
             $strategy = $this->_deployStrategy;
         }
-        $moduleSpecificDeployStrategys = $this->composer->getPackage()->getExtra();
-        if( isset($moduleSpecificDeployStrategys['magento-deploystrategy-overwrite']) ){
-            $moduleSpecificDeployStrategys = $moduleSpecificDeployStrategys['magento-deploystrategy-overwrite'];
+        $extra  = $this->composer->getPackage()->getExtra();
+        if( isset($extra['magento-deploystrategy-overwrite']) ){
+            $moduleSpecificDeployStrategys = $extra['magento-deploystrategy-overwrite'];
             if( isset($moduleSpecificDeployStrategys[$package->getName()]) ){
                 $strategy = $moduleSpecificDeployStrategys[$package->getName()];
+            }
+        }
+        $moduleSpecificDeployIgnores = array();
+        if( isset($extra['magento-deploy-ignore']) ){
+            if( isset($extra['magento-deploy-ignore']["*"]) ){
+                $moduleSpecificDeployIgnores = $extra['magento-deploy-ignore']["*"];
+            }
+            if( isset($extra['magento-deploy-ignore'][$package->getName()]) ){
+                $moduleSpecificDeployIgnores = array_merge(
+                    $moduleSpecificDeployIgnores, 
+                    $extra['magento-deploy-ignore'][$package->getName()]
+                );
             }
         }
         $targetDir = $this->getTargetDir();
@@ -199,6 +211,7 @@ class Installer extends LibraryInstaller implements InstallerInterface
         }
         // Inject isForced setting from extra config
         $impl->setIsForced($this->isForced);
+        $impl->setIgnoredMappings($moduleSpecificDeployIgnores);
         return $impl;
     }
 

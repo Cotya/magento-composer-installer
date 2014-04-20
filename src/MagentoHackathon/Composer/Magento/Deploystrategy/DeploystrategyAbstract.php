@@ -25,6 +25,14 @@ abstract class DeploystrategyAbstract
     protected $currentMapping = array();
 
     /**
+     * The List of entries which files should not get deployed
+     * 
+     * @var array
+     */
+    protected $ignoredMappings = array();
+
+
+    /**
      * The magento installation's base directory
      *
      * @var string
@@ -167,6 +175,36 @@ abstract class DeploystrategyAbstract
         $this->currentMapping = $mapping;
     }
 
+
+    /**
+     * sets the current ignored mappings
+     * 
+     * @param $ignoredMappings
+     */
+    public function setIgnoredMappings($ignoredMappings)
+    {
+        $this->ignoredMappings = $ignoredMappings;
+    }
+
+
+    /**
+     * @param string $destination
+     *
+     * @return bool
+     */
+    protected  function isDestinationIgnored($destination)
+    {
+        $destination = '/'.$destination;
+        $destination = str_replace('/./','/', $destination);
+        $destination = str_replace('//','/', $destination);
+        foreach($this->ignoredMappings as $ignored){
+            if( 0 === strpos($ignored,$destination) ){
+                return true;
+            }
+        }
+        return false;
+    }
+
     /**
      * Add a key value pair to mapping
      */
@@ -192,6 +230,10 @@ abstract class DeploystrategyAbstract
      */
     public function create($source, $dest)
     {
+        if($this->isDestinationIgnored($dest)){
+            return;
+        }
+        
         $sourcePath = $this->getSourceDir() . '/' . $this->removeTrailingSlash($source);
         $destPath = $this->getDestDir() . '/' . $dest;
 
