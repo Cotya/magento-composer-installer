@@ -47,4 +47,30 @@ class CopyTest extends AbstractTest
 
         $this->assertFileNotExists(dirname(dirname($testTarget)) . DS . basename($testTarget));
     }
+
+    public function testWildcardCopyToExistingDir()
+    {
+        $sourceContents = "app/code/test.php";
+        
+        //create target directory before
+        $this->mkdir($this->destDir . DS . 'app' . DS . 'code');
+
+        $this->mkdir($this->sourceDir . DS . dirname($sourceContents));
+        touch($this->sourceDir . DS . $sourceContents);
+
+        $dest = "dest/root";
+        $this->mkdir($this->destDir . DS . $dest);
+
+        $testTarget = $this->destDir . DS . $sourceContents;
+        $this->strategy->setMappings(array(array('*', '/')));
+
+        $this->strategy->deploy();
+        $this->assertFileExists($testTarget);
+
+        $this->strategy->setIsForced(true);
+        $this->strategy->deploy();
+
+        $this->assertFileNotExists($this->destDir . DS . 'app' . DS . 'app' . DS . 'code' . DS . 'test.php');
+        
+    }
 }
