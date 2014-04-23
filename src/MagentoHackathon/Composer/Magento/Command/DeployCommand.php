@@ -6,10 +6,13 @@
 
 namespace MagentoHackathon\Composer\Magento\Command;
 
+use MagentoHackathon\Composer\Magento\Deploy\Manager\Entry;
+use MagentoHackathon\Composer\Magento\DeployManager;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Composer\Downloader\VcsDownloader;
+use MagentoHackathon\Composer\Magento\Installer;
 
 /**
  * @author Tiago Ribeiro <tiago.ribeiro@seegno.com>
@@ -43,10 +46,22 @@ EOT
         $dm = $composer->getDownloadManager();
         $im = $composer->getInstallationManager();
 
-        /*
-         * @var $moduleInstaller MagentoHackathon\Composer\Magento\Installer
+        /**
+         * @var $moduleInstaller \MagentoHackathon\Composer\Magento\Installer
          */
         $moduleInstaller = $im->getInstaller("magento-module");
+
+
+        $deployManager = new DeployManager( $this->getIO() );
+
+        $extra          = $composer->getPackage()->getExtra();
+        $sortPriority   = isset($extra['magento-deploy-sort-priority']) ? $extra['magento-deploy-sort-priority'] : array();
+        $deployManager->setSortPriority( $sortPriority );
+
+
+
+        $moduleInstaller->setDeployManager( $deployManager );
+        
 
         foreach ($installedRepo->getPackages() as $package) {
 
@@ -68,9 +83,14 @@ EOT
             }
             $strategy->setMappings($moduleInstaller->getParser($package)->getMappings());
 
-            $strategy->deploy();
+            $deployManagerEntry = new Entry();
+            $deployManagerEntry->setPackageName($package->getName());
+            $deployManagerEntry->setDeployStrategy($strategy);
+            $deployManager->addPackage($deployManagerEntry);
+            
         }
 
+        $deployManager->doDeploy();
 
         return;
     }
