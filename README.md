@@ -420,7 +420,7 @@ Complete, fully working.
 * irc: freenode the channels #magento #magento-composer and for german speaking people #magento-de 
 
 
-If you need training or help to introduce Composer into your companies workflow,
+If you need consulting, support, training or help regarding Magento and Composer,
 you have the chance to hire one of the following people/companies.
 
 * Daniel Fahlke aka Flyingmana (Maintainer): flyingmana@googlemail.com
