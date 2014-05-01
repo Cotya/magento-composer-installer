@@ -2,6 +2,7 @@ htdocs
 vendor
 composer.lock
 magento-modules/composer.json
+/*Output.log
 
 artifact/*
 !artifact/empty

@@ -7,6 +7,8 @@ use Symfony\Component\Process\Process;
 
 class FullStackTest extends \PHPUnit_Framework_TestCase
 {
+    
+    protected static $processLogCounter = 1;
 
     protected function setUp()
     {
@@ -42,6 +44,8 @@ class FullStackTest extends \PHPUnit_Framework_TestCase
             $message .= PHP_EOL.'Error Message:'.PHP_EOL.$process->getErrorOutput();
             $message .= PHP_EOL.'Output:'.PHP_EOL.$process->getOutput();
             echo $message;
+        }else{
+            self::logProcessOutput($process,'createComposerArtifact');
         }
         $packagesPath    = self::getProjectRoot() .'/tests/res/packages';
         $directory = new \DirectoryIterator($packagesPath);
@@ -95,7 +99,15 @@ class FullStackTest extends \PHPUnit_Framework_TestCase
     }
     
     protected static function getComposerArgs(){
-        return '--prefer-dist --no-dev --no-progress --no-interaction --profile';
+        return '--prefer-dist --no-dev --no-progress --no-interaction --profile -vvv';
+    }
+    
+    protected static function logProcessOutput(Process $process, $name = null){
+        if($name === null){
+            $name = self::$processLogCounter;
+            self::$processLogCounter++;
+        }
+        file_put_contents( self::getBasePath().'/'.$name.'Output.log', $process->getCommandLine() ."\n\n". $process->getOutput() );
     }
     
     public function assertProcess(Process $process)
@@ -126,6 +138,7 @@ class FullStackTest extends \PHPUnit_Framework_TestCase
         );
         $process->setTimeout(300);
         $process->run();
+        self::logProcessOutput($process,'installBaseMagento');
         $this->assertProcess($process);
     }
     
@@ -260,6 +273,7 @@ class FullStackTest extends \PHPUnit_Framework_TestCase
         );
         $process->setTimeout(300);
         $process->run();
+        self::logProcessOutput($process);
         $this->assertProcess($process);
     }
     
