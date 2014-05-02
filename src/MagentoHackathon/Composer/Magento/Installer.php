@@ -57,6 +57,11 @@ class Installer extends LibraryInstaller implements InstallerInterface
     protected $deployManager;
 
     /**
+     * @var ProjectConfig
+     */
+    protected $config;
+
+    /**
      * If set the deployed files will be added to the projects .gitignore file
      *
      * @var bool
@@ -145,6 +150,11 @@ class Installer extends LibraryInstaller implements InstallerInterface
         $this->deployManager = $deployManager;
     }
 
+    
+    public function setConfig( ProjectConfig $config )
+    {
+        $this->config = $config;
+    }
 
     /**
      * @return DeployManager

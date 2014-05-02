@@ -42,6 +42,8 @@
         "mikey179/vfsStream":"*"
     },
     "suggest":{
+        "theseer/autoload": "~1.14",
+        "zetacomponents/console-tools": "dev-master",
         "magento-hackathon/composer-command-integrator":"*"
     },
     "autoload":{
@@ -51,7 +53,8 @@
     },
     "archive": {
         "exclude": [
-            "/tests/FullStackTest"
+            "vendor",
+            "/tests/FullStackTest/"
         ]
     },
     "test_version":"999.0.0",

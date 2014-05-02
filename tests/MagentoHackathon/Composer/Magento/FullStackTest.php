@@ -34,6 +34,13 @@ class FullStackTest extends \PHPUnit_Framework_TestCase
             echo $message;
         }
         
+        @unlink(self::getProjectRoot().'/vendor/theseer/directoryscanner/tests/_data/linkdir');
+        @unlink(self::getBasePath().'/magento/vendor/theseer/directoryscanner/tests/_data/linkdir');
+        @unlink(self::getBasePath().'/magento-modules/vendor/theseer/directoryscanner/tests/_data/linkdir');
+        @unlink(self::getProjectRoot().'/vendor/theseer/directoryscanner/tests/_data/nested/empty');
+        @unlink(self::getBasePath().'/magento/vendor/theseer/directoryscanner/tests/_data/nested/empty');
+        @unlink(self::getBasePath().'/magento-modules/vendor/theseer/directoryscanner/tests/_data/nested/empty');
+        
         $process = new Process(
             self::getComposerCommand().' archive --format=zip --dir="tests/FullStackTest/artifact" -vvv',
             self::getProjectRoot()
@@ -283,6 +290,8 @@ class FullStackTest extends \PHPUnit_Framework_TestCase
             'app/etc/modules/Aoe_Profiler.xml',
             'app/design/frontend/test/default/issue76/Foobar/issue76.phtml',
             'app/design/frontend/wildcard/wildcard.phtml',
+            'composer_lib/autoload.php',
+            'composer_lib/magento-hackathon/magento-composer-installer-test-library/composer.json',
 //            'app/design/frontend/test/default/updateFileRemove/design/test2.phtml',
         );
     }

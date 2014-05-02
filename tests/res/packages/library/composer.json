@@ -1,0 +1,11 @@
+{
+    "name":"magento-hackathon/magento-composer-installer-test-library",
+    "minimum-stability":"stable",
+    "autoload":{
+        "classmap": [
+            "src/"
+        ]
+    },
+    "type":"library",
+    "version":"1.0.0"
+}

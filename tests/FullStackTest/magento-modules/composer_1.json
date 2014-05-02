@@ -3,6 +3,8 @@
 		"fbrnc/aoe_templatehints": "*",
 		"fbrnc/aoe_profiler": "*",
 		"magento-hackathon/magento-composer-installer": "*",
+        "theseer/autoload": "~1.14",
+        "zetacomponents/console-tools": "dev-master",
 		"firegento/psr0autoloader": "dev-master",
         "connect20/aw_blog": "*",
         "connect20/aw_onpulse": "*",
@@ -11,6 +13,7 @@
         "magento-hackathon/magento-composer-installer-test-issue-87": "1.*",
         "magento-hackathon/magento-composer-installer-test-updateFileRemove": "1.*",
         "magento-hackathon/magento-composer-installer-test-wildcard": "1.*",
+        "magento-hackathon/magento-composer-installer-test-library": "1.*",
 		"firegento/magesetup": "*"
 	},
 	"require-dev": {
@@ -30,6 +33,12 @@
 	"extra":{
 		"magento-deploystrategy": "symlink",
         "auto-append-gitignore": true,
+        "magento-project": {
+            "libraryPath": "../htdocs/composer_lib/",
+            "libraries": {
+                "magento-hackathon/magento-composer-installer-test-library": {}
+            }
+        },
 		"magento-root-dir": "../htdocs/"
 	}
 }

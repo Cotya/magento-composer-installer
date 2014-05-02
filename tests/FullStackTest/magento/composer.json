@@ -1,6 +1,8 @@
 {
 	"require": {
 		"magento-hackathon/magento-composer-installer": "*",
+        "theseer/autoload": "~1.14",
+        "zetacomponents/console-tools": "dev-master",
 		"connect20/mage_all_latest": "*"
 	},
 	"repositories": [

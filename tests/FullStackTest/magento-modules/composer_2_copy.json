@@ -1,6 +1,8 @@
 {
 	"require": {
         "magento-hackathon/magento-composer-installer": "*",
+        "theseer/autoload": "~1.14",
+        "zetacomponents/console-tools": "dev-master",
         "magento-hackathon/magento-composer-installer-test-updateFileRemove": "2.*"
 	},
 	"repositories": [
@@ -16,6 +18,12 @@
 	"extra":{
 		"magento-deploystrategy": "copy",
         "auto-append-gitignore": true,
+        "magento-project": {
+            "libraryPath": "../htdocs/composer_lib/",
+            "libraries": {
+                "magento-hackathon/magento-composer-installer-test-library": {}
+            }
+        },
 		"magento-root-dir": "../htdocs/"
 	}
 }
