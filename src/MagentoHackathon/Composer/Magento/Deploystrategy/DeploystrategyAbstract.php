@@ -186,6 +186,16 @@ abstract class DeploystrategyAbstract
         $this->ignoredMappings = $ignoredMappings;
     }
 
+    /**
+     * gets the current ignored mappings
+     * 
+     * @return array
+     */
+    public function getIgnoredMappings()
+    {
+        return $this->ignoredMappings;
+    }
+
 
     /**
      * @param string $destination

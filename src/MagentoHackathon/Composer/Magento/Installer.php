@@ -317,6 +317,11 @@ class Installer extends LibraryInstaller implements InstallerInterface
             $ignore = str_replace('//','/', $ignore);
             $ignore = rtrim($ignore,'/');
             if(!in_array($ignore, $contents)) {
+                $ignoredMappings = $this->getDeployStrategy($package)->getIgnoredMappings();
+                if( in_array($ignore, $ignoredMappings) ){
+                    continue;
+                }
+                
                 $additions[] = $ignore;
             }
         }
