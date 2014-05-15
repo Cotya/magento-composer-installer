@@ -127,7 +127,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface{
     protected function deployLibraries()
     {
         $packages = $this->composer->getRepositoryManager()->getLocalRepository()->getPackages();
-        
+        $autoloadDirectories = array();
         
         $libraryPath = $this->config->getLibraryPath();
         if( $libraryPath === null ){
@@ -150,6 +150,12 @@ class Plugin implements PluginInterface, EventSubscriberInterface{
             if( $packageConfig === null ){
                 continue;
             }
+            if( !isset($packageConfig['autoload']) ){
+                $packageConfig['autoload'] = array('/');
+            }
+            foreach($packageConfig['autoload'] as $path){
+                $autoloadDirectories[] = $libraryPath.'/'.$package->getName()."/".$path;
+            }
             if( $this->io->isDebug() ){
                 $this->io->write('Magento deployLibraries executed for '.$package->getName());
             }
@@ -170,7 +176,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface{
             if( $this->io->isDebug() ){
                 $this->io->write('Magento deployLibraries executes autoload generator');
             }
-            $process = new Process( $executable." -o {$libraryPath}/autoload.php  $libraryPath ");
+            $process = new Process( $executable." -o {$libraryPath}/autoload.php  ".implode(' ',$autoloadDirectories));
             $process->run();
         }else{
             if( $this->io->isDebug() ){
