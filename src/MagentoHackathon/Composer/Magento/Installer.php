@@ -186,13 +186,14 @@ class Installer extends LibraryInstaller implements InstallerInterface
         }
         $extra  = $this->composer->getPackage()->getExtra();
         if( isset($extra['magento-deploystrategy-overwrite']) ){
-            $moduleSpecificDeployStrategys = $extra['magento-deploystrategy-overwrite'];
+            $moduleSpecificDeployStrategys = $this->transformArrayKeysToLowerCase($extra['magento-deploystrategy-overwrite']);
             if( isset($moduleSpecificDeployStrategys[$package->getName()]) ){
                 $strategy = $moduleSpecificDeployStrategys[$package->getName()];
             }
         }
         $moduleSpecificDeployIgnores = array();
         if( isset($extra['magento-deploy-ignore']) ){
+            $extra['magento-deploy-ignore'] = $this->transformArrayKeysToLowerCase($extra['magento-deploy-ignore']);
             if( isset($extra['magento-deploy-ignore']["*"]) ){
                 $moduleSpecificDeployIgnores = $extra['magento-deploy-ignore']["*"];
             }
@@ -392,7 +393,7 @@ class Installer extends LibraryInstaller implements InstallerInterface
         $extra = $package->getExtra();
         $moduleSpecificMap = $this->composer->getPackage()->getExtra();
         if( isset($moduleSpecificMap['magento-map-overwrite']) ){
-            $moduleSpecificMap = $moduleSpecificMap['magento-map-overwrite'];
+            $moduleSpecificMap = $this->transformArrayKeysToLowerCase($moduleSpecificMap['magento-map-overwrite']);
             if( isset($moduleSpecificMap[$package->getName()]) ){
                 $map = $moduleSpecificMap[$package->getName()];
             }
@@ -438,6 +439,15 @@ class Installer extends LibraryInstaller implements InstallerInterface
         }
 
         return $installPath;
+    }
+    
+    public function transformArrayKeysToLowerCase($array)
+    {
+        $arrayNew = array();
+        foreach($array as $key=>$value){
+            $arrayNew[strtolower($key)] = $value;
+        }
+        return $arrayNew;
     }
 
     /**
