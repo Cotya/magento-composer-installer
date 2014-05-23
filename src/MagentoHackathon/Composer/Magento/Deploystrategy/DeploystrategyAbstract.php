@@ -271,8 +271,8 @@ abstract class DeploystrategyAbstract
                 // The directory contains something, do not remove
                 return;
             }
-            // RecursiveIteratorIterator have have opened handle on $absoluteDir
-            // that cause Windows to block the directoty and not remove it until
+            // RecursiveIteratorIterator have opened handle on $absoluteDir
+            // that cause Windows to block the directory and not remove it until
             // the iterator will be destroyed.
             unset($iterator);
 
