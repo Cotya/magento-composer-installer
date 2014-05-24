@@ -33,6 +33,7 @@
         }
     ],
     "require":{
+        "eloquent/composer-config-reader": "2.*",
         "composer-plugin-api": "1.0.0"
     },
     "require-dev":{
