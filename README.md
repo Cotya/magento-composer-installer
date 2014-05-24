@@ -6,22 +6,32 @@ and automatically integrate them into a Magento installation.
 
 We strongly recommend you to also read the general composer documentations on [getcomposer.org](http://getcomposer.org) 
 
-There are several ways how the mapping from files in the package into the Magento source is accomplished:
-
-1. [modman](https://github.com/colinmollenhour/modman) file
-2. MagentoConnect package.xml file
-3. A mapping in the composer.json
-
-As long as one of these mappings can be found, Magento modules are installable.
-
-The package files are symlinked into the Magento instance by default. You can also use a copy or hardlink deploy strategy
-by configuring it in the root composer.json (see below).
-
-A repository of composer ready Magento modules can be found on http://packages.firegento.com/
-
-The Magento root directory must be specified in the ```composer.json``` under ```extra.magento-root-dir```.
-
-**NOTE:** modman's include and bash feature will never get supported!
+ 
+## Project Details
+ 
+This project only covers the custom installer for composer. If you have problems with outdated versions,
+need to install magento connect modules or similar, you need to look for [packages.firegento.com](http://packages.firegento.com/)
+ 
+ 
+### support contacts
+ 
+If you have problems please have patience, as normal support is done during free time.  
+If you are willing to pay to get your problem fixed, communicate this from the start to get faster responses.
+ 
+ 
+If you need consulting, support, training or help regarding Magento and Composer,
+you have the chance to hire one of the following people/companies.
+ 
+* Daniel Fahlke aka Flyingmana (Maintainer): flyingmana@googlemail.com [@Flyingmana](https://twitter.com/Flyingmana)
+* Your Name here
+* Your Name here
+* Your Company Name here
+* Your Company Name here
+ 
+other support contacts
+ 
+* irc: freenode the channels #magento-composer #magento-reddit and for german speaking people #magento-de 
+* twitter: [@firegento](https://twitter.com/firegento)
 
 
 
@@ -153,6 +163,25 @@ Look for the ```replace``` statement
     }
 }
 ```
+
+### Mapping in general
+
+There are several ways how the mapping from files in the package into the Magento source is accomplished:
+
+1. [modman](https://github.com/colinmollenhour/modman) file
+2. MagentoConnect package.xml file
+3. A mapping in the composer.json
+
+As long as one of these mappings can be found, Magento modules are installable.
+
+The package files are symlinked into the Magento instance by default. You can also use a copy or hardlink deploy strategy
+by configuring it in the root composer.json (see below).
+
+A repository of composer ready Magento modules can be found on http://packages.firegento.com/
+
+The Magento root directory must be specified in the ```composer.json``` under ```extra.magento-root-dir```.
+
+**NOTE:** modman's include and bash feature will never get supported!
 
 
 
@@ -370,7 +399,7 @@ First clone the magento-composer-installer, then install the dev-stuff:
 ./bin/composer.phar install --dev
 ```
 
-then run ```phpunit``` in project-root directory.
+then run ```vendor/bin/phpunit``` in project-root directory.
 
 Note: Windows users please run ```phpunit``` with Administrator permissions.
 
@@ -484,24 +513,5 @@ Which makes absolutely no sense for a module.
 * David Fuhr
 * Vinai Kopp (Maintainer)
 
-
-### Current Status of Project
-
-Complete, fully working.
-
-
-### support contacts
-
-* irc: freenode the channels #magento #magento-composer and for german speaking people #magento-de 
-
-
-If you need consulting, support, training or help regarding Magento and Composer,
-you have the chance to hire one of the following people/companies.
-
-* Daniel Fahlke aka Flyingmana (Maintainer): flyingmana@googlemail.com
-* Your Name here
-* Your Name here
-* Your Company Name here
-* Your Company Name here
 
 
