@@ -352,6 +352,11 @@ abstract class DeploystrategyAbstract
                 // The directory contains something, do not remove
                 return;
             }
+            // RecursiveIteratorIterator have opened handle on $absoluteDir
+            // that cause Windows to block the directory and not remove it until
+            // the iterator will be destroyed.
+            unset($iterator);
+
             // The specified directory is empty
             if (@rmdir($absoluteDir)) {
                 // If the parent directory doesn't match the $stopDir and it's empty, remove it, too
