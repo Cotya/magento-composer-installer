@@ -86,7 +86,7 @@ class Installer extends LibraryInstaller implements InstallerInterface
 
         $extra = $composer->getPackage()->getExtra();
 
-        if (isset($extra['magento-root-dir']) || ($rootDirInput = $io->ask('please define your magento root dir [' . $this->defaultMagentoRootDir . ']', $this->defaultMagentoRootDir))) {
+        if (isset($extra['magento-root-dir']) || ($rootDirInput = $io->ask('please define your magento root dir [' . $this->defaultMagentoRootDir . '] ', $this->defaultMagentoRootDir))) {
 
             if (isset($rootDirInput)) {
                 $extra['magento-root-dir'] = $rootDirInput;
@@ -94,7 +94,7 @@ class Installer extends LibraryInstaller implements InstallerInterface
             }
 
             $dir = rtrim(trim($extra['magento-root-dir']), '/\\');
-            if (!is_dir($dir) && $io->askConfirmation('magento root dir "' . $dir . '" missing! create now?')) {
+            if (!is_dir($dir) && $io->askConfirmation('magento root dir "' . $dir . '" missing! create now? [Y,n] ')) {
                 $this->magentoRootDir = new \SplFileInfo($dir);
                 $this->initializeMagentoRootDir($dir);
                 $io->write('magento root dir "' . $dir . '" created');
