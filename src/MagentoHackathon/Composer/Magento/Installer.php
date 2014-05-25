@@ -143,6 +143,7 @@ class Installer extends LibraryInstaller implements InstallerInterface
         if (!$this->magentoRootDir->isDir()) {
             $magentoRootPath = $this->magentoRootDir->getPathname();
             $pathParts = explode(DIRECTORY_SEPARATOR, $magentoRootPath);
+            $directoryPath = '';
             foreach ($pathParts as $pathPart) {
                 $directoryPath .= DIRECTORY_SEPARATOR . $pathPart;
                 $this->filesystem->ensureDirectoryExists($directoryPath);
