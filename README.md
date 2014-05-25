@@ -90,7 +90,6 @@ Notes:
 
 1. More information about VCS repositories can be found 
    at [getcomposer.org](http://getcomposer.org/doc/05-repositories.md#vcs)
-3. Use ```dev-master``` version for ```magento-composer-installer``` on Windows environment
 
 
 ### Make a module installable with composer
