@@ -88,7 +88,7 @@ class Installer extends LibraryInstaller implements InstallerInterface
 
         if (isset($extra['magento-root-dir']) || (($rootDirInput = $io->ask('please define your magento root dir [' . $this->defaultMagentoRootDir . '] ', $this->defaultMagentoRootDir)) || $rootDirInput = $this->defaultMagentoRootDir)) {
 
-            if (isset($rootDirInput) && $rootDirInput != null) {
+            if (isset($rootDirInput)) {
                 $extra['magento-root-dir'] = $rootDirInput;
                 $this->updateJsonExtra($extra, $io);
             }
