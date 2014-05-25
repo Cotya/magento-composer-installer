@@ -141,7 +141,7 @@ class Installer extends LibraryInstaller implements InstallerInterface
      */
     protected function initializeMagentoRootDir() {
         if (!$this->magentoRootDir->isDir()) {
-            $magentoRootPath = $this->magentoRootDir->getPathname();
+            $magentoRootPath = $this->vendorDir . DIRECTORY_SEPARATOR . $this->magentoRootDir->getPathname();
             $pathParts = explode(DIRECTORY_SEPARATOR, $magentoRootPath);
             $directoryPath = '';
             foreach ($pathParts as $pathPart) {
