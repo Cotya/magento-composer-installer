@@ -8,6 +8,9 @@ namespace MagentoHackathon\Composer\Magento;
 use Composer\Repository\InstalledRepositoryInterface;
 use Composer\IO\IOInterface;
 use Composer\Composer;
+use Composer\Factory;
+use Composer\Json\JsonFile;
+use Composer\Json\JsonManipulator;
 use Composer\Installer\LibraryInstaller;
 use Composer\Installer\InstallerInterface;
 use Composer\Package\PackageInterface;
@@ -23,6 +26,13 @@ class Installer extends LibraryInstaller implements InstallerInterface
      * @var \SplFileInfo
      */
     protected $magentoRootDir = null;
+
+    /**
+     * The default base directory of the magento installation
+     *
+     * @var \SplFileInfo
+     */
+    protected $defaultMagentoRootDir = 'root';
 
     /**
      * The base directory of the modman packages
@@ -76,13 +86,24 @@ class Installer extends LibraryInstaller implements InstallerInterface
 
         $extra = $composer->getPackage()->getExtra();
 
-        if (isset($extra['magento-root-dir'])) {
+        if (isset($extra['magento-root-dir']) || (($rootDirInput = $io->ask('please define your magento root dir [' . $this->defaultMagentoRootDir . '] ', $this->defaultMagentoRootDir)) || $rootDirInput = $this->defaultMagentoRootDir)) {
+
+            if (isset($rootDirInput)) {
+                $extra['magento-root-dir'] = $rootDirInput;
+                $this->updateJsonExtra($extra, $io);
+            }
 
             $dir = rtrim(trim($extra['magento-root-dir']), '/\\');
+            $this->magentoRootDir = new \SplFileInfo($dir);
+            if (!is_dir($dir) && $io->askConfirmation('magento root dir "' . $dir . '" missing! create now? [Y,n] ')) {
+                $this->initializeMagentoRootDir($dir);
+                $io->write('magento root dir "' . $dir . '" created');
+            }
+
             if (!is_dir($dir)) {
                 $dir = $this->vendorDir . "/$dir";
+                $this->magentoRootDir = new \SplFileInfo($dir);
             }
-            $this->magentoRootDir = new \SplFileInfo($dir);
         }
 
         if (isset($extra['modman-root-dir'])) {
@@ -113,6 +134,85 @@ class Installer extends LibraryInstaller implements InstallerInterface
         if (!empty($extra['skip-package-deployment'])) {
             $this->skipPackageDeployment = true;
         }
+    }
+
+    /**
+     * Create base requrements for project installation
+     */
+    protected function initializeMagentoRootDir() {
+        if (!$this->magentoRootDir->isDir()) {
+            $magentoRootPath = $this->magentoRootDir->getPathname();
+            $pathParts = explode(DIRECTORY_SEPARATOR, $magentoRootPath);
+            $baseDir = explode(DIRECTORY_SEPARATOR, $this->vendorDir);
+            array_pop($baseDir);
+            $pathParts = array_merge($baseDir, $pathParts);
+            $directoryPath = '';
+            foreach ($pathParts as $pathPart) {
+                $directoryPath .= DIRECTORY_SEPARATOR . $pathPart;
+                $this->filesystem->ensureDirectoryExists($directoryPath);
+            }
+        }
+
+        // $this->getSourceDir($package);
+    }
+
+
+    /**
+     *
+     * @param array $extra
+     * @param \Composer\IO\IOInterface $io
+     * @return int
+     */
+    private function updateJsonExtra($extra, $io) {
+
+        $file = Factory::getComposerFile();
+
+        if (!file_exists($file) && !file_put_contents($file, "{\n}\n")) {
+            $io->write('<error>' . $file . ' could not be created.</error>');
+
+            return 1;
+        }
+        if (!is_readable($file)) {
+            $io->write('<error>' . $file . ' is not readable.</error>');
+
+            return 1;
+        }
+        if (!is_writable($file)) {
+            $io->write('<error>' . $file . ' is not writable.</error>');
+
+            return 1;
+        }
+
+        $json = new JsonFile($file);
+        $composer = $json->read();
+        $composerBackup = file_get_contents($json->getPath());
+        $extraKey = 'extra';
+        $baseExtra = array_key_exists($extraKey, $composer) ? $composer[$extraKey] : array();
+
+        if (!$this->updateFileCleanly($json, $baseExtra, $extra, $extraKey)) {
+            foreach ($extra as $key => $value) {
+                $baseExtra[$key] = $value;
+            }
+
+            $composer[$extraKey] = $baseExtra;
+            $json->write($composer);
+        }
+    }
+
+    private function updateFileCleanly($json, array $base, array $new, $rootKey) {
+        $contents = file_get_contents($json->getPath());
+
+        $manipulator = new JsonManipulator($contents);
+
+        foreach ($new as $childKey => $childValue) {
+            if (!$manipulator->addLink($rootKey, $childKey, $childValue)) {
+                return false;
+            }
+        }
+
+        file_put_contents($json->getPath(), $manipulator->getContents());
+
+        return true;
     }
 
     /**
