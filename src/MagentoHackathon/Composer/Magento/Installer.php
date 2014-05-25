@@ -120,6 +120,9 @@ class Installer extends LibraryInstaller implements InstallerInterface
             && $this->_deployStrategy != 'none'
         ) {
             $dir = $this->magentoRootDir instanceof \SplFileInfo ? $this->magentoRootDir->getPathname() : '';
+            $io->write("<error>magento root dir \"{$dir}\" is not valid</error>", true);
+            $io->write('<comment>You need to set an existing path for "magento-root-dir" in your composer.json</comment>', true);
+            $io->write('<comment>For more information please read about the "Usage" in the README of the installer Package</comment>', true);
             throw new \ErrorException("magento root dir \"{$dir}\" is not valid");
         }
 
