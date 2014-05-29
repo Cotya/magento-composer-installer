@@ -27,6 +27,30 @@ The Magento root directory must be specified in the ```composer.json``` under ``
 
 See below for a [generic instruction on how to install composer](#installation-of-composer) if you aren't familiar with it.
 
+### Install the Magento-Core and initialize your project
+
+If you want to setup your project from the scratch, you can require the magento/core package from [the public Magento module repository](http://packages.firegento.com) and have your magento-root-dir set up automatically.
+
+
+```json
+{
+    "require": {
+        "magento/core": "1.9.0.1"
+    },
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "http://packages.firegento.com"
+        }
+    ],
+    "extra":{
+        "magento-root-dir": "htdocs/"
+    }
+}
+```
+
+
+
 ### Install a module in your project
 
 If you want to use [the public Magento module repository](http://packages.firegento.com),
@@ -151,7 +175,8 @@ If you don't like modman files, you can define mappings in a package composer.js
 
 ### Deploy per Copy instead of Symlink
 
-There is a deploy per copy strategy. This can only be configured in the root composer.json, it can't be configured on a per-package level.
+There is a deploy per copy strategy. The "magento-core" package type uses this strategy. For "magento-module" packages this can only be configured in the root composer.json, it can't be configured on a per-package level.
+
 Here is how to use it:
 
 ```json
