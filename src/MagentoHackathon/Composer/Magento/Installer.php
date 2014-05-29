@@ -331,7 +331,7 @@ class Installer extends LibraryInstaller implements InstallerInterface
             $strategy->deploy();
         }
         if ($package->getType() === 'magento-core') {
-            $this->postInstallMagentoCore();
+            $this->prepareMagentoCore();
         }
     }
 
@@ -421,16 +421,16 @@ class Installer extends LibraryInstaller implements InstallerInterface
 
         foreach ($installedRepo->getPackages() as $package) {
 
-            if ($ioInterface->getOption('verbose')) {
-            $ioInterface->write($package->getName());
+            if ($ioInterface->isVerbose()) {
+                $ioInterface->write($package->getName());
             $ioInterface->write($package->getType());
             }
 
             if ($package->getType() != "magento-module") {
                 continue;
             }
-            if ($ioInterface->getOption('verbose')) {
-            $ioInterface->write("package {$package->getName()} recognized");
+            if ($ioInterface->isVerbose()) {
+                $ioInterface->write("package {$package->getName()} recognized");
             }
 
             $strategy = $moduleInstaller->getDeployStrategy($package);
