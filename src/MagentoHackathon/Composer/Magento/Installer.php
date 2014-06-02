@@ -493,10 +493,8 @@ class Installer extends LibraryInstaller implements InstallerInterface
     }
 
     public function prepareMagentoCore() {
-        if (!$this->skipPackageDeployment) {
-            $this->setMagentoPermissions();
-            $this->redeployProject();
-        }
+        $this->setMagentoPermissions();
+        $this->redeployProject();
     }
 
     /**
@@ -595,15 +593,13 @@ class Installer extends LibraryInstaller implements InstallerInterface
     public function update(InstalledRepositoryInterface $repo, PackageInterface $initial, PackageInterface $target)
     {
 
-        if (!$this->skipPackageDeployment) {
-            if ($target->getType() === 'magento-core' && !$this->preUpdateMagentoCore()) {
-                return;
-            }
-
-            $initialStrategy = $this->getDeployStrategy($initial);
-            $initialStrategy->setMappings($this->getParser($initial)->getMappings());
-            $initialStrategy->clean();
+        if ($target->getType() === 'magento-core' && !$this->preUpdateMagentoCore()) {
+            return;
         }
+
+        $initialStrategy = $this->getDeployStrategy($initial);
+        $initialStrategy->setMappings($this->getParser($initial)->getMappings());
+        $initialStrategy->clean();
 
         parent::update($repo, $initial, $target);
 
