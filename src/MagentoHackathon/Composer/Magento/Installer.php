@@ -330,10 +330,13 @@ class Installer extends LibraryInstaller implements InstallerInterface
                 );
             }
         }
+        if($package->getType() === 'magento-core'){
+            $strategy = 'copy';
+        }
         $targetDir = $this->getTargetDir();
         $sourceDir = $this->getSourceDir($package);
         switch ($strategy) {
-            case 'copy' || $package->getType() === 'magento-core':
+            case 'copy':
                 $impl = new \MagentoHackathon\Composer\Magento\Deploystrategy\Copy($sourceDir, $targetDir);
                 break;
             case 'link':
