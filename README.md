@@ -23,6 +23,7 @@ If you need consulting, support, training or help regarding Magento and Composer
 you have the chance to hire one of the following people/companies.
  
 * Daniel Fahlke aka Flyingmana (Maintainer): flyingmana@googlemail.com [@Flyingmana](https://twitter.com/Flyingmana)
+* brandung - Magento Team: magento-team@brandung.de (http://brandung.de)
 * Your Name here
 * Your Name here
 * Your Company Name here
@@ -41,7 +42,7 @@ See below for a [generic instruction on how to install composer](#installation-o
 
 ### Install the Magento-Core and initialize your project
 
-If you want to setup your project from the scratch, you can require the magento/core package from [the public Magento module repository](http://packages.firegento.com) and have your magento-root-dir set up automatically.
+If you want to setup your project from the scratch, you can require the magento/core package from [the public Magento module repository](http://packages.firegento.com) and have your magento-root-dir set up automatically. It is essential that the Magento core packages type is defined as "magento-core" (as given on magento/core).
 
 
 ```json
@@ -324,6 +325,7 @@ php bin/composer.phar install
 * Karl Spies
 * Tobias Vogt
 * David Fuhr
+* Amir Tchavoshinia
 * Vinai Kopp (Maintainer)
 
 
