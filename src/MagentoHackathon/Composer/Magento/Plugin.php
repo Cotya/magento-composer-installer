@@ -103,8 +103,8 @@ class Plugin implements PluginInterface, EventSubscriberInterface
     {
         $extra = $composer->getPackage()->getExtra();
 
-        return isset($extra[DeployManager::SORT_PRIORITY_KEY])
-            ? $extra[DeployManager::SORT_PRIORITY_KEY]
+        return isset($extra[ProjectConfig::SORT_PRIORITY_KEY])
+            ? $extra[ProjectConfig::SORT_PRIORITY_KEY]
             : array();
     }
 

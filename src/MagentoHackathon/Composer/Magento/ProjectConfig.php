@@ -10,6 +10,7 @@ namespace MagentoHackathon\Composer\Magento;
 
 
 class ProjectConfig {
+    const SORT_PRIORITY_KEY = 'magento-deploy-sort-priority';
     
     protected $libraryPath;
     protected $libraryPackages;
