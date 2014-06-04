@@ -38,6 +38,7 @@
     },
     "require-dev":{
         "phpunit/phpunit":"*",
+        "phpunit/phpunit-mock-objects": "dev-master",
         "composer/composer":"*@dev",
         "symfony/process":"*",
         "mikey179/vfsStream":"*"
