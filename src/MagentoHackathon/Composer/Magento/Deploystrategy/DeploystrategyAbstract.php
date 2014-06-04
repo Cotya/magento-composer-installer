@@ -289,7 +289,7 @@ abstract class DeploystrategyAbstract
             }
 
             // Source file isn't a valid file or glob
-            throw new \ErrorException("Source $sourcePath does not exists");
+            throw new \ErrorException("Source $sourcePath does not exist");
         }
         return $this->createDelegate($source, $dest);
     }
@@ -320,7 +320,7 @@ abstract class DeploystrategyAbstract
             }
 
             // Source file isn't a valid file or glob
-            throw new \ErrorException("Source $sourcePath does not exists");
+            throw new \ErrorException("Source $sourcePath does not exist");
         }
 
         // MP Avoid removing whole folders in case the modman file is not 100% well-written
