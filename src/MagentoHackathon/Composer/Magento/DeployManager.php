@@ -15,6 +15,8 @@ use MagentoHackathon\Composer\Magento\Deploystrategy\Copy;
 
 class DeployManager {
 
+    const SORT_PRIORITY_KEY = 'magento-deploy-sort-priority';
+
     /**
      * @var Entry[]
      */
