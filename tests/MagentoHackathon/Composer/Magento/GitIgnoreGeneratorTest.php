@@ -1,15 +1,16 @@
 <?php
 namespace MagentoHackathon\Composer\Magento;
 
-require_once(__DIR__ . '/InstallerTest.php');
+require_once(__DIR__ . '/ModuleInstallerTest.php');
 
+use MagentoHackathon\Composer\Magento\Installer\ModuleInstaller;
 use Composer\Installer\LibraryInstaller;
 use Composer\Util\Filesystem;
 use Composer\Test\TestCase;
 use Composer\Composer;
 use Composer\Config;
 
-class GitIgnoreGeneratorTest extends InstallerTest
+class GitIgnoreGeneratorTestModule extends ModuleInstallerTest
 {
     
     protected function getGitIgnoreTestPath()
@@ -18,7 +19,7 @@ class GitIgnoreGeneratorTest extends InstallerTest
     }
 
     /**
-     * @covers MagentoHackathon\Composer\Magento\Installer::appendGitIgnore
+     * @covers MagentoHackathon\Composer\Magento\Installer\ModuleInstaller::appendGitIgnore
      */
     public function testGitIgnoreAppendToExistingFile()
     {
@@ -32,7 +33,7 @@ class GitIgnoreGeneratorTest extends InstallerTest
         );
         $package = $this->createPackageMock(array('map' => $map, 'auto-append-gitignore' => true));
         $this->composer->setPackage($package);
-        $installer = new Installer($this->io, $this->composer);
+        $installer = new ModuleInstaller($this->io, $this->composer);
         $installer->appendGitIgnore($package, $gitIgnoreFile);
 
         $this->assertFileExists($gitIgnoreFile);
@@ -42,7 +43,7 @@ class GitIgnoreGeneratorTest extends InstallerTest
     }
 
     /**
-     * @covers MagentoHackathon\Composer\Magento\Installer::appendGitIgnore
+     * @covers MagentoHackathon\Composer\Magento\Installer\ModuleInstaller::appendGitIgnore
      */
     public function testGitIgnoreCreateFileIfNotExist()
     {
@@ -53,7 +54,7 @@ class GitIgnoreGeneratorTest extends InstallerTest
         );
         $package = $this->createPackageMock(array('map' => $map, 'auto-append-gitignore' => true));
         $this->composer->setPackage($package);
-        $installer = new Installer($this->io, $this->composer);
+        $installer = new ModuleInstaller($this->io, $this->composer);
         $installer->appendGitIgnore($package, $gitIgnoreFile);
 
         $this->assertFileExists($gitIgnoreFile);
@@ -63,14 +64,14 @@ class GitIgnoreGeneratorTest extends InstallerTest
     }
 
     /**
-     * @covers MagentoHackathon\Composer\Magento\Installer::install
+     * @covers MagentoHackathon\Composer\Magento\Installer\ModuleInstaller::install
      */
     public function testGitAppendMethodNotCalledIfOptionNotSelected()
     {
         $package = $this->createPackageMock(array('map' => array()));
         $this->composer->setPackage($package);
 
-        $mockInstaller = $this->getMockBuilder('MagentoHackathon\Composer\Magento\Installer')
+        $mockInstaller = $this->getMockBuilder('MagentoHackathon\Composer\Magento\Installer\ModuleInstaller')
             ->setConstructorArgs(array($this->io, $this->composer))
             ->setMethods(array('appendGitIgnore'))
             ->getMock();
@@ -84,7 +85,7 @@ class GitIgnoreGeneratorTest extends InstallerTest
     }
 
     /**
-     * @covers MagentoHackathon\Composer\Magento\Installer::install
+     * @covers MagentoHackathon\Composer\Magento\Installer\ModuleInstaller::install
      */
     public function testGitAppendMethodCalledIfOptionSelected()
     {
@@ -93,7 +94,7 @@ class GitIgnoreGeneratorTest extends InstallerTest
         $package = $this->createPackageMock(array('map' => array(), 'auto-append-gitignore' => true));
         $this->composer->setPackage($package);
 
-        $mockInstaller = $this->getMockBuilder('MagentoHackathon\Composer\Magento\Installer')
+        $mockInstaller = $this->getMockBuilder('MagentoHackathon\Composer\Magento\Installer\ModuleInstaller')
             ->setConstructorArgs(array($this->io, $this->composer))
             ->setMethods(array('getGitIgnoreFileLocation', 'appendGitIgnore'))
             ->getMock();
@@ -112,24 +113,24 @@ class GitIgnoreGeneratorTest extends InstallerTest
     }
 
     /**
-     * @covers MagentoHackathon\Composer\Magento\Installer::getGitIgnoreFileLocation
+     * @covers MagentoHackathon\Composer\Magento\Installer\ModuleInstaller::getGitIgnoreFileLocation
      */
     public function testGetGitIgnoreFileLocationIsCorrectIfExists()
     {
         $gitignoreFile = $this->getGitIgnoreTestPath();
         touch($gitignoreFile);
-        $installer = new Installer($this->io, $this->composer);
+        $installer = new ModuleInstaller($this->io, $this->composer);
         $this->assertSame($installer->getGitIgnoreFileLocation(), $gitignoreFile);
         unlink($gitignoreFile);
     }
 
     /**
-     * @covers MagentoHackathon\Composer\Magento\Installer::getGitIgnoreFileLocation
+     * @covers MagentoHackathon\Composer\Magento\Installer\ModuleInstaller::getGitIgnoreFileLocation
      */
     public function testGetGitIgnoreFileLocationIsCorrectIfNotExists()
     {
         $gitignoreFile = $this->getGitIgnoreTestPath();
-        $installer = new Installer($this->io, $this->composer);
+        $installer = new ModuleInstaller($this->io, $this->composer);
         $this->assertSame($installer->getGitIgnoreFileLocation(), $gitignoreFile);
     }
 }
