@@ -8,6 +8,7 @@ namespace MagentoHackathon\Composer\Magento\Installer;
 use Composer\Package\PackageInterface;
 use Composer\Repository\InstalledRepositoryInterface;
 use InvalidArgumentException;
+use MagentoHackathon\Composer\Magento\Deploystrategy\Copy;
 
 /**
  * Class CoreInstaller
@@ -261,5 +262,19 @@ class CoreInstaller extends MagentoInstallerAbstract
             }
             $this->setPermissions($this->getTargetDir() . DIRECTORY_SEPARATOR . $dir, 0777, 0666);
         }
+    }
+
+    /**
+     * Returns the strategy class used for deployment
+     * Magento Core is always Deployed with Copy Strategy
+     *
+     * @param \Composer\Package\PackageInterface $package
+     * @param string                             $strategy
+     *
+     * @return \MagentoHackathon\Composer\Magento\Deploystrategy\DeploystrategyAbstract
+     */
+    public function getDeployStrategy(PackageInterface $package, $strategy = null)
+    {
+        return  new Copy($this->getSourceDir($package), $this->getTargetDir());
     }
 } 
