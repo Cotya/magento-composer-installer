@@ -277,4 +277,44 @@ class CoreInstaller extends MagentoInstallerAbstract
     {
         return  new Copy($this->getSourceDir($package), $this->getTargetDir());
     }
+
+    /**
+     * @throws \ErrorException
+     */
+    protected function redeployProject()
+    {
+        $ioInterface = $this->io;
+        // init repos
+        $composer = $this->composer;
+        $installedRepo = $composer->getRepositoryManager()->getLocalRepository();
+
+        $im = $composer->getInstallationManager();
+
+        /* @var ModuleInstaller $moduleInstaller */
+        $moduleInstaller = $im->getInstaller("magento-module");
+
+        /* @var PackageInterface $package */
+        foreach ($installedRepo->getPackages() as $package) {
+
+            if ($ioInterface->isVerbose()) {
+                $ioInterface->write($package->getName());
+                $ioInterface->write($package->getType());
+            }
+
+            if ($package->getType() != "magento-module") {
+                continue;
+            }
+            if ($ioInterface->isVerbose()) {
+                $ioInterface->write("package {$package->getName()} recognized");
+            }
+
+            $strategy = $moduleInstaller->getDeployStrategy($package);
+            if ($ioInterface->getOption('verbose')) {
+                $ioInterface->write("used " . get_class($strategy) . " as deploy strategy");
+            }
+            $strategy->setMappings($moduleInstaller->getParser($package)->getMappings());
+
+            $strategy->deploy();
+        }
+    }
 } 
