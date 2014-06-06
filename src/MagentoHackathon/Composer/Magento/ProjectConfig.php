@@ -281,6 +281,15 @@ class ProjectConfig
         return $this->hasExtraField(self::PATH_MAPPINGS_TRANSLATIONS_KEY);
     }
 
+    /**
+     * @return array
+     */
+    public function getMagentoDeployOverwrite()
+    {
+        return (array)$this->transformArrayKeysToLowerCase(
+            $this->fetchVarFromExtraConfig(self::MAGENTO_DEPLOY_STRATEGY_OVERWRITE_KEY)
+        );
+    }
 
     protected function hasExtraField($key)
     {
