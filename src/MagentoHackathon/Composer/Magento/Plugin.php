@@ -77,17 +77,14 @@ class Plugin implements PluginInterface, EventSubscriberInterface
      *
      * @param MagentoInstallerAbstract $installer
      * @param DeployManager            $deployManager
-     * @param ProjectConfig            $config
      *
      * @return MagentoInstallerAbstract
      */
     private function initMagentoInstaller(
         MagentoInstallerAbstract $installer,
-        DeployManager $deployManager,
-        ProjectConfig $config
+        DeployManager $deployManager
     ) {
         $installer->setDeployManager($deployManager);
-        $installer->setConfig($config);
 
         return $installer;
     }
@@ -128,14 +125,12 @@ class Plugin implements PluginInterface, EventSubscriberInterface
 
         $moduleInstaller = $this->initMagentoInstaller(
             new ModuleInstaller($io, $composer),
-            $this->deployManager,
-            $this->config
+            $this->deployManager
         );
 
         $coreInstaller = $this->initMagentoInstaller(
             new CoreInstaller($io, $composer),
-            $this->deployManager,
-            $this->config
+            $this->deployManager
         );
 
         $composer->getInstallationManager()->addInstaller($moduleInstaller);
