@@ -563,33 +563,6 @@ abstract class MagentoInstallerAbstract extends LibraryInstaller implements Inst
     }
 
     /**
-     * join 2 paths
-     *
-     * @param        $path1
-     * @param        $path2
-     * @param        $delimiter
-     * @param bool   $prependDelimiter
-     * @param string $additionalPrefix
-     *
-     * @internal param $url1
-     * @internal param $url2
-     *
-     * @return string
-     */
-    protected function joinPath($path1, $path2, $delimiter, $prependDelimiter = false, $additionalPrefix = '')
-    {
-        $prefix = $additionalPrefix . $prependDelimiter ? $delimiter : '';
-
-        return $prefix . join(
-            $delimiter,
-            array(
-                explode($path1, $delimiter),
-                explode($path2, $delimiter)
-            )
-        );
-    }
-
-    /**
      * @param $path1
      * @param $path2
      *
@@ -597,7 +570,13 @@ abstract class MagentoInstallerAbstract extends LibraryInstaller implements Inst
      */
     protected function joinFilePath($path1, $path2)
     {
-        return $this->joinPath($path1, $path2, DIRECTORY_SEPARATOR, true);
+        return join(
+            DIRECTORY_SEPARATOR,
+            array(
+                rtrim(trim($path1), DIRECTORY_SEPARATOR),
+                ltrim(trim($path2), DIRECTORY_SEPARATOR)
+            )
+        );
     }
 
     /**

@@ -70,6 +70,17 @@ class CoreInstaller extends MagentoInstallerAbstract
         );
 
     /**
+     * Directories that persist between Updates
+     *
+     * @var array
+     */
+    protected $persistentDirs
+        = array(
+            'media',
+            'var'
+        );
+
+    /**
      * Decides if the installer supports the given type
      *
      * @param  string $packageType
@@ -136,7 +147,7 @@ class CoreInstaller extends MagentoInstallerAbstract
 
             return false;
         }
-        $tmpDir = $this->joinFilePath($this->magentoRootDir->getPathname(), $this->getTmpDir());
+        $tmpDir = $this->getTmpDir();
         $this->filesystem->ensureDirectoryExists($tmpDir);
         $this->originalMagentoRootDir = clone $this->magentoRootDir;
         $this->magentoRootDir = new \SplFileInfo($tmpDir);
@@ -218,12 +229,14 @@ class CoreInstaller extends MagentoInstallerAbstract
     {
         $rootDir = $this->magentoRootDir->getPathname();
         $backupDir = $this->backupMagentoRootDir->getPathname();
-        $persistentFolders = array('media', 'var');
-        copy(
-            $backupDir . DIRECTORY_SEPARATOR . self::MAGENTO_LOCAL_XML_PATH,
-            $rootDir . DIRECTORY_SEPARATOR . self::MAGENTO_LOCAL_XML_PATH
-        );
-        foreach ($persistentFolders as $folder) {
+
+        if (file_exists($backupDir . DIRECTORY_SEPARATOR . self::MAGENTO_LOCAL_XML_PATH)) {
+            copy(
+                $backupDir . DIRECTORY_SEPARATOR . self::MAGENTO_LOCAL_XML_PATH,
+                $rootDir . DIRECTORY_SEPARATOR . self::MAGENTO_LOCAL_XML_PATH
+            );
+        }
+        foreach ($this->persistentDirs as $folder) {
             $this->filesystem->removeDirectory($rootDir . DIRECTORY_SEPARATOR . $folder);
             $this->filesystem->rename(
                 $backupDir . DIRECTORY_SEPARATOR . $folder, $rootDir . DIRECTORY_SEPARATOR . $folder
@@ -258,7 +271,7 @@ class CoreInstaller extends MagentoInstallerAbstract
     {
         foreach ($this->magentoWritableDirs as $dir) {
             if (!file_exists($this->getTargetDir() . DIRECTORY_SEPARATOR . $dir)) {
-                mkdir($this->getTargetDir() . DIRECTORY_SEPARATOR . $dir);
+                $this->filesystem->ensureDirectoryExists($this->getTargetDir() . DIRECTORY_SEPARATOR . $dir);
             }
             $this->setPermissions($this->getTargetDir() . DIRECTORY_SEPARATOR . $dir, 0777, 0666);
         }
@@ -275,7 +288,7 @@ class CoreInstaller extends MagentoInstallerAbstract
      */
     public function getDeployStrategy(PackageInterface $package, $strategy = null)
     {
-        return  new Copy($this->getSourceDir($package), $this->getTargetDir());
+        return new Copy($this->getSourceDir($package), $this->getTargetDir());
     }
 
     /**
