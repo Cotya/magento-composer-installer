@@ -12,3 +12,8 @@ Also by require the installer, you can produce version conflicts,
 as people could start require specific versions of the Installer.
 Which makes absolutely no sense for a module.
 
+### Can I install the Installer as global composer Plugin
+
+currently No. As we need special configs this makes things a lot more complicated then installing on project level.
+
+
