@@ -1,0 +1,18 @@
+{
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "http://packages.firegento.com"
+        },
+        {
+            "type": "artifact",
+            "url": "../artifact/"
+        }
+    ],
+    "require": {
+        "magento-hackathon/magento-composer-installer-test-library": "1.*"
+    },
+    "extra": {
+
+    }
+}
