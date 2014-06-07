@@ -10,7 +10,7 @@
         }
     ],
     "require": {
-        "magento-hackathon/magento-composer-installer-test-library": "1.*"
+        "magento-hackathon/magento-composer-installer": "*"
     },
     "extra": {
 
