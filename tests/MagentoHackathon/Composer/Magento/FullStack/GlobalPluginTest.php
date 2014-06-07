@@ -20,6 +20,14 @@ class GlobalPluginTest extends AbstractTest
         
     }
 
+    protected function prepareCleanDirectories()
+    {
+        $fs = new Filesystem();
+        $fs->removeDirectory( self::getBasePath().'/home/vendor' );
+        $fs->removeDirectory( self::getBasePath().'/home/cache' );
+        $fs->remove(          self::getBasePath().'/home/composer.lock' );
+    }
+
     public function testGlobalInstall()
     {
         $process = new Process(
