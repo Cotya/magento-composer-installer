@@ -5,6 +5,8 @@
 
 namespace MagentoHackathon\Composer\Magento\Installer;
 
+use Composer\Composer;
+use Composer\IO\IOInterface;
 use Composer\Package\PackageInterface;
 use Composer\Repository\InstalledRepositoryInterface;
 use InvalidArgumentException;
@@ -79,6 +81,18 @@ class CoreInstaller extends MagentoInstallerAbstract
             'media',
             'var'
         );
+
+    /**
+     * @param IOInterface $io
+     * @param Composer    $composer
+     * @param string      $type
+     *
+     * @throws \ErrorException
+     */
+    public function __construct(IOInterface $io, Composer $composer, $type = self::PACKAGE_TYPE)
+    {
+        parent::__construct($io, $composer, $type);
+    }
 
     /**
      * Decides if the installer supports the given type

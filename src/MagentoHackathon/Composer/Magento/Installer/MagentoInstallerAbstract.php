@@ -99,7 +99,7 @@ abstract class MagentoInstallerAbstract extends LibraryInstaller implements Inst
      *
      * @throws \ErrorException
      */
-    public function __construct(IOInterface $io, Composer $composer, $type = 'magento-module')
+    public function __construct(IOInterface $io, Composer $composer, $type)
     {
         parent::__construct($io, $composer, $type);
         $this->initializeVendorDir();
@@ -324,15 +324,32 @@ abstract class MagentoInstallerAbstract extends LibraryInstaller implements Inst
     {
         parent::install($repo, $package);
 
-        $strategy = $this->getDeployStrategy($package);
-        $strategy->setMappings($this->getParser($package)->getMappings());
-        $deployManagerEntry = new Entry();
-        $deployManagerEntry->setPackageName($package->getName());
-        $deployManagerEntry->setDeployStrategy($strategy);
-        $this->deployManager->addPackage($deployManagerEntry);
+        $this->addEntryToDeployManager($package);
 
         if ($this->appendGitIgnore) {
             $this->appendGitIgnore($package, $this->getGitIgnoreFileLocation());
+        }
+    }
+
+    /**
+     * Updates specific package
+     *
+     * @param InstalledRepositoryInterface $repo    repository in which to check
+     * @param PackageInterface             $initial already installed package version
+     * @param PackageInterface             $target  updated version
+     *
+     * @throws InvalidArgumentException if $from package is not installed
+     */
+    public function update(InstalledRepositoryInterface $repo, PackageInterface $initial, PackageInterface $target)
+    {
+        $this->cleanDeploymentTarget($initial);
+
+        parent::update($repo, $initial, $target);
+
+        $this->addEntryToDeployManager($target);
+
+        if ($this->appendGitIgnore) {
+            $this->appendGitIgnore($target, $this->getGitIgnoreFileLocation());
         }
     }
 
@@ -419,35 +436,29 @@ abstract class MagentoInstallerAbstract extends LibraryInstaller implements Inst
         }
     }
 
-
-
     /**
-     * Updates specific package
+     * @param PackageInterface $package
      *
-     * @param InstalledRepositoryInterface $repo    repository in which to check
-     * @param PackageInterface             $initial already installed package version
-     * @param PackageInterface             $target  updated version
-     *
-     * @throws InvalidArgumentException if $from package is not installed
+     * @throws \ErrorException
      */
-    public function update(InstalledRepositoryInterface $repo, PackageInterface $initial, PackageInterface $target)
-    {
-        $initialStrategy = $this->getDeployStrategy($initial);
-        $initialStrategy->setMappings($this->getParser($initial)->getMappings());
-        $initialStrategy->clean();
-
-        parent::update($repo, $initial, $target);
-
-        $targetStrategy = $this->getDeployStrategy($target);
-        $targetStrategy->setMappings($this->getParser($target)->getMappings());
+    protected function addEntryToDeployManager(PackageInterface $package) {
+        $targetStrategy = $this->getDeployStrategy($package);
+        $targetStrategy->setMappings($this->getParser($package)->getMappings());
         $deployManagerEntry = new Entry();
-        $deployManagerEntry->setPackageName($target->getName());
+        $deployManagerEntry->setPackageName($package->getName());
         $deployManagerEntry->setDeployStrategy($targetStrategy);
         $this->deployManager->addPackage($deployManagerEntry);
+    }
 
-        if ($this->appendGitIgnore) {
-            $this->appendGitIgnore($target, $this->getGitIgnoreFileLocation());
-        }
+    /**
+     * @param PackageInterface $package
+     *
+     * @throws \ErrorException
+     */
+    protected function cleanDeploymentTarget(PackageInterface $package) {
+        $initialStrategy = $this->getDeployStrategy($package);
+        $initialStrategy->setMappings($this->getParser($package)->getMappings());
+        $initialStrategy->clean();
     }
 
     /**
