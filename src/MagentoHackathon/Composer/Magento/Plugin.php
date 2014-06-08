@@ -73,7 +73,6 @@ class Plugin implements PluginInterface, EventSubscriberInterface
      */
     protected function initDeployManager(Composer $composer, IOInterface $io)
     {
-
         $this->deployManagerCore = new DeployManager($io);
         $this->deployManager = new DeployManager($io);
         $this->deployManager->setSortPriority($this->getSortPriority($composer));
@@ -188,6 +187,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
 
         $this->writeDebug('start magento deploy via deployManager');
 
+        $this->writeDebug('start magento module deploy via deployManager');
         $this->deployManager->doDeploy();
         $this->deployLibraries();
     }
