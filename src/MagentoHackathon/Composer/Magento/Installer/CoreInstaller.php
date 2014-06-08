@@ -14,7 +14,6 @@ use InvalidArgumentException;
 use MagentoHackathon\Composer\Magento\Deploystrategy\Copy;
 use MagentoHackathon\Composer\Magento\Deploy\Manager\Entry;
 
-
 /**
  * Class CoreInstaller
  *
