@@ -11,6 +11,7 @@ use Composer\Package\PackageInterface;
 use Composer\Repository\InstalledRepositoryInterface;
 use InvalidArgumentException;
 use MagentoHackathon\Composer\Magento\Deploystrategy\Copy;
+use MagentoHackathon\Composer\Magento\Deploy\Manager\Entry;
 
 /**
  * Class CoreInstaller
@@ -303,6 +304,20 @@ class CoreInstaller extends MagentoInstallerAbstract
     public function getDeployStrategy(PackageInterface $package, $strategy = null)
     {
         return new Copy($this->getSourceDir($package), $this->getTargetDir());
+    }
+
+    /**
+     * @param PackageInterface $package
+     *
+     * @throws \ErrorException
+     */
+    protected function addEntryToDeployManager(PackageInterface $package) {
+        $targetStrategy = $this->getDeployStrategy($package);
+        $targetStrategy->setMappings($this->getParser($package)->getMappings());
+        $deployManagerEntry = new Entry();
+        $deployManagerEntry->setPackageName($package->getName());
+        $deployManagerEntry->setDeployStrategy($targetStrategy);
+        $deployManagerEntry->getDeployStrategy()->deploy();
     }
 
     /**
