@@ -4,7 +4,9 @@ The purpose of this project is to
 enable [composer](https://github.com/composer/composer) to install Magento modules,
 and automatically integrate them into a Magento installation.
 
-We strongly recommend you to also read the general composer documentations on [getcomposer.org](http://getcomposer.org) 
+We strongly recommend you to also read the general composer documentations on [getcomposer.org](http://getcomposer.org)
+
+Also you should see [Using composer correctly (confoo) by Igor Wiedler](https://speakerdeck.com/igorw/using-composer-correctly-confoo)
 
  
 ## Project Details
