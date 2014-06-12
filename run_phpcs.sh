@@ -2,4 +2,4 @@
 #needs to do 
 #cp /vendor/firegento/phpcs /vendor/firegento/FireGento
 #before
-./vendor/bin/phpcs --standard=./vendor/firegento/FireGento -p  ./src
+./vendor/bin/phpcs --report-full=report.full --standard=./vendor/firegento/FireGento -p  ./src
