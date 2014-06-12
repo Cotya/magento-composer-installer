@@ -6,6 +6,12 @@
     "type":"composer-plugin",
     "license":"OSL-3.0",
     "homepage":"https://github.com/magento-hackathon/magento-composer-installer",
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "git@github.com:Flyingmana/phpcs.git"
+        }
+    ],
     "authors":[
         {
             "name":"Daniel Fahlke aka Flyingmana",
@@ -39,6 +45,8 @@
     "require-dev":{
         "phpunit/phpunit":"*",
         "phpunit/phpunit-mock-objects": "dev-master",
+        "squizlabs/php_codesniffer": "1.4.7",
+        "firegento/phpcs": "dev-patch-1",
         "composer/composer":"*@dev",
         "symfony/process":"*",
         "mikey179/vfsStream":"*"
