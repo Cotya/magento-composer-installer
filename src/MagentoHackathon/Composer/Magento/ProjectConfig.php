@@ -281,6 +281,7 @@ class ProjectConfig
         return $this->hasExtraField(self::PATH_MAPPINGS_TRANSLATIONS_KEY);
     }
 
+
     protected function hasExtraField($key)
     {
         return (bool)!is_null($this->fetchVarFromExtraConfig($key));

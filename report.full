@@ -23,7 +23,7 @@ FOUND 12 ERROR(S) AND 3 WARNING(S) AFFECTING 9 LINE(S)
 
 FILE: ...nstaller/src/MagentoHackathon/Composer/Magento/Deploy/Manager/Entry.php
 --------------------------------------------------------------------------------
-FOUND 12 ERROR(S) AFFECTING 9 LINE(S)
+FOUND 11 ERROR(S) AFFECTING 8 LINE(S)
 --------------------------------------------------------------------------------
   2 | ERROR | File doc comment is empty
  12 | ERROR | Missing class doc comment
@@ -42,13 +42,12 @@ FOUND 12 ERROR(S) AFFECTING 9 LINE(S)
     |       | comment
  46 | ERROR | There must be exactly one blank line before the tags in function
     |       | comment
- 54 | ERROR | File must end with a newline character
 --------------------------------------------------------------------------------
 
 
 FILE: ...poser-installer/src/MagentoHackathon/Composer/Magento/DeployManager.php
 --------------------------------------------------------------------------------
-FOUND 23 ERROR(S) AFFECTING 18 LINE(S)
+FOUND 22 ERROR(S) AFFECTING 17 LINE(S)
 --------------------------------------------------------------------------------
   2 | ERROR | File doc comment is empty
  16 | ERROR | Missing class doc comment
@@ -74,13 +73,12 @@ FOUND 23 ERROR(S) AFFECTING 18 LINE(S)
  86 | ERROR | Missing function doc comment
  90 | ERROR | Expected "foreach (...) {\n"; found "foreach(...){\n"
  91 | ERROR | Expected "if (...) {\n"; found "if(...){\n"
- 98 | ERROR | File must end with a newline character
 --------------------------------------------------------------------------------
 
 
 FILE: ...installer/src/MagentoHackathon/Composer/Magento/Deploystrategy/Copy.php
 --------------------------------------------------------------------------------
-FOUND 12 ERROR(S) AND 1 WARNING(S) AFFECTING 5 LINE(S)
+FOUND 11 ERROR(S) AND 1 WARNING(S) AFFECTING 4 LINE(S)
 --------------------------------------------------------------------------------
   4 | WARNING | PHP version not specified
   4 | ERROR   | Missing @category tag in class comment
@@ -94,7 +92,6 @@ FOUND 12 ERROR(S) AND 1 WARNING(S) AFFECTING 5 LINE(S)
  16 | ERROR   | Missing comment for param "$source" at position 1
  17 | ERROR   | Expected 2 space(s) before variable type
  17 | ERROR   | Missing comment for param "$dest" at position 2
- 53 | ERROR   | No space found after comma in function call
 --------------------------------------------------------------------------------
 
 
@@ -446,7 +443,7 @@ FOUND 19 ERROR(S) AND 2 WARNING(S) AFFECTING 11 LINE(S)
 
 FILE: ...er-installer/src/MagentoHackathon/Composer/Magento/PackageXmlParser.php
 --------------------------------------------------------------------------------
-FOUND 31 ERROR(S) AND 1 WARNING(S) AFFECTING 16 LINE(S)
+FOUND 30 ERROR(S) AND 1 WARNING(S) AFFECTING 16 LINE(S)
 --------------------------------------------------------------------------------
    4 | WARNING | PHP version not specified
    4 | ERROR   | Missing @category tag in class comment
@@ -458,53 +455,51 @@ FOUND 31 ERROR(S) AND 1 WARNING(S) AFFECTING 16 LINE(S)
   10 | ERROR   | Missing @author tag in class comment
   31 | ERROR   | Missing comment for param "$moduleDir" at position 1
   32 | ERROR   | Missing comment for param "$packageXmlFile" at position 2
-  32 | ERROR   | Doc comment for "$translations" missing
-  45 | ERROR   | Expected 2 space(s) before variable type
-  45 | ERROR   | Missing comment for param "$moduleDir" at position 1
-  60 | ERROR   | There must be exactly one blank line before the tags in
+  33 | ERROR   | Missing comment for param "$translations" at position 3
+  46 | ERROR   | Expected 2 space(s) before variable type
+  46 | ERROR   | Missing comment for param "$moduleDir" at position 1
+  61 | ERROR   | There must be exactly one blank line before the tags in
      |         | function comment
-  68 | ERROR   | Expected 2 space(s) before variable type
-  68 | ERROR   | Missing comment for param "$file" at position 1
-  68 | ERROR   | There must be exactly one blank line before the tags in
+  69 | ERROR   | Expected 2 space(s) before variable type
+  69 | ERROR   | Missing comment for param "$file" at position 1
+  69 | ERROR   | There must be exactly one blank line before the tags in
      |         | function comment
-  81 | ERROR   | There must be exactly one blank line before the tags in
+  82 | ERROR   | There must be exactly one blank line before the tags in
      |         | function comment
-  89 | ERROR   | There must be exactly one blank line before the tags in
+  90 | ERROR   | There must be exactly one blank line before the tags in
      |         | function comment
- 106 | ERROR   | There must be exactly one blank line before the tags in
+ 107 | ERROR   | There must be exactly one blank line before the tags in
      |         | function comment
- 139 | ERROR   | Expected 2 space(s) before variable type
- 139 | ERROR   | Missing comment for param "$target" at position 1
- 139 | ERROR   | There must be exactly one blank line before the tags in
+ 140 | ERROR   | Expected 2 space(s) before variable type
+ 140 | ERROR   | Missing comment for param "$target" at position 1
+ 140 | ERROR   | There must be exactly one blank line before the tags in
      |         | function comment
- 154 | ERROR   | There must be exactly one blank line before the tags in
+ 155 | ERROR   | There must be exactly one blank line before the tags in
      |         | function comment
- 170 | ERROR   | Expected 2 space(s) before variable type
- 170 | ERROR   | Missing comment for param "$element" at position 1
- 170 | ERROR   | There must be exactly one blank line before the tags in
+ 171 | ERROR   | Expected 2 space(s) before variable type
+ 171 | ERROR   | Missing comment for param "$element" at position 1
+ 171 | ERROR   | There must be exactly one blank line before the tags in
      |         | function comment
- 174 | ERROR   | Opening brace should be on a new line
- 204 | ERROR   | Expected 2 space(s) before variable type
- 204 | ERROR   | Missing comment for param "$element" at position 1
- 204 | ERROR   | There must be exactly one blank line before the tags in
+ 175 | ERROR   | Opening brace should be on a new line
+ 205 | ERROR   | Expected 2 space(s) before variable type
+ 205 | ERROR   | Missing comment for param "$element" at position 1
+ 205 | ERROR   | There must be exactly one blank line before the tags in
      |         | function comment
- 209 | ERROR   | Inline control structures are not allowed
 --------------------------------------------------------------------------------
 
 
 FILE: ...nto-composer-installer/src/MagentoHackathon/Composer/Magento/Parser.php
 --------------------------------------------------------------------------------
-FOUND 3 ERROR(S) AFFECTING 3 LINE(S)
+FOUND 2 ERROR(S) AFFECTING 2 LINE(S)
 --------------------------------------------------------------------------------
-  2 | ERROR | Missing file doc comment
-  5 | ERROR | Missing interface doc comment
- 21 | ERROR | File must end with a newline character
+ 2 | ERROR | Missing file doc comment
+ 5 | ERROR | Missing interface doc comment
 --------------------------------------------------------------------------------
 
 
 FILE: ...staller/src/MagentoHackathon/Composer/Magento/PathTranslationParser.php
 --------------------------------------------------------------------------------
-FOUND 18 ERROR(S) AFFECTING 12 LINE(S)
+FOUND 17 ERROR(S) AFFECTING 11 LINE(S)
 --------------------------------------------------------------------------------
   2 | ERROR | Missing file doc comment
   8 | ERROR | Missing @category tag in class comment
@@ -527,13 +522,12 @@ FOUND 18 ERROR(S) AFFECTING 12 LINE(S)
  69 | ERROR | Expected "foreach (...) {\n"; found "foreach(...) {\n"
  70 | ERROR | Expected "foreach (...) {\n"; found "foreach(...) {\n"
  71 | ERROR | Expected "if (...) {\n"; found "if(...) {\n"
- 83 | ERROR | File must end with a newline character
 --------------------------------------------------------------------------------
 
 
 FILE: ...nto-composer-installer/src/MagentoHackathon/Composer/Magento/Plugin.php
 --------------------------------------------------------------------------------
-FOUND 33 ERROR(S) AND 3 WARNING(S) AFFECTING 35 LINE(S)
+FOUND 32 ERROR(S) AND 3 WARNING(S) AFFECTING 34 LINE(S)
 --------------------------------------------------------------------------------
    2 | ERROR   | File doc comment is empty
   26 | ERROR   | Missing class doc comment
@@ -576,13 +570,12 @@ FOUND 33 ERROR(S) AND 3 WARNING(S) AFFECTING 35 LINE(S)
  183 | WARNING | Line exceeds 120 characters; contains 132 characters
  202 | ERROR   | Missing comment for param "$source" at position 1
  203 | ERROR   | Missing comment for param "$target" at position 2
- 222 | ERROR   | File must end with a newline character
 --------------------------------------------------------------------------------
 
 
 FILE: ...poser-installer/src/MagentoHackathon/Composer/Magento/ProjectConfig.php
 --------------------------------------------------------------------------------
-FOUND 15 ERROR(S) AFFECTING 13 LINE(S)
+FOUND 14 ERROR(S) AFFECTING 12 LINE(S)
 --------------------------------------------------------------------------------
   2 | ERROR | File doc comment is empty
  12 | ERROR | Missing class doc comment
@@ -600,7 +593,6 @@ FOUND 15 ERROR(S) AFFECTING 13 LINE(S)
  38 | ERROR | Missing function doc comment
  45 | ERROR | Missing function doc comment
  50 | ERROR | Missing function doc comment
- 58 | ERROR | File must end with a newline character
 --------------------------------------------------------------------------------
 
 
