@@ -30,6 +30,7 @@ class PackageXmlParser extends PathTranslationParser
      *
      * @param string $moduleDir
      * @param string $packageXmlFile
+     * @param array  $translations
      */
     public function __construct($moduleDir, $packageXmlFile, $translations = array())
     {
@@ -206,6 +207,8 @@ class PackageXmlParser extends PathTranslationParser
      */
     protected function getFirstChild(\SimpleXMLElement$element)
     {
-        foreach ($element->children() as $child) return $child;
+        foreach ($element->children() as $child) {
+            return $child;
+        }
     }
 }
