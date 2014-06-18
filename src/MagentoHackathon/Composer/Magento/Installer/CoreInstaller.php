@@ -5,6 +5,7 @@
 
 namespace MagentoHackathon\Composer\Magento\Installer;
 
+
 use Composer\Composer;
 use Composer\IO\IOInterface;
 use Composer\Package\PackageInterface;
@@ -12,6 +13,7 @@ use Composer\Repository\InstalledRepositoryInterface;
 use InvalidArgumentException;
 use MagentoHackathon\Composer\Magento\Deploystrategy\Copy;
 use MagentoHackathon\Composer\Magento\Deploy\Manager\Entry;
+
 
 /**
  * Class CoreInstaller
@@ -106,6 +108,7 @@ class CoreInstaller extends MagentoInstallerAbstract
     {
         return self::PACKAGE_TYPE === $packageType;
     }
+
 
     /**
      * Installs specific package

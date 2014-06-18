@@ -50,12 +50,15 @@ class Plugin implements PluginInterface, EventSubscriberInterface
      */
     protected $deployManager;
 
+<<<<<<< HEAD
     /**
      * @var DeployManager
      */
     protected $deployManagerCore;
 
 
+=======
+>>>>>>> 	modified:   src/MagentoHackathon/Composer/Magento/DeployManager.php
     /**
      * @var Composer
      */
@@ -74,6 +77,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
      */
     protected function initDeployManager(Composer $composer, IOInterface $io)
     {
+<<<<<<< HEAD
         $this->deployManagerCore = new DeployManager($io);
         $this->deployManager = new DeployManager($io);
         $this->deployManager->setSortPriority($this->getSortPriority($composer));
@@ -113,6 +117,49 @@ class Plugin implements PluginInterface, EventSubscriberInterface
     }
 
     /**
+=======
+        $this->deployManager = new DeployManager($io);
+        $this->deployManager->setSortPriority($this->getSortPriority($composer));
+    }
+
+    /**
+     * init the Installer
+     *
+     * @param MagentoInstallerAbstract $installer
+     * @param DeployManager            $deployManager
+     * @param ProjectConfig            $config
+     *
+     * @return MagentoInstallerAbstract
+     */
+    private function initMagentoInstaller(
+        MagentoInstallerAbstract $installer,
+        DeployManager $deployManager,
+        ProjectConfig $config
+    ) {
+        $installer->setDeployManager($deployManager);
+        $installer->setConfig($config);
+
+        return $installer;
+    }
+
+    /**
+     * get Sort Priority from extra Config
+     *
+     * @param \Composer\Composer $composer
+     *
+     * @return array
+     */
+    private function getSortPriority(Composer $composer)
+    {
+        $extra = $composer->getPackage()->getExtra();
+
+        return isset($extra[DeployManager::SORT_PRIORITY_KEY])
+            ? $extra[DeployManager::SORT_PRIORITY_KEY]
+            : array();
+    }
+
+    /**
+>>>>>>> 	modified:   src/MagentoHackathon/Composer/Magento/DeployManager.php
      * Apply plugin modifications to composer
      *
      * @param Composer    $composer
@@ -132,12 +179,22 @@ class Plugin implements PluginInterface, EventSubscriberInterface
 
         $moduleInstaller = $this->initMagentoInstaller(
             new ModuleInstaller($io, $composer),
+<<<<<<< HEAD
             $this->deployManager
+=======
+            $this->deployManager,
+            $this->config
+>>>>>>> 	modified:   src/MagentoHackathon/Composer/Magento/DeployManager.php
         );
 
         $coreInstaller = $this->initMagentoInstaller(
             new CoreInstaller($io, $composer),
+<<<<<<< HEAD
             $this->deployManagerCore
+=======
+            $this->deployManager,
+            $this->config
+>>>>>>> 	modified:   src/MagentoHackathon/Composer/Magento/DeployManager.php
         );
 
         $composer->getInstallationManager()->addInstaller($moduleInstaller);
@@ -181,10 +238,15 @@ class Plugin implements PluginInterface, EventSubscriberInterface
      */
     public function onNewCodeEvent(CommandEvent $event)
     {
+<<<<<<< HEAD
         $this->writeDebug('start magento core deploy via deployManager');
         $this->deployManagerCore->doDeploy();
 
         $this->writeDebug('start magento module deploy via deployManager');
+=======
+        $this->writeDebug('start magento deploy via deployManager');
+
+>>>>>>> 	modified:   src/MagentoHackathon/Composer/Magento/DeployManager.php
         $this->deployManager->doDeploy();
         $this->deployLibraries();
     }
@@ -322,4 +384,8 @@ class Plugin implements PluginInterface, EventSubscriberInterface
             }
         }
     }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 	modified:   src/MagentoHackathon/Composer/Magento/DeployManager.php
