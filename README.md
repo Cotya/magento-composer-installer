@@ -39,7 +39,8 @@ other support contacts
 ## Known issue
 - Error message: `Fatal error: Call to undefined method MagentoHackathon\Composer\Magento\Installer::setDeployManager()` happens when you update from 1.x to 2.x, as we switched from pure installer to plugin.
 
-Solution: remove the `vendor` directory and the `composer.lock` and do a fresh install.
+maybe better Solution: ```composer update --no-plugins --no-dev "magento-hackathon/magento-composer-installer"```   
+Fallback Solution(if first one does not work): remove the `vendor` directory and the `composer.lock` and do a fresh install.  
 
 ## Usage
 
