@@ -42,6 +42,13 @@ other support contacts
 maybe better Solution: ```composer update --no-plugins --no-dev "magento-hackathon/magento-composer-installer"```   
 Fallback Solution(if first one does not work): remove the `vendor` directory and the `composer.lock` and do a fresh install.  
 
+
+- Timeouts and slow downloading. Mostly caused by outtages of Github, Repositories or the Internet.
+
+for all of this Issues you can make use of the commercial [Toran Proxy](https://toranproxy.com/).
+It also allows hosting of private packages and speeds up the whole downloading process.
+
+
 ## Usage
 
 See below for a [generic instruction on how to install composer](#installation-of-composer) if you aren't familiar with it.
