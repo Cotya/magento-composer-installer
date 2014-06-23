@@ -36,18 +36,32 @@ other support contacts
 * irc: freenode the channels #magento-composer #magento-reddit and for german speaking people #magento-de 
 * twitter: [@firegento](https://twitter.com/firegento)
 
-## Known issue
-- Error message: `Fatal error: Call to undefined method MagentoHackathon\Composer\Magento\Installer::setDeployManager()` happens when you update from 1.x to 2.x, as we switched from pure installer to plugin.
+## Known issues
 
-maybe better Solution: ```composer update --no-plugins --no-dev "magento-hackathon/magento-composer-installer"```   
-Fallback Solution(if first one does not work): remove the `vendor` directory and the `composer.lock` and do a fresh install.  
+### When upgrading from 1.x to 2.x 
 
+The update from 1.x to 2.x has to be done with no plugins as otherwise a fatal error will be triggered (which does not hurt, just run the update again and it runs through).
 
-- Timeouts and slow downloading. Mostly caused by outtages of Github, Repositories or the Internet.
+- Error message: `Fatal error: Call to undefined method MagentoHackathon\Composer\Magento\Installer::setDeployManager()` 
 
-for all of this Issues you can make use of the commercial [Toran Proxy](https://toranproxy.com/).
+To prevent this error, upgrade only *magento-composer-installer* first:
+
+```composer update --no-plugins --no-dev "magento-hackathon/magento-composer-installer"``` 
+
+Fallback Solutions:
+
+1. execute `composer install` two times.
+2. remove the `vendor` directory and `composer.lock` and do a fresh install.
+
+### Timeouts and slow downloading. 
+
+Mostly caused by outtages of Github, Repositories or the Internet. This is a common problem with having all 
+packges remote.
+
+For all of this Issues you can make use of the commercial [Toran Proxy](https://toranproxy.com/).
 It also allows hosting of private packages and speeds up the whole downloading process.
 
+Another alternative is to look into [Satis](https://github.com/composer/satis), bare git mirrors and repository aliasing.
 
 ## Usage
 
