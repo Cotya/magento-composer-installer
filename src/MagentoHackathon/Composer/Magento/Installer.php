@@ -503,7 +503,7 @@ class Installer extends LibraryInstaller implements InstallerInterface
     protected function setMagentoPermissions() {
         foreach ($this->_magentoWritableDirs as $dir) {
             if (!file_exists($this->getTargetDir() . DIRECTORY_SEPARATOR . $dir)) {
-                mkdir($this->getTargetDir() . DIRECTORY_SEPARATOR . $dir);
+                mkdir($this->getTargetDir() . DIRECTORY_SEPARATOR . $dir, 0777, true);
             }
             $this->setPermissions($this->getTargetDir() . DIRECTORY_SEPARATOR . $dir, 0777, 0666);
         }
