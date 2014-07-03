@@ -558,7 +558,7 @@ class Installer extends LibraryInstaller implements InstallerInterface
 
             if ($ioInterface->isVerbose()) {
                 $ioInterface->write($package->getName());
-            $ioInterface->write($package->getType());
+                $ioInterface->write($package->getType());
             }
 
             if ($package->getType() != "magento-module") {
@@ -569,8 +569,8 @@ class Installer extends LibraryInstaller implements InstallerInterface
             }
 
             $strategy = $moduleInstaller->getDeployStrategy($package);
-            if ($ioInterface->getOption('verbose')) {
-            $ioInterface->write("used " . get_class($strategy) . " as deploy strategy");
+            if ($ioInterface->isVerbose()) {
+                $ioInterface->write("used " . get_class($strategy) . " as deploy strategy");
             }
             $strategy->setMappings($moduleInstaller->getParser($package)->getMappings());
 
