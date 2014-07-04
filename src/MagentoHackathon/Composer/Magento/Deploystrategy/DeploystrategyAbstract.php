@@ -26,7 +26,7 @@ abstract class DeploystrategyAbstract
 
     /**
      * The List of entries which files should not get deployed
-     * 
+     *
      * @var array
      */
     protected $ignoredMappings = array();
@@ -72,12 +72,34 @@ abstract class DeploystrategyAbstract
      */
     public function deploy()
     {
+        $this->beforeDeploy();
         foreach ($this->getMappings() as $data) {
             list ($source, $dest) = $data;
             $this->setCurrentMapping($data);
             $this->create($source, $dest);
         }
+        $this->afterDeploy();
         return $this;
+    }
+
+    /**
+     * beforeDeploy
+     *
+     * @return void
+     */
+    protected function beforeDeploy()
+    {
+
+    }
+
+    /**
+     * afterDeploy
+     *
+     * @return void
+     */
+    protected function afterDeploy()
+    {
+
     }
 
     /**
@@ -87,12 +109,34 @@ abstract class DeploystrategyAbstract
      */
     public function clean()
     {
+        $this->beforeClean();
         foreach ($this->getMappings() as $data) {
             list ($source, $dest) = $data;
             $this->remove($source, $dest);
             $this->rmEmptyDirsRecursive(dirname($dest), $this->getDestDir());
         }
+        $this->afterClean();
         return $this;
+    }
+
+    /**
+     * beforeClean
+     *
+     * @return void
+     */
+    protected function beforeClean()
+    {
+
+    }
+
+    /**
+     * afterClean
+     *
+     * @return void
+     */
+    protected function afterClean()
+    {
+
     }
 
     /**
@@ -132,7 +176,7 @@ abstract class DeploystrategyAbstract
      */
     public function setIsForced($forced = true)
     {
-        $this->isForced = (bool) $forced;
+        $this->isForced = (bool)$forced;
     }
 
     /**
@@ -178,7 +222,7 @@ abstract class DeploystrategyAbstract
 
     /**
      * sets the current ignored mappings
-     * 
+     *
      * @param $ignoredMappings
      */
     public function setIgnoredMappings($ignoredMappings)
@@ -188,7 +232,7 @@ abstract class DeploystrategyAbstract
 
     /**
      * gets the current ignored mappings
-     * 
+     *
      * @return array
      */
     public function getIgnoredMappings()
@@ -202,13 +246,13 @@ abstract class DeploystrategyAbstract
      *
      * @return bool
      */
-    protected  function isDestinationIgnored($destination)
+    protected function isDestinationIgnored($destination)
     {
-        $destination = '/'.$destination;
-        $destination = str_replace('/./','/', $destination);
-        $destination = str_replace('//','/', $destination);
-        foreach($this->ignoredMappings as $ignored){
-            if( 0 === strpos($ignored,$destination) ){
+        $destination = '/' . $destination;
+        $destination = str_replace('/./', '/', $destination);
+        $destination = str_replace('//', '/', $destination);
+        foreach ($this->ignoredMappings as $ignored) {
+            if (0 === strpos($ignored, $destination)) {
                 return true;
             }
         }
@@ -225,7 +269,7 @@ abstract class DeploystrategyAbstract
 
     protected function removeTrailingSlash($path)
     {
-       return rtrim($path, ' \\/');
+        return rtrim($path, ' \\/');
     }
 
     /**
@@ -235,15 +279,16 @@ abstract class DeploystrategyAbstract
      *
      * @param string $source
      * @param string $dest
+     *
      * @throws \ErrorException
      * @return bool
      */
     public function create($source, $dest)
     {
-        if($this->isDestinationIgnored($dest)){
+        if ($this->isDestinationIgnored($dest)) {
             return;
         }
-        
+
         $sourcePath = $this->getSourceDir() . '/' . $this->removeTrailingSlash($source);
         $destPath = $this->getDestDir() . '/' . $dest;
 
@@ -270,7 +315,7 @@ abstract class DeploystrategyAbstract
         */
 
         // Create target directory if it ends with a directory separator
-        if (! file_exists($destPath) && in_array(substr($destPath, -1), array('/', '\\')) && ! is_dir($sourcePath)) {
+        if (!file_exists($destPath) && in_array(substr($destPath, -1), array('/', '\\')) && !is_dir($sourcePath)) {
             mkdir($destPath, 0777, true);
             $destPath = $this->removeTrailingSlash($destPath);
         }
@@ -283,7 +328,7 @@ abstract class DeploystrategyAbstract
                 foreach ($matches as $match) {
                     $newDest = substr($destPath . '/' . basename($match), strlen($this->getDestDir()));
                     $newDest = ltrim($newDest, ' \\/');
-                    $this->create(substr($match, strlen($this->getSourceDir())+1), $newDest);
+                    $this->create(substr($match, strlen($this->getSourceDir()) + 1), $newDest);
                 }
                 return true;
             }
@@ -299,6 +344,7 @@ abstract class DeploystrategyAbstract
      *
      * @param string $source
      * @param string $dest
+     *
      * @throws \ErrorException
      */
     public function remove($source, $dest)
@@ -314,7 +360,7 @@ abstract class DeploystrategyAbstract
                 foreach ($matches as $match) {
                     $newDest = substr($destPath . '/' . basename($match), strlen($this->getDestDir()));
                     $newDest = ltrim($newDest, ' \\/');
-                    $this->remove(substr($match, strlen($this->getSourceDir())+1), $newDest);
+                    $this->remove(substr($match, strlen($this->getSourceDir()) + 1), $newDest);
                 }
                 return;
             }
@@ -342,10 +388,10 @@ abstract class DeploystrategyAbstract
         $absoluteDir = $this->getDestDir() . '/' . $dir;
         if (is_dir($absoluteDir)) {
             $iterator = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($absoluteDir),
-                    \RecursiveIteratorIterator::CHILD_FIRST);
+                \RecursiveIteratorIterator::CHILD_FIRST);
 
             foreach ($iterator as $item) {
-                $path = (string) $item;
+                $path = (string)$item;
                 if (!strcmp($path, '.') || !strcmp($path, '..')) {
                     continue;
                 }
@@ -362,7 +408,7 @@ abstract class DeploystrategyAbstract
                 // If the parent directory doesn't match the $stopDir and it's empty, remove it, too
                 $parentDir = dirname($dir);
                 $absoluteParentDir = $this->getDestDir() . '/' . $parentDir;
-                if (! isset($stopDir) || (realpath($stopDir) !== realpath($absoluteParentDir))) {
+                if (!isset($stopDir) || (realpath($stopDir) !== realpath($absoluteParentDir))) {
                     // Remove the parent directory if it is empty
                     $this->rmEmptyDirsRecursive($parentDir);
                 }
@@ -378,12 +424,12 @@ abstract class DeploystrategyAbstract
     public static function rmdirRecursive($dir)
     {
         $fs = new \Composer\Util\Filesystem();
-        if(is_dir($dir)){
+        if (is_dir($dir)) {
             $result = $fs->removeDirectory($dir);
-        }else{
+        } else {
             @unlink($dir);
         }
-        
+
         return;
     }
 
@@ -395,6 +441,7 @@ abstract class DeploystrategyAbstract
      *
      * @param string $source
      * @param string $dest
+     *
      * @return bool
      */
     abstract protected function createDelegate($source, $dest);

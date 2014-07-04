@@ -144,8 +144,8 @@ abstract class MagentoInstallerAbstract extends LibraryInstaller implements Inst
 
         $this->config = new ProjectConfig($composer->getPackage()->getExtra());
 
-        $this->initMagentoRootDir();
         $this->initModmanRootDir();
+        $this->initMagentoRootDir();
 
         if ($this->getConfig()->hasDeployStrategy()) {
             $this->deployStrategy = $this->getConfig()->getDeployStrategy();
@@ -181,22 +181,6 @@ abstract class MagentoInstallerAbstract extends LibraryInstaller implements Inst
         }
     }
 
-    protected function initModmanRootDir() {
-        if($this->getConfig()->hasModmanRootDir()) {
-            $modmanRootDir = $this->getConfig()->getModmanRootDir();
-
-            if(!is_dir($modmanRootDir)) {
-                $modmanRootDir = $this->joinFilePath($this->vendorDir, $modmanRootDir);
-            }
-
-            if(!is_dir($modmanRootDir)) {
-                throw new \ErrorException(sprintf('modman root dir "%s" is not valid', $modmanRootDir));
-            }
-
-            $this->modmanRootDir = new \SplFileInfo($modmanRootDir);
-        }
-    }
-
     protected function initMagentoRootDir() {
         if (false === $this->getConfig()->hasMagentoRootDir()) {
             $this->getConfig()->setMagentoRootDir(
@@ -224,6 +208,24 @@ abstract class MagentoInstallerAbstract extends LibraryInstaller implements Inst
             $this->magentoRootDir = new \SplFileInfo($dir);
         }
     }
+
+    protected function initModmanRootDir() {
+        if($this->getConfig()->hasModmanRootDir()) {
+            $modmanRootDir = $this->getConfig()->getModmanRootDir();
+
+            if(!is_dir($modmanRootDir)) {
+                $modmanRootDir = $this->joinFilePath($this->vendorDir, $modmanRootDir);
+            }
+
+            if(!is_dir($modmanRootDir)) {
+                throw new \ErrorException(sprintf('modman root dir "%s" is not valid', $modmanRootDir));
+            }
+
+            $this->modmanRootDir = new \SplFileInfo($modmanRootDir);
+        }
+    }
+
+
 
     /**
      * @param DeployManager $deployManager
@@ -453,46 +455,6 @@ abstract class MagentoInstallerAbstract extends LibraryInstaller implements Inst
                 );
             }
         }
-    }
-
-    protected function redeployProject()
-    {
-        $ioInterface = $this->io;
-        // init repos
-        $composer = $this->composer;
-        $installedRepo = $composer->getRepositoryManager()->getLocalRepository();
-
-        //$dm = $composer->getDownloadManager();
-        $im = $composer->getInstallationManager();
-
-        /* @var ModuleInstaller $moduleInstaller */
-        $moduleInstaller = $im->getInstaller("magento-module");
-
-        /* @var PackageInterface $package */
-        foreach ($installedRepo->getPackages() as $package) {
-
-            if ($ioInterface->isVerbose()) {
-                $ioInterface->write($package->getName());
-                $ioInterface->write($package->getType());
-            }
-
-            if ($package->getType() != "magento-module") {
-                continue;
-            }
-            if ($ioInterface->isVerbose()) {
-                $ioInterface->write("package {$package->getName()} recognized");
-            }
-
-            $strategy = $moduleInstaller->getDeployStrategy($package);
-            if ($ioInterface->getOption('verbose')) {
-                $ioInterface->write("used " . get_class($strategy) . " as deploy strategy");
-            }
-            $strategy->setMappings($moduleInstaller->getParser($package)->getMappings());
-
-            $strategy->deploy();
-        }
-
-        return;
     }
 
     /**

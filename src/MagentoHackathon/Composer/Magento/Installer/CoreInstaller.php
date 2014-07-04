@@ -13,6 +13,7 @@ use Composer\Repository\InstalledRepositoryInterface;
 use InvalidArgumentException;
 use MagentoHackathon\Composer\Magento\Deploystrategy\Copy;
 use MagentoHackathon\Composer\Magento\Deploy\Manager\Entry;
+use MagentoHackathon\Composer\Magento\Deploystrategy\Core;
 
 /**
  * Class CoreInstaller
@@ -147,6 +148,6 @@ class CoreInstaller extends MagentoInstallerAbstract
      */
     public function getDeployStrategy(PackageInterface $package, $strategy = null)
     {
-        return new Copy($this->getSourceDir($package), $this->getTargetDir());
+        return new Core($this->getSourceDir($package), $this->getTargetDir());
     }
 }
