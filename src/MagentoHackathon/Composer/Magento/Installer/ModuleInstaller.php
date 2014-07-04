@@ -5,12 +5,9 @@
 
 namespace MagentoHackathon\Composer\Magento\Installer;
 
-<<<<<<< HEAD
 use Composer\Composer;
 use Composer\IO\IOInterface;
 
-=======
->>>>>>> 	modified:   src/MagentoHackathon/Composer/Magento/DeployManager.php
 /**
  * Class ModuleInstaller
  *
@@ -24,7 +21,6 @@ class ModuleInstaller extends MagentoInstallerAbstract
     const PACKAGE_TYPE = 'magento-module';
 
     /**
-<<<<<<< HEAD
      * @param IOInterface $io
      * @param Composer    $composer
      * @param string      $type
@@ -37,8 +33,6 @@ class ModuleInstaller extends MagentoInstallerAbstract
     }
 
     /**
-=======
->>>>>>> 	modified:   src/MagentoHackathon/Composer/Magento/DeployManager.php
      * Decides if the installer supports the given type
      *
      * @param  string $packageType

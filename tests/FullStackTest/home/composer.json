@@ -13,6 +13,6 @@
         "magento-hackathon/magento-composer-installer": "*"
     },
     "extra": {
-
+        "magento-root-dir": "root"
     }
 }

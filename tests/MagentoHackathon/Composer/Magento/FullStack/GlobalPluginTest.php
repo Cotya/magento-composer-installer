@@ -31,7 +31,7 @@ class GlobalPluginTest extends AbstractTest
     public function testGlobalInstall()
     {
         $process = new Process(
-            self::getComposerCommand().' global install',
+            self::getComposerCommand().' global install ' . self::getComposerArgs(),
             self::getProjectRoot()
         );
         $process->setEnv( array('COMPOSER_HOME'=>self::getBasePath().'/home'));
@@ -44,7 +44,7 @@ class GlobalPluginTest extends AbstractTest
     {
 
         $process = new Process(
-            self::getComposerCommand().' global update',
+            self::getComposerCommand().' global update ' . self::getComposerArgs(),
             self::getProjectRoot()
         );
         $process->setEnv( array('COMPOSER_HOME'=>self::getBasePath().'/home'));
