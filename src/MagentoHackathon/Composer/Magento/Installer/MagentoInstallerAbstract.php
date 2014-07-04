@@ -358,11 +358,6 @@ abstract class MagentoInstallerAbstract extends LibraryInstaller implements Inst
      */
     public function install(InstalledRepositoryInterface $repo, PackageInterface $package)
     {
-
-        if ($package->getType() === 'magento-core' && !$this->preInstallMagentoCore()) {
-            return;
-        }
-
         parent::install($repo, $package);
 
         $strategy = $this->getDeployStrategy($package);
@@ -425,59 +420,6 @@ abstract class MagentoInstallerAbstract extends LibraryInstaller implements Inst
             array_unshift($additions, '#' . $package->getName());
             $contents = array_merge($contents, $additions);
             file_put_contents($ignoreFile, implode("\n", $contents));
-        }
-
-        if ($package->getType() === 'magento-core') {
-            $this->prepareMagentoCore();
-        }
-    }
-
-    /**
-     * Install Magento core
-     *
-     * @internal param \Composer\Repository\InstalledRepositoryInterface $repo repository in which to check
-     * @internal param \Composer\Package\PackageInterface $package package instance
-     *
-     * @return bool
-     */
-    protected function preInstallMagentoCore()
-    {
-        if (!$this->io->askConfirmation(
-            '<info>Are you sure you want to install the Magento core?</info><error>Attention: Your Magento root dir will be cleared in the process!</error> [<comment>Y,n</comment>] ',
-            true
-        )
-        ) {
-            $this->io->write('Skipping core installation...');
-
-            return false;
-        }
-        $this->clearRootDir();
-
-        return true;
-    }
-
-    protected function clearRootDir()
-    {
-        $this->filesystem->removeDirectory($this->magentoRootDir->getPathname());
-        $this->filesystem->ensureDirectoryExists($this->magentoRootDir->getPathname());
-    }
-
-    public function prepareMagentoCore()
-    {
-        $this->setMagentoPermissions();
-        $this->redeployProject();
-    }
-
-    /**
-     * some directories have to be writable for the server
-     */
-    protected function setMagentoPermissions()
-    {
-        foreach ($this->_magentoWritableDirs as $dir) {
-            if (!file_exists($this->getTargetDir() . DIRECTORY_SEPARATOR . $dir)) {
-                mkdir($this->getTargetDir() . DIRECTORY_SEPARATOR . $dir);
-            }
-            $this->setPermissions($this->getTargetDir() . DIRECTORY_SEPARATOR . $dir, 0777, 0666);
         }
     }
 
@@ -564,11 +506,6 @@ abstract class MagentoInstallerAbstract extends LibraryInstaller implements Inst
      */
     public function update(InstalledRepositoryInterface $repo, PackageInterface $initial, PackageInterface $target)
     {
-
-        if ($target->getType() === 'magento-core' && !$this->preUpdateMagentoCore()) {
-            return;
-        }
-
         $initialStrategy = $this->getDeployStrategy($initial);
         $initialStrategy->setMappings($this->getParser($initial)->getMappings());
         $initialStrategy->clean();
@@ -584,92 +521,6 @@ abstract class MagentoInstallerAbstract extends LibraryInstaller implements Inst
 
         if ($this->appendGitIgnore) {
             $this->appendGitIgnore($target, $this->getGitIgnoreFileLocation());
-        }
-
-        if ($target->getType() === 'magento-core') {
-            $this->postUpdateMagentoCore();
-        }
-    }
-
-    protected function preUpdateMagentoCore()
-    {
-        if (!$this->io->askConfirmation(
-            '<info>Are you sure you want to manipulate the Magento core installation</info> [<comment>Y,n</comment>]? ',
-            true
-        )
-        ) {
-            $this->io->write('Skipping core update...');
-
-            return false;
-        }
-        $tmpDir = $this->magentoRootDir->getPathname() . self::MAGENTO_ROOT_DIR_TMP_SUFFIX;
-        $this->filesystem->ensureDirectoryExists($tmpDir);
-        $this->originalMagentoRootDir = clone $this->magentoRootDir;
-        $this->magentoRootDir = new \SplFileInfo($tmpDir);
-
-        return true;
-    }
-
-    protected function postUpdateMagentoCore()
-    {
-        $tmpDir = $this->magentoRootDir->getPathname();
-        $backupDir = $this->originalMagentoRootDir->getPathname() . self::MAGENTO_ROOT_DIR_BACKUP_SUFFIX;
-        $this->backupMagentoRootDir = new \SplFileInfo($backupDir);
-
-        $origRootDir = $this->originalMagentoRootDir->getPathName();
-        $this->filesystem->rename($origRootDir, $backupDir);
-        $this->filesystem->rename($tmpDir, $origRootDir);
-        $this->magentoRootDir = clone $this->originalMagentoRootDir;
-
-        $this->prepareMagentoCore();
-        $this->cleanupPostUpdateMagentoCore();
-    }
-
-    protected function cleanupPostUpdateMagentoCore()
-    {
-        $rootDir = $this->magentoRootDir->getPathname();
-        $backupDir = $this->backupMagentoRootDir->getPathname();
-        $persistentFolders = array('media', 'var');
-        copy(
-            $backupDir . DIRECTORY_SEPARATOR . $this->_magentoLocalXmlPath,
-            $rootDir . DIRECTORY_SEPARATOR . $this->_magentoLocalXmlPath
-        );
-        foreach ($persistentFolders as $folder) {
-            $this->filesystem->removeDirectory($rootDir . DIRECTORY_SEPARATOR . $folder);
-            $this->filesystem->rename(
-                $backupDir . DIRECTORY_SEPARATOR . $folder, $rootDir . DIRECTORY_SEPARATOR . $folder
-            );
-        }
-        if ($this->io->ask('Remove root backup? [Y,n] ', true)) {
-            $this->filesystem->removeDirectory($backupDir);
-            $this->io->write('Removed root backup!', true);
-        } else {
-            $this->io->write('Skipping backup removal...', true);
-        }
-        $this->clearMagentoCache();
-    }
-
-    public function toggleMagentoMaintenanceMode($active = false)
-    {
-        if (($targetDir = $this->getTargetDir()) && !$this->noMaintenanceMode) {
-            $flagPath = $targetDir . DIRECTORY_SEPARATOR . self::MAGENTO_MAINTANANCE_FLAG;
-            if ($active) {
-                $this->io->write("Adding magento maintenance flag...");
-                file_put_contents($flagPath, '*');
-            } elseif (file_exists($flagPath)) {
-                $this->io->write("Removing magento maintenance flag...");
-                unlink($flagPath);
-            }
-        }
-    }
-
-    public function clearMagentoCache()
-    {
-        if (($targetDir = $this->getTargetDir()) && !$this->keepMagentoCache) {
-            $magentoCachePath = $targetDir . DIRECTORY_SEPARATOR . self::MAGENTO_CACHE_PATH;
-            if ($this->filesystem->removeDirectory($magentoCachePath)) {
-                $this->io->write('Magento cache cleared');
-            }
         }
     }
 
@@ -837,5 +688,19 @@ abstract class MagentoInstallerAbstract extends LibraryInstaller implements Inst
                 var_dump($varDump);
             }
         }
+    }
+
+    /**
+     * @param PackageInterface $package
+     *
+     * @throws \ErrorException
+     */
+    protected function addEntryToDeployManager(PackageInterface $package) {
+        $targetStrategy = $this->getDeployStrategy($package);
+        $targetStrategy->setMappings($this->getParser($package)->getMappings());
+        $deployManagerEntry = new Entry();
+        $deployManagerEntry->setPackageName($package->getName());
+        $deployManagerEntry->setDeployStrategy($targetStrategy);
+        $deployManagerEntry->getDeployStrategy()->deploy();
     }
 }
