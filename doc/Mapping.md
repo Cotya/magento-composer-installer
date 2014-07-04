@@ -5,9 +5,9 @@ Mapping
 
 There are several ways how the mapping from files in the package into the Magento source is accomplished:
 
-1. [modman](https://github.com/colinmollenhour/modman) file
+1. A mapping in the composer.json
 2. MagentoConnect package.xml file
-3. A mapping in the composer.json
+3. [modman](https://github.com/colinmollenhour/modman) file
 
 As long as one of these mappings can be found, Magento modules are installable.
 
