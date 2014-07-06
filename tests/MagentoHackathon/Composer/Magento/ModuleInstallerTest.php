@@ -1,13 +1,13 @@
 <?php
 namespace MagentoHackathon\Composer\Magento;
 
-use Composer\Installer\LibraryInstaller;
 use Composer\Util\Filesystem;
 use Composer\Test\TestCase;
 use Composer\Composer;
 use Composer\Config;
+use MagentoHackathon\Composer\Magento\Installer\ModuleInstaller;
 
-class InstallerTest extends \PHPUnit_Framework_TestCase
+class ModuleInstallerTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @var Installer
@@ -60,7 +60,7 @@ class InstallerTest extends \PHPUnit_Framework_TestCase
         $this->repository = $this->getMock('Composer\Repository\InstalledRepositoryInterface');
         $this->io = $this->getMock('Composer\IO\IOInterface');
 
-        $this->object = new Installer($this->io, $this->composer);
+        $this->object = new ModuleInstaller($this->io, $this->composer);
     }
 
     protected function tearDown()
@@ -98,12 +98,12 @@ class InstallerTest extends \PHPUnit_Framework_TestCase
         $extra = array_merge($composerExtra, $extra);
         $package = $this->createPackageMock($extra,$packageName);
         $this->composer->setPackage($package);
-        $installer = new Installer($this->io, $this->composer);
+        $installer = new ModuleInstaller($this->io, $this->composer);
         $this->assertInstanceOf($expectedClass, $installer->getDeployStrategy($package));
     }
 
     /**
-     * @covers MagentoHackathon\Composer\Magento\Installer::supports
+     * @covers MagentoHackathon\Composer\Magento\Installer\ModuleInstaller::supports
      */
     public function testSupports()
     {
@@ -258,7 +258,7 @@ class InstallerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers MagentoHackathon\Composer\Magento\Installer::getMappings
+     * @covers MagentoHackathon\Composer\Magento\Installer\ModuleInstaller::getMappings
      */
     public function testEtcPathMappingTranslation()
     {
@@ -269,7 +269,7 @@ class InstallerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers MagentoHackathon\Composer\Magento\Installer::getMappings
+     * @covers MagentoHackathon\Composer\Magento\Installer\ModuleInstaller::getMappings
      */
     public function testCodePathMappingTranslation()
     {
@@ -280,7 +280,7 @@ class InstallerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers MagentoHackathon\Composer\Magento\Installer::getMappings
+     * @covers MagentoHackathon\Composer\Magento\Installer\ModuleInstaller::getMappings
      */
     public function testJSPathMappingTranslation()
     {
@@ -291,7 +291,7 @@ class InstallerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers MagentoHackathon\Composer\Magento\Installer::getMappings
+     * @covers MagentoHackathon\Composer\Magento\Installer\ModuleInstaller::getMappings
      */
     public function testSkinPathMappingTranslation()
     {
@@ -302,7 +302,7 @@ class InstallerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers MagentoHackathon\Composer\Magento\Installer::getMappings
+     * @covers MagentoHackathon\Composer\Magento\Installer\ModuleInstaller::getMappings
      */
     public function testMediaPathMappingTranslation()
     {
@@ -313,7 +313,7 @@ class InstallerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers MagentoHackathon\Composer\Magento\Installer::getMappings
+     * @covers MagentoHackathon\Composer\Magento\Installer\ModuleInstaller::getMappings
      */
     public function testJSPathMappingTranslation2()
     {
@@ -324,7 +324,7 @@ class InstallerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers MagentoHackathon\Composer\Magento\Installer::getMappings
+     * @covers MagentoHackathon\Composer\Magento\Installer\ModuleInstaller::getMappings
      */
     public function testSkinPathMappingTranslation2()
     {
@@ -335,7 +335,7 @@ class InstallerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers MagentoHackathon\Composer\Magento\Installer::getMappings
+     * @covers MagentoHackathon\Composer\Magento\Installer\ModuleInstaller::getMappings
      */
     public function testMediaPathMappingTranslation2()
     {

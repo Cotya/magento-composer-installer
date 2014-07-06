@@ -1,6 +1,7 @@
 <?php
 namespace MagentoHackathon\Composer\Magento;
 
+use MagentoHackathon\Composer\Magento\Installer\ModuleInstaller;
 use Composer\Installer\LibraryInstaller;
 use Composer\Util\Filesystem;
 use Composer\Test\TestCase;
@@ -11,7 +12,7 @@ use Composer\Config;
  * Test that path mapping translations work correctly, including different
  * prefix types (i.e. 'js/...' vs './js/...').
  */
-class PathMappingTranslationTest extends InstallerTest
+class PathMappingTranslationTestModule extends ModuleInstallerTest
 {
     protected function setUp()
     {
@@ -55,11 +56,11 @@ class PathMappingTranslationTest extends InstallerTest
         $this->repository = $this->getMock('Composer\Repository\InstalledRepositoryInterface');
         $this->io = $this->getMock('Composer\IO\IOInterface');
 
-        $this->object = new Installer($this->io, $this->composer);
+        $this->object = new ModuleInstaller($this->io, $this->composer);
     }
 
     /**
-     * @covers MagentoHackathon\Composer\Magento\Installer::getMappings
+     * @covers MagentoHackathon\Composer\Magento\Installer\ModuleInstaller::getMappings
      */
     public function testEtcPathMappingTranslation()
     {

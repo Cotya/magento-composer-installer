@@ -36,6 +36,11 @@ other support contacts
 * irc: freenode the channels #magento-composer #magento-reddit and for german speaking people #magento-de 
 * twitter: [@firegento](https://twitter.com/firegento)
 
+## Known issue
+- Error message: `Fatal error: Call to undefined method MagentoHackathon\Composer\Magento\Installer::setDeployManager()` happens when you update from 1.x to 2.x, as we switched from pure installer to plugin.
+
+Solution: remove the `vendor` directory and the `composer.lock` and do a fresh install.
+=======
 ## Known issues
 
 ### When upgrading from 1.x to 2.x 
