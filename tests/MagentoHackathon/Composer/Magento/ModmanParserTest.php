@@ -61,6 +61,9 @@ class ModmanParserTest extends \PHPUnit_Framework_TestCase
      */
     public function testSetGetFile()
     {
+        if ( PHP_MAJOR_VERSION === 5 && PHP_MINOR_VERSION === 6 ) {
+            $this->markTestSkipped( 'Mock is Not compatible to PHP 5.6' );
+        }
         $file = $this->getMockBuilder('\\SplFileObject')->setConstructorArgs(array(__FILE__))->getMock();
         $this->object->setFile($file);
         $this->assertSame($file, $this->object->getFile());
