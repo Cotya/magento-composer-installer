@@ -4,12 +4,6 @@
  *
  * PHP Version 5
  *
- * @category  Brandung
- * @package   Brandung_magento-composer-installer
- * @author    David Verholen <david.verholen@brandung.de>
- * @copyright 2014 Brandung GmbH & Co Kg
- * @license   http://opensource.org/licenses/OSL-3.0 OSL-3.0
- * @link      http://www.brandung.de
  */
 
 namespace MagentoHackathon\Composer\Magento\Deploystrategy;
@@ -19,13 +13,6 @@ use Composer\Util\Filesystem;
 
 /**
  * Class Core
- *
- * @category  Brandung
- * @package   Brandung_magento-composer-installer
- * @author    David Verholen <david.verholen@brandung.de>
- * @copyright 2014 Brandung GmbH & Co Kg
- * @license   http://opensource.org/licenses/OSL-3.0 OSL-3.0
- * @link      http://www.brandung.de
  */
 class Core extends Copy
 {
