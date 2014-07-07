@@ -23,4 +23,12 @@ script:
 notifications:
   email:
     recipients:
-      - david@verholen.com
+      - flyingmana@googlemail.com
+      - vinai@netzarbeiter.com
+    on_success: never
+    on_failure: always
+  irc:
+    channels:
+      - "irc.freenode.org#magento-composer"
+    on_success: change # default: always
+    on_failure: always # default: always
