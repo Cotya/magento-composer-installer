@@ -68,6 +68,23 @@ It also allows hosting of private packages and speeds up the whole downloading p
 
 Another alternative is to look into [Satis](https://github.com/composer/satis), bare git mirrors and repository aliasing.
 
+Another way to speedup downloads over ssh(also interesting for satis users) is to improve your ssh configs.
+At least for newer versions of openSSH you can add the following to your ```.ssh/config``` to reuse previous connections.
+```
+Host * 
+    ControlPath ~/.ssh/controlmasters/%r@%h:%p
+    ControlMaster auto
+    ControlPersist 10m
+```
+
+also you need to create the ```controlmasters``` directory:
+```sh
+mkdir ~/.ssh/controlmasters
+chmod go-xr ~/.ssh/controlmasters
+```
+
+further information can be found on [wikibooks](http://en.wikibooks.org/wiki/OpenSSH/Cookbook/Multiplexing) 
+
 ## Usage
 
 See below for a [generic instruction on how to install composer](#installation-of-composer) if you aren't familiar with it.
