@@ -1,4 +1,14 @@
 {
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "http://packages.firegento.com"
+        },
+        {
+            "type": "artifact",
+            "url": "../artifact/"
+        }
+    ],
     "extra": {
         "auto-append-gitignore": true,
         "magento-force": "override",
