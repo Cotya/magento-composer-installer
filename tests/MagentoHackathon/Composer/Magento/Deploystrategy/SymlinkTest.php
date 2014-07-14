@@ -95,4 +95,25 @@ class SymlinkTest extends AbstractTest
         $this->assertFileType($testTarget, self::TEST_FILETYPE_FILE);
         $this->assertFileType(dirname($testTarget), self::TEST_FILETYPE_LINK);
     }
+
+    /**
+     * @see https://github.com/magento-hackathon/magento-composer-installer/issues/121
+     */
+    public function testEmptyDirectoryCleanup()
+    {
+        $directory  = '/app/code/Jay/Ext1';
+        $file       = $directory . '/file.txt';
+        $this->mkdir($this->sourceDir . $directory);
+        touch($this->sourceDir . $file);
+        $this->strategy->setMappings(array(array($file, $file)));
+        
+        $this->strategy->deploy();
+        
+        $this->assertFileExists($this->destDir . $file);
+
+        $this->strategy->clean();
+        
+        $this->assertFileNotExists($this->destDir . $file);
+        $this->assertFileNotExists($this->destDir . $directory);
+    }
 }
