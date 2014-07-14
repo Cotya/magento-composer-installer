@@ -392,7 +392,7 @@ abstract class DeploystrategyAbstract
 
             foreach ($iterator as $item) {
                 $path = (string)$item;
-                if (!strcmp($path, '.') || !strcmp($path, '..')) {
+                if (!strcmp($item->getFilename(), '.') || !strcmp($item->getFilename(), '..')) {
                     continue;
                 }
                 // The directory contains something, do not remove
