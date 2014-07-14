@@ -62,6 +62,11 @@
             "MagentoHackathon\\Composer\\Magento":"src/"
         }
     },
+    "autoload-dev":{
+        "psr-0":{
+            "MagentoHackathon\\Composer\\Magento":"tests/"
+        }
+    },
     "archive": {
         "exclude": [
             "vendor",
