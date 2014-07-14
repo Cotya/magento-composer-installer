@@ -10,6 +10,12 @@
         }
     ],
     "extra": {
+        "magento-deploystrategy": "copy",
+        "magento-deploy-ignore": {
+            "*": ["/index.php"],
+            "connect20/mage_downloader": ["/shell/log.php"],
+            "connect20/mage_core_modules": ["/shell/compiler.php"]
+        },
         "auto-append-gitignore": true,
         "magento-force": "override",
         "magento-root-dir": "../htdocs/"
