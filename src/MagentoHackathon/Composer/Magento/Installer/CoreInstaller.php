@@ -148,6 +148,8 @@ class CoreInstaller extends MagentoInstallerAbstract
      */
     public function getDeployStrategy(PackageInterface $package, $strategy = null)
     {
-        return new Core($this->getSourceDir($package), $this->getTargetDir());
+        $deployStrategy = new Core($this->getSourceDir($package), $this->getTargetDir());
+        $deployStrategy->setIgnoredMappings($this->getModuleSpecificDeployIgnores($package));
+        return $deployStrategy;
     }
 }
