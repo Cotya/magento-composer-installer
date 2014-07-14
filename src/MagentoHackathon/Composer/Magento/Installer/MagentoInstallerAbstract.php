@@ -289,20 +289,6 @@ abstract class MagentoInstallerAbstract extends LibraryInstaller implements Inst
             }
         }
 
-        $moduleSpecificDeployIgnores = array();
-        if ($this->getConfig()->hasMagentoDeployIgnore()) {
-            $magentoDeployIgnore = $this->getConfig()->getMagentoDeployIgnore();
-            if (isset($magentoDeployIgnore['*'])) {
-                $moduleSpecificDeployIgnores = $magentoDeployIgnore['*'];
-            }
-            if (isset($magentoDeployIgnore[$package->getName()])) {
-                $moduleSpecificDeployIgnores = array_merge(
-                    $moduleSpecificDeployIgnores,
-                    $magentoDeployIgnore[$package->getName()]
-                );
-            }
-        }
-
         $targetDir = $this->getTargetDir();
         $sourceDir = $this->getSourceDir($package);
         switch ($strategy) {
@@ -321,9 +307,28 @@ abstract class MagentoInstallerAbstract extends LibraryInstaller implements Inst
         }
         // Inject isForced setting from extra config
         $impl->setIsForced($this->isForced);
-        $impl->setIgnoredMappings($moduleSpecificDeployIgnores);
+        $impl->setIgnoredMappings($this->getModuleSpecificDeployIgnores($package));
 
         return $impl;
+    }
+    
+    protected function getModuleSpecificDeployIgnores($package)
+    {
+
+        $moduleSpecificDeployIgnores = array();
+        if ($this->getConfig()->hasMagentoDeployIgnore()) {
+            $magentoDeployIgnore = $this->getConfig()->getMagentoDeployIgnore();
+            if (isset($magentoDeployIgnore['*'])) {
+                $moduleSpecificDeployIgnores = $magentoDeployIgnore['*'];
+            }
+            if (isset($magentoDeployIgnore[$package->getName()])) {
+                $moduleSpecificDeployIgnores = array_merge(
+                    $moduleSpecificDeployIgnores,
+                    $magentoDeployIgnore[$package->getName()]
+                );
+            }
+        }
+        return $moduleSpecificDeployIgnores;
     }
 
     /**
