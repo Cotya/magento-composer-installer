@@ -387,10 +387,13 @@ abstract class DeploystrategyAbstract
     {
         $absoluteDir = $this->getDestDir() . '/' . $dir;
         if (is_dir($absoluteDir)) {
-            $iterator = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($absoluteDir),
-                \RecursiveIteratorIterator::CHILD_FIRST);
+            $iterator = new \RecursiveIteratorIterator(
+                new \RecursiveDirectoryIterator($absoluteDir),
+                \RecursiveIteratorIterator::CHILD_FIRST
+            );
 
             foreach ($iterator as $item) {
+                /** @var SplFileInfo $item */
                 $path = (string)$item;
                 if (!strcmp($item->getFilename(), '.') || !strcmp($item->getFilename(), '..')) {
                     continue;
