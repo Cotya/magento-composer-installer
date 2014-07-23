@@ -1,5 +1,6 @@
 [![Build Status](https://travis-ci.org/magento-hackathon/magento-composer-installer.png)](https://travis-ci.org/magento-hackathon/magento-composer-installer)
 [![Dependency Status](https://www.versioneye.com/php/magento-hackathon:magento-composer-installer/2.0.0/badge.svg)](https://www.versioneye.com/php/magento-hackathon:magento-composer-installer/2.0.0)
+[![Reference Status](https://www.versioneye.com/php/magento-hackathon:magento-composer-installer/reference_badge.svg)](https://www.versioneye.com/php/magento-hackathon:magento-composer-installer/references)
 
 # Magento Composer Installer 
 
