@@ -24,6 +24,7 @@ class ModmanParser extends PathTranslationParser
      * Constructor
      *
      * @param string $moduleDir
+     * @param array  $translations
      */
     public function __construct($moduleDir = null, $translations = array())
     {
@@ -59,7 +60,7 @@ class ModmanParser extends PathTranslationParser
     }
 
     /**
-     * @param string|SplFileObject $file
+     * @param string|\SplFileObject $file
      * @return ModmanParser
      */
     public function setFile($file)
@@ -80,7 +81,7 @@ class ModmanParser extends PathTranslationParser
     }
 
     /**
-     * @return string
+     * @return null|\SplFileObject
      */
     public function getModmanFile()
     {
