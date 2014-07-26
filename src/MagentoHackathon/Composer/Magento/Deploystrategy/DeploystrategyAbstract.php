@@ -269,7 +269,7 @@ abstract class DeploystrategyAbstract
 
     protected function removeTrailingSlash($path)
     {
-        return rtrim($path, ' \\/');
+        return rtrim($path, '\\/');
     }
 
     /**
