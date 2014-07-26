@@ -30,6 +30,7 @@ class GlobalPluginTest extends AbstractTest
 
     public function testGlobalInstall()
     {
+        $this->markTestSkipped('This has not been implemented yet.');
         $process = new Process(
             self::getComposerCommand().' global install ' . self::getComposerArgs(),
             self::getProjectRoot()
@@ -42,7 +43,7 @@ class GlobalPluginTest extends AbstractTest
     
     public function testGlobalUpdate()
     {
-
+        $this->markTestSkipped('This has not been implemented yet.');
         $process = new Process(
             self::getComposerCommand().' global update ' . self::getComposerArgs(),
             self::getProjectRoot()
