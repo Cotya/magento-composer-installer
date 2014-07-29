@@ -41,4 +41,30 @@ If you don't like modman files, you can define mappings in a package composer.js
 }
 ```
 
+`magento-map-overwrite` parameter can be used to override module default mapping. For example, module default mapping is: `app/code/community/CompanyDir/ModuleDir/*` => `app/code/community/CompanyDir/ModuleDir/`, but you would like to have it as `app/code/community/CompanyDir/ModuleDir/*` => `app/code/local/CompanyDir/ModuleDir`.
+So sample `module` is provided by `company` with version `*`.
+
+Here is the entry for composer.json:
+```
+{
+    "require": {
+        ...
+        "company/module": "*"
+    },
+    "repositories": [
+        ...
+    ],
+    "extra": {
+        ...
+        "magento-map-overwrite": {
+            "company/module": [
+                ["app/code/community/CompanyDir/ModuleDir/*", "app/code/local/CompanyDir/ModuleDir"]
+            ]
+        }
+    }
+}
+
+```
+so `company/module` is an array of mapping entries - arrays where first key is source path and second key is destination path.
+
 
