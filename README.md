@@ -5,6 +5,8 @@
 
 # Magento Composer Installer 
 
+<img src="https://getcomposer.org/img/logo-composer-transparent.png" itemprop="image" alt="Dart Mosaic" style="height:50px;">
+
 The purpose of this project is to 
 enable [composer](https://github.com/composer/composer) to install Magento modules,
 and automatically integrate them into a Magento installation.
