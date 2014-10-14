@@ -4,6 +4,7 @@
 [![Bountysource](https://www.bountysource.com/badge/tracker?tracker_id=284872)](https://www.bountysource.com/trackers/284872-magento-hackathon-magento-composer-installer?utm_source=284872&utm_medium=shield&utm_campaign=TRACKER_BADGE)
 
 # Magento Composer Installer 
+[![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/magento-hackathon/magento-composer-installer?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 <img src="https://getcomposer.org/img/logo-composer-transparent.png" itemprop="image" alt="Dart Mosaic" style="height:50px;">
 
