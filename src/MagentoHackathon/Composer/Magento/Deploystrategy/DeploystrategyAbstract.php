@@ -428,7 +428,7 @@ abstract class DeploystrategyAbstract
     {
         $fs = new \Composer\Util\Filesystem();
         if(is_dir($dir)){
-            $result = $fs->removeDirectory(rtrim($dir,'/'));
+            $result = $fs->removeDirectory($dir);
         }else{
             @unlink($dir);
         }
