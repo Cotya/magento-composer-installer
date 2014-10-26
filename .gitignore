@@ -1,3 +1,4 @@
 /.idea
 /composer.phar
 /vendor
+covarage-clover.xml
