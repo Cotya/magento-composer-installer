@@ -19,9 +19,6 @@ class SymlinkTest extends AbstractTest
      */
     public function getTestDeployStrategyFiletype($isDir = false)
     {
-        if ($isDir && getenv('TRAVIS') == "true") {
-            return self::TEST_FILETYPE_DIR;
-        }
         return self::TEST_FILETYPE_LINK;
     }
 
