@@ -70,7 +70,7 @@ class ModmanParserTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers MagentoHackathon\Composer\Magento\ModmanParser::getMappings
+     * 
      */
     public function testGetMappings()
     {
