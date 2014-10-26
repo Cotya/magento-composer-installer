@@ -21,7 +21,6 @@ class ProjectConfig
     const SORT_PRIORITY_KEY = 'magento-deploy-sort-priority';
 
     const MAGENTO_ROOT_DIR_KEY = 'magento-root-dir';
-    const MODMAN_ROOT_DIR_KEY = 'modman-root-dir';
 
     const MAGENTO_PROJECT_KEY = 'magento-project';
 
@@ -144,33 +143,6 @@ class ProjectConfig
     public function hasMagentoRootDir()
     {
         return $this->hasExtraField(self::MAGENTO_ROOT_DIR_KEY);
-    }
-
-    /**
-     * @return string
-     */
-    public function getModmanRootDir()
-    {
-        return rtrim(
-            trim($this->fetchVarFromExtraConfig(self::MODMAN_ROOT_DIR_KEY)),
-            DIRECTORY_SEPARATOR
-        );
-    }
-
-    /**
-     * @param $rootDir
-     */
-    public function setModmanRootDir($rootDir)
-    {
-        $this->updateExtraConfig(self::MODMAN_ROOT_DIR_KEY, rtrim(trim($rootDir), DIRECTORY_SEPARATOR));
-    }
-
-    /**
-     * @return bool
-     */
-    public function hasModmanRootDir()
-    {
-        return $this->hasExtraField(self::MODMAN_ROOT_DIR_KEY);
     }
 
     /**

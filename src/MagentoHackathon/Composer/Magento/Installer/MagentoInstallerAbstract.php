@@ -45,13 +45,6 @@ abstract class MagentoInstallerAbstract extends LibraryInstaller implements Inst
     protected $magentoRootDir = null;
 
     /**
-     * The base directory of the modman packages
-     *
-     * @var \SplFileInfo
-     */
-    protected $modmanRootDir = null;
-
-    /**
      * If set overrides existing files
      *
      * @var bool
@@ -144,7 +137,6 @@ abstract class MagentoInstallerAbstract extends LibraryInstaller implements Inst
 
         $this->config = new ProjectConfig($composer->getPackage()->getExtra());
 
-        $this->initModmanRootDir();
         $this->initMagentoRootDir();
 
         if ($this->getConfig()->hasDeployStrategy()) {
@@ -206,22 +198,6 @@ abstract class MagentoInstallerAbstract extends LibraryInstaller implements Inst
         if (!is_dir($this->getConfig()->getMagentoRootDir())) {
             $dir = $this->joinFilePath($this->vendorDir, $this->getConfig()->getMagentoRootDir());
             $this->magentoRootDir = new \SplFileInfo($dir);
-        }
-    }
-
-    protected function initModmanRootDir() {
-        if($this->getConfig()->hasModmanRootDir()) {
-            $modmanRootDir = $this->getConfig()->getModmanRootDir();
-
-            if(!is_dir($modmanRootDir)) {
-                $modmanRootDir = $this->joinFilePath($this->vendorDir, $modmanRootDir);
-            }
-
-            if(!is_dir($modmanRootDir)) {
-                throw new \ErrorException(sprintf('modman root dir "%s" is not valid', $modmanRootDir));
-            }
-
-            $this->modmanRootDir = new \SplFileInfo($modmanRootDir);
         }
     }
 
@@ -554,15 +530,7 @@ abstract class MagentoInstallerAbstract extends LibraryInstaller implements Inst
     public function getInstallPath(PackageInterface $package)
     {
 
-        if (!is_null($this->modmanRootDir) && true === $this->modmanRootDir->isDir()) {
-            $targetDir = $package->getTargetDir();
-            if (!$targetDir) {
-                list($vendor, $targetDir) = explode('/', $package->getPrettyName());
-            }
-            $installPath = $this->modmanRootDir . '/' . $targetDir;
-        } else {
-            $installPath = parent::getInstallPath($package);
-        }
+        $installPath = parent::getInstallPath($package);
 
         // Make install path absolute. This is needed in the symlink deploy strategies.
         if (DIRECTORY_SEPARATOR !== $installPath[0] && $installPath[1] !== ':') {

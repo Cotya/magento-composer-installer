@@ -204,50 +204,6 @@ Look for the ```replace``` statement
 
 
 
-### Custom Magento module location
-
-By default all magento-modules packages will be installed in the configured "vendor-dir" (which is "vendor" by default).
-The package name will be used as a directory path and if there is a "target-dir" configured this will also be appended.
-This results in packaged being installed in a path like this one: vendor/colinmollenhour/cm_diehard.
-
-Originally modman packages "live" in a directory called ".modman". This directory can be inside your htdocs directory,
-next to it or where ever you want it to be.
-
-If you want magento-composer-installer to install your Magento extensions in a custom location, this can be configured
-as follows:
-
-```json
-{
-    ...
-    "extra":{
-        "magento-root-dir": "htdocs/",
-        "modman-root-dir": ".modman"
-    }
-    ...
-}
-```
-
-Make sure the .modman directory exists before updating. There is a fallback in place that will try to find the directory
-relative to your vendor dir if it wasn't found in the first place.
-
-If you want to still use the original modman script, too, and if your modman-root-dir configuration is
-not "htdocs/.modman" you'll need a ".basedir" file inside ".modman" that specifies where to find the htdocs folder (see
-the [modman](https://github.com/colinmollenhour/modman/blob/master/modman#L268-L279) documentation)
-
-Should you choose to only use the original modman script to deploy packages, you will not want to have the
-magento-composer-installer deploy the packages. So this can be disabled:
-
-```json
-{
-    ...
-    "extra":{
-        "magento-root-dir": "htdocs/",
-        "modman-root-dir": ".modman",
-        "magento-deploystrategy": "none"
-    }
-    ...
-}
-```
 ### Auto add files to .gitignore
 
 If you want to have the deployed files automatically added to your .gitignore file, then you can just set the `auto-append-gitignore` key to true:
