@@ -60,7 +60,7 @@ class PathMappingTranslationTestModule extends ModuleInstallerTest
     }
 
     /**
-     * @covers MagentoHackathon\Composer\Magento\Installer\ModuleInstaller::getMappings
+     * 
      */
     public function testEtcPathMappingTranslation()
     {
@@ -71,7 +71,7 @@ class PathMappingTranslationTestModule extends ModuleInstallerTest
     }
 
     /**
-     * @covers MagentoHackathon\Composer\Magento\Installer::getMappings
+     * 
      */
     public function testCodePathMappingTranslation()
     {
@@ -82,7 +82,7 @@ class PathMappingTranslationTestModule extends ModuleInstallerTest
     }
 
     /**
-     * @covers MagentoHackathon\Composer\Magento\Installer::getMappings
+     * 
      */
     public function testJSPathMappingTranslation()
     {
@@ -93,7 +93,7 @@ class PathMappingTranslationTestModule extends ModuleInstallerTest
     }
 
     /**
-     * @covers MagentoHackathon\Composer\Magento\Installer::getMappings
+     * 
      */
     public function testSkinPathMappingTranslation()
     {
@@ -104,7 +104,7 @@ class PathMappingTranslationTestModule extends ModuleInstallerTest
     }
 
     /**
-     * @covers MagentoHackathon\Composer\Magento\Installer::getMappings
+     * 
      */
     public function testMediaPathMappingTranslation()
     {
@@ -115,7 +115,7 @@ class PathMappingTranslationTestModule extends ModuleInstallerTest
     }
 
     /**
-     * @covers MagentoHackathon\Composer\Magento\Installer::getMappings
+     * 
      */
     public function testJSPathMappingTranslation2()
     {
@@ -126,7 +126,7 @@ class PathMappingTranslationTestModule extends ModuleInstallerTest
     }
 
     /**
-     * @covers MagentoHackathon\Composer\Magento\Installer::getMappings
+     * 
      */
     public function testSkinPathMappingTranslation2()
     {
@@ -137,7 +137,7 @@ class PathMappingTranslationTestModule extends ModuleInstallerTest
     }
 
     /**
-     * @covers MagentoHackathon\Composer\Magento\Installer::getMappings
+     * 
      */
     public function testMediaPathMappingTranslation2()
     {

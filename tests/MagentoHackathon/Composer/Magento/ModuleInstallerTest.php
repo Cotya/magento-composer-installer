@@ -103,7 +103,7 @@ class ModuleInstallerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers MagentoHackathon\Composer\Magento\Installer\ModuleInstaller::supports
+     * 
      */
     public function testSupports()
     {
@@ -258,7 +258,7 @@ class ModuleInstallerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers MagentoHackathon\Composer\Magento\Installer\ModuleInstaller::getMappings
+     * 
      */
     public function testEtcPathMappingTranslation()
     {
@@ -269,7 +269,7 @@ class ModuleInstallerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers MagentoHackathon\Composer\Magento\Installer\ModuleInstaller::getMappings
+     * 
      */
     public function testCodePathMappingTranslation()
     {
@@ -280,7 +280,7 @@ class ModuleInstallerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers MagentoHackathon\Composer\Magento\Installer\ModuleInstaller::getMappings
+     * 
      */
     public function testJSPathMappingTranslation()
     {
@@ -291,7 +291,7 @@ class ModuleInstallerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers MagentoHackathon\Composer\Magento\Installer\ModuleInstaller::getMappings
+     * 
      */
     public function testSkinPathMappingTranslation()
     {
@@ -302,7 +302,7 @@ class ModuleInstallerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers MagentoHackathon\Composer\Magento\Installer\ModuleInstaller::getMappings
+     * 
      */
     public function testMediaPathMappingTranslation()
     {
@@ -313,7 +313,7 @@ class ModuleInstallerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers MagentoHackathon\Composer\Magento\Installer\ModuleInstaller::getMappings
+     * 
      */
     public function testJSPathMappingTranslation2()
     {
@@ -324,7 +324,7 @@ class ModuleInstallerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers MagentoHackathon\Composer\Magento\Installer\ModuleInstaller::getMappings
+     * 
      */
     public function testSkinPathMappingTranslation2()
     {
@@ -335,7 +335,7 @@ class ModuleInstallerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers MagentoHackathon\Composer\Magento\Installer\ModuleInstaller::getMappings
+     * 
      */
     public function testMediaPathMappingTranslation2()
     {
