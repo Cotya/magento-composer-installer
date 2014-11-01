@@ -330,6 +330,8 @@ php bin/composer.phar install
 
 * [Composer How to Screencast](http://www.youtube.com/watch?v=m_yprtQiFgk)
 * [Introducing Composer Blog on Magebase.com](http://magebase.com/magento-tutorials/composer-with-magento/)
+* [Magento, Composer and Symfonys Dependency Injection](http://www.piotrbelina.com/magento-composer-and-dependency-injection/)
+* [Using Composer for Magento(at engineyard)](https://blog.engineyard.com/2014/composer-for-magento)
 
 ### Core Contributors
 
