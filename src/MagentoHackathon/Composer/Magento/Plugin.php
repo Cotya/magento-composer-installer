@@ -11,7 +11,6 @@ namespace MagentoHackathon\Composer\Magento;
 use Composer\Config;
 use Composer\Installer;
 use Composer\Script\CommandEvent;
-use MagentoHackathon\Composer\Magento\Installer\CoreInstaller;
 use MagentoHackathon\Composer\Magento\Installer\MagentoInstallerAbstract;
 use MagentoHackathon\Composer\Magento\Installer\ModuleInstaller;
 use RecursiveDirectoryIterator;
@@ -51,11 +50,6 @@ class Plugin implements PluginInterface, EventSubscriberInterface
     protected $deployManager;
 
     /**
-     * @var DeployManager
-     */
-    protected $deployManagerCore;
-
-    /**
      * @var Composer
      */
     protected $composer;
@@ -73,7 +67,6 @@ class Plugin implements PluginInterface, EventSubscriberInterface
      */
     protected function initDeployManager(Composer $composer, IOInterface $io)
     {
-        $this->deployManagerCore = new DeployManager($io);
         $this->deployManager = new DeployManager($io);
         $this->deployManager->setSortPriority($this->getSortPriority($composer));
     }
@@ -134,13 +127,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
             $this->deployManager
         );
 
-        $coreInstaller = $this->initMagentoInstaller(
-            new CoreInstaller($io, $composer),
-            $this->deployManagerCore
-        );
-
         $composer->getInstallationManager()->addInstaller($moduleInstaller);
-        $composer->getInstallationManager()->addInstaller($coreInstaller);
     }
 
     /**
@@ -180,8 +167,6 @@ class Plugin implements PluginInterface, EventSubscriberInterface
      */
     public function onNewCodeEvent(CommandEvent $event)
     {
-        $this->writeDebug('start magento core deploy via deployManager');
-        $this->deployManagerCore->doDeploy();
 
         $this->writeDebug('start magento module deploy via deployManager');
 
