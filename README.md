@@ -97,29 +97,6 @@ further information can be found on [wikibooks](http://en.wikibooks.org/wiki/Ope
 
 See below for a [generic instruction on how to install composer](#installation-of-composer) if you aren't familiar with it.
 
-### Install the Magento-Core and initialize your project
-
-If you want to setup your project from the scratch, you can require the magento/core package from [the public Magento module repository](http://packages.firegento.com) and have your magento-root-dir set up automatically. It is essential that the Magento core packages type is defined as "magento-core" (as given on magento/core).
-
-
-```json
-{
-    "require": {
-        "magento/core": "1.9.0.1"
-    },
-    "repositories": [
-        {
-            "type": "composer",
-            "url": "http://packages.firegento.com"
-        }
-    ],
-    "extra":{
-        "magento-root-dir": "htdocs/"
-    }
-}
-```
-
-
 
 ### Install a module in your project
 
