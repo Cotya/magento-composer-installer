@@ -65,7 +65,7 @@ class Core extends Copy
      */
     protected function beforeClean()
     {
-        parent::beforeDeploy();
+        parent::beforeClean();
         if (!file_exists($this->destDir) || !is_dir($this->destDir)) {
             return;
         }
