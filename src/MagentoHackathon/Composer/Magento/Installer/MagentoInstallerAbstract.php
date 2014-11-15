@@ -267,20 +267,7 @@ abstract class MagentoInstallerAbstract extends LibraryInstaller implements Inst
 
         $targetDir = $this->getTargetDir();
         $sourceDir = $this->getSourceDir($package);
-        switch ($strategy) {
-            case 'copy':
-                $impl = new Copy($sourceDir, $targetDir);
-                break;
-            case 'link':
-                $impl = new Link($sourceDir, $targetDir);
-                break;
-            case 'none':
-                $impl = new None($sourceDir, $targetDir);
-                break;
-            case 'symlink':
-            default:
-                $impl = new Symlink($sourceDir, $targetDir);
-        }
+        $impl = \MagentoHackathon\Composer\Magento\Factory::getDeployStrategyObject($strategy, $sourceDir, $targetDir);
         // Inject isForced setting from extra config
         $impl->setIsForced($this->isForced);
         $impl->setIgnoredMappings($this->getModuleSpecificDeployIgnores($package));
