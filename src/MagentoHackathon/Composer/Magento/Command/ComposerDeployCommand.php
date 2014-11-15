@@ -18,7 +18,7 @@ use MagentoHackathon\Composer\Magento\Installer;
  * @author Tiago Ribeiro <tiago.ribeiro@seegno.com>
  * @author Rui Marinho <rui.marinho@seegno.com>
  */
-class DeployCommand extends \Composer\Command\Command
+class ComposerDeployCommand extends \Composer\Command\Command
 {
     protected function configure()
     {
