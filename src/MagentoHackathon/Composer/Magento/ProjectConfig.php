@@ -26,6 +26,7 @@ class ProjectConfig
 
     const MAGENTO_DEPLOY_STRATEGY_KEY = 'magento-deploystrategy';
     const MAGENTO_DEPLOY_STRATEGY_OVERWRITE_KEY = 'magento-deploystrategy-overwrite';
+    const MAGENTO_MAP_OVERWRITE_KEY = 'magento-map-overwrite';
     const MAGENTO_DEPLOY_IGNORE_KEY = 'magento-deploy-ignore';
 
     const MAGENTO_FORCE_KEY = 'magento-force';
@@ -263,6 +264,12 @@ class ProjectConfig
         );
     }
 
+    public function getMagentoMapOverwrite()
+    {
+        return $this->transformArrayKeysToLowerCase(
+            (array)$this->fetchVarFromExtraConfig(self::MAGENTO_MAP_OVERWRITE_KEY)
+        );
+    }
     protected function hasExtraField($key)
     {
         return (bool)!is_null($this->fetchVarFromExtraConfig($key));
