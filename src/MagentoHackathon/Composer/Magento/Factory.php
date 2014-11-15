@@ -61,7 +61,7 @@ class Factory
             $pathMappingTranslations = $projectConfig->getPathMappingTranslations();
         }
 
-        $extra = $package;
+        $extra = $package['extra'];
         $moduleSpecificMap = $projectConfig->getMagentoMapOverwrite();
         if ($moduleSpecificMap) {
             if (isset($moduleSpecificMap[$packageName])) {
