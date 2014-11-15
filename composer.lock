@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "a57ba36668dce4b37c4ef03d3fa95945",
+    "hash": "a36fdf7e66a7674b34d9c97f79a7def5",
     "packages": [
         {
             "name": "eloquent/composer-config-reader",
@@ -1567,5 +1567,7 @@
     },
     "prefer-stable": false,
     "platform": [],
-    "platform-dev": []
+    "platform-dev": {
+        "ext-spl_types": "*"
+    }
 }

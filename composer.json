@@ -44,6 +44,7 @@
         "composer-plugin-api": "1.0.0"
     },
     "require-dev":{
+        "ext-SPL_Types":"*",
         "phpunit/phpunit":"~4.3",
         "phpunit/phpunit-mock-objects": "~2.3",
         "squizlabs/php_codesniffer": "1.4.7",
