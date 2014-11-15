@@ -40,6 +40,7 @@
     ],
     "require":{
         "eloquent/composer-config-reader": "2.*",
+        "symfony/console": "~2.5",
         "composer-plugin-api": "1.0.0"
     },
     "require-dev":{
@@ -59,7 +60,7 @@
     },
     "autoload":{
         "psr-0":{
-            "MagentoHackathon\\Composer\\Magento":"src/"
+            "MagentoHackathon\\Composer":"src/"
         }
     },
     "autoload-dev":{
