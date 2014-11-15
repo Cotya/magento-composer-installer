@@ -13,15 +13,12 @@ matrix:
     - php: hhvm
 
 install:
+  - pecl install SPL_Types
   - curl -sS https://getcomposer.org/installer | php
   - chmod +x ./composer.phar
   - ./composer.phar --version
   - ./composer.phar install --dev
   
-before_script:
-  - pecl install SPL_Types
-  - echo 'extension=spl_types.so' >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
-
 script:
   - ./vendor/bin/phpunit
 
