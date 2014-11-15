@@ -47,7 +47,7 @@ EOT
         $im = $composer->getInstallationManager();
 
         /**
-         * @var $moduleInstaller \MagentoHackathon\Composer\Magento\Installer
+         * @var $moduleInstaller \MagentoHackathon\Composer\Magento\Installer\ModuleInstaller
          */
         $moduleInstaller = $im->getInstaller("magento-module");
 
