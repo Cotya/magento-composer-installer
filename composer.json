@@ -68,6 +68,9 @@
             "MagentoHackathon\\Composer\\Magento":"tests/"
         }
     },
+    "bin": [
+        "bin/magento-composer-installer.php"
+    ],
     "archive": {
         "exclude": [
             "vendor",
