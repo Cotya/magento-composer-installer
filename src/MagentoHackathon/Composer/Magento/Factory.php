@@ -43,4 +43,54 @@ class Factory
         
         return $impl;
     }
+
+    /**
+     * @param ProjectConfig $projectConfig
+     * @param               $package
+     * @param               $packageDir
+     * 
+     * @return Parser
+     *
+     * @throws \ErrorException
+     */
+    public static function getMappingParser(ProjectConfig $projectConfig, $package, $packageDir)
+    {
+        $packageName = $package['name'];
+        $pathMappingTranslations = array();
+        if ($projectConfig->hasPathMappingTranslations()) {
+            $pathMappingTranslations = $projectConfig->getPathMappingTranslations();
+        }
+
+        $extra = $package;
+        $moduleSpecificMap = $projectConfig->getMagentoMapOverwrite();
+        if ($moduleSpecificMap) {
+            if (isset($moduleSpecificMap[$packageName])) {
+                $map = $moduleSpecificMap[$packageName];
+            }
+        }
+
+        if (isset($map)) {
+            $parser = new MapParser($map, $pathMappingTranslations);
+
+            return $parser;
+        } elseif (isset($extra['map'])) {
+            $parser = new MapParser($extra['map'], $pathMappingTranslations);
+
+            return $parser;
+        } elseif (isset($extra['package-xml'])) {
+            $parser = new PackageXmlParser(
+                $packageDir,
+                $extra['package-xml'],
+                $pathMappingTranslations
+            );
+
+            return $parser;
+        } elseif (file_exists($packageDir . '/modman')) {
+            $parser = new ModmanParser($packageDir, $pathMappingTranslations);
+
+            return $parser;
+        } else {
+            throw new \ErrorException('Unable to find deploy strategy for module: no known mapping');
+        }
+    }
 }
