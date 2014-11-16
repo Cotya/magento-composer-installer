@@ -97,4 +97,12 @@ class DeployManager {
         }
     }
 
+    /**
+     * @return Deploy\Manager\Entry[]
+     */
+    public function getEntries()
+    {
+        return $this->packages;
+    }
+
 }

@@ -167,6 +167,24 @@ class Plugin implements PluginInterface, EventSubscriberInterface
      */
     public function onNewCodeEvent(CommandEvent $event)
     {
+        $this->writeDebug('iterate over packages to find missing ones');
+        $addedPackageNames = array();
+        foreach ($this->deployManager->getEntries() as $entry) {
+            $addedPackageNames[$entry->getPackageName()] = $entry->getPackageName();
+        }
+        /** @var PackageInterface[] $packages */
+        $packages = $this->composer->getRepositoryManager()->getLocalRepository()->getPackages();
+        
+        foreach ($packages as $package) {
+            if ($package->getType() == 'magento-module' && !isset($addedPackageNames[$package->getName()])) {
+                $this->writeDebug('add missing package '.$package->getName());
+                $this->deployManager->addPackage(Factory::getDeployManagerEntry(
+                    $this->config,
+                    $package,
+                    realpath(rtrim($this->composer->getConfig()->get('vendor-dir'), '/'))
+                ));
+            }
+        }
 
         $this->writeDebug('start magento module deploy via deployManager');
 

@@ -145,6 +145,11 @@ class ProjectConfig
     {
         return $this->hasExtraField(self::MAGENTO_ROOT_DIR_KEY);
     }
+    
+    public function getMagentoVarDir()
+    {
+        return $this->getMagentoRootDir().'var'.DIRECTORY_SEPARATOR;
+    }
 
     /**
      * @param $deployStrategy

@@ -8,6 +8,8 @@
 
 namespace MagentoHackathon\Composer\Magento;
 
+use Composer\Package\PackageInterface;
+use MagentoHackathon\Composer\Magento\Deploy\Manager\Entry;
 use MagentoHackathon\Composer\Magento\Deploystrategy\Copy;
 use MagentoHackathon\Composer\Magento\Deploystrategy\Link;
 use MagentoHackathon\Composer\Magento\Deploystrategy\None;
@@ -43,6 +45,28 @@ class Factory
         
         return $impl;
     }
+    
+    public static function getDeployStrategyObjectByProjectConfigAndPackage(
+        ProjectConfig $projectConfig,
+        PackageInterface $package,
+        $vendorDir
+    ) {
+        $strategyName = $projectConfig->getDeployStrategy();
+        $packageDir   = $vendorDir . DIRECTORY_SEPARATOR . $package->getPrettyName();
+
+        $strategy = self::getDeployStrategyObject(
+            $strategyName,
+            $packageDir,
+            realpath($projectConfig->getMagentoRootDir())
+        );
+        $mappingParser = Factory::getMappingParser(
+            $projectConfig,
+            $package,
+            $packageDir
+        );
+        $strategy->setMappings($mappingParser->getMappings());
+        return $strategy;
+    }
 
     /**
      * @param ProjectConfig $projectConfig
@@ -55,13 +79,19 @@ class Factory
      */
     public static function getMappingParser(ProjectConfig $projectConfig, $package, $packageDir)
     {
-        $packageName = $package['name'];
+        if ($package instanceof PackageInterface) {
+            $packageName = $package->getName();
+            $extra = $package->getExtra();
+        } else {
+            var_dump($package);
+            $packageName = $package['name'];
+            $extra = $package['extra'];
+        }
         $pathMappingTranslations = array();
         if ($projectConfig->hasPathMappingTranslations()) {
             $pathMappingTranslations = $projectConfig->getPathMappingTranslations();
         }
 
-        $extra = $package['extra'];
         $moduleSpecificMap = $projectConfig->getMagentoMapOverwrite();
         if ($moduleSpecificMap) {
             if (isset($moduleSpecificMap[$packageName])) {
@@ -92,5 +122,19 @@ class Factory
         } else {
             throw new \ErrorException('Unable to find deploy strategy for module: no known mapping');
         }
+    }
+    
+    public static function getDeployManagerEntry(ProjectConfig $projectConfig, $package, $vendorDir)
+    {
+        $entry = new Entry();
+        $entry->setPackageName($package->getName());
+        
+        $strategy = self::getDeployStrategyObjectByProjectConfigAndPackage($projectConfig, $package, $vendorDir);
+
+        
+        
+        $entry->setDeployStrategy($strategy);
+        
+        return $entry;
     }
 }
