@@ -10,7 +10,7 @@ namespace MagentoHackathon\Composer\Magento\Regression;
 
 use Cotya\ComposerTestFramework;
 
-class Issue098 extends ComposerTestFramework\PHPUnit\FullStackTestCase
+class Issue098Test extends ComposerTestFramework\PHPUnit\FullStackTestCase
 {
 
 
