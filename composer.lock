@@ -452,15 +452,16 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Cotya/composer-test-framework.git",
-                "reference": "fcc1ef24812c1cdf2b4e89055a12bbed668d9237"
+                "reference": "47b3f0170a4955e33339d05780ff861b06b8d38d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Cotya/composer-test-framework/zipball/fcc1ef24812c1cdf2b4e89055a12bbed668d9237",
-                "reference": "fcc1ef24812c1cdf2b4e89055a12bbed668d9237",
+                "url": "https://api.github.com/repos/Cotya/composer-test-framework/zipball/47b3f0170a4955e33339d05780ff861b06b8d38d",
+                "reference": "47b3f0170a4955e33339d05780ff861b06b8d38d",
                 "shasum": ""
             },
             "require": {
+                "ext-spl_types": "*",
                 "symfony/filesystem": "*",
                 "symfony/process": "*"
             },
@@ -484,7 +485,7 @@
                 }
             ],
             "description": "a framework to easier build tests for composer installer and plugins",
-            "time": "2014-10-12 19:58:16"
+            "time": "2014-11-16 12:32:56"
         },
         {
             "name": "doctrine/instantiator",
