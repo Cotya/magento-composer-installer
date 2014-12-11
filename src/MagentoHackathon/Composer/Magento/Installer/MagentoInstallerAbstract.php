@@ -604,41 +604,54 @@ abstract class MagentoInstallerAbstract extends LibraryInstaller implements Inst
     }
 
     /**
-     * join 2 paths
+     * joinFilePath
      *
-     * @param        $path1
-     * @param        $path2
-     * @param        $delimiter
-     * @param bool   $prependDelimiter
-     * @param string $additionalPrefix
+     * joins 2 Filepaths and replaces the Directory Separators
+     * with the Systems Directory Separator
      *
-     * @internal param $url1
-     * @internal param $url2
-     *
-     * @return string
-     */
-    protected function joinPath($path1, $path2, $delimiter, $prependDelimiter = false, $additionalPrefix = '')
-    {
-        $prefix = $additionalPrefix . $prependDelimiter ? $delimiter : '';
-
-        return $prefix . join(
-            $delimiter,
-            array(
-                explode($path1, $delimiter),
-                explode($path2, $delimiter)
-            )
-        );
-    }
-
-    /**
      * @param $path1
      * @param $path2
      *
      * @return string
      */
-    protected function joinFilePath($path1, $path2)
+    public function joinFilePath($path1, $path2)
     {
-        return $this->joinPath($path1, $path2, DIRECTORY_SEPARATOR, true);
+        $prefix = $this->startsWithDs($path1) ? DIRECTORY_SEPARATOR : '';
+        $suffix = $this->endsWithDs($path2) ? DIRECTORY_SEPARATOR : '';
+
+        return $prefix . implode(
+            DIRECTORY_SEPARATOR,
+            array_merge(
+                preg_split('/\\\|\//', $path1, null, PREG_SPLIT_NO_EMPTY),
+                preg_split('/\\\|\//', $path2, null, PREG_SPLIT_NO_EMPTY)
+            )
+        ) . $suffix;
+    }
+
+    /**
+     * startsWithDs
+     *
+     * @param $path
+     *
+     * @return bool
+     */
+    protected function startsWithDs($path)
+    {
+        return strrpos($path, '/', -strlen($path)) !== FALSE
+            || strrpos($path, '\\', -strlen($path)) !== FALSE;
+    }
+
+    /**
+     * endsWithDs
+     *
+     * @param $path
+     *
+     * @return bool
+     */
+    protected function endsWithDs($path)
+    {
+        return strpos($path, '/', strlen($path) - 1) !== FALSE
+            || strpos($path, '\\', strlen($path) - 1) !== FALSE;
     }
 
     /**

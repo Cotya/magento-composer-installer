@@ -10,7 +10,7 @@ use MagentoHackathon\Composer\Magento\Installer\ModuleInstaller;
 class ModuleInstallerTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var Installer
+     * @var ModuleInstaller
      */
     protected $object;
 
@@ -239,6 +239,30 @@ class ModuleInstallerTest extends \PHPUnit_Framework_TestCase
      * translations are specified.
      */
 
+    /**
+     * joinFilePathsProvider
+     *
+     * @return array
+     */
+    public function joinFilePathsProvider()
+    {
+        $ds = DIRECTORY_SEPARATOR;
+        return array(
+            array('app/etc/', '/modules', 'app'.$ds.'etc'.$ds.'modules'),
+            array('app/etc/', 'modules', 'app'.$ds.'etc'.$ds.'modules'),
+            array('app/etc', 'modules', 'app'.$ds.'etc'.$ds.'modules'),
+            array('/app/etc', '/modules', $ds.'app'.$ds.'etc'.$ds.'modules'),
+            array('/app/etc/', '/modules', $ds.'app'.$ds.'etc'.$ds.'modules'),
+            array('/app/etc', 'modules/', $ds.'app'.$ds.'etc'.$ds.'modules'.$ds),
+            array('app\\etc\\', '\\modules', 'app'.$ds.'etc'.$ds.'modules'),
+            array('app\\etc\\', 'modules', 'app'.$ds.'etc'.$ds.'modules'),
+            array('app\\etc', 'modules', 'app'.$ds.'etc'.$ds.'modules'),
+            array('\\app\\etc', '\\modules', $ds.'app'.$ds.'etc'.$ds.'modules'),
+            array('\\app\\etc\\', '\\modules', $ds.'app'.$ds.'etc'.$ds.'modules'),
+            array('\\app\\etc', 'modules\\', $ds.'app'.$ds.'etc'.$ds.'modules'.$ds)
+        );
+    }
+
     protected function createPathMappingTranslationMock()
     {
         return $this->createPackageMock(
@@ -343,6 +367,23 @@ class ModuleInstallerTest extends \PHPUnit_Framework_TestCase
         $mappings = $this->object->getParser($package)->getMappings();
 
         $this->assertContains(array('src2/media/images', './media/examplename_images'), $mappings);
+    }
+
+    /**
+     * testJoinFilePaths
+     *
+     * @param $path1
+     * @param $path2
+     * @param $expected
+     *
+     * @return void
+     *
+     * @dataProvider joinFilePathsProvider
+     * @covers MagentoHackathon\Composer\Magento\Installer\ModuleInstaller::joinFilePaths
+     */
+    public function testJoinFilePaths($path1, $path2, $expected)
+    {
+        $this->assertEquals($expected, $this->object->joinFilePath($path1, $path2));
     }
 
 }
