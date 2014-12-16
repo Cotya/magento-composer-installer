@@ -46,16 +46,6 @@ class Plugin implements PluginInterface, EventSubscriberInterface
     protected $config;
 
     /**
-     * @var DeployManager
-     */
-    protected $deployManager;
-
-    /**
-     * @var DeployManager
-     */
-    protected $deployManagerCore;
-
-    /**
      * @var Composer
      */
     protected $composer;
@@ -66,16 +56,21 @@ class Plugin implements PluginInterface, EventSubscriberInterface
     protected $filesystem;
 
     /**
-     * init the DeployManager
+     * @var DeployManager[]
+     */
+    protected $deployManagers = array();
+
+    /**
+     * init the DeployManagers
      *
      * @param Composer    $composer
      * @param IOInterface $io
      */
     protected function initDeployManager(Composer $composer, IOInterface $io)
     {
-        $this->deployManagerCore = new DeployManager($io);
-        $this->deployManager = new DeployManager($io);
-        $this->deployManager->setSortPriority($this->getSortPriority($composer));
+        $this->deployManagers['core'] = new DeployManager($io);
+        $this->deployManagers['module'] = new DeployManager($io);
+        $this->deployManagers['module']->setSortPriority($this->getSortPriority($composer));
     }
 
     /**
@@ -131,15 +126,26 @@ class Plugin implements PluginInterface, EventSubscriberInterface
 
         $moduleInstaller = $this->initMagentoInstaller(
             new ModuleInstaller($io, $composer),
-            $this->deployManager
-        );
-
-        $coreInstaller = $this->initMagentoInstaller(
-            new CoreInstaller($io, $composer),
-            $this->deployManagerCore
+            $this->deployManagers['module']
         );
 
         $composer->getInstallationManager()->addInstaller($moduleInstaller);
+
+        if (!$this->config->hasDisableCoreInstaller()) {
+            $this->addCoreInstaller($composer, $io);
+        }
+    }
+
+    /**
+     * @param Composer    $composer
+     * @param IOInterface $io
+     */
+    private function addCoreInstaller(Composer $composer, IOInterface $io)
+    {
+        $coreInstaller = $this->initMagentoInstaller(
+            new CoreInstaller($io, $composer),
+            $this->deployManagers['core']
+        );
         $composer->getInstallationManager()->addInstaller($coreInstaller);
     }
 
@@ -180,15 +186,11 @@ class Plugin implements PluginInterface, EventSubscriberInterface
      */
     public function onNewCodeEvent(CommandEvent $event)
     {
-        $this->writeDebug('start magento core deploy via deployManager');
-        $this->deployManagerCore->doDeploy();
+        foreach ($this->deployManagers as $type => $deployManager) {
+            $this->writeDebug(sprintf('start magento %s deploy via deployManager', $type));
+            $deployManager->doDeploy();
+        }
 
-        $this->writeDebug('start magento module deploy via deployManager');
-
-        $this->writeDebug('start magento deploy via deployManager');
-
-        $this->writeDebug('start magento module deploy via deployManager');
-        $this->deployManager->doDeploy();
         $this->deployLibraries();
     }
 
