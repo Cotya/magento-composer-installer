@@ -102,10 +102,10 @@ class Symlink extends DeploystrategyAbstract
         }
 
         // Check we where able to create the symlink
-        if (false === $destPath = @readlink($destPath)) {
-            throw new \ErrorException("Symlink $destPath points to target $destPath");
+        if (false === $newDestPath = @readlink($destPath)) {
+            throw new \ErrorException("Symlink $newDestPath points to target $newDestPath");
         }
-
+        $this->addDeployedFile($destPath);
         return true;
     }
 

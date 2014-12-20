@@ -87,6 +87,7 @@ class Link extends DeploystrategyAbstract
                 }
             } else {
                 link($item, $subDestPath);
+                $this->addDeployedFile($subDestPath);
             }
             if (!is_readable($subDestPath)) {
                 throw new \ErrorException("Could not create $subDestPath");

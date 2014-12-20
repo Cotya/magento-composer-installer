@@ -105,6 +105,7 @@ class Copy extends DeploystrategyAbstract
                 }
             } else {
                 copy($item, $subDestPath);
+                $this->addDeployedFile($subDestPath);
             }
             if (!is_readable($subDestPath)) {
                 throw new \ErrorException("Could not create $subDestPath");

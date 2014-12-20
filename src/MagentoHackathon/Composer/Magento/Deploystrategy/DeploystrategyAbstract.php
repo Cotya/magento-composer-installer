@@ -54,6 +54,14 @@ abstract class DeploystrategyAbstract
     protected $isForced = false;
 
     /**
+     * List of files/folders which were
+     * created via any of the deploy methods
+     *
+     * @var array
+     */
+    protected $deployedFiles = array();
+
+    /**
      * Constructor
      *
      * @param string $sourceDir
@@ -449,4 +457,24 @@ abstract class DeploystrategyAbstract
      */
     abstract protected function createDelegate($source, $dest);
 
+    /**
+     * Add a file/folder to the list of deployed files
+     * @param string $file
+     */
+    public function addDeployedFile($file)
+    {
+        //strip of destination deploy location
+        $file = preg_replace(sprintf('/^%s/', preg_quote($this->getDestDir(), '/')), '', $file);
+        $this->deployedFiles[] = $file;
+    }
+
+    /**
+     * Get all the deployed files
+     *
+     * @return array
+     */
+    public function getDeployedFiles()
+    {
+        return $this->deployedFiles;
+    }
 }
