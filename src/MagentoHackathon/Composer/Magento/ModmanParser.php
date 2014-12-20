@@ -126,7 +126,10 @@ class ModmanParser extends PathTranslationParser
             }
             $parts = preg_split('/\s+/', $row, 2, PREG_SPLIT_NO_EMPTY);
             if (count($parts) != 2) {
-                throw new \ErrorException(sprintf('Invalid row on line %d has %d parts, expected 2', $line, count($row)));
+                throw new \ErrorException(sprintf(
+                    'Invalid row on %s:%d has %d parts, expected 2',
+                    $this->getFile()->getPathname(), $line, count($row)
+                ));
             }
             $map[] = $parts;
         }

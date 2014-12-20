@@ -82,4 +82,24 @@ class ModmanParserTest extends \PHPUnit_Framework_TestCase
         $this->object->setFile($this->modmanFileDir . 'modman');
         $this->assertSame($expected, $this->object->getMappings());
     }
+
+    /**
+     *
+     */
+    public function testGetfailingMappings()
+    {
+        $expected = array(
+            array('line/with/tab', 'record/one'),
+            array('line/with/space', 'record/two'),
+            array('line/with/space/and/tab', 'record/three')
+        );
+        $modmanFile = $this->modmanFileDir . 'modman2';
+        try{
+            $this->object->setFile($modmanFile);
+            $resultMappings = $this->object->getMappings();
+            $this->fail('no \ErrorException thrown');
+        }catch (\ErrorException $e){
+            $this->assertContains($modmanFile, $e->getMessage());
+        }
+    }
 }
