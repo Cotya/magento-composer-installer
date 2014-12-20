@@ -57,9 +57,7 @@
     },
     "suggest":{
         "theseer/autoload": "~1.14",
-        "zetacomponents/console-tools": "dev-master",
-        "colinmollenhour/modman": "*",
-        "magento-hackathon/composer-command-integrator":"*"
+        "colinmollenhour/modman": "*"
     },
     "autoload":{
         "psr-0":{
