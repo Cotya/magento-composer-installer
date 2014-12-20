@@ -16,6 +16,7 @@ use Symfony\Component\Console\Application;
 
 $application = new Application();
 $application->add(new \MagentoHackathon\Composer\Magento\Command\DeployCommand());
+$application->add(new \MagentoHackathon\Composer\Magento\Command\DeployAllCommand());
 $application->run();
 
 

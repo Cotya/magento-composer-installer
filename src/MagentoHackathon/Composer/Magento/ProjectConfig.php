@@ -61,6 +61,7 @@ class ProjectConfig
      */
     protected function fetchVarFromConfigArray($array, $key, $default = null)
     {
+        $array = (array)$array;
         $result = $default;
         if (isset($array[$key])) {
             $result = $array[$key];

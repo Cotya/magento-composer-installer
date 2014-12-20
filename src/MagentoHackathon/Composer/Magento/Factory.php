@@ -83,9 +83,8 @@ class Factory
             $packageName = $package->getName();
             $extra = $package->getExtra();
         } else {
-            var_dump($package);
             $packageName = $package['name'];
-            $extra = $package['extra'];
+            $extra = isset($package['extra']) ? $package['extra'] : array();
         }
         $pathMappingTranslations = array();
         if ($projectConfig->hasPathMappingTranslations()) {
