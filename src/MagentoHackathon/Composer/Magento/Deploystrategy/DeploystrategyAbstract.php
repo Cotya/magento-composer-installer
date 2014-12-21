@@ -5,6 +5,8 @@
 
 namespace MagentoHackathon\Composer\Magento\Deploystrategy;
 
+use Composer\Util\Filesystem;
+
 /**
  * Abstract deploy strategy
  */
@@ -62,6 +64,19 @@ abstract class DeploystrategyAbstract
     protected $deployedFiles = array();
 
     /**
+     * List of files/folders which were
+     * remove via this remove operation
+     *
+     * @var array
+     */
+    protected $removedFiles = array();
+
+    /**
+     * @var Filesystem
+     */
+    protected $filesystem;
+
+    /**
      * Constructor
      *
      * @param string $sourceDir
@@ -69,8 +84,9 @@ abstract class DeploystrategyAbstract
      */
     public function __construct($sourceDir, $destDir)
     {
-        $this->destDir = $destDir;
-        $this->sourceDir = $sourceDir;
+        $this->destDir      = $destDir;
+        $this->sourceDir    = $sourceDir;
+        $this->filesystem   = new Filesystem;
     }
 
     /**
@@ -357,8 +373,8 @@ abstract class DeploystrategyAbstract
      */
     public function remove($source, $dest)
     {
-        $sourcePath = $this->getSourceDir() . '/' . $this->removeTrailingSlash($source);
-        $destPath = $this->getDestDir() . '/' . $dest;
+        $sourcePath = $this->getSourceDir() . '/' . ltrim($this->removeTrailingSlash($source), '\\/');
+        $destPath = $this->getDestDir() . '/' . ltrim($dest, '\\/');
 
         // If source doesn't exist, check if it's a glob expression, otherwise we have nothing we can do
         if (!file_exists($sourcePath)) {
@@ -382,7 +398,8 @@ abstract class DeploystrategyAbstract
         if (basename($sourcePath) !== basename($destPath)) {
             $destPath .= '/' . basename($source);
         }
-        self::rmdirRecursive($destPath);
+        $this->filesystem->remove($destPath);
+        $this->addRemovedFile($destPath);
     }
 
     /**
@@ -395,20 +412,17 @@ abstract class DeploystrategyAbstract
     {
         $absoluteDir = $this->getDestDir() . '/' . $dir;
         if (is_dir($absoluteDir)) {
+
             $iterator = new \RecursiveIteratorIterator(
-                new \RecursiveDirectoryIterator($absoluteDir),
+                new \RecursiveDirectoryIterator($absoluteDir, \RecursiveDirectoryIterator::SKIP_DOTS),
                 \RecursiveIteratorIterator::CHILD_FIRST
             );
 
-            foreach ($iterator as $item) {
-                /** @var SplFileInfo $item */
-                $path = (string)$item;
-                if (!strcmp($item->getFilename(), '.') || !strcmp($item->getFilename(), '..')) {
-                    continue;
-                }
+            if (iterator_count($iterator) > 0) {
                 // The directory contains something, do not remove
                 return;
             }
+
             // RecursiveIteratorIterator have opened handle on $absoluteDir
             // that cause Windows to block the directory and not remove it until
             // the iterator will be destroyed.
@@ -426,24 +440,6 @@ abstract class DeploystrategyAbstract
             }
         }
     }
-
-    /**
-     * Recursively removes the specified directory or file
-     *
-     * @param $dir
-     */
-    public static function rmdirRecursive($dir)
-    {
-        $fs = new \Composer\Util\Filesystem();
-        if(is_dir($dir)){
-            $result = $fs->removeDirectory($dir);
-        }else{
-            @unlink($dir);
-        }
-
-        return;
-    }
-
 
     /**
      * Create the module's files in the given destination.
@@ -469,6 +465,17 @@ abstract class DeploystrategyAbstract
     }
 
     /**
+     * Add a file/folder to the list of removed files
+     * @param string $file
+     */
+    public function addRemovedFile($file)
+    {
+        //strip of destination deploy location
+        $file = preg_replace(sprintf('/^%s/', preg_quote($this->getDestDir(), '/')), '', $file);
+        $this->removedFiles[] = $file;
+    }
+
+    /**
      * Get all the deployed files
      *
      * @return array
@@ -476,5 +483,15 @@ abstract class DeploystrategyAbstract
     public function getDeployedFiles()
     {
         return $this->deployedFiles;
+    }
+
+    /**
+     * Get all the removed files
+     *
+     * @return array
+     */
+    public function getRemovedFiles()
+    {
+        return $this->removedFiles;
     }
 }

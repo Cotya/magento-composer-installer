@@ -72,7 +72,7 @@ class Symlink extends DeploystrategyAbstract
         if (file_exists($destPath) && is_dir($destPath)) {
             if (basename($sourcePath) === basename($destPath)) {
                 if ($this->isForced()) {
-                    $this->rmdirRecursive($destPath);
+                    $this->filesystem->remove($destPath);
                 } else {
                     throw new \ErrorException("Target $dest already exists (set extra.magento-force to override)");
                 }
