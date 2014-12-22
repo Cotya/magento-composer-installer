@@ -30,7 +30,7 @@ class EventManager
         }
 
         if (!isset($this->listeners[$event])) {
-            $this->listeners[$event] = [$callback];
+            $this->listeners[$event] = array($callback);
         } else {
             $this->listeners[$event][] = $callback;
         }
