@@ -291,9 +291,31 @@ abstract class DeploystrategyAbstract
         $this->mappings[] = array($key, $value);
     }
 
+    /**
+     * @param string $path
+     * @return string
+     */
+    protected function removeLeadingSlash($path)
+    {
+        return ltrim($path, '\\/');
+    }
+
+    /**
+     * @param string $path
+     * @return string
+     */
     protected function removeTrailingSlash($path)
     {
         return rtrim($path, '\\/');
+    }
+
+    /**
+     * @param string $path
+     * @return string
+     */
+    protected function removeLeadingAndTrailingSlash($path)
+    {
+        return trim($path, '\\/');
     }
 
     /**
@@ -313,8 +335,8 @@ abstract class DeploystrategyAbstract
             return;
         }
 
-        $sourcePath = $this->getSourceDir() . '/' . $this->removeTrailingSlash($source);
-        $destPath = $this->getDestDir() . '/' . $dest;
+        $sourcePath = $this->getSourceDir() . '/' . $this->removeLeadingSlash($source);
+        $destPath = $this->getDestDir() . '/' . $this->removeLeadingSlash($dest);
 
         /* List of possible cases, keep around for now, might come in handy again
 
@@ -350,9 +372,12 @@ abstract class DeploystrategyAbstract
             $matches = glob($sourcePath);
             if ($matches) {
                 foreach ($matches as $match) {
-                    $newDest = substr($destPath . '/' . basename($match), strlen($this->getDestDir()));
-                    $newDest = ltrim($newDest, ' \\/');
-                    $this->create(substr($match, strlen($this->getSourceDir()) + 1), $newDest);
+                    $absolutePath           = sprintf('%s/%s', $this->removeTrailingSlash($destPath), basename($match));
+                    $relativeDestination    = substr($absolutePath, strlen($this->getDestDir())); //strip off dest dir
+                    $relativeDestination    = $this->removeLeadingSlash($relativeDestination);
+                    $relativeSource         = substr($match, strlen($this->getSourceDir()) + 1);
+
+                    $this->create($relativeSource, $relativeDestination);
                 }
                 return true;
             }
