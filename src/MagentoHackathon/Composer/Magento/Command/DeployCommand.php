@@ -8,6 +8,7 @@ namespace MagentoHackathon\Composer\Magento\Command;
 
 use MagentoHackathon\Composer\Magento\Deploy\Manager\Entry;
 use MagentoHackathon\Composer\Magento\DeployManager;
+use MagentoHackathon\Composer\Magento\Event\EventManager;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -51,8 +52,15 @@ EOT
          */
         $moduleInstaller = $im->getInstaller("magento-module");
 
+        $eventManager   = new EventManager;
+        $deployManager  = new DeployManager($eventManager);
 
-        $deployManager = new DeployManager( $this->getIO() );
+        $io = $this->getIo();
+        if ($io->isDebug()) {
+            $eventManager->listen('pre-package-deploy', function(PackageDeployEvent $event) use ($io) {
+                $io->write('Start magento deploy for ' . $event->getDeployEntry()->getPackageName());
+            });
+        }
 
         $extra          = $composer->getPackage()->getExtra();
         $sortPriority   = isset($extra['magento-deploy-sort-priority']) ? $extra['magento-deploy-sort-priority'] : array();
