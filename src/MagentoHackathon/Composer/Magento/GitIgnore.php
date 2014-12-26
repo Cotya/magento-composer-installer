@@ -62,6 +62,7 @@ class GitIgnore
      */
     public function removeEntry($file)
     {
+        $file = $this->normalizeEntry($file);
         if (isset($this->lines[$file])) {
             unset($this->lines[$file]);
             $this->hasChanges = true;
@@ -99,7 +100,7 @@ class GitIgnore
     /**
      * normalizeEntry
      *
-     * @param $entry
+     * @param string $entry
      *
      * @return string
      */
