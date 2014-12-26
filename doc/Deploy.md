@@ -100,24 +100,14 @@ If you only want to place packages into the vendor directory with no linking/cop
 
 On occasions you want trigger the deploy of magento modules without the need of an update/install process.
 
-In short, there is an optional dependency to https://github.com/magento-hackathon/composer-command-integrator/.
-To be able to use it, you need to add to your requirements of the project.
+For this case there is the ```magento-composer-installer.php``` script, which you should find in ```./vendor/bin```
 
-```json
-{
-    ...
-    "require": {
-        ...
-        "magento-hackathon/composer-command-integrator": "*",
-    },
-    ...
+you are able to use the commands:
 ```
-
-If done and installed, you are able to use the commands:
-```
-./vendor/bin/composerCommandIntegrator.php
-./vendor/bin/composerCommandIntegrator.php list
-./vendor/bin/composerCommandIntegrator.php magento-module-deploy
+./vendor/bin/magento-composer-installer.php
+./vendor/bin/magento-composer-installer.php list
+./vendor/bin/magento-composer-installer.php deploy
+./vendor/bin/magento-composer-installer.php deploy:all
 
 ```
 
