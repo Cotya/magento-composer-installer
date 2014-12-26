@@ -40,6 +40,7 @@ class GitIgnore
      */
     public function addEntry($file)
     {
+        $file = $this->normalizeEntry($file);
         if (!isset($this->lines[$file])) {
             $this->lines[$file] = $file;
         }
@@ -93,5 +94,17 @@ class GitIgnore
         if ($this->hasChanges) {
             file_put_contents($this->gitIgnoreLocation, implode("\n", array_flip($this->lines)));
         }
+    }
+
+    /**
+     * normalizeEntry
+     *
+     * @param $entry
+     *
+     * @return string
+     */
+    public function normalizeEntry($entry)
+    {
+        return str_replace('\\', '/', $entry);
     }
 }
