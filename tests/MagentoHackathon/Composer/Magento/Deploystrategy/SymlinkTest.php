@@ -135,4 +135,21 @@ class SymlinkTest extends AbstractTest
             $this->strategy->getDeployedFiles()
         );
     }
+
+    public function testGlobFileResultsDoNotContainDoubleSlashesWhenDestinationDirectoryExists()
+    {
+        $this->mkdir(sprintf('%s/app/etc/modules/', $this->sourceDir));
+        $this->mkdir(sprintf('%s/app/etc/modules', $this->destDir));
+        touch(sprintf('%s/app/etc/modules/EcomDev_PHPUnit.xml', $this->sourceDir));
+        touch(sprintf('%s/app/etc/modules/EcomDev_PHPUnitTest.xml', $this->sourceDir));
+
+        $this->strategy->create('/app/etc/modules/*.xml', '/app/etc/modules/');
+
+        $expected = array(
+            '/app/etc/modules/EcomDev_PHPUnit.xml',
+            '/app/etc/modules/EcomDev_PHPUnitTest.xml',
+        );
+
+        $this->assertEquals($expected, $this->strategy->getDeployedFiles());
+    }
 }
