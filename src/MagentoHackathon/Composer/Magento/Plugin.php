@@ -11,6 +11,8 @@ namespace MagentoHackathon\Composer\Magento;
 use Composer\Config;
 use Composer\Installer;
 use Composer\Script\CommandEvent;
+use MagentoHackathon\Composer\Magento\Event\EventManager;
+use MagentoHackathon\Composer\Magento\Event\PackageDeployEvent;
 use MagentoHackathon\Composer\Magento\Installer\MagentoInstallerAbstract;
 use MagentoHackathon\Composer\Magento\Installer\ModuleInstaller;
 use RecursiveDirectoryIterator;
@@ -65,10 +67,21 @@ class Plugin implements PluginInterface, EventSubscriberInterface
      * @param Composer    $composer
      * @param IOInterface $io
      */
-    protected function initDeployManager(Composer $composer, IOInterface $io)
+    protected function initDeployManager(Composer $composer, IOInterface $io, EventManager $eventManager)
     {
-        $this->deployManager = new DeployManager($io);
+        $this->deployManager = new DeployManager($eventManager);
         $this->deployManager->setSortPriority($this->getSortPriority($composer));
+
+        if ($this->config->hasAutoAppendGitignore()) {
+            $gitIgnoreLocation = sprintf('%s/.gitignore', $this->config->getMagentoRootDir());
+            $eventManager->listen('post-package-deploy', new GitIgnoreListener(new GitIgnore($gitIgnoreLocation)));
+        }
+
+        if ($this->io->isDebug()) {
+            $eventManager->listen('pre-package-deploy', function(PackageDeployEvent $event) use ($io) {
+                $io->write('Start magento deploy for ' . $event->getDeployEntry()->getPackageName());
+            });
+        }
     }
 
     /**
@@ -118,7 +131,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
         $this->filesystem = new Filesystem();
         $this->config = new ProjectConfig($composer->getPackage()->getExtra());
 
-        $this->initDeployManager($composer, $io);
+        $this->initDeployManager($composer, $io, $this->getEventManager());
 
         $this->writeDebug('activate magento plugin');
 
@@ -327,5 +340,13 @@ class Plugin implements PluginInterface, EventSubscriberInterface
                 var_dump($varDump);
             }
         }
+    }
+
+    /**
+     * @return EventManager
+     */
+    public function getEventManager()
+    {
+        return new EventManager;
     }
 }
