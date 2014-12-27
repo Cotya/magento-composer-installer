@@ -409,4 +409,31 @@ abstract class AbstractTest extends \PHPUnit_Framework_TestCase
             $this->assertFileType($testTargetContent, self::TEST_FILETYPE_FILE);
         }
     }
+
+    public function testCleanStoresAllRemovedFiles()
+    {
+        $directory  = '/app/code/Vendor/Module';
+        $file1      = $directory . '/file1.txt';
+        $file2      = $directory . '/file2.txt';
+        $this->mkdir($this->sourceDir . $directory);
+        touch($this->sourceDir . $file1);
+        touch($this->sourceDir . $file2);
+        $this->strategy->setMappings(array(array($file1, $file1), array($file2, $file2)));
+
+        $this->strategy->deploy();
+
+        $this->assertFileExists($this->destDir . $file1);
+        $this->assertFileExists($this->destDir . $file2);
+
+        $this->strategy->clean();
+
+        $this->assertFileNotExists($this->destDir . $file1);
+        $this->assertFileNotExists($this->destDir . $file2);
+        $this->assertFileNotExists($this->destDir . $directory);
+
+        $this->assertEquals(
+            array($file1, $file2),
+            $this->strategy->getRemovedFiles()
+        );
+    }
 }
