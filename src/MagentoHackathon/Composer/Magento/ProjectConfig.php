@@ -235,6 +235,11 @@ class ProjectConfig
     {
         return $this->hasExtraField(self::MAGENTO_FORCE_KEY);
     }
+    
+    public function getMagentoForceByPackageName($packagename)
+    {
+        return $this->getMagentoForce();
+    }
 
     /**
      * @return bool
