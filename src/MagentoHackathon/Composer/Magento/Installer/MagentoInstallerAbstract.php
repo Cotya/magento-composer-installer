@@ -268,21 +268,7 @@ abstract class MagentoInstallerAbstract extends LibraryInstaller implements Inst
     
     protected function getModuleSpecificDeployIgnores($package)
     {
-
-        $moduleSpecificDeployIgnores = array();
-        if ($this->getConfig()->hasMagentoDeployIgnore()) {
-            $magentoDeployIgnore = $this->getConfig()->getMagentoDeployIgnore();
-            if (isset($magentoDeployIgnore['*'])) {
-                $moduleSpecificDeployIgnores = $magentoDeployIgnore['*'];
-            }
-            if (isset($magentoDeployIgnore[$package->getName()])) {
-                $moduleSpecificDeployIgnores = array_merge(
-                    $moduleSpecificDeployIgnores,
-                    $magentoDeployIgnore[$package->getName()]
-                );
-            }
-        }
-        return $moduleSpecificDeployIgnores;
+        return $this->getConfig()->getModuleSpecificDeployIgnores($package->getName());
     }
 
     /**

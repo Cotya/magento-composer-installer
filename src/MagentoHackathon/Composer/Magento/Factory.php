@@ -65,6 +65,7 @@ class Factory
             $packageDir
         );
         $strategy->setMappings($mappingParser->getMappings());
+        $strategy->setIgnoredMappings($projectConfig->getModuleSpecificDeployIgnores($package->getName()));
         $strategy->setIsForced($projectConfig->getMagentoForceByPackageName($package->getName()));
         return $strategy;
     }
