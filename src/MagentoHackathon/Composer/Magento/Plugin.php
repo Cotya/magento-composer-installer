@@ -101,23 +101,6 @@ class Plugin implements PluginInterface, EventSubscriberInterface
     }
 
     /**
-     * init the Installer
-     *
-     * @param MagentoInstallerAbstract $installer
-     * @param DeployManager            $deployManager
-     *
-     * @return MagentoInstallerAbstract
-     */
-    private function initMagentoInstaller(
-        MagentoInstallerAbstract $installer,
-        DeployManager $deployManager
-    ) {
-        $installer->setDeployManager($deployManager);
-
-        return $installer;
-    }
-
-    /**
      * Apply plugin modifications to composer
      *
      * @param Composer    $composer
@@ -135,10 +118,8 @@ class Plugin implements PluginInterface, EventSubscriberInterface
 
         $this->writeDebug('activate magento plugin');
 
-        $moduleInstaller = $this->initMagentoInstaller(
-            new ModuleInstaller($io, $composer),
-            $this->deployManager
-        );
+        $moduleInstaller = new ModuleInstaller($io, $composer);
+        $moduleInstaller->setDeployManager($this->deployManager);
 
         $composer->getInstallationManager()->addInstaller($moduleInstaller);
     }
