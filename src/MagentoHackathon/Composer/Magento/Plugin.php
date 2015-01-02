@@ -133,7 +133,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
 
         $this->writeDebug('activate magento plugin');
 
-        $moduleInstaller = new ModuleInstaller($io, $composer);
+        $moduleInstaller = new ModuleInstaller($io, $composer, $this->entryFactory);
         $moduleInstaller->setDeployManager($this->deployManager);
 
         $composer->getInstallationManager()->addInstaller($moduleInstaller);
