@@ -13,6 +13,10 @@ use Composer\Installer;
 use Composer\Script\CommandEvent;
 use MagentoHackathon\Composer\Magento\Event\EventManager;
 use MagentoHackathon\Composer\Magento\Event\PackageDeployEvent;
+use MagentoHackathon\Composer\Magento\Factory\DeploystrategyFactory;
+use MagentoHackathon\Composer\Magento\Factory\EntryFactory;
+use MagentoHackathon\Composer\Magento\Factory\ParserFactory;
+use MagentoHackathon\Composer\Magento\Factory\PathTranslationParserFactory;
 use MagentoHackathon\Composer\Magento\Installer\MagentoInstallerAbstract;
 use MagentoHackathon\Composer\Magento\Installer\ModuleInstaller;
 use RecursiveDirectoryIterator;
@@ -60,6 +64,11 @@ class Plugin implements PluginInterface, EventSubscriberInterface
      * @var Filesystem
      */
     protected $filesystem;
+
+    /**
+     * @var EntryFactory
+     */
+    protected $entryFactory;
 
     /**
      * init the DeployManager
@@ -113,6 +122,12 @@ class Plugin implements PluginInterface, EventSubscriberInterface
 
         $this->filesystem = new Filesystem();
         $this->config = new ProjectConfig($composer->getPackage()->getExtra());
+
+        $this->entryFactory = new EntryFactory(
+            $this->config,
+            new DeploystrategyFactory($this->config),
+            new PathTranslationParserFactory(new ParserFactory($this->config), $this->config)
+        );
 
         $this->initDeployManager($composer, $io, $this->getEventManager());
 
@@ -172,11 +187,8 @@ class Plugin implements PluginInterface, EventSubscriberInterface
         foreach ($packages as $package) {
             if ($package->getType() == 'magento-module' && !isset($addedPackageNames[$package->getName()])) {
                 $this->writeDebug('add missing package '.$package->getName());
-                $this->deployManager->addPackage(Factory::getDeployManagerEntry(
-                    $this->config,
-                    $package,
-                    realpath(rtrim($this->composer->getConfig()->get('vendor-dir'), '/'))
-                ));
+                $entry = $this->entryFactory->make($package, $this->getPackageInstallPath($package));
+                $this->deployManager->addPackage($entry);
             }
         }
 
@@ -329,5 +341,15 @@ class Plugin implements PluginInterface, EventSubscriberInterface
     public function getEventManager()
     {
         return new EventManager;
+    }
+
+    /**
+     * @param PackageInterface $package
+     * @return string
+     */
+    public function getPackageInstallPath(PackageInterface $package)
+    {
+        $vendorDir = realpath(rtrim($this->composer->getConfig()->get('vendor-dir'), '/'));
+        return sprintf('%s/%s', $vendorDir, $package->getPrettyName());
     }
 }
