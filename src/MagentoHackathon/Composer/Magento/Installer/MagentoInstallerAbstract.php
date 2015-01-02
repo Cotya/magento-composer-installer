@@ -21,10 +21,11 @@ use MagentoHackathon\Composer\Magento\Deploystrategy\Copy;
 use MagentoHackathon\Composer\Magento\Deploystrategy\Link;
 use MagentoHackathon\Composer\Magento\Deploystrategy\None;
 use MagentoHackathon\Composer\Magento\Deploystrategy\Symlink;
-use MagentoHackathon\Composer\Magento\MapParser;
-use MagentoHackathon\Composer\Magento\ModmanParser;
-use MagentoHackathon\Composer\Magento\PackageXmlParser;
-use MagentoHackathon\Composer\Magento\Parser;
+use MagentoHackathon\Composer\Magento\Parser\MapParser;
+use MagentoHackathon\Composer\Magento\Parser\ModmanParser;
+use MagentoHackathon\Composer\Magento\Parser\PackageXmlParser;
+use MagentoHackathon\Composer\Magento\Parser\Parser;
+use MagentoHackathon\Composer\Magento\Parser\PathTranslationParser;
 use MagentoHackathon\Composer\Magento\ProjectConfig;
 
 /**
@@ -407,26 +408,19 @@ abstract class MagentoInstallerAbstract extends LibraryInstaller implements Inst
         }
 
         if (isset($map)) {
-            $parser = new MapParser($map, $this->_pathMappingTranslations);
+            $parser = new MapParser($map);
 
-            return $parser;
         } elseif (isset($extra['map'])) {
-            $parser = new MapParser($extra['map'], $this->_pathMappingTranslations);
-
-            return $parser;
+            $parser = new MapParser($extra['map']);
         } elseif (isset($extra['package-xml'])) {
-            $parser = new PackageXmlParser(
-                $this->getSourceDir($package), $extra['package-xml'], $this->_pathMappingTranslations
-            );
-
-            return $parser;
+            $parser = new PackageXmlParser($this->getSourceDir($package) . '/' . $extra['package-xml']);
         } elseif (file_exists($this->getSourceDir($package) . '/modman')) {
-            $parser = new ModmanParser($this->getSourceDir($package), $this->_pathMappingTranslations);
-
-            return $parser;
+            $parser = new ModmanParser($this->getSourceDir($package) . '/modman');
         } else {
             throw new \ErrorException('Unable to find deploy strategy for module: no known mapping');
         }
+
+        return new PathTranslationParser($parser, $this->_pathMappingTranslations);
     }
 
     /**

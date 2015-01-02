@@ -179,7 +179,7 @@ class ModuleInstallerTest extends \PHPUnit_Framework_TestCase
         return array(
             array(
                 'packageExtra'  => array('map' => array('test' => 'test')),
-                'expectedClass' => 'MagentoHackathon\Composer\Magento\MapParser',
+                'expectedClass' => 'MagentoHackathon\Composer\Magento\Parser\PathTranslationParser',
                 'composerExtra' => array( 'magento-map-overwrite' => $mapOverwrite  ),
                 'packageName'   => 'example/test1',
                 'prepareCallback' => function($vendorDir){
@@ -188,7 +188,7 @@ class ModuleInstallerTest extends \PHPUnit_Framework_TestCase
             ),
             array(
                 'packageExtra'  => array('map' => null),
-                'expectedClass' => 'MagentoHackathon\Composer\Magento\ModmanParser',
+                'expectedClass' => 'MagentoHackathon\Composer\Magento\Parser\PathTranslationParser',
                 'composerExtra' => array( 'magento-map-overwrite' => $mapOverwrite  ),
                 'packageName'   => 'example/test1',
                 'prepareCallback' => function($vendorDir){
@@ -197,7 +197,7 @@ class ModuleInstallerTest extends \PHPUnit_Framework_TestCase
             ),
             array(
                 'packageExtra'  => array('map' => null, 'package-xml' => 'package.xml'),
-                'expectedClass' => 'MagentoHackathon\Composer\Magento\PackageXmlParser',
+                'expectedClass' => 'MagentoHackathon\Composer\Magento\Parser\PathTranslationParser',
                 'composerExtra' => array( 'magento-map-overwrite' => $mapOverwrite  ),
                 'packageName'   => 'example/test1',
                 'prepareCallback' => function($vendorDir){
@@ -206,7 +206,7 @@ class ModuleInstallerTest extends \PHPUnit_Framework_TestCase
             ),
             array(
                 'packageExtra'  => array('map' => array('test' => 'test')),
-                'expectedClass' => 'MagentoHackathon\Composer\Magento\MapParser',
+                'expectedClass' => 'MagentoHackathon\Composer\Magento\Parser\PathTranslationParser',
                 'composerExtra' => array( 'magento-map-overwrite' => $mapOverwrite  ),
                 'packageName'   => 'example/test1',
                 'prepareCallback' => function($vendorDir){
@@ -215,7 +215,7 @@ class ModuleInstallerTest extends \PHPUnit_Framework_TestCase
             ),
             array(
                 'packageExtra'  => array('map' => null),
-                'expectedClass' => 'MagentoHackathon\Composer\Magento\ModmanParser',
+                'expectedClass' => 'MagentoHackathon\Composer\Magento\Parser\PathTranslationParser',
                 'composerExtra' => array( 'magento-map-overwrite' => $mapOverwrite  ),
                 'packageName'   => 'example/test1',
                 'prepareCallback' => function($vendorDir){
@@ -224,7 +224,7 @@ class ModuleInstallerTest extends \PHPUnit_Framework_TestCase
             ),
             array(
                 'packageExtra'  => array('map' => null),
-                'expectedClass' => 'MagentoHackathon\Composer\Magento\MapParser',
+                'expectedClass' => 'MagentoHackathon\Composer\Magento\Parser\PathTranslationParser',
                 'composerExtra' => array( 'magento-map-overwrite' => $mapOverwrite  ),
                 'packageName'   => 'example/test2',
                 'prepareCallback' => function($vendorDir){

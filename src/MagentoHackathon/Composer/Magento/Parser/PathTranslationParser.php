@@ -1,12 +1,15 @@
 <?php
 
-namespace MagentoHackathon\Composer\Magento;
+namespace MagentoHackathon\Composer\Magento\Parser;
 
 /**
  * Parser class supporting translating path mappings according to
  * the composer.json configuration.
+ *
+ * Class PathTranslationParser
+ * @package MagentoHackathon\Composer\Magento\Parser
  */
-abstract class PathTranslationParser implements Parser
+class PathTranslationParser implements Parser
 {
     /**
      * @var array Variants on each prefix that path mappings are checked
@@ -21,13 +24,20 @@ abstract class PathTranslationParser implements Parser
     protected $pathPrefixTranslations = array();
 
     /**
+     * @var Parser
+     */
+    protected $parser;
+
+    /**
      * Constructor. Sets the list of path translations to use.
      *
+     * @param Parser $parser
      * @param array $translations Path translations
      */
-    public function __construct($translations)
+    public function __construct(Parser $parser, array $translations)
     {
         $this->pathPrefixTranslations = $this->createPrefixVariants($translations);
+        $this->parser = $parser;
     }
 
     /**
@@ -41,9 +51,9 @@ abstract class PathTranslationParser implements Parser
     protected function createPrefixVariants($translations)
     {
         $newTranslations = array();
-        foreach($translations as $key => $value) {
-            foreach($this->pathPrefixVariants as $variant) {
-                $newTranslations[$variant.$key] = $value;
+        foreach ($translations as $key => $value) {
+            foreach ($this->pathPrefixVariants as $variant) {
+                $newTranslations[$variant . $key] = $value;
             }
         }
 
@@ -51,7 +61,7 @@ abstract class PathTranslationParser implements Parser
     }
 
     /**
-     * Given a list of path mappings, check if any of the targets are for
+     * loop the mappings for the wrapped parser, check if any of the targets are for
      * directories that have been moved under the public directory. If so,
      * update the target paths to include 'public/'. As no standard Magento
      * path mappings should ever start with 'public/', and  path mappings
@@ -59,18 +69,17 @@ abstract class PathTranslationParser implements Parser
      * js/skin/media paths starting with 'public/', it should be safe to call
      * multiple times on either.
      *
-     * @param $mappings Array of path mappings
      * @return array Updated path mappings
      */
-    public function translatePathMappings($mappings)
+    public function getMappings()
     {
-        // each element of $mappings is an array with two elements; first is
-        // the source and second is the target
-        foreach($mappings as &$mapping) {
-            foreach($this->pathPrefixTranslations as $prefix => $translate) {
-                if(strpos($mapping[1], $prefix) === 0) {
+        $translatedMappings = array();
+        foreach ($this->parser->getMappings() as $index => $mapping) {
+            $translatedMappings[$index] = $mapping;
+            foreach ($this->pathPrefixTranslations as $prefix => $translate) {
+                if (strpos($mapping[1], $prefix) === 0) {
                     // replace the old prefix with the translated version
-                    $mapping[1] = $translate . substr($mapping[1], strlen($prefix));
+                    $translatedMappings[$index][1] = $translate . substr($mapping[1], strlen($prefix));
                     // should never need to translate a prefix more than once
                     // per path mapping
                     break;
@@ -78,6 +87,6 @@ abstract class PathTranslationParser implements Parser
             }
         }
 
-        return $mappings;
+        return $translatedMappings;
     }
 }

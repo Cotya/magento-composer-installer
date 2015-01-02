@@ -14,6 +14,10 @@ use MagentoHackathon\Composer\Magento\Deploystrategy\Copy;
 use MagentoHackathon\Composer\Magento\Deploystrategy\Link;
 use MagentoHackathon\Composer\Magento\Deploystrategy\None;
 use MagentoHackathon\Composer\Magento\Deploystrategy\Symlink;
+use MagentoHackathon\Composer\Magento\Parser\MapParser;
+use MagentoHackathon\Composer\Magento\Parser\ModmanParser;
+use MagentoHackathon\Composer\Magento\Parser\PackageXmlParser;
+use MagentoHackathon\Composer\Magento\Parser\PathTranslationParser;
 
 class Factory
 {
@@ -101,28 +105,19 @@ class Factory
         }
 
         if (isset($map)) {
-            $parser = new MapParser($map, $pathMappingTranslations);
+            $parser = new MapParser($map);
 
-            return $parser;
         } elseif (isset($extra['map'])) {
-            $parser = new MapParser($extra['map'], $pathMappingTranslations);
-
-            return $parser;
+            $parser = new MapParser($extra['map']);
         } elseif (isset($extra['package-xml'])) {
-            $parser = new PackageXmlParser(
-                $packageDir,
-                $extra['package-xml'],
-                $pathMappingTranslations
-            );
-
-            return $parser;
+            $parser = new PackageXmlParser($packageDir . '/' . $extra['package-xml']);
         } elseif (file_exists($packageDir . '/modman')) {
-            $parser = new ModmanParser($packageDir, $pathMappingTranslations);
-
-            return $parser;
+            $parser = new ModmanParser($packageDir . '/modman');
         } else {
             throw new \ErrorException('Unable to find deploy strategy for module: no known mapping');
         }
+
+        return new PathTranslationParser($parser, $pathMappingTranslations);
     }
     
     public static function getDeployManagerEntry(ProjectConfig $projectConfig, $package, $vendorDir)
