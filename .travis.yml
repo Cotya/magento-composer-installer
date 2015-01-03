@@ -12,6 +12,8 @@ matrix:
     - php: 5.4
     - php: hhvm
 
+sudo: false
+
 install:
   - pecl install SPL_Types
   - curl -sS https://getcomposer.org/installer | php
