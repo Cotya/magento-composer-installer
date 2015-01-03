@@ -14,6 +14,10 @@ matrix:
 
 sudo: false
 
+cache:
+  directories:
+  - $HOME/.composer/cache
+
 install:
   - pecl install SPL_Types
   - curl -sS https://getcomposer.org/installer | php
