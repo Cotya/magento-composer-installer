@@ -1,6 +1,8 @@
 [![Build Status](https://travis-ci.org/cotya/magento-composer-installer.png)](https://travis-ci.org/magento-hackathon/magento-composer-installer)
 [![Dependency Status](https://www.versioneye.com/php/magento-hackathon:magento-composer-installer/2.0.0/badge.svg)](https://www.versioneye.com/php/magento-hackathon:magento-composer-installer/2.0.0)
 [![Reference Status](https://www.versioneye.com/php/magento-hackathon:magento-composer-installer/reference_badge.svg)](https://www.versioneye.com/php/magento-hackathon:magento-composer-installer/references)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/Cotya/magento-composer-installer/badges/quality-score.png)](https://scrutinizer-ci.com/g/Cotya/magento-composer-installer/)
+[![Code Coverage](https://scrutinizer-ci.com/g/Cotya/magento-composer-installer/badges/coverage.png)](https://scrutinizer-ci.com/g/Cotya/magento-composer-installer/)
 [![Bountysource](https://www.bountysource.com/badge/tracker?tracker_id=284872)](https://www.bountysource.com/trackers/284872-magento-hackathon-magento-composer-installer?utm_source=284872&utm_medium=shield&utm_campaign=TRACKER_BADGE)
 
 # Magento Composer Installer 
