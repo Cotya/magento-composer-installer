@@ -34,8 +34,10 @@ class PluginTest extends \PHPUnit_Framework_TestCase
             ->method('get')
             ->will($this->returnCallback(function ($value) {
                 switch ($value) {
-                    case 'vendor-dir': return vfsStream::url('root/vendor');
-                    case 'bin-dir': return vfsStream::url('root/vendor/bin');
+                    case 'vendor-dir':
+                        return vfsStream::url('root/vendor');
+                    case 'bin-dir':
+                        return vfsStream::url('root/vendor/bin');
                 }
             }));
 

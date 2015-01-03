@@ -31,7 +31,7 @@ class NoneTest extends PHPUnit_Framework_TestCase
      * @param string $input
      * @return string
      */
-    protected function _getVfsUrl($input)
+    protected function getVfsUrl($input)
     {
         return vfsStream::url(self::URL_VFS_ROOT . DS . $input);
     }
@@ -39,8 +39,8 @@ class NoneTest extends PHPUnit_Framework_TestCase
     protected function setUp()
     {
         vfsStream::setup(self::URL_VFS_ROOT);
-        $this->sourceDir = $this->_getVfsUrl('sourceDir');
-        $this->destDir = $this->_getVfsUrl('destDir');
+        $this->sourceDir = $this->getVfsUrl('sourceDir');
+        $this->destDir = $this->getVfsUrl('destDir');
         $this->strategy = new None($this->sourceDir, $this->destDir);
     }
 
@@ -50,17 +50,17 @@ class NoneTest extends PHPUnit_Framework_TestCase
         $dest = 'test2';
 
         //create the source directory
-        mkdir($this->_getVfsUrl('sourceDir' . DS . $src), null, true);
+        mkdir($this->getVfsUrl('sourceDir' . DS . $src), null, true);
 
-        $this->assertTrue(is_dir($this->_getVfsUrl('sourceDir' . DS . $src)));
-        $this->assertFalse(is_dir($this->_getVfsUrl('destDir' . DS . $dest)));
+        $this->assertTrue(is_dir($this->getVfsUrl('sourceDir' . DS . $src)));
+        $this->assertFalse(is_dir($this->getVfsUrl('destDir' . DS . $dest)));
 
         //run the none deploy strategy
         $this->strategy->create($src, $dest);
 
         //check that everything is still the same
-        $this->assertTrue(is_dir($this->_getVfsUrl('sourceDir' . DS . $src)));
-        $this->assertFalse(is_dir($this->_getVfsUrl('destDir' . DS . $dest)));
+        $this->assertTrue(is_dir($this->getVfsUrl('sourceDir' . DS . $src)));
+        $this->assertFalse(is_dir($this->getVfsUrl('destDir' . DS . $dest)));
     }
 
     public function testDeployedFilesIsEmpty()
@@ -69,17 +69,17 @@ class NoneTest extends PHPUnit_Framework_TestCase
         $dest = 'test2';
 
         //create the source directory
-        mkdir($this->_getVfsUrl('sourceDir' . DS . $src), null, true);
+        mkdir($this->getVfsUrl('sourceDir' . DS . $src), null, true);
 
-        $this->assertTrue(is_dir($this->_getVfsUrl('sourceDir' . DS . $src)));
-        $this->assertFalse(is_dir($this->_getVfsUrl('destDir' . DS . $dest)));
+        $this->assertTrue(is_dir($this->getVfsUrl('sourceDir' . DS . $src)));
+        $this->assertFalse(is_dir($this->getVfsUrl('destDir' . DS . $dest)));
 
         //run the none deploy strategy
         $this->strategy->create($src, $dest);
 
         //check that everything is still the same
-        $this->assertTrue(is_dir($this->_getVfsUrl('sourceDir' . DS . $src)));
-        $this->assertFalse(is_dir($this->_getVfsUrl('destDir' . DS . $dest)));
+        $this->assertTrue(is_dir($this->getVfsUrl('sourceDir' . DS . $src)));
+        $this->assertFalse(is_dir($this->getVfsUrl('destDir' . DS . $dest)));
 
         $this->assertSame(
             array(),

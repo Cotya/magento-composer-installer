@@ -1,6 +1,7 @@
 <?php
 
 namespace MagentoHackathon\Composer\Magento\Factory;
+
 use Composer\Package\Package;
 use MagentoHackathon\Composer\Magento\Deploystrategy\None;
 use MagentoHackathon\Composer\Magento\ProjectConfig;
@@ -55,7 +56,7 @@ class EntryFactoryTest extends \PHPUnit_Framework_TestCase
         $config = new ProjectConfig(array());
         $factory = new EntryFactory($config, $deployStrategyFactory, $parserFactory);
 
-        $instance = $factory->make($package, $packageSourceDir );
+        $instance = $factory->make($package, $packageSourceDir);
         $this->assertInstanceOf('\MagentoHackathon\Composer\Magento\Deploy\Manager\Entry', $instance);
     }
 }

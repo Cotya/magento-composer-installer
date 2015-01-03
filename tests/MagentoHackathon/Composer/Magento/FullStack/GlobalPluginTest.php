@@ -23,9 +23,9 @@ class GlobalPluginTest extends AbstractTest
     protected function prepareCleanDirectories()
     {
         $fs = new Filesystem();
-        $fs->removeDirectory( self::getBasePath().'/home/vendor' );
-        $fs->removeDirectory( self::getBasePath().'/home/cache' );
-        $fs->remove(          self::getBasePath().'/home/composer.lock' );
+        $fs->removeDirectory(self::getBasePath().'/home/vendor');
+        $fs->removeDirectory(self::getBasePath().'/home/cache');
+        $fs->remove(self::getBasePath().'/home/composer.lock');
     }
 
     public function testGlobalInstall()
@@ -35,7 +35,7 @@ class GlobalPluginTest extends AbstractTest
             self::getComposerCommand().' global install ' . self::getComposerArgs(),
             self::getProjectRoot()
         );
-        $process->setEnv( array('COMPOSER_HOME'=>self::getBasePath().'/home'));
+        $process->setEnv(array('COMPOSER_HOME'=>self::getBasePath().'/home'));
 
         $process->run();
         $this->assertProcess($process);
@@ -48,7 +48,7 @@ class GlobalPluginTest extends AbstractTest
             self::getComposerCommand().' global update ' . self::getComposerArgs(),
             self::getProjectRoot()
         );
-        $process->setEnv( array('COMPOSER_HOME'=>self::getBasePath().'/home'));
+        $process->setEnv(array('COMPOSER_HOME'=>self::getBasePath().'/home'));
 
         $process->run();
         $this->assertProcess($process);
