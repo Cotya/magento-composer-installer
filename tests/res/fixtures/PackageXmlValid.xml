@@ -1,0 +1,76 @@
+<?xml version="1.0" ?>
+<package>
+    <name>Some_Module</name>
+    <version>1</version>
+    <stability>stable</stability>
+    <license uri="http://opensource.org/licenses/OSL-3.0">Open Software License (OSL-3.0)</license>
+    <channel>community</channel>
+    <extends/>
+    <summary>Some Module</summary>
+    <description>Some Module</description>
+    <notes>Notes</notes>
+    <authors><author><name>Aydin</name><user>aydin</user><email>aydin@hotmail.co.uk</email></author></authors>
+    <date>2014-10-28</date>
+    <time>13:44:36</time>
+    <contents>
+        <target name="magecommunity">
+            <dir name="Some">
+                <dir name="Module">
+                    <dir name="Block">
+                        <file name="Block.php" hash="ead96fee55fba2cbb5044f09566e85e4"/>
+                    </dir>
+                    <dir name="Helper">
+                        <file name="Data.php" hash="667547930c09310cd6eae4ba8bedce49"/>
+                    </dir>
+                    <dir name="Model">
+                        <file name="Model.php" hash="9de42d073756d2f1dfaa09a3af83cea9"/>
+                    </dir>
+                    <dir name="etc">
+                        <file name="config.xml" hash="e9619d6adddbae175cd98787d29da0de"/>
+                    </dir>
+                </dir>
+            </dir>
+        </target>
+        <target name="magedesign">
+            <dir name="adminhtml">
+                <dir name="default">
+                    <dir name="default">
+                        <dir name="layout">
+                            <file name="layout.xml" hash="a963acf4938f60fde0672bb6177399f1"/>
+                        </dir>
+                        <dir name="template">
+                            <dir name="module">
+                                <file name="template.phtml" hash="194577a7e20bdcc7afbb718f502c134c"/>
+                            </dir>
+                        </dir>
+                    </dir>
+                </dir>
+            </dir>
+        </target>
+        <target name="mageetc">
+            <dir name="modules">
+                <file name="Some_Module.xml" hash="e4d297a9b401c4548acb47aea1ae41d9"/>
+            </dir>
+        </target>
+        <target name="mageskin">
+            <dir name="frontend">
+                <dir name="base">
+                    <dir name="default">
+                        <dir name="images">
+                            <dir name="somemodule">
+                                <file name="image.png" hash="a621e7f4cf1c3340ac5147fef5544bfe"/>
+                            </dir>
+                        </dir>
+                    </dir>
+                </dir>
+            </dir>
+        </target>
+    </contents>
+    <compatible/>
+    <dependencies>
+        <required>
+            <php><min>5.3.3</min><max>6.0.0</max>
+            </php>
+        </required>
+    </dependencies>
+</package>

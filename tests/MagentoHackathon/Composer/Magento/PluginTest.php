@@ -26,15 +26,24 @@ class PluginTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->composer = new Composer;
-        $this->config = new Config();
+        $this->config = $this->getMock('Composer\Config');
         $this->composer->setConfig($this->config);
-        $this->root = vfsStream::setup('root', null, array('vendor' => array(), 'htdocs' => array()));
+        $this->root = vfsStream::setup('root', null, array('vendor' => array('bin' => array()), 'htdocs' => array()));
 
-        $this->config->merge(array(
-            'config' => array(
-                'vendor-dir' => vfsStream::url('root/vendor')
-            ),
-        ));
+        $this->config->expects($this->any())
+            ->method('get')
+            ->will($this->returnCallback(function ($value) {
+                switch ($value) {
+                    case 'vendor-dir': return vfsStream::url('root/vendor');
+                    case 'bin-dir': return vfsStream::url('root/vendor/bin');
+                }
+            }));
+
+//        $this->config->merge(array(
+//            'config' => array(
+//                'vendor-dir' => vfsStream::url('root/vendor')
+//            ),
+//        ));
 
         $this->composer->setInstallationManager(new InstallationManager());
 

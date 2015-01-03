@@ -8,23 +8,12 @@ namespace MagentoHackathon\Composer\Magento\Installer;
 use Composer\Repository\InstalledRepositoryInterface;
 use Composer\IO\IOInterface;
 use Composer\Composer;
-use Composer\Factory;
-use Composer\Json\JsonFile;
-use Composer\Json\JsonManipulator;
 use Composer\Installer\LibraryInstaller;
 use Composer\Installer\InstallerInterface;
 use Composer\Package\PackageInterface;
 use InvalidArgumentException;
-use MagentoHackathon\Composer\Magento\Deploy\Manager\Entry;
 use MagentoHackathon\Composer\Magento\DeployManager;
-use MagentoHackathon\Composer\Magento\Deploystrategy\Copy;
-use MagentoHackathon\Composer\Magento\Deploystrategy\Link;
-use MagentoHackathon\Composer\Magento\Deploystrategy\None;
-use MagentoHackathon\Composer\Magento\Deploystrategy\Symlink;
-use MagentoHackathon\Composer\Magento\MapParser;
-use MagentoHackathon\Composer\Magento\ModmanParser;
-use MagentoHackathon\Composer\Magento\PackageXmlParser;
-use MagentoHackathon\Composer\Magento\Parser;
+use MagentoHackathon\Composer\Magento\Factory\EntryFactory;
 use MagentoHackathon\Composer\Magento\ProjectConfig;
 
 /**
@@ -107,29 +96,33 @@ abstract class MagentoInstallerAbstract extends LibraryInstaller implements Inst
     protected $config;
 
     /**
-     * @var array Path mapping prefixes that need to be translated (i.e. to
-     * use a public directory as the web server root).
+     * @var EntryFactory
      */
-    protected $_pathMappingTranslations = array();
+    protected $entryFactory;
 
     /**
      * Initializes Magento Module installer
      *
      * @param \Composer\IO\IOInterface $io
-     * @param \Composer\Composer       $composer
-     * @param string                   $type
+     * @param \Composer\Composer $composer
+     * @param EntryFactory $entryFactory
+     * @param string $type
      *
      * @throws \ErrorException
      */
-    public function __construct(IOInterface $io, Composer $composer, $type = 'magento-module')
-    {
+    public function __construct(
+        IOInterface $io,
+        Composer $composer,
+        EntryFactory $entryFactory,
+        $type = 'magento-module'
+    ) {
         parent::__construct($io, $composer, $type);
         $this->initializeVendorDir();
 
         $this->annoy($io);
 
         $this->config = new ProjectConfig($composer->getPackage()->getExtra());
-
+        $this->entryFactory = $entryFactory;
         $this->initMagentoRootDir();
 
         if ($this->getConfig()->hasDeployStrategy()) {
@@ -157,10 +150,6 @@ abstract class MagentoInstallerAbstract extends LibraryInstaller implements Inst
 
         if ($this->getConfig()->hasDeployStrategy()) {
             $this->setDeployStrategy($this->getConfig()->getDeployStrategy());
-        }
-
-        if ($this->getConfig()->hasPathMappingTranslations()) {
-            $this->_pathMappingTranslations = $this->getConfig()->getPathMappingTranslations();
         }
     }
 
@@ -235,43 +224,6 @@ abstract class MagentoInstallerAbstract extends LibraryInstaller implements Inst
     }
 
     /**
-     * Returns the strategy class used for deployment
-     *
-     * @param \Composer\Package\PackageInterface $package
-     * @param string                             $strategy
-     *
-     * @return \MagentoHackathon\Composer\Magento\Deploystrategy\DeploystrategyAbstract
-     */
-    public function getDeployStrategy(PackageInterface $package, $strategy = null)
-    {
-        if (null === $strategy) {
-            $strategy = $this->deployStrategy;
-        }
-
-        if ($this->getConfig()->hasDeployStrategyOverwrite()) {
-            $moduleSpecificDeployStrategys = $this->getConfig()->getDeployStrategyOverwrite();
-
-            if (isset($moduleSpecificDeployStrategys[$package->getName()])) {
-                $strategy = $moduleSpecificDeployStrategys[$package->getName()];
-            }
-        }
-
-        $targetDir = $this->getTargetDir();
-        $sourceDir = $this->getSourceDir($package);
-        $impl = \MagentoHackathon\Composer\Magento\Factory::getDeployStrategyObject($strategy, $sourceDir, $targetDir);
-        // Inject isForced setting from extra config
-        $impl->setIsForced($this->isForced);
-        $impl->setIgnoredMappings($this->getModuleSpecificDeployIgnores($package));
-
-        return $impl;
-    }
-    
-    protected function getModuleSpecificDeployIgnores($package)
-    {
-        return $this->getConfig()->getModuleSpecificDeployIgnores($package->getName());
-    }
-
-    /**
      * Return Source dir of package
      *
      * @param \Composer\Package\PackageInterface $package
@@ -306,13 +258,8 @@ abstract class MagentoInstallerAbstract extends LibraryInstaller implements Inst
     public function install(InstalledRepositoryInterface $repo, PackageInterface $package)
     {
         parent::install($repo, $package);
-
-        $strategy = $this->getDeployStrategy($package);
-        $strategy->setMappings($this->getParser($package)->getMappings());
-        $deployManagerEntry = new Entry();
-        $deployManagerEntry->setPackageName($package->getName());
-        $deployManagerEntry->setDeployStrategy($strategy);
-        $this->deployManager->addPackage($deployManagerEntry);
+        $entry = $this->entryFactory->make($package, $this->getSourceDir($package));
+        $this->deployManager->addPackage($entry);
     }
 
     /**
@@ -358,18 +305,13 @@ abstract class MagentoInstallerAbstract extends LibraryInstaller implements Inst
      */
     public function update(InstalledRepositoryInterface $repo, PackageInterface $initial, PackageInterface $target)
     {
-        $initialStrategy = $this->getDeployStrategy($initial);
-        $initialStrategy->setMappings($this->getParser($initial)->getMappings());
-        $initialStrategy->clean();
+        $entry = $this->entryFactory->make($initial, $this->getSourceDir($initial));
+        $entry->getDeployStrategy()->clean();
 
         parent::update($repo, $initial, $target);
 
-        $targetStrategy = $this->getDeployStrategy($target);
-        $targetStrategy->setMappings($this->getParser($target)->getMappings());
-        $deployManagerEntry = new Entry();
-        $deployManagerEntry->setPackageName($target->getName());
-        $deployManagerEntry->setDeployStrategy($targetStrategy);
-        $this->deployManager->addPackage($deployManagerEntry);
+        $entry = $this->entryFactory->make($target, $this->getSourceDir($target));
+        $this->deployManager->addPackage($entry);
     }
 
     /**
@@ -380,53 +322,10 @@ abstract class MagentoInstallerAbstract extends LibraryInstaller implements Inst
      */
     public function uninstall(InstalledRepositoryInterface $repo, PackageInterface $package)
     {
-        $strategy = $this->getDeployStrategy($package);
-        $strategy->setMappings($this->getParser($package)->getMappings());
-        $strategy->clean();
+        $entry = $this->entryFactory->make($package, $this->getSourceDir($package));
+        $entry->getDeployStrategy()->clean();
 
         parent::uninstall($repo, $package);
-    }
-
-    /**
-     * Returns the modman parser for the vendor dir
-     *
-     * @param PackageInterface $package
-     *
-     * @return Parser
-     * @throws \ErrorException
-     */
-    public function getParser(PackageInterface $package)
-    {
-        $extra = $package->getExtra();
-        $moduleSpecificMap = $this->composer->getPackage()->getExtra();
-        if (isset($moduleSpecificMap['magento-map-overwrite'])) {
-            $moduleSpecificMap = $this->transformArrayKeysToLowerCase($moduleSpecificMap['magento-map-overwrite']);
-            if (isset($moduleSpecificMap[$package->getName()])) {
-                $map = $moduleSpecificMap[$package->getName()];
-            }
-        }
-
-        if (isset($map)) {
-            $parser = new MapParser($map, $this->_pathMappingTranslations);
-
-            return $parser;
-        } elseif (isset($extra['map'])) {
-            $parser = new MapParser($extra['map'], $this->_pathMappingTranslations);
-
-            return $parser;
-        } elseif (isset($extra['package-xml'])) {
-            $parser = new PackageXmlParser(
-                $this->getSourceDir($package), $extra['package-xml'], $this->_pathMappingTranslations
-            );
-
-            return $parser;
-        } elseif (file_exists($this->getSourceDir($package) . '/modman')) {
-            $parser = new ModmanParser($this->getSourceDir($package), $this->_pathMappingTranslations);
-
-            return $parser;
-        } else {
-            throw new \ErrorException('Unable to find deploy strategy for module: no known mapping');
-        }
     }
 
     /**
@@ -443,16 +342,6 @@ abstract class MagentoInstallerAbstract extends LibraryInstaller implements Inst
         }
 
         return $installPath;
-    }
-
-    public function transformArrayKeysToLowerCase($array)
-    {
-        $arrayNew = array();
-        foreach ($array as $key => $value) {
-            $arrayNew[strtolower($key)] = $value;
-        }
-
-        return $arrayNew;
     }
 
     /**
@@ -512,35 +401,5 @@ abstract class MagentoInstallerAbstract extends LibraryInstaller implements Inst
     protected function joinFilePath($path1, $path2)
     {
         return $this->joinPath($path1, $path2, DIRECTORY_SEPARATOR, true);
-    }
-
-    /**
-     * print Debug Message
-     *
-     * @param $message
-     */
-    protected function writeDebug($message, $varDump = null)
-    {
-        if ($this->io->isDebug()) {
-            $this->io->write($message);
-
-            if (!is_null($varDump)) {
-                var_dump($varDump);
-            }
-        }
-    }
-
-    /**
-     * @param PackageInterface $package
-     *
-     * @throws \ErrorException
-     */
-    protected function addEntryToDeployManager(PackageInterface $package) {
-        $targetStrategy = $this->getDeployStrategy($package);
-        $targetStrategy->setMappings($this->getParser($package)->getMappings());
-        $deployManagerEntry = new Entry();
-        $deployManagerEntry->setPackageName($package->getName());
-        $deployManagerEntry->setDeployStrategy($targetStrategy);
-        $deployManagerEntry->getDeployStrategy()->deploy();
     }
 }

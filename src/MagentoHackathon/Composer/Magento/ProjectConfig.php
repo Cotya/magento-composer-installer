@@ -381,17 +381,12 @@ class ProjectConfig
     }
 
     /**
-     * @param $array
+     * @param array $array
      *
      * @return array
      */
-    public function transformArrayKeysToLowerCase($array)
+    public function transformArrayKeysToLowerCase(array $array)
     {
-        $arrayNew = array();
-        foreach ($array as $key => $value) {
-            $arrayNew[strtolower($key)] = $value;
-        }
-
-        return $arrayNew;
+        return array_change_key_case($array, CASE_LOWER);
     }
 }

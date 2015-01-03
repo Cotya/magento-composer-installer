@@ -1,7 +1,11 @@
 <?php
 
-namespace MagentoHackathon\Composer\Magento;
+namespace MagentoHackathon\Composer\Magento\Parser;
 
+/**
+ * Interface Parser
+ * @package MagentoHackathon\Composer\Magento\Parser
+ */
 interface Parser
 {
     /**
