@@ -76,8 +76,10 @@ class Link extends DeploystrategyAbstract
         }
         mkdir($destPath, 0777, true);
 
-        $iterator = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($sourcePath),
-            \RecursiveIteratorIterator::SELF_FIRST);
+        $iterator = new \RecursiveIteratorIterator(
+            new \RecursiveDirectoryIterator($sourcePath),
+            \RecursiveIteratorIterator::SELF_FIRST
+        );
 
         foreach ($iterator as $item) {
             $subDestPath = $destPath . '/' . $iterator->getSubPathName();

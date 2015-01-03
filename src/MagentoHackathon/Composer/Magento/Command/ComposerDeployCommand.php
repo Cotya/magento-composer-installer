@@ -26,16 +26,8 @@ class ComposerDeployCommand extends \Composer\Command\Command
         $this
             ->setName('magento-module-deploy')
             ->setDescription('Deploy all Magento modules loaded via composer.json')
-            ->setDefinition(array(
-            // we dont need to define verbose, because composer already defined it internal
-            //new InputOption('verbose', 'v', InputOption::VALUE_NONE, 'Show modified files for each directory that contains changes.'),
-        ))
-            ->setHelp(<<<EOT
-This command deploys all magento Modules
-
-EOT
-        )
-        ;
+            ->setDefinition(array())
+            ->setHelp('This command deploys all magento Modules');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -63,22 +55,24 @@ EOT
         }
 
         $extra          = $composer->getPackage()->getExtra();
-        $sortPriority   = isset($extra['magento-deploy-sort-priority']) ? $extra['magento-deploy-sort-priority'] : array();
-        $deployManager->setSortPriority( $sortPriority );
+        $sortPriority   = array();
+        if (isset($extra['magento-deploy-sort-priority'])) {
+            $sortPriority = $extra['magento-deploy-sort-priority'];
+        }
+        $deployManager->setSortPriority($sortPriority);
 
 
 
-        $moduleInstaller->setDeployManager( $deployManager );
+        $moduleInstaller->setDeployManager($deployManager);
         
 
         foreach ($installedRepo->getPackages() as $package) {
-
             if ($input->getOption('verbose')) {
-                $output->writeln( $package->getName() );
-                $output->writeln( $package->getType() );
+                $output->writeln($package->getName());
+                $output->writeln($package->getType());
             }
 
-            if( $package->getType() != "magento-module" ){
+            if ($package->getType() != "magento-module") {
                 continue;
             }
             if ($input->getOption('verbose')) {

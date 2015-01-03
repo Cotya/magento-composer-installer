@@ -419,7 +419,8 @@ abstract class DeploystrategyAbstract
         }
 
         // MP Avoid removing whole folders in case the modman file is not 100% well-written
-        // e.g. app/etc/modules/Testmodule.xml  app/etc/modules/ installs correctly, but would otherwise delete the whole app/etc/modules folder!
+        // e.g. app/etc/modules/Testmodule.xml  app/etc/modules/ installs correctly,
+        // but would otherwise delete the whole app/etc/modules folder!
         if (basename($sourcePath) !== basename($destPath)) {
             $destPath .= '/' . basename($source);
         }
@@ -437,7 +438,6 @@ abstract class DeploystrategyAbstract
     {
         $absoluteDir = $this->getDestDir() . '/' . $dir;
         if (is_dir($absoluteDir)) {
-
             $iterator = new \RecursiveIteratorIterator(
                 new \RecursiveDirectoryIterator($absoluteDir, \RecursiveDirectoryIterator::SKIP_DOTS),
                 \RecursiveIteratorIterator::CHILD_FIRST

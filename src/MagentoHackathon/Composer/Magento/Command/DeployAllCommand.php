@@ -1,9 +1,9 @@
 <?php
 /**
- * 
- * 
- * 
- * 
+ *
+ *
+ *
+ *
  */
 
 namespace MagentoHackathon\Composer\Magento\Command;
@@ -24,45 +24,42 @@ class DeployAllCommand extends Command
     {
         $this
             ->setName('deploy:all')
-            ->setDescription('triggers deploy of all packages')
-        ;
+            ->setDescription('triggers deploy of all packages');
     }
-
-
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
 
         $composerHelper = new Helper(new \SplFileInfo(getcwd()));
         
-        foreach($composerHelper->getInstalledPackages() as $package){
-
-        $packageName = $package['name'];
-        $output->writeln('<info>deploy '.$packageName.'</info>');
+        foreach ($composerHelper->getInstalledPackages() as $package) {
+            $packageName = $package['name'];
+            $output->writeln('<info>deploy '.$packageName.'</info>');
         //var_dump($package);
         
-        if ($package['type'] !== 'magento-module') {
-            $output->writeln('<comment>this package is not of type "magento module"</comment>');
-        } else {
-            $packageDir = $composerHelper->getVendorDirectory()->getPathname().'/'.$package['name']; // @todo not secure
+            if ($package['type'] !== 'magento-module') {
+                $output->writeln('<comment>this package is not of type "magento module"</comment>');
+            } else {
+                // @todo not secure
+                $packageDir = $composerHelper->getVendorDirectory()->getPathname().'/'.$package['name'];
             
-            $deployStrategy = Factory::getDeployStrategyObject(
-                $composerHelper->getMagentoProjectConfig()->getDeployStrategy(),
-                $packageDir,
-                realpath($composerHelper->getMagentoProjectConfig()->getMagentoRootDir())
-            );
-            $deployStrategy->setIsForced($composerHelper->getMagentoProjectConfig()->getMagentoForce());
-            $mappingParser = Factory::getMappingParser(
-                $composerHelper->getMagentoProjectConfig(),
-                $package,
-                $packageDir
-            );
-            $deployStrategy->setMappings($mappingParser->getMappings());
+                $deployStrategy = Factory::getDeployStrategyObject(
+                    $composerHelper->getMagentoProjectConfig()->getDeployStrategy(),
+                    $packageDir,
+                    realpath($composerHelper->getMagentoProjectConfig()->getMagentoRootDir())
+                );
+                $deployStrategy->setIsForced($composerHelper->getMagentoProjectConfig()->getMagentoForce());
+                $mappingParser = Factory::getMappingParser(
+                    $composerHelper->getMagentoProjectConfig(),
+                    $package,
+                    $packageDir
+                );
+                $deployStrategy->setMappings($mappingParser->getMappings());
 
-            $deployStrategy->deploy();
+                $deployStrategy->deploy();
             
             
-        }
+            }
 
         }
     }

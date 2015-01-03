@@ -47,11 +47,6 @@ abstract class MagentoInstallerAbstract extends LibraryInstaller implements Inst
      */
     protected $sourceDir;
 
-    /**
-     * @var string
-     */
-    protected $_deployStrategy = 'symlink';
-
     const MAGENTO_REMOVE_DEV_FLAG = 'magento-remove-dev';
     const MAGENTO_MAINTANANCE_FLAG = 'maintenance.flag';
     const MAGENTO_CACHE_PATH = 'var/cache';
@@ -71,18 +66,6 @@ abstract class MagentoInstallerAbstract extends LibraryInstaller implements Inst
     protected $backupMagentoRootDir = null;
     protected $removeMagentoDev = false;
     protected $keepMagentoCache = false;
-    protected $_magentoLocalXmlPath = 'app/etc/local.xml';
-    protected $_defaultEnvFilePaths
-        = array(
-            'app/etc/local.xml'
-        );
-    protected $_magentoDevDir = 'dev';
-    protected $_magentoWritableDirs
-        = array(
-            'app/etc',
-            'media',
-            'var'
-        );
     protected $deployStrategy = 'symlink';
 
     /**
@@ -135,12 +118,11 @@ abstract class MagentoInstallerAbstract extends LibraryInstaller implements Inst
             $dir = $this->magentoRootDir instanceof \SplFileInfo ? $this->magentoRootDir->getPathname() : '';
             $io->write("<error>magento root dir \"{$dir}\" is not valid</error>", true);
             $io->write(
-                '<comment>You need to set an existing path for "magento-root-dir" in your composer.json</comment>', true
-            );
-            $io->write(
-                '<comment>For more information please read about the "Usage" in the README of the installer Package</comment>',
+                '<comment>You need to set an existing path for "magento-root-dir" in your composer.json</comment>',
                 true
             );
+            $message = 'For more information please read about the "Usage" in the README of the installer Package';
+            $io->write(sprintf('<comment>%s</comment>', $message), true);
             throw new \ErrorException("magento root dir \"{$dir}\" is not valid");
         }
 
@@ -153,7 +135,8 @@ abstract class MagentoInstallerAbstract extends LibraryInstaller implements Inst
         }
     }
 
-    protected function initMagentoRootDir() {
+    protected function initMagentoRootDir()
+    {
         if (false === $this->getConfig()->hasMagentoRootDir()) {
             $this->getConfig()->setMagentoRootDir(
                 $this->io->ask(
@@ -274,12 +257,15 @@ abstract class MagentoInstallerAbstract extends LibraryInstaller implements Inst
         if (is_dir($path)) {
             if (!@chmod($path, $dirmode)) {
                 $this->io->write(
-                    'Failed to set permissions "%s" for directory "%s"', decoct($dirmode), $path
+                    'Failed to set permissions "%s" for directory "%s"',
+                    decoct($dirmode),
+                    $path
                 );
             }
             $dh = opendir($path);
             while (($file = readdir($dh)) !== false) {
-                if ($file != '.' && $file != '..') { // skip self and parent pointing directories
+                if ($file != '.' && $file != '..') {
+                    // skip self and parent pointing directories
                     $fullpath = $path . '/' . $file;
                     $this->setPermissions($fullpath, $dirmode, $filemode);
                 }
@@ -288,7 +274,9 @@ abstract class MagentoInstallerAbstract extends LibraryInstaller implements Inst
         } elseif (is_file($path)) {
             if (false == !@chmod($path, $filemode)) {
                 $this->io->write(
-                    'Failed to set permissions "%s" for file "%s"', decoct($filemode), $path
+                    'Failed to set permissions "%s" for file "%s"',
+                    decoct($filemode),
+                    $path
                 );
             }
         }
@@ -357,12 +345,6 @@ abstract class MagentoInstallerAbstract extends LibraryInstaller implements Inst
         /**
          * No <error> in future, as some people look for error lines inside of CI Applications, which annoys them
          */
-        /*
-        $io->write('<comment> time for voting about the future of the #magento #composer installer. </comment>', true);
-        $io->write('<comment> https://github.com/magento-hackathon/magento-composer-installer/blob/discussion-master/Milestone/2/index.md </comment>', true);
-        $io->write('<error> For the case you don\'t vote, I will ignore your problems till iam finished with the resulting release. </error>', true);
-         *
-         **/
     }
 
     /**

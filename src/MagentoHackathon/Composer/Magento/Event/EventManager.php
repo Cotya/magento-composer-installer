@@ -24,7 +24,7 @@ class EventManager
     {
         if (!is_callable($callback)) {
             throw new \InvalidArgumentException(sprintf(
-               'Second argument should be a callable. Got: "%s"',
+                'Second argument should be a callable. Got: "%s"',
                 is_object($callback) ? get_class($callback) : gettype($callback)
             ));
         }
