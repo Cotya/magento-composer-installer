@@ -68,8 +68,7 @@ class PackageXmlParser implements Parser
                         }
                     }
 
-                }
-                catch (\RuntimeException $e) {
+                } catch (\RuntimeException $e) {
                     // Skip invalid targets
                     continue;
                 }
@@ -113,7 +112,8 @@ class PackageXmlParser implements Parser
      * @return array
      * @throws \RuntimeException
      */
-    protected function getElementPaths(\SimpleXMLElement $element) {
+    protected function getElementPaths(\SimpleXMLElement $element)
+    {
         $type = $element->getName();
         $name = $element->attributes()->name;
         $elementPaths = array();

@@ -1,13 +1,12 @@
 <?php
 /**
- * 
- * 
- * 
- * 
+ *
+ *
+ *
+ *
  */
 
 namespace MagentoHackathon\Composer;
-
 
 use MagentoHackathon\Composer\Magento\ProjectConfig;
 

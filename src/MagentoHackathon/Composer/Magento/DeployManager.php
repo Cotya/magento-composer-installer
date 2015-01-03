@@ -1,9 +1,9 @@
 <?php
 /**
- * 
- * 
- * 
- * 
+ *
+ *
+ *
+ *
  */
 
 namespace MagentoHackathon\Composer\Magento;
@@ -14,7 +14,8 @@ use MagentoHackathon\Composer\Magento\Deploystrategy\Copy;
 use MagentoHackathon\Composer\Magento\Event\EventManager;
 use MagentoHackathon\Composer\Magento\Event\PackageDeployEvent;
 
-class DeployManager {
+class DeployManager
+{
 
     const SORT_PRIORITY_KEY = 'magento-deploy-sort-priority';
 
@@ -30,7 +31,7 @@ class DeployManager {
 
     /**
      * an array with package names as key and priorities as value
-     * 
+     *
      * @var array
      */
     protected $sortPriority = array();
@@ -72,18 +73,18 @@ class DeployManager {
     protected function sortPackages()
     {
         $sortPriority = $this->sortPriority;
-        $getPriorityValue = function( Entry $object ) use ( $sortPriority ){
+        $getPriorityValue = function(Entry $object) use ($sortPriority) {
             $result = 100;
-            if( isset($sortPriority[$object->getPackageName()]) ){
+            if (isset($sortPriority[$object->getPackageName()])) {
                 $result = $sortPriority[$object->getPackageName()];
-            }elseif( $object->getDeployStrategy() instanceof Copy ){
+            } elseif ($object->getDeployStrategy() instanceof Copy) {
                 $result = 101;
             }
             return $result;
         };
-        usort( 
-            $this->packages, 
-            function($a, $b)use( $getPriorityValue ){
+        usort(
+            $this->packages,
+            function($a, $b) use ($getPriorityValue) {
                 /** @var Entry $a */
                 /** @var Entry $b */
                 $aVal = $getPriorityValue($a);
@@ -103,7 +104,7 @@ class DeployManager {
     {
         $this->sortPackages();
         /** @var Entry $package */
-        foreach($this->packages as $package) {
+        foreach ($this->packages as $package) {
             $this->eventManager->dispatch(new PackageDeployEvent('pre-package-deploy', $package));
             $package->getDeployStrategy()->deploy();
             $this->eventManager->dispatch(new PackageDeployEvent('post-package-deploy', $package));
@@ -117,5 +118,4 @@ class DeployManager {
     {
         return $this->packages;
     }
-
 }

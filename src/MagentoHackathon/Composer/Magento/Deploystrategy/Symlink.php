@@ -90,14 +90,16 @@ class Symlink extends DeploystrategyAbstract
             if ($this->isForced()) {
                 unlink($destPath);
             } else {
-                throw new \ErrorException("Target $dest already exists and is not a symlink (set extra.magento-force to override)");
+                throw new \ErrorException(
+                    "Target $dest already exists and is not a symlink (set extra.magento-force to override)"
+                );
             }
         }
 
         $relSourcePath = $this->getRelativePath($destPath, $sourcePath);
 
         // Create symlink
-        if (false === $this->_symlink($relSourcePath, $destPath, $sourcePath)) {
+        if (false === $this->symlink($relSourcePath, $destPath, $sourcePath)) {
             throw new \ErrorException("An error occured while creating symlink" . $relSourcePath);
         }
 
@@ -110,7 +112,7 @@ class Symlink extends DeploystrategyAbstract
         return true;
     }
 
-    protected function _symlink($relSourcePath, $destPath, $absSourcePath)
+    protected function symlink($relSourcePath, $destPath, $absSourcePath)
     {
         if (strtoupper(substr(PHP_OS, 0, 3)) == 'WIN') {
             $relSourcePath = str_replace('/', '\\', $relSourcePath);

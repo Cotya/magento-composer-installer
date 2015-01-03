@@ -1,7 +1,9 @@
 <?php
 namespace MagentoHackathon\Composer\Magento\Deploystrategy;
 
-if (! defined('DS')) define('DS', DIRECTORY_SEPARATOR);
+if (! defined('DS')) {
+    define('DS', DIRECTORY_SEPARATOR);
+}
 
 abstract class AbstractTest extends \PHPUnit_Framework_TestCase
 {
@@ -33,14 +35,14 @@ abstract class AbstractTest extends \PHPUnit_Framework_TestCase
      * @param string $dest
      * @return DeploystrategyAbstract
      */
-    abstract function getTestDeployStrategy($src, $dest);
+    abstract public function getTestDeployStrategy($src, $dest);
 
     /**
      * @abstract
      * @param bool $isDir
      * @return string
      */
-    abstract function getTestDeployStrategyFiletype($isDir = false);
+    abstract public function getTestDeployStrategyFiletype($isDir = false);
 
     /**
      * Sets up the fixture, for example, opens a network connection.
@@ -104,7 +106,7 @@ abstract class AbstractTest extends \PHPUnit_Framework_TestCase
                 $realType = 'unknown';
             }
             throw new \PHPUnit_Framework_AssertionFailedError(
-              "Failed to assert that the $file is of type $type, found type $realType instead."
+                "Failed to assert that the $file is of type $type, found type $realType instead."
             );
         }
     }

@@ -1,13 +1,14 @@
 <?php
 
+namespace MagentoHackathon\Composer\Magento\Event;
+
 use Composer\EventDispatcher\Event;
-use MagentoHackathon\Composer\Magento\Event\EventManager;
 
 /**
  * Class EventManagerTest
  * @author Aydin Hassan <aydin@hotmail.co.uk>
  */
-class EventManagerTest extends PHPUnit_Framework_TestCase
+class EventManagerTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @var EventManager
@@ -27,8 +28,12 @@ class EventManagerTest extends PHPUnit_Framework_TestCase
 
     public function testAddListener()
     {
-        $this->eventManager->listen('some-event', function () {});
-        $this->eventManager->listen('some-event', function () {});
+        $this->eventManager->listen('some-event', function () {
+
+        });
+        $this->eventManager->listen('some-event', function () {
+
+        });
     }
 
     public function testDispatchReturnsNullIfNoListenersForEvent()
