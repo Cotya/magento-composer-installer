@@ -7,6 +7,10 @@ php:
   - hhvm
   
 matrix:
+  env:
+    - TEST_SUITE=Unit
+    - TEST_SUITE=Fullstack
+  fast_finish: true
   allow_failures:
     - php: 5.3
     - php: 5.4
@@ -26,7 +30,7 @@ install:
   - ./composer.phar install --dev
   
 script:
-  - ./vendor/bin/phpunit --coverage-clover=coverage.clover
+  - ./vendor/bin/phpunit --coverage-clover=coverage.clover --testsuite=$TEST_SUITE
   - ./vendor/bin/phpcs --standard=PSR2 ./src/
   - ./vendor/bin/phpcs --standard=PSR2 ./tests/MagentoHackathon
 after_script:

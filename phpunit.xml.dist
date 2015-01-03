@@ -12,8 +12,11 @@
          bootstrap="tests/bootstrap.php"
         >
     <testsuites>
-        <testsuite name="Magentohackathon Magento Installer Test Suite">
-            <directory>./tests/MagentoHackathon</directory>
+        <testsuite name="Unit">
+            <directory>./tests/MagentoHackathon/Composer/Magento</directory>
+        </testsuite>
+        <testsuite name="Fullstack">
+            <directory>./tests/MagentoHackathon/Composer/FullStack</directory>
         </testsuite>
     </testsuites>
 
