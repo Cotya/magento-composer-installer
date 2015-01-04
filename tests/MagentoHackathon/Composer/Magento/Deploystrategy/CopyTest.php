@@ -92,9 +92,6 @@ class CopyTest extends AbstractTest
         $this->strategy->create($sourceRoot, $dest);
         $this->assertFileExists($testTarget);
 
-        $this->strategy->setIsForced(true);
-        $this->strategy->create($sourceRoot, $dest);
-
         $this->assertFileNotExists(dirname(dirname($testTarget)) . DS . basename($testTarget));
 
         $this->assertSame(
