@@ -5,7 +5,7 @@
     "minimum-stability":"stable",
     "type":"composer-plugin",
     "license":"OSL-3.0",
-    "homepage":"https://github.com/magento-hackathon/magento-composer-installer",
+    "homepage":"https://github.com/Cotya/magento-composer-installer",
     "repositories": [
         {
             "type": "composer",
