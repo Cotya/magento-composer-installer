@@ -115,7 +115,7 @@ class Symlink extends DeploystrategyAbstract
         if (strtoupper(substr(PHP_OS, 0, 3)) == 'WIN') {
             $absSourcePath = str_replace('/', '\\', $absSourcePath);
             $param = is_dir($absSourcePath) ? ' /D' : '';
-            exec('mklink' . $param . ' "' . $destPath . '" "' . $absSourcePath . '"');
+            exec('mklink' . escapeshellarg($param) . ' "' . escapeshellarg($destPath) . '" "' . escapeshellarg($absSourcePath) . '"');
         } else {
             symlink($relSourcePath, $destPath);
         }
