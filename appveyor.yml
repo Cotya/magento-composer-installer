@@ -2,6 +2,8 @@
 clone_folder: C:\projects\random\customer\magento
 
 install: 
+  - cinst OpenSSL.Light
+  - SET PATH=C:\Program Files\OpenSSL;%PATH%
   - cinst php 
   - SET PATH=C:\tools\php;%PATH%
   - cd C:\projects\random\customer\magento
