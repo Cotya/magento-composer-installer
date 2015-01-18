@@ -1,0 +1,12 @@
+
+clone_folder: C:\projects\random\customer\magento
+
+install: 
+  - cinst php 
+  - cd C:\projects\random\customer\magento
+  - php -r "readfile('http://getcomposer.org/installer');" | php
+  - php composer.phar install --prefer-dist --no-interaction --dev
+
+test_script:
+  - cd C:\projects\random\customer\magento
+  - vendor\bin\phpunit.bat
