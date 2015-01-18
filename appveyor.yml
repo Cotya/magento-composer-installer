@@ -3,6 +3,7 @@ clone_folder: C:\projects\random\customer\magento
 
 install: 
   - cinst php 
+  - SET PATH=C:\tools\php;%PATH%
   - cd C:\projects\random\customer\magento
   - php -r "readfile('http://getcomposer.org/installer');" | php
   - php composer.phar install --prefer-dist --no-interaction --dev
