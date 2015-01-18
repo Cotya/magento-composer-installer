@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.org/cotya/magento-composer-installer.png)](https://travis-ci.org/magento-hackathon/magento-composer-installer)
+[![Windows Build status](https://ci.appveyor.com/api/projects/status/1bm54s9jv3603xl5?svg=true)](https://ci.appveyor.com/project/Flyingmana/magento-composer-installer-396)
 [![Dependency Status](https://www.versioneye.com/php/magento-hackathon:magento-composer-installer/2.0.0/badge.svg)](https://www.versioneye.com/php/magento-hackathon:magento-composer-installer/2.0.0)
 [![Reference Status](https://www.versioneye.com/php/magento-hackathon:magento-composer-installer/reference_badge.svg)](https://www.versioneye.com/php/magento-hackathon:magento-composer-installer/references)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/Cotya/magento-composer-installer/badges/quality-score.png)](https://scrutinizer-ci.com/g/Cotya/magento-composer-installer/)
