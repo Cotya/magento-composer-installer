@@ -289,7 +289,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
      */
     protected function getTheseerAutoloadParams($libraryPath, $autoloadDirectories)
     {
-        return " -o {$libraryPath}/autoload.php  " . implode(' ', $autoloadDirectories);
+        return " -b {$libraryPath} -o {$libraryPath}/autoload.php  " . implode(' ', $autoloadDirectories);
     }
 
     /**
