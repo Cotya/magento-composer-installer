@@ -289,6 +289,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
      */
     protected function getTheseerAutoloadParams($libraryPath, $autoloadDirectories)
     {
+        // @todo  --blacklist 'test\\\\*' 
         return " -b {$libraryPath} -o {$libraryPath}/autoload.php  " . implode(' ', $autoloadDirectories);
     }
 
