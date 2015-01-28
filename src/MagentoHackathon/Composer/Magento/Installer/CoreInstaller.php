@@ -150,6 +150,7 @@ class CoreInstaller extends MagentoInstallerAbstract
     {
         $deployStrategy = new Core($this->getSourceDir($package), $this->getTargetDir());
         $deployStrategy->setIgnoredMappings($this->getModuleSpecificDeployIgnores($package));
+        $deployStrategy->setIsForced($this->isForced);
         return $deployStrategy;
     }
 }
