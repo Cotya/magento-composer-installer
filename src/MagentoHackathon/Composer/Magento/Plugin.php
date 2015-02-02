@@ -19,6 +19,7 @@ use MagentoHackathon\Composer\Magento\Factory\ParserFactory;
 use MagentoHackathon\Composer\Magento\Factory\PathTranslationParserFactory;
 use MagentoHackathon\Composer\Magento\Installer\MagentoInstallerAbstract;
 use MagentoHackathon\Composer\Magento\Installer\ModuleInstaller;
+use MagentoHackathon\Composer\Magento\Patcher\Bootstrap;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 use Composer\Composer;
@@ -199,6 +200,12 @@ class Plugin implements PluginInterface, EventSubscriberInterface
         $this->writeDebug('start magento module deploy via deployManager');
         $this->deployManager->doDeploy();
         $this->deployLibraries();
+        
+        if(file_exists($this->config->getMagentoRootDir().'/app/Mage.php')){
+            $patcher = new Bootstrap($this->config->getMagentoRootDir());
+            $patcher->patch();    
+        }
+        
     }
 
     /**
