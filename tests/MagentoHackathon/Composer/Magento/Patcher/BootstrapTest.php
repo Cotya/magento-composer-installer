@@ -4,16 +4,16 @@ namespace MagentoHackathon\Composer\Magento\Patcher;
 
 use org\bovigo\vfs\vfsStream;
 
-
 /**
- * 
+ *
  */
 class BootstrapTest extends \PHPUnit_Framework_TestCase
 {
 
     /**
-     * 
+     *
      * @dataProvider mageFileProvider
+     *
      * @param $MageFile
      */
     public function testMageFiles($MageFile)
@@ -38,7 +38,7 @@ class BootstrapTest extends \PHPUnit_Framework_TestCase
         $this->assertFileExists(vfsStream::url('patcherMagentoBase/app/Mage.bootstrap.php'));
         $this->assertFileNotExists(vfsStream::url('patcherMagentoBase/app/Mage.nonsense.php'));
     }
-    
+
     public function mageFileProvider()
     {
         $fixturesBasePath = __DIR__ . '/../../../../res/fixtures';
