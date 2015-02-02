@@ -12,6 +12,9 @@ env:
   
 matrix:
   fast_finish: true
+  include:
+    - php: 5.6
+      env: TEST_SUITE=Static
   allow_failures:
     - php: 5.3
     - php: 5.4
@@ -32,8 +35,15 @@ install:
   
 script:
   - ./vendor/bin/phpunit --coverage-clover=coverage.clover --testsuite=$TEST_SUITE
-  - ./vendor/bin/phpcs --standard=PSR2 ./src/
-  - ./vendor/bin/phpcs --standard=PSR2 ./tests/MagentoHackathon
+  - >
+    sh -c "if [ '$TEST_SUITE' = 'Unit' ] || [ '$TEST_SUITE' = 'Fullstack' ]; then 
+    ./vendor/bin/phpunit --coverage-clover=coverage.clover --testsuite=$TEST_SUITE
+    fi"
+  - > 
+    sh -c "if [ '$TEST_SUITE' = 'Static' ]; then
+    ./vendor/bin/phpcs --standard=PSR2 ./src/
+    ./vendor/bin/phpcs --standard=PSR2 ./tests/MagentoHackathon
+    fi"
 after_script:
   - wget https://scrutinizer-ci.com/ocular.phar
   - php ocular.phar code-coverage:upload --format=php-clover coverage.clover
