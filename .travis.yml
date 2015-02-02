@@ -34,15 +34,14 @@ install:
   - ./composer.phar install --dev
   
 script:
-  - ./vendor/bin/phpunit --coverage-clover=coverage.clover --testsuite=$TEST_SUITE
   - >
     sh -c "if [ '$TEST_SUITE' = 'Unit' ] || [ '$TEST_SUITE' = 'Fullstack' ]; then 
-    ./vendor/bin/phpunit --coverage-clover=coverage.clover --testsuite=$TEST_SUITE
+    ./vendor/bin/phpunit --coverage-clover=coverage.clover --testsuite=$TEST_SUITE;
     fi"
   - > 
     sh -c "if [ '$TEST_SUITE' = 'Static' ]; then
-    ./vendor/bin/phpcs --standard=PSR2 ./src/
-    ./vendor/bin/phpcs --standard=PSR2 ./tests/MagentoHackathon
+    ./vendor/bin/phpcs --standard=PSR2 ./src/;
+    ./vendor/bin/phpcs --standard=PSR2 ./tests/MagentoHackathon;
     fi"
 after_script:
   - wget https://scrutinizer-ci.com/ocular.phar
