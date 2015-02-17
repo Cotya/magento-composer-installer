@@ -31,7 +31,7 @@ class DeploystrategyFactoryTest extends \PHPUnit_Framework_TestCase
         $config = new ProjectConfig(array(
             'magento-deploystrategy' => $strategy,
             'magento-root-dir' => vfsStream::url('root/htdocs'),
-        ));
+        ), array());
         $factory = new DeploystrategyFactory($config);
         $instance = $factory->make($package, sprintf('%s/some/package', vfsStream::url('root/vendor')));
         $this->assertInstanceOf($expectedClass, $instance);
@@ -56,7 +56,7 @@ class DeploystrategyFactoryTest extends \PHPUnit_Framework_TestCase
         $config = new ProjectConfig(array(
             'magento-deploystrategy' => 'lolnotarealstrategy',
             'magento-root-dir' => vfsStream::url('root/htdocs'),
-        ));
+        ), array());
         $factory = new DeploystrategyFactory($config);
 
         $instance = $factory->make($package, sprintf('%s/some/package', vfsStream::url('root/vendor')));
@@ -70,7 +70,7 @@ class DeploystrategyFactoryTest extends \PHPUnit_Framework_TestCase
             'magento-deploystrategy' => 'symlink',
             'magento-deploystrategy-overwrite' => array('some/package' => 'none'),
             'magento-root-dir' => vfsStream::url('root/htdocs'),
-        ));
+        ), array());
 
         $factory = new DeploystrategyFactory($config);
 

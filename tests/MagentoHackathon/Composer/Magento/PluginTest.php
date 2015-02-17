@@ -41,11 +41,15 @@ class PluginTest extends \PHPUnit_Framework_TestCase
                 }
             }));
 
-//        $this->config->merge(array(
-//            'config' => array(
-//                'vendor-dir' => vfsStream::url('root/vendor')
-//            ),
-//        ));
+        $this->config->expects($this->any())
+            ->method('all')
+            ->will($this->returnValue(array(
+                'repositories' => array(),
+                'config' => array(
+                    'vendor-dir' => vfsStream::url('root/vendor'),
+                    'bin-dir' => vfsStream::url('root/vendor/bin'),
+                ),
+            )));
 
         $this->composer->setInstallationManager(new InstallationManager());
 

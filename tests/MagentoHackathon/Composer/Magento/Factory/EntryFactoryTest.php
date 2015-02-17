@@ -53,7 +53,7 @@ class EntryFactoryTest extends \PHPUnit_Framework_TestCase
             ->with($package, $packageSourceDir)
             ->will($this->returnValue($parser));
 
-        $config = new ProjectConfig(array());
+        $config = new ProjectConfig(array(), array());
         $factory = new EntryFactory($config, $deployStrategyFactory, $parserFactory);
 
         $instance = $factory->make($package, $packageSourceDir);

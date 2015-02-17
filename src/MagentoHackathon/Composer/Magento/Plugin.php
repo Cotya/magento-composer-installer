@@ -33,6 +33,11 @@ use Symfony\Component\Process\Process;
 
 class Plugin implements PluginInterface, EventSubscriberInterface
 {
+    /**
+     * The type of packages this plugin supports
+     */
+    const PACKAGE_TYPE = 'magento-module';
+    
     const VENDOR_DIR_KEY = 'vendor-dir';
 
     const BIN_DIR_KEY = 'bin-dir';
@@ -122,7 +127,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
         $this->composer = $composer;
 
         $this->filesystem = new Filesystem();
-        $this->config = new ProjectConfig($composer->getPackage()->getExtra());
+        $this->config = new ProjectConfig($composer->getPackage()->getExtra(), $composer->getConfig()->all());
 
         $this->entryFactory = new EntryFactory(
             $this->config,
@@ -177,6 +182,14 @@ class Plugin implements PluginInterface, EventSubscriberInterface
      */
     public function onNewCodeEvent(CommandEvent $event)
     {
+
+        $magentoModules = array_map(function(PackageInterface $package) {
+            return $package->getType() === static::PACKAGE_TYPE;
+        }, $this->composer->getRepositoryManager()->getLocalRepository()->getPackages());
+
+
+
+
         $this->writeDebug('iterate over packages to find missing ones');
         $addedPackageNames = array();
         foreach ($this->deployManager->getEntries() as $entry) {

@@ -41,12 +41,17 @@ class ProjectConfig
     protected $libraryPath;
     protected $libraryPackages;
     protected $extra;
+    protected $composerConfig;
 
-    public function __construct($extra)
+    /**
+     * @param array $extra
+     * @param array $composerConfig
+     */
+    public function __construct(array $extra, array $composerConfig)
     {
         $this->extra = $extra;
+        $this->composerConfig = $composerConfig;
 
-        $this->applyDeprecatedRootConfigs($this->extra);
         if (!is_null($projectConfig = $this->fetchVarFromConfigArray($this->extra, self::MAGENTO_PROJECT_KEY))) {
             $this->applyMagentoConfig($projectConfig);
         }
@@ -79,13 +84,6 @@ class ProjectConfig
     protected function fetchVarFromExtraConfig($key, $default = null)
     {
         return $this->fetchVarFromConfigArray($this->extra, $key, $default);
-    }
-
-    /**
-     * @param $rootConfig
-     */
-    protected function applyDeprecatedRootConfigs($rootConfig)
-    {
     }
 
     /**
@@ -388,5 +386,15 @@ class ProjectConfig
     public function transformArrayKeysToLowerCase(array $array)
     {
         return array_change_key_case($array, CASE_LOWER);
+    }
+
+    /**
+     * Get Composer vendor directory
+     *
+     * @return string
+     */
+    public function getVendorDir()
+    {
+        return $this->fetchVarFromConfigArray($this->composerConfig, 'vendor-dir');
     }
 }
