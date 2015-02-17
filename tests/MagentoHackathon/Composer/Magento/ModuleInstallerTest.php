@@ -63,7 +63,7 @@ class ModuleInstallerTest extends \PHPUnit_Framework_TestCase
         $this->repository = $this->getMock('Composer\Repository\InstalledRepositoryInterface');
         $this->io = $this->getMock('Composer\IO\IOInterface');
 
-        $config = new ProjectConfig(array());
+        $config = new ProjectConfig(array(), array());
         $entryFactory = new EntryFactory($config, new DeploystrategyFactory($config), new ParserFactory($config));
         $this->object = new ModuleInstaller($this->io, $this->composer, $entryFactory);
     }

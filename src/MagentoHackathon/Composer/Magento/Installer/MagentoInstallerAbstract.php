@@ -104,7 +104,7 @@ abstract class MagentoInstallerAbstract extends LibraryInstaller implements Inst
 
         $this->annoy($io);
 
-        $this->config = new ProjectConfig($composer->getPackage()->getExtra());
+        $this->config = new ProjectConfig($composer->getPackage()->getExtra(), array());
         $this->entryFactory = $entryFactory;
         $this->initMagentoRootDir();
 
