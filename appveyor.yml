@@ -1,5 +1,6 @@
 
 platform: 'x86'
+build: off
 clone_folder: C:\projects\random\customer\magento
 
 install: 
