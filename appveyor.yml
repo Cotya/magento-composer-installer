@@ -2,7 +2,11 @@
 platform: 'x86'
 build: off
 clone_folder: C:\projects\random\customer\magento
-
+environment:
+  COMPOSER_NO_INTERACTION: 1
+cache:
+  - C:\Users\appveyor\AppData\Roaming\Composer
+  - composer.lock -> C:\projects\random\customer\magento\vendor
 install: 
   - cinst OpenSSL.Light
   - SET PATH=C:\Program Files\OpenSSL;%PATH%
@@ -16,7 +20,6 @@ install:
   - cd C:\projects\random\customer\magento
   - php -r "readfile('http://getcomposer.org/installer');" | php
   - php composer.phar install --prefer-dist --no-interaction --dev
-
 test_script:
   - cd C:\projects\random\customer\magento
   - vendor\bin\phpunit.bat
