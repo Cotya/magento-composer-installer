@@ -19,7 +19,7 @@ abstract class AbstractTest extends \PHPUnit_Framework_TestCase
     public static function setUpBeforeClass()
     {
         $process = new Process(
-            'perl -pi -e \'s/"test_version"/"version"/g\' ./composer.json',
+            'perl -pi.bak -e \'s/"test_version"/"version"/g\' ./composer.json',
             self::getProjectRoot()
         );
         $process->run();
@@ -74,7 +74,7 @@ abstract class AbstractTest extends \PHPUnit_Framework_TestCase
     public static function tearDownAfterClass()
     {
         $process = new Process(
-            'perl -pi -e \'s/"version"/"test_version"/g\' ./composer.json',
+            'perl -pi.bak -e \'s/"version"/"test_version"/g\' ./composer.json',
             self::getProjectRoot()
         );
         $process->run();
