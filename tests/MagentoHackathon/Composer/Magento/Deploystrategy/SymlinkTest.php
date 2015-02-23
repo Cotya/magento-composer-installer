@@ -150,6 +150,9 @@ class SymlinkTest extends AbstractTest
             '/app/etc/modules/EcomDev_PHPUnitTest.xml',
         );
 
-        $this->assertEquals($expected, $this->strategy->getDeployedFiles());
+        $result = $this->strategy->getDeployedFiles();
+        sort($expected);
+        sort($result);
+        $this->assertEquals($expected, $result);
     }
 }
