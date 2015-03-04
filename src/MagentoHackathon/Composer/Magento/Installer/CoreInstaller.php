@@ -75,17 +75,6 @@ class CoreInstaller extends MagentoInstallerAbstract
         );
 
     /**
-     * Directories that persist between Updates
-     *
-     * @var array
-     */
-    protected $persistentDirs
-        = array(
-            'media',
-            'var'
-        );
-
-    /**
      * @param IOInterface $io
      * @param Composer    $composer
      * @param string      $type
