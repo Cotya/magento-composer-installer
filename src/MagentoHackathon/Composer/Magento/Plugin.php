@@ -11,6 +11,7 @@ namespace MagentoHackathon\Composer\Magento;
 use Composer\Config;
 use Composer\Installer;
 use Composer\Script\CommandEvent;
+use MagentoHackathon\Composer\Helper;
 use MagentoHackathon\Composer\Magento\Event\EventManager;
 use MagentoHackathon\Composer\Magento\Event\PackageDeployEvent;
 use MagentoHackathon\Composer\Magento\Factory\DeploystrategyFactory;
@@ -188,6 +189,12 @@ class Plugin implements PluginInterface, EventSubscriberInterface
         }, $this->composer->getRepositoryManager()->getLocalRepository()->getPackages());
 
 
+        Helper::initMagentoRootDir(
+            $this->config,
+            $this->io,
+            $this->filesystem,
+            rtrim($this->composer->getConfig()->get(self::VENDOR_DIR_KEY), '/')
+        );
 
 
         $this->writeDebug('iterate over packages to find missing ones');

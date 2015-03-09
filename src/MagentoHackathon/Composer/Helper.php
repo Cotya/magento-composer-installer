@@ -75,4 +75,75 @@ class Helper
         }
         return $result;
     }
+    
+    public static function initMagentoRootDir(
+        ProjectConfig $projectConfig,
+        \Composer\IO\IOInterface $io,
+        \Composer\Util\Filesystem $filesystem,
+        $vendorDir
+    ) {
+        if (false === $projectConfig->hasMagentoRootDir()) {
+            $projectConfig->setMagentoRootDir(
+                $io->ask(
+                    sprintf('please define your magento root dir [%s]', ProjectConfig::DEFAULT_MAGENTO_ROOT_DIR),
+                    ProjectConfig::DEFAULT_MAGENTO_ROOT_DIR
+                )
+            );
+        }
+
+        $magentoRootDirPath = $projectConfig->getMagentoRootDir();
+        $magentoRootDir = new \SplFileInfo($magentoRootDirPath);
+
+        if (
+            !is_dir($magentoRootDirPath)
+            && $io->askConfirmation(
+                'magento root dir "' . $magentoRootDirPath . '" missing! create now? [Y,n] '
+            )
+        ) {
+            $filesystem->ensureDirectoryExists($magentoRootDir);
+            $io->write('magento root dir "' . $magentoRootDirPath . '" created');
+        }
+
+        if (!is_dir($magentoRootDirPath)) {
+            $dir = self::joinFilePath($vendorDir, $magentoRootDirPath);
+        }
+    }
+
+    /**
+     * join 2 paths
+     *
+     * @param        $path1
+     * @param        $path2
+     * @param        $delimiter
+     * @param bool   $prependDelimiter
+     * @param string $additionalPrefix
+     *
+     * @internal param $url1
+     * @internal param $url2
+     *
+     * @return string
+     */
+    public static function joinPath($path1, $path2, $delimiter, $prependDelimiter = false, $additionalPrefix = '')
+    {
+        $prefix = $additionalPrefix . $prependDelimiter ? $delimiter : '';
+
+        return $prefix . join(
+            $delimiter,
+            array(
+                explode($path1, $delimiter),
+                explode($path2, $delimiter)
+            )
+        );
+    }
+
+    /**
+     * @param $path1
+     * @param $path2
+     *
+     * @return string
+     */
+    public static function joinFilePath($path1, $path2)
+    {
+        return self::joinPath($path1, $path2, DIRECTORY_SEPARATOR, true);
+    }
 }
