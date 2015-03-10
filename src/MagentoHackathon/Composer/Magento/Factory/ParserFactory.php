@@ -58,7 +58,12 @@ class ParserFactory implements ParserFactoryInterface
         }
 
         throw new \ErrorException(
-            sprintf('Unable to find deploy strategy for module: "%s" no known mapping', $package->getName())
+            sprintf(
+                'Unable to find deploy strategy for module: "%s" no known mapping'.PHP_EOL
+                .'sourceDir: "%s"',
+                $package->getName(),
+                $sourceDir
+            )
         );
     }
 }
