@@ -102,13 +102,17 @@ class ModuleManager
     }
 
     /**
-     * @param array $packagesToRemove
+     * @param InstalledPackage[] $packagesToRemove
      */
     public function doRemoves(array $packagesToRemove)
     {
+        $magentoRootDir = $this->config->getMagentoRootDir();
+        $addBasePath = function($path) use ($magentoRootDir) {
+            return $magentoRootDir.$path;
+        };
         foreach ($packagesToRemove as $remove) {
             //$this->eventManager->dispatch(new PackageUnInstallEvent('pre-package-uninstall', $remove));
-            $this->unInstallStrategy->unInstall($remove->getInstalledFiles());
+            $this->unInstallStrategy->unInstall(array_map($addBasePath, $remove->getInstalledFiles()));
             //$this->eventManager->dispatch(new PackageUnInstallEvent('post-package-uninstall', $remove));
             $this->installedPackageRepository->remove($remove);
         }
@@ -170,6 +174,7 @@ class ModuleManager
             $path = sprintf("%s/%s", $path, $targetDir);
         }
 
+        $path = realpath($path);
         return $path;
     }
 }
