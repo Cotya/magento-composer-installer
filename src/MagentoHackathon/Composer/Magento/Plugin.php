@@ -21,6 +21,9 @@ use MagentoHackathon\Composer\Magento\Factory\PathTranslationParserFactory;
 use MagentoHackathon\Composer\Magento\Installer\MagentoInstallerAbstract;
 use MagentoHackathon\Composer\Magento\Installer\ModuleInstaller;
 use MagentoHackathon\Composer\Magento\Patcher\Bootstrap;
+use MagentoHackathon\Composer\Magento\Repository\InstalledPackageFileSystemRepository;
+use MagentoHackathon\Composer\Magento\UnInstallStrategy\UnInstallStrategy;
+use MagentoHackathon\Composer\Magento\Factory\InstallStrategyFactory;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 use Composer\Composer;
@@ -140,10 +143,12 @@ class Plugin implements PluginInterface, EventSubscriberInterface
 
         $this->writeDebug('activate magento plugin');
 
+        /*
         $moduleInstaller = new ModuleInstaller($io, $composer, $this->entryFactory);
         $moduleInstaller->setDeployManager($this->deployManager);
 
         $composer->getInstallationManager()->addInstaller($moduleInstaller);
+        /**/
     }
 
     /**
@@ -184,18 +189,33 @@ class Plugin implements PluginInterface, EventSubscriberInterface
     public function onNewCodeEvent(CommandEvent $event)
     {
 
-        $magentoModules = array_map(function(PackageInterface $package) {
-            return $package->getType() === static::PACKAGE_TYPE;
-        }, $this->composer->getRepositoryManager()->getLocalRepository()->getPackages());
+        $magentoModules = array_filter(
+            $this->composer->getRepositoryManager()->getLocalRepository()->getPackages(),
+            function(PackageInterface $package) {
+                return $package->getType() === static::PACKAGE_TYPE;
+            }
+        );
 
+        $vendorDir = rtrim($this->composer->getConfig()->get(self::VENDOR_DIR_KEY), '/');
 
         Helper::initMagentoRootDir(
             $this->config,
             $this->io,
             $this->filesystem,
-            rtrim($this->composer->getConfig()->get(self::VENDOR_DIR_KEY), '/')
+            $vendorDir
         );
 
+
+        $moduleManager = new ModuleManager(
+            new InstalledPackageFileSystemRepository(
+                $vendorDir.'/installed.json',
+                new InstalledPackageDumper()
+            ),
+            new EventManager,
+            $this->config,
+            new UnInstallStrategy($this->filesystem),
+            new InstallStrategyFactory($this->config, new ParserFactory($this->config))
+        );
 
         $this->writeDebug('iterate over packages to find missing ones');
         $addedPackageNames = array();
@@ -204,6 +224,8 @@ class Plugin implements PluginInterface, EventSubscriberInterface
         }
         /** @var PackageInterface[] $packages */
         $packages = $this->composer->getRepositoryManager()->getLocalRepository()->getPackages();
+        
+        $moduleManager->updateInstalledPackages($magentoModules);
         
         foreach ($packages as $package) {
             if ($package->getType() == 'magento-module' && !isset($addedPackageNames[$package->getName()])) {
@@ -218,7 +240,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
         $this->writeDebug('start magento deploy via deployManager');
 
         $this->writeDebug('start magento module deploy via deployManager');
-        $this->deployManager->doDeploy();
+        //$this->deployManager->doDeploy();
         $this->deployLibraries();
 
         if (file_exists($this->config->getMagentoRootDir() . '/app/Mage.php')) {
