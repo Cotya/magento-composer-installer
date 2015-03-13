@@ -32,7 +32,7 @@ install:
   - curl -sS https://getcomposer.org/installer | php
   - chmod +x ./composer.phar
   - ./composer.phar --version
-  - ./composer.phar install --dev
+  - ./composer.phar install
   
 script:
   - >
