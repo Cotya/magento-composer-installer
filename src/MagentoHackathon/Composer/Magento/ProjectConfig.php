@@ -180,7 +180,7 @@ class ProjectConfig
     public function getDeployStrategyOverwrite()
     {
         return (array)$this->transformArrayKeysToLowerCase(
-            $this->fetchVarFromExtraConfig(self::MAGENTO_DEPLOY_STRATEGY_OVERWRITE_KEY)
+            $this->fetchVarFromExtraConfig(self::MAGENTO_DEPLOY_STRATEGY_OVERWRITE_KEY, array())
         );
     }
 
@@ -190,6 +190,41 @@ class ProjectConfig
     public function hasDeployStrategyOverwrite()
     {
         return $this->hasExtraField(self::MAGENTO_DEPLOY_STRATEGY_OVERWRITE_KEY);
+    }
+
+    /**
+     * @param $packagename
+     *
+     * @return integer
+     */
+    public function getModuleSpecificDeployStrategy($packagename)
+    {
+        $moduleSpecificDeployStrategies = $this->getDeployStrategyOverwrite();
+
+        $strategyName = $this->getDeployStrategy();
+        if (isset($moduleSpecificDeployStrategies[$packagename])) {
+            $strategyName = $moduleSpecificDeployStrategies[$packagename];
+        }
+        return $strategyName;
+    }
+
+    /**
+     * @param $packagename
+     *
+     * @return integer
+     */
+    public function getModuleSpecificSortValue($packagename)
+    {
+        $sortPriorityArray = $this->fetchVarFromExtraConfig(self::SORT_PRIORITY_KEY, array());
+        if (isset($sortPriorityArray[$packagename])) {
+            $sortValue = $sortPriorityArray[$packagename];
+        } else {
+            $sortValue = 100;
+            if ($this->getModuleSpecificDeployStrategy($packagename) === 'copy') {
+                $sortValue++;
+            }
+        }
+        return $sortValue;
     }
 
     /**

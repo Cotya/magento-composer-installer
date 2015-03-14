@@ -156,9 +156,26 @@ class ModuleManager
     public function getInstalls(array $currentComposerInstalledPackages)
     {
         $repo = $this->installedPackageRepository;
-        return array_filter($currentComposerInstalledPackages, function(PackageInterface $package) use ($repo) {
+        $packages = array_filter($currentComposerInstalledPackages, function(PackageInterface $package) use ($repo) {
             return !$repo->has($package->getName(), $package->getVersion());
         });
+        
+        $config = $this->config;
+        usort($packages, function(PackageInterface $aObject, PackageInterface $bObject) use ($config) {
+            $a = $config->getModuleSpecificSortValue($aObject->getName());
+            $b = $config->getModuleSpecificSortValue($bObject->getName());
+            if ($a == $b) {
+                return strcmp($aObject->getName(), $bObject->getName());
+                /**
+                 * still changes sort order and breaks a test, so for now strcmp as workaround
+                 * to keep the test working.
+                 */
+                // return 0;
+            }
+            return ($a < $b) ? -1 : 1;
+        });
+        
+        return $packages;
     }
 
     /**

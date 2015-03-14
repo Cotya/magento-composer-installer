@@ -40,14 +40,7 @@ class InstallStrategyFactory
      */
     public function make(PackageInterface $package, $packageSourcePath)
     {
-        $strategyName = $this->config->getDeployStrategy();
-        if ($this->config->hasDeployStrategyOverwrite()) {
-            $moduleSpecificDeployStrategies = $this->config->getDeployStrategyOverwrite();
-
-            if (isset($moduleSpecificDeployStrategies[$package->getName()])) {
-                $strategyName = $moduleSpecificDeployStrategies[$package->getName()];
-            }
-        }
+        $strategyName = $this->config->getModuleSpecificDeployStrategy($package->getName());
 
         $ns = '\MagentoHackathon\Composer\Magento\Deploystrategy\\';
         $className = $ns . ucfirst($strategyName);
