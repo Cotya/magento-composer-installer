@@ -507,7 +507,7 @@ abstract class DeploystrategyAbstract
      */
     public function getDeployedFiles()
     {
-        return $this->deployedFiles;
+        return array_unique($this->deployedFiles);
     }
 
     /**
