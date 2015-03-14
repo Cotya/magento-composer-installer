@@ -34,10 +34,18 @@ class UnInstallStrategy implements UnInstallStrategyInterface
     public function unInstall(array $files)
     {
         foreach ($files as $file) {
-            $this->fileSystem->unlink($file);
+            /*
+            because of different reasons the file can be already gone.
+            example:
+            - file got deployed by multiple modules(should only happen with copy force)
+            - user did things
+            */
+            if (file_exists($file)) {
+                $this->fileSystem->unlink($file);
 
-            if ($this->fileSystem->isDirEmpty(dirname($file))) {
-                $this->fileSystem->removeDirectory(dirname($file));
+                if ($this->fileSystem->isDirEmpty(dirname($file))) {
+                    $this->fileSystem->removeDirectory(dirname($file));
+                }
             }
         }
     }
