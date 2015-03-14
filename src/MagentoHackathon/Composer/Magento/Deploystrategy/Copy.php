@@ -84,6 +84,7 @@ class Copy extends DeploystrategyAbstract
             if (is_dir($destPath)) {
                 $destPath .= '/' . basename($sourcePath);
             }
+            $this->addDeployedFile($destPath);
             return copy($sourcePath, $destPath);
         }
 
