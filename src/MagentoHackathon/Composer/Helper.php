@@ -34,7 +34,10 @@ class Helper
         
         $reader = new \Eloquent\Composer\Configuration\ConfigurationReader;
         $composerJsonObject = $reader->read($this->projectRoot.'/composer.json');
-        $this->magentoProjectConfig = new ProjectConfig((array)$composerJsonObject->extra());
+        $this->magentoProjectConfig = new ProjectConfig(
+            (array)$composerJsonObject->extra(),
+            (array)$composerJsonObject
+        );
     }
     
     public function getVendorDirectory()
