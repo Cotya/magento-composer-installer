@@ -224,7 +224,7 @@ class FullStackTest extends FullStack\AbstractTest
             'app/design/frontend/wildcard/wildcard.phtml',
             'composer_lib/autoload.php',
             'composer_lib/magento-hackathon/magento-composer-installer-test-library/composer.json',
-//            'app/design/frontend/test/default/updateFileRemove/design/test2.phtml',
+            'app/design/frontend/test/default/updateFileRemove/design/test2.phtml',
         );
     }
 
@@ -237,15 +237,15 @@ class FullStackTest extends FullStack\AbstractTest
             'index.php',
             'shell/compiler.php',
 //            'app/design/frontend/test/default/updateFileRemove/design/test2.phtml',
-//            'app/design/frontend/test/default/updateFileRemove/test2.phtml',
+            'app/design/frontend/test/default/updateFileRemove/test2.phtml',
         );
     }
 
     protected function getFirstExistTestSet()
     {
         return array(
-//            'app/design/frontend/test/default/updateFileRemove/design/test1.phtml',
-//            'app/design/frontend/test/default/updateFileRemove/design/test2.phtml',
+            'app/design/frontend/test/default/updateFileRemove/design/test1.phtml',
+            'app/design/frontend/test/default/updateFileRemove/design/test2.phtml',
               'shell/log.php',
         );
     }
@@ -253,7 +253,7 @@ class FullStackTest extends FullStack\AbstractTest
     protected function getSecondExistTestSet()
     {
         return array(
-//            'app/design/frontend/test/default/updateFileRemove/design/test1.phtml',
+            'app/design/frontend/test/default/updateFileRemove/design/test1.phtml',
         );
     }
 }
