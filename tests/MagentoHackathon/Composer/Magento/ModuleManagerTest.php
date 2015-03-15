@@ -1,6 +1,7 @@
 <?php
 
 namespace MagentoHackathon\Composer\Magento;
+
 use Composer\Package\Package;
 use MagentoHackathon\Composer\Magento\Deploystrategy\None;
 use MagentoHackathon\Composer\Magento\Event\EventManager;

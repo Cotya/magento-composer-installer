@@ -94,8 +94,7 @@ class Helper
         $magentoRootDirPath = $projectConfig->getMagentoRootDir();
         $magentoRootDir = new \SplFileInfo($magentoRootDirPath);
 
-        if (
-            !is_dir($magentoRootDirPath)
+        if (!is_dir($magentoRootDirPath)
             && $io->askConfirmation(
                 'magento root dir "' . $magentoRootDirPath . '" missing! create now? [Y,n] '
             )

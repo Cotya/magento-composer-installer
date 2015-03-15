@@ -148,8 +148,7 @@ abstract class MagentoInstallerAbstract extends LibraryInstaller implements Inst
 
         $this->magentoRootDir = new \SplFileInfo($this->getConfig()->getMagentoRootDir());
 
-        if (
-            !is_dir($this->getConfig()->getMagentoRootDir())
+        if (!is_dir($this->getConfig()->getMagentoRootDir())
             && $this->io->askConfirmation(
                 'magento root dir "' . $this->getConfig()->getMagentoRootDir() . '" missing! create now? [Y,n] '
             )
