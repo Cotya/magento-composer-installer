@@ -4,6 +4,7 @@ namespace MagentoHackathon\Composer\Magento\Factory;
 
 use Composer\Package\PackageInterface;
 use MagentoHackathon\Composer\Magento\ProjectConfig;
+use MagentoHackathon\Composer\Magento\Deploystrategy\DeploystrategyAbstract;
 
 /**
  * Class DeploystrategyFactory
