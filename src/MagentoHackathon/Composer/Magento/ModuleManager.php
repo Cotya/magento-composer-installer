@@ -3,6 +3,7 @@
 namespace MagentoHackathon\Composer\Magento;
 
 use Composer\Package\PackageInterface;
+use MagentoHackathon\Composer\Magento\Deploy\Manager\Entry;
 use MagentoHackathon\Composer\Magento\Event\EventManager;
 use MagentoHackathon\Composer\Magento\Event\PackageDeployEvent;
 use MagentoHackathon\Composer\Magento\Event\PackageUnInstallEvent;
@@ -87,7 +88,17 @@ class ModuleManager
                 $this->getPackageSourceDirectory($install)
             );
 
+
+            $deployEntry = new Entry();
+            $deployEntry->setPackageName($install->getPrettyName());
+            $deployEntry->setDeployStrategy($installStrategy);
+            $this->eventManager->dispatch(
+                new PackageDeployEvent('pre-package-deploy', $deployEntry)
+            );
             $files = $installStrategy->deploy()->getDeployedFiles();
+            $this->eventManager->dispatch(
+                new PackageDeployEvent('post-package-deploy', $deployEntry)
+            );
             $this->installedPackageRepository->add(new InstalledPackage(
                 $install->getName(),
                 $install->getVersion(),
