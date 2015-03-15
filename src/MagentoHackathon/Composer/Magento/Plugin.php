@@ -224,31 +224,8 @@ class Plugin implements PluginInterface, EventSubscriberInterface
             new UnInstallStrategy($this->filesystem),
             new InstallStrategyFactory($this->config, new ParserFactory($this->config))
         );
-
-        $this->writeDebug('iterate over packages to find missing ones');
-        $addedPackageNames = array();
-        foreach ($this->deployManager->getEntries() as $entry) {
-            $addedPackageNames[$entry->getPackageName()] = $entry->getPackageName();
-        }
-        /** @var PackageInterface[] $packages */
-        $packages = $this->composer->getRepositoryManager()->getLocalRepository()->getPackages();
-        
+        $this->writeDebug('start magento module deploy via moduleManager');
         $moduleManager->updateInstalledPackages($magentoModules);
-        
-        foreach ($packages as $package) {
-            if ($package->getType() == 'magento-module' && !isset($addedPackageNames[$package->getName()])) {
-                $this->writeDebug('add missing package '.$package->getName());
-                $entry = $this->entryFactory->make($package, $this->getPackageInstallPath($package));
-                $this->deployManager->addPackage($entry);
-            }
-        }
-
-        $this->writeDebug('start magento module deploy via deployManager');
-
-        $this->writeDebug('start magento deploy via deployManager');
-
-        $this->writeDebug('start magento module deploy via deployManager');
-        //$this->deployManager->doDeploy();
         $this->deployLibraries();
 
         if (file_exists($this->config->getMagentoRootDir() . '/app/Mage.php')) {
