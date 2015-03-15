@@ -236,7 +236,6 @@ class FullStackTest extends FullStack\AbstractTest
             'app/app/code/test.php',
             'index.php',
             'shell/compiler.php',
-//            'app/design/frontend/test/default/updateFileRemove/design/test2.phtml',
             'app/design/frontend/test/default/updateFileRemove/test2.phtml',
         );
     }
