@@ -43,10 +43,10 @@ class DeployAllCommand extends Command
                 // @todo not secure
                 $packageDir = $composerHelper->getVendorDirectory()->getPathname().'/'.$package['name'];
             
-                $deployStrategy = Factory::getDeployStrategyObject(
-                    $composerHelper->getMagentoProjectConfig()->getDeployStrategy(),
-                    $packageDir,
-                    realpath($composerHelper->getMagentoProjectConfig()->getMagentoRootDir())
+                $deployStrategyFactory = new Factory\DeploystrategyFactory($composerHelper->getMagentoProjectConfig());
+                $deployStrategy = $deployStrategyFactory->make(
+                    $packageName,
+                    $packageDir
                 );
                 $deployStrategy->setIsForced($composerHelper->getMagentoProjectConfig()->getMagentoForce());
                 $mappingParser = Factory::getMappingParser(
