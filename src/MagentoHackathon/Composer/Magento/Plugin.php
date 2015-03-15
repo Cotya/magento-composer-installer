@@ -91,11 +91,18 @@ class Plugin implements PluginInterface, EventSubscriberInterface
         $this->deployManager = new DeployManager($eventManager);
         $this->deployManager->setSortPriority($this->getSortPriority($composer));
 
+        $this->applyEvents($eventManager);
+    }
+    
+    protected function applyEvents(EventManager $eventManager)
+    {
+
         if ($this->config->hasAutoAppendGitignore()) {
             $gitIgnoreLocation = sprintf('%s/.gitignore', $this->config->getMagentoRootDir());
             $eventManager->listen('post-package-deploy', new GitIgnoreListener(new GitIgnore($gitIgnoreLocation)));
         }
 
+        $io = $this->io;
         if ($this->io->isDebug()) {
             $eventManager->listen('pre-package-deploy', function(PackageDeployEvent $event) use ($io) {
                 $io->write('Start magento deploy for ' . $event->getDeployEntry()->getPackageName());
@@ -205,13 +212,14 @@ class Plugin implements PluginInterface, EventSubscriberInterface
             $vendorDir
         );
 
-
+        $eventManager = new EventManager;
+        $this->applyEvents($eventManager);
         $moduleManager = new ModuleManager(
             new InstalledPackageFileSystemRepository(
                 $vendorDir.'/installed.json',
                 new InstalledPackageDumper()
             ),
-            new EventManager,
+            $eventManager,
             $this->config,
             new UnInstallStrategy($this->filesystem),
             new InstallStrategyFactory($this->config, new ParserFactory($this->config))
