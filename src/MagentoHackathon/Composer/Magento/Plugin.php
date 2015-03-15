@@ -224,6 +224,11 @@ class Plugin implements PluginInterface, EventSubscriberInterface
             new UnInstallStrategy($this->filesystem),
             new InstallStrategyFactory($this->config, new ParserFactory($this->config))
         );
+
+        if (in_array('--redeploy', $event->getArguments())) {
+            $this->writeDebug('remove all deployed modules');
+            $moduleManager->updateInstalledPackages(array());
+        }
         $this->writeDebug('start magento module deploy via moduleManager');
         $moduleManager->updateInstalledPackages($magentoModules);
         $this->deployLibraries();

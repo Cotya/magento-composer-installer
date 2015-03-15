@@ -100,16 +100,9 @@ If you only want to place packages into the vendor directory with no linking/cop
 
 On occasions you want trigger the deploy of magento modules without the need of an update/install process.
 
-For this case there is the ```magento-composer-installer.php``` script, which you should find in ```./vendor/bin```
-
-you are able to use the commands:
-```
-./vendor/bin/magento-composer-installer.php
-./vendor/bin/magento-composer-installer.php list
-./vendor/bin/magento-composer-installer.php deploy
-./vendor/bin/magento-composer-installer.php deploy:all
-
-```
+For this case you can trigger the related event manually with an additional paramater.  
+```composer.phar run-script post-install-cmd -vvv -- --redeploy```  
+This does remove all deployed files and redeploys every module
 
 
 

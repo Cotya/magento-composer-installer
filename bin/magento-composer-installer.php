@@ -1,6 +1,10 @@
 #!/usr/bin/env php
 <?php
 
+echo 'please use 
+`composer.phar run-script post-install-cmd -vvv -- --redeploy` to initiate a redeploy of modules'.PHP_EOL;
+exit(1);
+
 if (file_exists(__DIR__.'/../autoload.php')) {
     include __DIR__.'/../autoload.php';
 } elseif (file_exists(__DIR__.'/../../../autoload.php')) {
