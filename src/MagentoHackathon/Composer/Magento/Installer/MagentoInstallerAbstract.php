@@ -524,6 +524,8 @@ abstract class MagentoInstallerAbstract extends LibraryInstaller implements Inst
     public function annoy(IOInterface $io)
     {
 
+        $io->write('<error>You use an unsupported source for installing the magento composer installer.</error>', true);
+        $io->write('<comment>Please use packages.firegento.com as source for this installer, not the git repo directly</comment>', true);
         /**
          * No <error> in future, as some people look for error lines inside of CI Applications, which annoys them
          */
