@@ -62,7 +62,7 @@ class Bootstrap
         $mageFileReplacement
             = <<<php
 <?php
-require __DIR__ . '/bootstrap.php;
+require __DIR__ . '/bootstrap.php';
 
 php;
         file_put_contents($appPath . '/Mage.php', $mageFileReplacement);
