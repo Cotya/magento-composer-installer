@@ -16,7 +16,7 @@ class BootstrapTest extends \PHPUnit_Framework_TestCase
      *
      * @param $MageFile
      */
-    public function testMageFiles($MageFile)
+    public function testMageFilesExist($MageFile)
     {
 
         $structure = array(
@@ -37,6 +37,28 @@ class BootstrapTest extends \PHPUnit_Framework_TestCase
         $this->assertFileExists(vfsStream::url('patcherMagentoBase/app/Mage.class.php'));
         $this->assertFileExists(vfsStream::url('patcherMagentoBase/app/Mage.bootstrap.php'));
         $this->assertFileNotExists(vfsStream::url('patcherMagentoBase/app/Mage.nonsense.php'));
+    }
+
+    /**
+     * @dataProvider mageFileProvider
+     *
+     * Ensure that the Mage class is valid PHP
+     * @param  string $MageFile
+     * @return void
+     */
+    public function testMageClassFile($MageFile)
+    {
+        $structure = array(
+            'app' => array(
+                'Mage.php' => file_get_contents($MageFile),
+            ),
+        );
+        $directory = vfsStream::setup('patcherMagentoBase', null, $structure);
+        $patcher = new Bootstrap(vfsStream::url('patcherMagentoBase'));
+        $patcher->patch();
+
+        require vfsStream::url('patcherMagentoBase/app/Mage.class.php');
+        $this->assertTrue(class_exists('Mage'));
     }
 
     public function mageFileProvider()
