@@ -39,7 +39,7 @@ class Bootstrap
         $mageFileContent = file($appPath . '/Mage.php');
 
         $mageClassFile = '';
-        $mageBootstrapFile = '';
+        $mageBootstrapFile = '<?php' . PHP_EOL;
         $isBootstrapPart = false;
         foreach ($mageFileContent as $row) {
             if (strpos($row, 'define') === 0) {
@@ -76,8 +76,8 @@ php;
         $bootstrapFile
             = <<<php
 <?php
-require __DIR__ . 'Mage.bootstrap.php';
-require __DIR__ . 'Mage.class.php';
+require __DIR__ . '/Mage.class.php';
+require __DIR__ . '/Mage.bootstrap.php';
 
 php;
         if (!file_exists($appPath . '/bootstrap.php')) {
