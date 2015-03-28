@@ -422,6 +422,11 @@ class ProjectConfig
     {
         return array_change_key_case($array, CASE_LOWER);
     }
+    
+    public function getComposerRepositories()
+    {
+        return $this->fetchVarFromConfigArray($this->composerConfig, 'repositories', array());
+    }
 
     /**
      * Get Composer vendor directory
