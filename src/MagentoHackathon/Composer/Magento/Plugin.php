@@ -252,6 +252,9 @@ class Plugin implements PluginInterface, EventSubscriberInterface
         $foundMagento   = false;
 
         foreach ($this->config->getComposerRepositories() as $repository) {
+            if (!isset($repository["type"]) || $repository["type"] !== "composer") {
+                continue;
+            }
             if (strpos($repository["url"], "packages.firegento.com") !== false) {
                 $foundFiregento = true;
             }
