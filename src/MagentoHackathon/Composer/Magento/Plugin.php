@@ -140,6 +140,8 @@ class Plugin implements PluginInterface, EventSubscriberInterface
         $this->filesystem = new Filesystem();
         $this->config = new ProjectConfig($composer->getPackage()->getExtra(), $composer->getConfig()->all());
 
+        $this->veryfiyComposerRepositories();
+        
         $this->entryFactory = new EntryFactory(
             $this->config,
             new DeploystrategyFactory($this->config),
@@ -237,6 +239,35 @@ class Plugin implements PluginInterface, EventSubscriberInterface
         if (file_exists($this->config->getMagentoRootDir() . '/app/Mage.php')) {
             $patcher = new Bootstrap($this->config->getMagentoRootDir());
             $patcher->patch();
+        }
+        
+    }
+
+    /**
+     * test configured repositories and give message about adding recommended ones
+     */
+    protected function veryfiyComposerRepositories()
+    {
+        $foundFiregento = false;
+        $foundMagento   = false;
+
+        foreach ($this->composer->getConfig()->getRepositories() as $repository) {
+            if (strpos($repository["url"], "packages.firegento.com") !== false) {
+                $foundFiregento = true;
+            }
+            if (strpos($repository["url"], "packages.magento.com") !== false) {
+                $foundMagento = true;
+            }
+        };
+        $message1 = "<comment>you may want to add the %s repository to composer.</comment>";
+        $message2 = "<comment>add it with:</comment> composer.phar config -g repositories.%s composer %s";
+        if (!$foundFiregento) {
+            $this->io->write(sprintf($message1, 'packages.firegento.com'));
+            $this->io->write(sprintf($message2, 'firegento', 'http://packages.firegento.com'));
+        }
+        if (!$foundMagento) {
+            $this->io->write(sprintf($message1, 'packages.magento.com'));
+            $this->io->write(sprintf($message2, 'magento', 'https?://packages.magento.com'));
         }
         
     }
