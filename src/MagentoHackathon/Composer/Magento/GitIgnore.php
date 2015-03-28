@@ -40,6 +40,7 @@ class GitIgnore
      */
     public function addEntry($file)
     {
+        $file = str_replace(DIRECTORY_SEPARATOR, '/', $file);
         if (!isset($this->lines[$file])) {
             $this->lines[$file] = $file;
         }
@@ -61,6 +62,7 @@ class GitIgnore
      */
     public function removeEntry($file)
     {
+        $file = str_replace(DIRECTORY_SEPARATOR, '/', $file);
         if (isset($this->lines[$file])) {
             unset($this->lines[$file]);
             $this->hasChanges = true;
