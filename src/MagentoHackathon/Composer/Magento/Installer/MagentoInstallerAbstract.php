@@ -485,9 +485,7 @@ abstract class MagentoInstallerAbstract extends LibraryInstaller implements Inst
      */
     public function getInstallPath(PackageInterface $package)
     {
-        var_dump($this->modmanRootDir);
-        var_dump(!is_null($this->modmanRootDir));
-        var_dump($this->modmanRootDir->isDir());
+
         if (!is_null($this->modmanRootDir) && true === $this->modmanRootDir->isDir()) {
             $targetDir = $package->getTargetDir();
             if (!$targetDir) {
