@@ -100,6 +100,11 @@ class Copy extends DeploystrategyAbstract
             \RecursiveIteratorIterator::SELF_FIRST);
 
         foreach ($iterator as $item) {
+            $subDest = $dest . '/' . $iterator->getSubPathName();
+            if ($this->isDestinationIgnored($subDest) || in_array($item->getFileName(), array('.', '..'))) {
+                continue;
+            }
+
             $subDestPath = $destPath . '/' . $iterator->getSubPathName();
             if ($item->isDir()) {
                 if (! file_exists($subDestPath)) {
