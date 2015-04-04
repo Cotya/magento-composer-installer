@@ -9,7 +9,6 @@
 # Magento Composer Installer 
 [![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/magento-hackathon/magento-composer-installer?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-<img src="https://getcomposer.org/img/logo-composer-transparent.png" itemprop="image" alt="Dart Mosaic" style="height:50px;">
 
 The purpose of this project is to 
 enable [composer](https://github.com/composer/composer) to install Magento modules,
