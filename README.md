@@ -29,7 +29,7 @@ This project only covers the custom installer for composer. If you have problems
 need to install magento connect modules or similar, you need to look for [packages.firegento.com](http://packages.firegento.com/)
 which you probably should add as composer repository (globally)
 
-```composer config -g repositories.firegento composer http://packages.firegento.com'```
+```composer config -g repositories.firegento composer http://packages.firegento.com```
 
  
  
@@ -102,15 +102,17 @@ the second command needs maybe a `--with-dependencies`
 
 ### Install a module in your project
 
-If you want to use [the public Magento module repository](http://packages.firegento.com),
-set up your root ```composer.json``` in your project like this:
+make sure to use [the public Magento module repository](http://packages.firegento.com) as composer repository:
+
+```composer config -g repositories.firegento composer http://packages.firegento.com```
+
+configure your `magento root dir`, the directory where your magento resides:  
+```composer config extra.magento-root-dir composer "htdocs/"```
+ 
+an example how your project ```composer.json``` could look like:
 
 ```json
 {
-    "require": {
-        "your-vendor-name/module-name": "*",
-        "magento-hackathon/magento-composer-installer": "*"
-    },
     "repositories": [
         {
             "type": "composer",
@@ -119,64 +121,6 @@ set up your root ```composer.json``` in your project like this:
     ],
     "extra":{
         "magento-root-dir": "htdocs/"
-    }
-}
-```
-
-If you want to use a github/git/svn/etc repository, 
-set up your root ```composer.json``` in your project like this:
-
-```json
-{
-    "require": {
-        "magento-hackathon/magento-composer-installer":"*",
-        "the-vendor-name/the-module-name": "*"
-    },
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/magento-hackathon/magento-composer-installer"
-        },
-        {
-            "type": "vcs",
-            "url": "the/github/or/git/or/svn/etc/repository/uri-of-the-module"
-        }
-    ],
-    "extra":{
-        "magento-root-dir": "htdocs/"
-    }
-}
-```
-Notes:
-
-1. More information about VCS repositories can be found 
-   at [getcomposer.org](http://getcomposer.org/doc/05-repositories.md#vcs)
-
-
-
-### Change the Vendor/Name of your Module
-
-sometimes it will happen, that you change the name or the vendor of a package.
-For example you developed a module in your own namespace and later moved it to an organization, or you moved it
-from one to another organization.
-In this cases you should change your ```composer.json``` a bit to make it for users easier.
-Look for the ```replace``` statement
-
-
-```json
-{
-    "name": "your-new-vendor-name/module-name",
-    "type": "magento-module",
-    "license":"OSL-3.0",
-    "description":"A short one line description of your module",
-    "authors":[
-        {
-            "name":"Author Name",
-            "email":"author@example.com"
-        }
-    ],
-    "replace": {
-        "your-vendor-name/module-name":"*"
     }
 }
 ```
