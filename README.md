@@ -57,6 +57,9 @@ other support contacts
 =======
 ## Known issues
 
+### using non default autoloading
+
+we handle this topic in our [FAQ](doc/FAQ.md).
 
 ### Timeouts and slow downloading. 
 
