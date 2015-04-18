@@ -411,11 +411,8 @@ abstract class DeploystrategyAbstract
                     $newDest = ltrim($newDest, ' \\/');
                     $this->remove(substr($match, strlen($this->getSourceDir()) + 1), $newDest);
                 }
-                return;
             }
-
-            // Source file isn't a valid file or glob
-            throw new \ErrorException("Source $sourcePath does not exist");
+            return;
         }
 
         // MP Avoid removing whole folders in case the modman file is not 100% well-written
