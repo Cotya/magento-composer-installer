@@ -55,7 +55,6 @@
     },
     "suggest":{
         "theseer/autoload": "~1.14",
-        "ext-SPL_Types":"*",
         "colinmollenhour/modman": "*"
     },
     "autoload":{
