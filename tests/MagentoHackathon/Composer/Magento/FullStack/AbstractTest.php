@@ -1,98 +1,42 @@
 <?php
-/**
- *
- *
- *
- *
- */
 
 namespace MagentoHackathon\Composer\Magento\FullStack;
 
-use Composer\Util\Filesystem;
 use Symfony\Component\Process\Process;
 
 abstract class AbstractTest extends \PHPUnit_Framework_TestCase
 {
+    private static $composerCommandPath;
 
     protected static $processLogCounter = 1;
 
     public static function setUpBeforeClass()
     {
-        $process = new Process(
-            'perl -pi.bak -e \'s/"test_version"/"version"/g\' ./composer.json',
-            self::getProjectRoot()
-        );
-        $process->run();
-        if ($process->getExitCode() !== 0) {
-            $message = sprintf(
-                "process for <code>%s</code> exited with %s: %s%sError Message:%s%s%sOutput:%s%s",
-                $process->getCommandLine(),
-                $process->getExitCode(),
-                $process->getExitCodeText(),
-                PHP_EOL,
-                PHP_EOL,
-                $process->getErrorOutput(),
-                PHP_EOL,
-                PHP_EOL,
-                $process->getOutput()
-            );
-            echo $message;
-        }
-        
+        $command = 'perl -pi.bak -e \'s/"test_version"/"version"/g\' ./composer.json';
+        $process = self::runInProjectRoot($command);
+        self::printProcessMessageIfError($process);
+
         @unlink(self::getProjectRoot().'/vendor/theseer/directoryscanner/tests/_data/linkdir');
         @unlink(self::getBasePath().'/magento/vendor/theseer/directoryscanner/tests/_data/linkdir');
         @unlink(self::getBasePath().'/magento-modules/vendor/theseer/directoryscanner/tests/_data/linkdir');
         @unlink(self::getProjectRoot().'/vendor/theseer/directoryscanner/tests/_data/nested/empty');
         @unlink(self::getBasePath().'/magento/vendor/theseer/directoryscanner/tests/_data/nested/empty');
         @unlink(self::getBasePath().'/magento-modules/vendor/theseer/directoryscanner/tests/_data/nested/empty');
-        
-        $process = new Process(
-            self::getComposerCommand().' archive --format=zip --dir="tests/FullStackTest/artifact" -vvv',
-            self::getProjectRoot()
-        );
-        $process->run();
+
+        $command = self::getComposerCommand().' archive --format=zip --dir="tests/FullStackTest/artifact" -vvv';
+        $process = self::runInProjectRoot($command);
+
         if ($process->getExitCode() !== 0) {
-            $message = sprintf(
-                "process for <code>%s</code> exited with %s: %s%sError Message:%s%s%sOutput:%s%s",
-                $process->getCommandLine(),
-                $process->getExitCode(),
-                $process->getExitCodeText(),
-                PHP_EOL,
-                PHP_EOL,
-                $process->getErrorOutput(),
-                PHP_EOL,
-                PHP_EOL,
-                $process->getOutput()
-            );
-            echo $message;
+            self::printProcessMessageIfError($process);
         } else {
             self::logProcessOutput($process, 'createComposerArtifact');
         }
-
     }
-    
+
     public static function tearDownAfterClass()
     {
-        $process = new Process(
-            'perl -pi.bak -e \'s/"version"/"test_version"/g\' ./composer.json',
-            self::getProjectRoot()
-        );
-        $process->run();
-        if ($process->getExitCode() !== 0) {
-            $message = sprintf(
-                "process for <code>%s</code> exited with %s: %s%sError Message:%s%s%sOutput:%s%s",
-                $process->getCommandLine(),
-                $process->getExitCode(),
-                $process->getExitCodeText(),
-                PHP_EOL,
-                PHP_EOL,
-                $process->getErrorOutput(),
-                PHP_EOL,
-                PHP_EOL,
-                $process->getOutput()
-            );
-            echo $message;
-        }
+        $process = self::runInProjectRoot('perl -pi.bak -e \'s/"version"/"test_version"/g\' ./composer.json');
+        self::printProcessMessageIfError($process);
     }
 
     protected static function getBasePath()
@@ -105,13 +49,25 @@ abstract class AbstractTest extends \PHPUnit_Framework_TestCase
         return realpath(__DIR__.'/../../../../..');
     }
 
-    protected static function getComposerCommand()
+    private static function resolveComposerCommand()
     {
-        $command = 'composer.phar';
         if (getenv('TRAVIS') == "true") {
             $command = self::getProjectRoot().'/composer.phar';
+        } elseif (self::runInProjectRoot('composer.phar --version')->getExitCode() === 0) {
+            $command = 'composer.phar';
+        } else {
+            $command = 'composer';
         }
+
         return $command;
+    }
+
+    protected static function getComposerCommand()
+    {
+        if (self::$composerCommandPath === null) {
+            self::$composerCommandPath = self::resolveComposerCommand();
+        }
+        return self::$composerCommandPath;
     }
 
     protected static function getComposerArgs()
@@ -139,5 +95,31 @@ abstract class AbstractTest extends \PHPUnit_Framework_TestCase
         $message .= PHP_EOL.'Error Message:'.PHP_EOL.$process->getErrorOutput();
         $message .= PHP_EOL.'Output:'.PHP_EOL.$process->getOutput();
         $this->assertEquals(0, $process->getExitCode(), $message);
+    }
+
+    protected static function printProcessMessageIfError(Process $process)
+    {
+        if ($process->getExitCode() !== 0) {
+            $message = sprintf(
+                "process for <code>%s</code> exited with %s: %s%sError Message:%s%s%sOutput:%s%s",
+                $process->getCommandLine(),
+                $process->getExitCode(),
+                $process->getExitCodeText(),
+                PHP_EOL,
+                PHP_EOL,
+                $process->getErrorOutput(),
+                PHP_EOL,
+                PHP_EOL,
+                $process->getOutput()
+            );
+            echo $message;
+        }
+    }
+
+    protected static function runInProjectRoot($command)
+    {
+        $process = new Process($command, self::getProjectRoot());
+        $process->run();
+        return $process;
     }
 }
