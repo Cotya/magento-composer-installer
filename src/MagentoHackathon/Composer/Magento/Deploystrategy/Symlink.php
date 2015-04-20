@@ -98,27 +98,36 @@ class Symlink extends DeploystrategyAbstract
 
         // Create symlink
         if (false === $this->_symlink($relSourcePath, $destPath, $sourcePath)) {
-            throw new \ErrorException("An error occured while creating symlink" . $relSourcePath);
+            $msg = "An error occured while creating symlink\n" . $relSourcePath . " -> " . $destPath;
+            if ('\\' === DIRECTORY_SEPARATOR) {
+                $msg .= "\nDo you have admin privileges?";
+            }
+
+            throw new \ErrorException($msg);
         }
 
-        // Check we where able to create the symlink
-        if (false === $newDestPath = @readlink($destPath)) {
-            throw new \ErrorException("Symlink $newDestPath points to target $newDestPath");
-        }
         $this->addDeployedFile($destPath);
         return true;
     }
 
+    /**
+     * Different handling of symlink creation on unix/windows
+     *
+     * @param string $relSourcePath
+     * @param string $destPath
+     * @param string $absSourcePath
+     * @return bool
+     */
     protected function _symlink($relSourcePath, $destPath, $absSourcePath)
     {
+        $sourcePath = $relSourcePath;
+
         // make symlinks always absolute on windows because of #142
-        if (strtoupper(substr(PHP_OS, 0, 3)) == 'WIN') {
-            $absSourcePath = str_replace('/', '\\', $absSourcePath);
-            $param = is_dir($absSourcePath) ? ' /D' : '';
-            exec('mklink' . escapeshellarg($param) . ' "' . escapeshellarg($destPath) . '" "' . escapeshellarg($absSourcePath) . '"');
-        } else {
-            symlink($relSourcePath, $destPath);
+        if ('\\' === DIRECTORY_SEPARATOR) {
+            $sourcePath = str_replace('/', '\\', $absSourcePath);
         }
+
+        return @symlink($sourcePath, $destPath);
     }
 
     /**
