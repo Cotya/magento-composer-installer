@@ -1,32 +1,54 @@
 <?php
-/**
- *
- *
- *
- *
- */
 
 namespace MagentoHackathon\Composer\Magento\Patcher;
 
+use MagentoHackathon\Composer\Magento\ProjectConfig;
+
 class Bootstrap
 {
-    protected $magentoBasePath;
+    /**
+     * @var ProjectConfig
+     */
+    private $config;
 
-    public function __construct($magentoBasePath)
+    public function __construct(ProjectConfig $config)
     {
-        $this->magentoBasePath = $magentoBasePath;
+        $this->config = $config;
     }
 
+    /**
+     * @return ProjectConfig
+     */
+    private function getConfig()
+    {
+        return $this->config;
+    }
 
+    private function canApplyPatch()
+    {
+        $mageClassPath = $this->getConfig()->getMagentoRootDir() . '/app/Mage.php';
+
+        return $this->getConfig()->mustApplyBootloaderPatch() &&
+               is_file($mageClassPath) &&
+               is_writable($mageClassPath);
+    }
+
+    /**
+     * @return bool
+     */
     public function patch()
     {
-        $this->splitOriginalMage();
-        $this->generateBootstrapFile();
+        if ($this->canApplyPatch()) {
+            $this->splitOriginalMage();
+            $this->generateBootstrapFile();
+            return true;
+        }
+        return false;
     }
 
     protected function getAppPath()
     {
-        return $this->magentoBasePath . '/app';
+        return $this->getConfig()->getMagentoRootDir() . '/app';
     }
 
     protected function splitOriginalMage()

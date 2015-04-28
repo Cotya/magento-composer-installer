@@ -41,7 +41,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
      * The type of packages this plugin supports
      */
     const PACKAGE_TYPE = 'magento-module';
-    
+
     const VENDOR_DIR_KEY = 'vendor-dir';
 
     const BIN_DIR_KEY = 'bin-dir';
@@ -93,7 +93,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
 
         $this->applyEvents($eventManager);
     }
-    
+
     protected function applyEvents(EventManager $eventManager)
     {
 
@@ -141,7 +141,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
         $this->config = new ProjectConfig($composer->getPackage()->getExtra(), $composer->getConfig()->all());
 
         $this->veryfiyComposerRepositories();
-        
+
         $this->entryFactory = new EntryFactory(
             $this->config,
             new DeploystrategyFactory($this->config),
@@ -236,11 +236,8 @@ class Plugin implements PluginInterface, EventSubscriberInterface
         $moduleManager->updateInstalledPackages($magentoModules);
         $this->deployLibraries();
 
-        if (file_exists($this->config->getMagentoRootDir() . '/app/Mage.php')) {
-            $patcher = new Bootstrap($this->config->getMagentoRootDir());
-            $patcher->patch();
-        }
-        
+        $patcher = new Bootstrap($this->config);
+        $patcher->patch();
     }
 
     /**
@@ -272,7 +269,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
             $this->io->write(sprintf($message1, 'packages.magento.com'));
             $this->io->write(sprintf($message2, 'magento', 'https?://packages.magento.com'));
         }
-        
+
     }
 
     /**
