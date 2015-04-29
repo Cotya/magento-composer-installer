@@ -125,10 +125,14 @@ class ModmanParser extends PathTranslationParser
                 continue;
             }
             $parts = preg_split('/\s+/', $row, 2, PREG_SPLIT_NO_EMPTY);
-            if (count($parts) != 2) {
-                throw new \ErrorException(sprintf('Invalid row on line %d has %d parts, expected 2', $line, count($row)));
+            if (count($parts) === 1) {
+                $part = reset($parts);
+                $map[] = array($part, $part);
+            } elseif (count($parts) === 2) {
+                $map[] = $parts;
+            } else {
+                throw new \ErrorException(sprintf('Invalid row on line %d has %d parts, expected 1 or 2', $line, count($row)));
             }
-            $map[] = $parts;
         }
         return $map;
     }
