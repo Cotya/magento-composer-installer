@@ -28,7 +28,7 @@ class Bootstrap
     {
         $mageClassPath = $this->getConfig()->getMagentoRootDir() . '/app/Mage.php';
 
-        return $this->getConfig()->mustApplyBootloaderPatch() &&
+        return $this->getConfig()->mustApplyBootstrapPatch() &&
                is_file($mageClassPath) &&
                is_writable($mageClassPath);
     }
