@@ -445,6 +445,6 @@ class ProjectConfig
      */
     public function mustApplyBootstrapPatch()
     {
-        return (bool) $this->fetchVarFromExtraConfig(self::EXTRA_WITH_BOOTSTRAP_PATCH_KEY, false);
+        return (bool) $this->fetchVarFromExtraConfig(self::EXTRA_WITH_BOOTSTRAP_PATCH_KEY, true);
     }
 }
