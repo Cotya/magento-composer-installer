@@ -34,6 +34,19 @@ class ModmanParserTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($expected, $parser->getMappings());
     }
 
+    /**
+     * @covers MagentoHackathon\Composer\Magento\ModmanParser::getMappings
+     */
+    public function testGetMappingsNew()
+    {
+        $expected = array(
+            array('line/one', 'line/one'),
+            array('line/two', 'line/two'),
+        );
+        $this->object->setFile($this->modmanFileDir . 'modman.new_format');
+        $this->assertSame($expected, $this->object->getMappings());
+    }
+
     public function testExceptionIsThrownIfLineLessThan2Parts()
     {
         $parser = new ModmanParser(vfsStream::url('root/ModmanInvalid'));
