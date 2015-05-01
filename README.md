@@ -19,9 +19,6 @@ We strongly recommend you to also read the general composer documentations on [g
 Also you should see:
 
  * [Using composer correctly (confoo) by Igor Wiedler](https://speakerdeck.com/igorw/using-composer-correctly-confoo)
- * 
- * 
-
  
 ## Project Details
  
@@ -44,10 +41,6 @@ you have the chance to hire one of the following people/companies.
  
 * Daniel Fahlke aka Flyingmana (Maintainer): flyingmana@googlemail.com [@Flyingmana](https://twitter.com/Flyingmana)
 * brandung - Magento Team: magento-team@brandung.de (http://brandung.de)
-* Your Name here
-* Your Name here
-* Your Company Name here
-* Your Company Name here
  
 other support contacts
  
@@ -204,10 +197,6 @@ See [Usage](#usage).
 php bin/composer.phar install
 ```
 
-
-
-
-
 ## Further Information
 
 * [FAQ](doc/FAQ.md)
@@ -231,7 +220,6 @@ php bin/composer.phar install
 * David Fuhr
 * Amir Tchavoshinia
 * Vinai Kopp (Maintainer)
-
 
 ## Thank You
 
