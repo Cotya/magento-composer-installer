@@ -25,6 +25,11 @@ between branches a lot harder.
 There may only be a few cases, where an exception will be made.
 
 
+## Submitting Bugs
+
+A lot of bugs are very hard to track down, as they often depend on specific combinations of packages and versions.
+To make debugging issues easier, always also post the used Version of the Installer.  
+Even better, if you can show the used composer.json so we can reproduce the Issue based on it.
 
 # Afterword
 
