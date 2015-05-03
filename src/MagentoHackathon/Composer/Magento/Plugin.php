@@ -237,6 +237,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
         $this->deployLibraries();
 
         $patcher = new Bootstrap($this->config);
+        $patcher->setIo($this->io);
         $patcher->patch();
     }
 
