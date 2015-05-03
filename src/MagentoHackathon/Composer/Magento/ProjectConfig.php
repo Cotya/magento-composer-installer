@@ -437,7 +437,11 @@ class ProjectConfig
      */
     public function getVendorDir()
     {
-        return $this->fetchVarFromConfigArray($this->composerConfig, 'vendor-dir', 'vendor');
+        return $this->fetchVarFromConfigArray(
+            $this->composerConfig['config'],
+            'vendor-dir',
+            getcwd() . '/vendor'
+        );
     }
 
     /**

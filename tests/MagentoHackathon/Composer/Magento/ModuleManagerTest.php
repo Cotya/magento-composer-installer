@@ -30,7 +30,7 @@ class ModuleManagerTest extends \PHPUnit_Framework_TestCase
             new InstalledPackageDumper()
         );
 
-        $config = new ProjectConfig(array(), array('vendor-dir' => 'vendor'));
+        $config = new ProjectConfig(array(), array('config' => array('vendor-dir' => 'vendor')));
         $this->unInstallStrategy =
             $this->getMock('MagentoHackathon\Composer\Magento\UnInstallStrategy\UnInstallStrategyInterface');
 
