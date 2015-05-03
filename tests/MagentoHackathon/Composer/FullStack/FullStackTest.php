@@ -7,17 +7,6 @@ use Symfony\Component\Process\Process;
 
 class FullStackTest extends FullStack\AbstractTest
 {
-    
-
-    protected function setUp()
-    {
-        
-    }
-    
-    protected function tearDown()
-    {
-        
-    }
 
     public static function setUpBeforeClass()
     {
@@ -33,30 +22,16 @@ class FullStackTest extends FullStack\AbstractTest
                     $file->getPathname()
                 );
                 $process->run();
-                if ($process->getExitCode() !== 0) {
-                    $message = sprintf(
-                        "process for <code>%s</code> exited with %s: %s%sError Message:%s%s%sOutput:%s%s",
-                        $process->getCommandLine(),
-                        $process->getExitCode(),
-                        $process->getExitCodeText(),
-                        PHP_EOL,
-                        PHP_EOL,
-                        $process->getErrorOutput(),
-                        PHP_EOL,
-                        PHP_EOL,
-                        $process->getOutput()
-                    );
-                    echo $message;
-                }
+                parent::printProcessMessageIfError($process);
             }
         }
     }
-    
+
     public static function tearDownAfterClass()
     {
         parent::tearDownAfterClass();
     }
-    
+
     protected function prepareCleanDirectories()
     {
         $fs = new Filesystem();
@@ -68,7 +43,7 @@ class FullStackTest extends FullStack\AbstractTest
         $fs->removeDirectory(self::getBasePath().'/magento-modules/vendor');
         $fs->remove(self::getBasePath().'/magento-modules/composer.lock');
     }
-    
+
     protected function installBaseMagento()
     {
         $process = new Process(
@@ -80,7 +55,7 @@ class FullStackTest extends FullStack\AbstractTest
         self::logProcessOutput($process, 'installBaseMagento');
         $this->assertProcess($process);
     }
-    
+
     protected function getMethodRunConfigs()
     {
         $array = array(
@@ -117,12 +92,12 @@ class FullStackTest extends FullStack\AbstractTest
                     'module_composer_json' => "composer_1_copy_force.json",
                 ),
             ),
-            
+
         );
-        
+
         return $array;
     }
-    
+
     public function methodProvider()
     {
         return array(
@@ -143,9 +118,9 @@ class FullStackTest extends FullStack\AbstractTest
         );
 
         $methods = $this->getMethodRunConfigs();
-        
+
         $runs = $methods[$method];
-            
+
             $this->prepareCleanDirectories();
 
             $this->installBaseMagento();
@@ -189,7 +164,7 @@ class FullStackTest extends FullStack\AbstractTest
             }
         }
     }
-    
+
     protected function changeModuleComposerFileAndUpdate($file, $command = "update")
     {
         $magentoModuleComposerFile = self::getBasePath().'/magento-modules/composer.json';
@@ -215,7 +190,7 @@ class FullStackTest extends FullStack\AbstractTest
         self::logProcessOutput($process);
         $this->assertProcess($process);
     }
-    
+
     protected function getFirstOnlyFileTestSet()
     {
         return array(
