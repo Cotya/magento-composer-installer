@@ -39,18 +39,19 @@ class ModmanParserTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetMappingsNew()
     {
+        $parser = new ModmanParser(vfsStream::url('root/modman.new_format'));
+        
         $expected = array(
             array('line/one', 'line/one'),
             array('line/two', 'line/two'),
         );
-        $this->object->setFile($this->modmanFileDir . 'modman.new_format');
-        $this->assertSame($expected, $this->object->getMappings());
+        $this->assertSame($expected, $parser->getMappings());
     }
 
-    public function testExceptionIsThrownIfLineLessThan2Parts()
+    public function testExceptionIsThrownIfLineMoreThan2Parts()
     {
         $parser = new ModmanParser(vfsStream::url('root/ModmanInvalid'));
-        $this->setExpectedException('ErrorException', 'Invalid row on line 0 has 1 parts, expected 2');
+        $this->setExpectedException('ErrorException', 'Invalid row on line 0 has 3 parts, expected 2');
         $parser->getMappings();
     }
 
