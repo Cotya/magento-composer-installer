@@ -20,17 +20,9 @@
         </testsuite>
     </testsuites>
 
-    <groups>
-        <exclude>
-            <group>slow</group>
-        </exclude>
-    </groups>
-
     <filter>
         <whitelist>
             <directory>./src/</directory>
-            <exclude>
-            </exclude>
         </whitelist>
     </filter>
 </phpunit>

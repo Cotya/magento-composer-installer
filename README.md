@@ -14,6 +14,10 @@ The purpose of this project is to
 enable [composer](https://github.com/composer/composer) to install Magento modules,
 and automatically integrate them into a Magento installation.
 
+If you want to install the Magento Core, you should try
+[AydinHassan/magento-core-composer-installer](https://github.com/AydinHassan/magento-core-composer-installer)
+as additional plugin.
+
 We strongly recommend you to also read the general composer documentations on [getcomposer.org](http://getcomposer.org)
 
 Also you should see:
@@ -56,6 +60,12 @@ other support contacts
 
 =======
 ## Known issues
+
+### need to redeploy packages
+
+earlier we suggested the use of the command integrator package, that is not needed anymore.
+```composer.phar run-script post-install-cmd -vvv -- --redeploy```  
+This does remove all deployed files and redeploys every module
 
 ### using non default autoloading
 

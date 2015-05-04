@@ -51,13 +51,17 @@ class ModmanParser implements Parser
             if ('' === $row || in_array($row[0], array('#', '@'))) {
                 continue;
             }
-            $parts = preg_split('/\s+/', $row, 2, PREG_SPLIT_NO_EMPTY);
-            if (count($parts) != 2) {
+            $parts = preg_split('/\s+/', $row, 3, PREG_SPLIT_NO_EMPTY);
+            if (count($parts) === 1) {
+                $part = reset($parts);
+                $map[] = array($part, $part);
+            } elseif (count($parts) === 2) {
+                $map[] = $parts;
+            } else {
                 throw new \ErrorException(
-                    sprintf('Invalid row on line %d has %d parts, expected 2', $line, count($row))
+                    sprintf('Invalid row on line %d has %d parts, expected 2', $line, count($parts))
                 );
             }
-            $map[] = $parts;
         }
         return $map;
     }
