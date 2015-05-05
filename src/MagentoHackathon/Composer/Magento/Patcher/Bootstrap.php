@@ -24,11 +24,27 @@ class Bootstrap
     private $io;
 
     /**
+     * @var string
+     */
+    private $mageClassFilePath;
+
+    /**
+     * @param string $mageClassFilePath Path to the Mage.php file which the patch will be applied on.
      * @param ProjectConfig $config
      */
-    public function __construct(ProjectConfig $config)
+    private function __construct($mageClassFilePath, ProjectConfig $config)
     {
+        $this->setMageClassFilePath($mageClassFilePath);
         $this->config = $config;
+    }
+
+    /**
+     * @param ProjectConfig $config
+     * @return $this
+     */
+    public static function fromConfig(ProjectConfig $config)
+    {
+        return new self($config->getMagentoRootDir() . '/app/Mage.php', $config);
     }
 
     /**
@@ -40,33 +56,60 @@ class Bootstrap
     }
 
     /**
-     * @return bool
+     * @return string
      */
-    private function isPatchAlreadyApplied()
+    private function getMageClassFilePath()
     {
-        return strpos(file_get_contents($this->getAppPath() . '/Mage.php'), self::PATCH_MARK) !== false;
+        return $this->mageClassFilePath;
+    }
+
+    /**
+     * Path to the Mage.php file which the patch will be applied on.
+     *
+     * @param string $mageClassFilePath
+     * @throws \InvalidArgumentException
+     */
+    private function setMageClassFilePath($mageClassFilePath)
+    {
+        $mageFileCheck = true;
+
+        if (!is_file($mageClassFilePath)) {
+            $message = "{$mageClassFilePath} is not a file";
+            $mageFileCheck = false;
+        } elseif (!is_readable($mageClassFilePath)) {
+            $message = "{$mageClassFilePath} is not readable";
+            $mageFileCheck = false;
+        } elseif (!is_writable($mageClassFilePath)) {
+            $message = "{$mageClassFilePath} is not writable";
+            $mageFileCheck = false;
+        }
+
+        if (!$mageFileCheck) {
+            throw new \InvalidArgumentException($message);
+        }
+
+        $this->mageClassFilePath = $mageClassFilePath;
     }
 
     /**
      * @return bool
      */
-    private function canApplyPatch()
+    private function isPatchAlreadyApplied()
     {
-        $mageClassPath = $this->getAppPath() . '/Mage.php';
+        return strpos(file_get_contents($this->getMageClassFilePath()), self::PATCH_MARK) !== false;
+    }
+
+    /**
+     * @return bool
+     */
+    public function canApplyPatch()
+    {
+        $mageClassPath = $this->getMageClassFilePath();
 
         $result = true;
         $message = "<info>Autoloader patch to {$mageClassPath} was applied successfully</info>";
 
-        if (!is_file($mageClassPath)) {
-            $message = "<error>{$mageClassPath} is not a file</error>";
-            $result = false;
-        } elseif (!is_readable($mageClassPath)) {
-            $message = "<error>{$mageClassPath} is not readable</error>";
-            $result = false;
-        } elseif (!is_writable($mageClassPath)) {
-            $message = "<error>{$mageClassPath} is not writable</error>";
-            $result = false;
-        } elseif ($this->isPatchAlreadyApplied()) {
+        if ($this->isPatchAlreadyApplied()) {
             $message = "<comment>{$mageClassPath} was already patched</comment>";
             $result = false;
         } elseif (!$this->getConfig()->mustApplyBootstrapPatch()) {
@@ -100,9 +143,7 @@ class Bootstrap
      */
     protected function writeComposerAutoloaderPatch()
     {
-        $appPath = $this->getAppPath();
-
-        $mageFileContent = file($appPath . '/Mage.php');
+        $mageFileContent = file($this->getMageClassFilePath());
 
         $mageFileBootstrapPart = '';
         $mageFileClassDeclarationPart = '';
@@ -123,7 +164,7 @@ class Bootstrap
                              . $this->getAutoloaderPatchString() . PHP_EOL
                              . $mageFileClassDeclarationPart;
 
-        return file_put_contents($appPath . '/Mage.php', $mageFileReplacement) !== false;
+        return file_put_contents($this->getMageClassFilePath(), $mageFileReplacement) !== false;
     }
 
     /**
@@ -155,7 +196,7 @@ class Bootstrap
 /** $patchMark **/
 \$autoloaderPath = '{$this->getVendorAutoloaderPath()}';
 if (file_exists(\$autoloaderPath)) {
-    Mage::register('COMPOSER_CLASSLOADER', require_once \$autoloaderPath);
+    require_once \$autoloaderPath;
 }
 /** $patchMark **/
 PATCH;

@@ -236,7 +236,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
         $moduleManager->updateInstalledPackages($magentoModules);
         $this->deployLibraries();
 
-        $patcher = new Bootstrap($this->config);
+        $patcher = Bootstrap::fromConfig($this->config);
         $patcher->setIo($this->io);
         $patcher->patch();
     }

@@ -5,20 +5,18 @@ namespace MagentoHackathon\Composer\Magento\Patcher;
 use MagentoHackathon\Composer\Magento\ProjectConfig;
 use org\bovigo\vfs\vfsStream;
 
+/**
+ * @group patcher
+ */
 class BootstrapTest extends \PHPUnit_Framework_TestCase
 {
-
     /**
      * @dataProvider mageFileProvider
      * @param $mageFile
      */
-    public function testMageFilesExist($mageFile)
+    public function testMageFileIsChangedAfterPatching($mageFile)
     {
-        $structure = array(
-            'app' => array(
-                'Mage.php' => file_get_contents($mageFile),
-            ),
-        );
+        $structure = array('app' => array('Mage.php' => file_get_contents($mageFile)));
         vfsStream::setup('root', null, $structure);
 
         $config = new ProjectConfig(
@@ -29,41 +27,16 @@ class BootstrapTest extends \PHPUnit_Framework_TestCase
             array()
         );
 
-        $patcher = new Bootstrap($config);
+        $mageClassFile = vfsStream::url('root/app/Mage.php');
+        $patcher = Bootstrap::fromConfig($config);
+
+        $this->assertTrue($patcher->canApplyPatch());
+        $this->assertFileEquals($mageFile, $mageClassFile);
+
         $patcher->patch();
 
-        $this->assertBootstrapWasApplied($mageFile);
-    }
-
-    /**
-     * Ensure that the Mage class is valid PHP
-     *
-     * @dataProvider mageFileProvider
-     * @param string $mageFile
-     * @return void
-     */
-    public function testMageClassFile($mageFile)
-    {
-        $structure = array(
-            'app' => array(
-                'Mage.php' => file_get_contents($mageFile),
-            ),
-        );
-        vfsStream::setup('root', null, $structure);
-
-        $config = new ProjectConfig(
-            array(
-                ProjectConfig::EXTRA_WITH_BOOTSTRAP_PATCH_KEY => true,
-                ProjectConfig::MAGENTO_ROOT_DIR_KEY => vfsStream::url('root'),
-            ),
-            array()
-        );
-
-        $patcher = new Bootstrap($config);
-        $patcher->patch();
-
-        require vfsStream::url('root/app/Mage.class.php');
-        $this->assertTrue(class_exists('Mage'));
+        $this->assertFalse($patcher->canApplyPatch());
+        $this->assertFileNotEquals($mageFile, $mageClassFile);
     }
 
     /**
@@ -71,11 +44,7 @@ class BootstrapTest extends \PHPUnit_Framework_TestCase
      */
     public function testMageFileIsNotModifiedWhenThePatchingFeatureIsOff($mageFile)
     {
-        $structure = array(
-            'app' => array(
-                'Mage.php' => file_get_contents($mageFile),
-            ),
-        );
+        $structure = array('app' => array('Mage.php' => file_get_contents($mageFile)));
         vfsStream::setup('root', null, $structure);
 
         $config = new ProjectConfig(
@@ -86,10 +55,15 @@ class BootstrapTest extends \PHPUnit_Framework_TestCase
             array()
         );
 
-        $patcher = new Bootstrap($config);
+        $mageClassFile = vfsStream::url('root/app/Mage.php');
+        $patcher = Bootstrap::fromConfig($config);
+
+        $this->assertFalse($patcher->canApplyPatch());
+        $this->assertFileEquals($mageFile, $mageClassFile);
+
         $patcher->patch();
 
-        $this->assertBootstrapWasNotApplied($mageFile);
+        $this->assertFileEquals($mageFile, $mageClassFile);
     }
 
     /**
@@ -97,53 +71,25 @@ class BootstrapTest extends \PHPUnit_Framework_TestCase
      */
     public function testBootstrapPatchIsAppliedByDefault($mageFile)
     {
-        $structure = array(
-            'app' => array(
-                'Mage.php' => file_get_contents($mageFile),
-            ),
-        );
+        $structure = array('app' => array('Mage.php' => file_get_contents($mageFile)));
         vfsStream::setup('root', null, $structure);
 
         $config = new ProjectConfig(
             // the patch flag is not declared on purpose
-            array(
-                ProjectConfig::MAGENTO_ROOT_DIR_KEY => vfsStream::url('root'),
-            ),
+            array(ProjectConfig::MAGENTO_ROOT_DIR_KEY => vfsStream::url('root')),
             array()
         );
 
-        $patcher = new Bootstrap($config);
+        $mageClassFile = vfsStream::url('root/app/Mage.php');
+        $patcher = Bootstrap::fromConfig($config);
+
+        $this->assertTrue($patcher->canApplyPatch());
+        $this->assertFileEquals($mageFile, $mageClassFile);
+
         $patcher->patch();
 
-        $this->assertBootstrapWasApplied($mageFile);
-    }
-
-    private function assertBootstrapWasNotApplied($mageFile)
-    {
-        $this->assertFileExists(vfsStream::url('root/app/Mage.php'));
-        $this->assertFileEquals(
-            $mageFile,
-            vfsStream::url('root/app/Mage.php'),
-            'File should not be modified but it is'
-        );
-        $this->assertFileNotExists(vfsStream::url('root/app/bootstrap.php'));
-        $this->assertFileNotExists(vfsStream::url('root/app/Mage.class.php'));
-        $this->assertFileNotExists(vfsStream::url('root/app/Mage.bootstrap.php'));
-        $this->assertFileNotExists(vfsStream::url('root/app/Mage.nonsense.php'));
-    }
-
-    private function assertBootstrapWasApplied($mageFile)
-    {
-        $this->assertFileExists(vfsStream::url('root/app/Mage.php'));
-        $this->assertFileNotEquals(
-            $mageFile,
-            vfsStream::url('root/app/Mage.php'),
-            'File should be modified but its not'
-        );
-        $this->assertFileExists(vfsStream::url('root/app/bootstrap.php'));
-        $this->assertFileExists(vfsStream::url('root/app/Mage.class.php'));
-        $this->assertFileExists(vfsStream::url('root/app/Mage.bootstrap.php'));
-        $this->assertFileNotExists(vfsStream::url('root/app/Mage.nonsense.php'));
+        $this->assertFalse($patcher->canApplyPatch());
+        $this->assertFileNotEquals($mageFile, $mageClassFile);
     }
 
     public function mageFileProvider()
