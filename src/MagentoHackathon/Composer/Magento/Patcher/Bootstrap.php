@@ -192,21 +192,20 @@ class Bootstrap
     private function getAutoloaderPatchString()
     {
         $patchMark = self::PATCH_MARK;
+
+        // get the vendor folder name from Config, in case it's changed
+        $vendorFolderName = basename($this->getConfig()->getVendorDir());
+
+        $autoloadPhp = $vendorFolderName . '/autoload.php';
+
         return <<<PATCH
 /** $patchMark **/
-\$autoloaderPath = '{$this->getVendorAutoloaderPath()}';
-if (file_exists(\$autoloaderPath)) {
-    require_once \$autoloaderPath;
+if (file_exists(\$autoloaderPath = BP . DS . '../{$autoloadPhp}') ||
+    file_exists(\$autoloaderPath = BP . DS . '{$autoloadPhp}')
+) {
+    require \$autoloaderPath;
 }
 /** $patchMark **/
 PATCH;
-    }
-
-    /**
-     * @return string
-     */
-    private function getVendorAutoloaderPath()
-    {
-        return $this->getConfig()->getVendorDir() . '/autoload.php';
     }
 }
