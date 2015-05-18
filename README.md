@@ -93,8 +93,6 @@ further information can be found on [wikibooks](http://en.wikibooks.org/wiki/Ope
 
 ## Usage
 
-See below for a [generic instruction on how to install composer](#installation-of-composer) if you aren't familiar with it.
-
 ### Update the Installer
 
 as this is a composer plugin, you should only use this both commands to update the installer
@@ -166,46 +164,6 @@ then run ```vendor/bin/phpunit``` in project-root directory.
 
 Note: Windows users please run ```phpunit``` with Administrator permissions.
 
-
-
-## Installation of composer
-
-### 1. Install PHP-Composer
-
-#### On Linux/Mac
-
-Go to your project root directory and run:
-
-```
-mkdir bin
-curl -s https://getcomposer.org/installer | php -- --install-dir=bin
-```
-
-#### On Windows
-Please take a look at http://getcomposer.org/doc/00-intro.md#installation-windows
-
-Creation of symbolic links requires the SeCreateSymbolicLinkPrivilege (“Create symbolic links”), which is granted only
-to administrators by default (but you can change that using security policy).
-
-To change the policies:
-- Launch secpol.msc via Start or Start → Run.
-- Open Security Settings → Local Policies → User Rights Assignment.
-- In the list, find the "Create symbolic links" item, which represents SeCreateSymbolicLinkPrivilege.
-    Double-click on the item and add yourself (or the whole Users group) to the list.
-
-(Seen at http://superuser.com/questions/124679/how-do-i-create-an-mklink-in-windows-7-home-premium-as-a-regular-user#125981)
-
-
-### 2. Download composer.json template
-
-See [Usage](#usage).
-
-
-### 3. Install Magento modules via composer
-
-```
-php bin/composer.phar install
-```
 
 ## Further Information
 
