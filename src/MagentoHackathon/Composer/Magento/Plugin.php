@@ -10,7 +10,7 @@ namespace MagentoHackathon\Composer\Magento;
 
 use Composer\Config;
 use Composer\Installer;
-use Composer\Script\CommandEvent;
+use Composer\Script\Event;
 use MagentoHackathon\Composer\Helper;
 use MagentoHackathon\Composer\Magento\Event\EventManager;
 use MagentoHackathon\Composer\Magento\Event\PackageDeployEvent;
@@ -18,8 +18,6 @@ use MagentoHackathon\Composer\Magento\Factory\DeploystrategyFactory;
 use MagentoHackathon\Composer\Magento\Factory\EntryFactory;
 use MagentoHackathon\Composer\Magento\Factory\ParserFactory;
 use MagentoHackathon\Composer\Magento\Factory\PathTranslationParserFactory;
-use MagentoHackathon\Composer\Magento\Installer\MagentoInstallerAbstract;
-use MagentoHackathon\Composer\Magento\Installer\ModuleInstaller;
 use MagentoHackathon\Composer\Magento\Patcher\Bootstrap;
 use MagentoHackathon\Composer\Magento\Repository\InstalledPackageFileSystemRepository;
 use MagentoHackathon\Composer\Magento\UnInstallStrategy\UnInstallStrategy;
@@ -193,9 +191,9 @@ class Plugin implements PluginInterface, EventSubscriberInterface
     /**
      * event listener is named this way, as it listens for events leading to changed code files
      *
-     * @param CommandEvent $event
+     * @param Event $event
      */
-    public function onNewCodeEvent(CommandEvent $event)
+    public function onNewCodeEvent(Event $event)
     {
 
         $packageTypeToMatch = static::PACKAGE_TYPE;

@@ -181,7 +181,7 @@ class Bootstrap
     public function getIo()
     {
         if (!$this->io) {
-            $this->io = new NullIO();
+            $this->io = new NullIO;
         }
         return $this->io;
     }
