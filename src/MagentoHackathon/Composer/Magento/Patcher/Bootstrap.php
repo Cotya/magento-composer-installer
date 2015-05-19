@@ -29,8 +29,8 @@ class Bootstrap
         $mageClassPath = $this->getConfig()->getMagentoRootDir() . '/app/Mage.php';
 
         return $this->getConfig()->mustApplyBootstrapPatch() &&
-               is_file($mageClassPath) &&
-               is_writable($mageClassPath);
+        is_file($mageClassPath) &&
+        is_writable($mageClassPath);
     }
 
     /**
@@ -40,7 +40,7 @@ class Bootstrap
     {
         if ($this->canApplyPatch()) {
             $this->splitOriginalMage();
-            $this->generateBootstrapFile();
+            $this->generateNewMageFile();
             return true;
         }
         return false;
@@ -81,29 +81,18 @@ class Bootstrap
         file_put_contents($appPath . '/Mage.class.php', $mageClassFile);
         file_put_contents($appPath . '/Mage.bootstrap.php', $mageBootstrapFile);
 
-        $mageFileReplacement
-            = <<<php
-<?php
-require __DIR__ . '/bootstrap.php';
-
-php;
-        file_put_contents($appPath . '/Mage.php', $mageFileReplacement);
-
-
     }
 
-    protected function generateBootstrapFile()
+    protected function generateNewMageFile()
     {
         $appPath = $this->getAppPath();
-        $bootstrapFile
+        $mageFileReplacement
             = <<<php
 <?php
 require __DIR__ . '/Mage.class.php';
 require __DIR__ . '/Mage.bootstrap.php';
 
 php;
-        if (!file_exists($appPath . '/bootstrap.php')) {
-            file_put_contents($appPath . '/bootstrap.php', $bootstrapFile);
-        }
+        file_put_contents($appPath . '/Mage.php', $mageFileReplacement);
     }
 }
