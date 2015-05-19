@@ -133,12 +133,10 @@ If you want to have the deployed files automatically added to your .gitignore fi
 
 ```json
 {
-    ...
     "extra":{
         "magento-root-dir": "htdocs/",
         "auto-append-gitignore": true
     }
-    ...
 }
 ```
 
