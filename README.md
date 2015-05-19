@@ -12,7 +12,8 @@
 
 The purpose of this project is to 
 enable [composer](https://github.com/composer/composer) to install Magento modules,
-and automatically integrate them into a Magento installation.
+and automatically integrate them into a Magento installation and add Composer's vendor autoloader
+ability the Magento's so that Composer-compatible 3rd party tools can be used.
 
 If you want to install the Magento Core, you should try
 [AydinHassan/magento-core-composer-installer](https://github.com/AydinHassan/magento-core-composer-installer)
@@ -23,9 +24,6 @@ We strongly recommend you to also read the general composer documentations on [g
 Also you should see:
 
  * [Using composer correctly (confoo) by Igor Wiedler](https://speakerdeck.com/igorw/using-composer-correctly-confoo)
- * 
- * 
-
  
 ## Project Details
  
@@ -35,23 +33,16 @@ which you probably should add as composer repository (globally)
 
 ```composer config -g repositories.firegento composer http://packages.firegento.com```
 
- 
- 
 ### support contacts
  
 If you have problems please have patience, as normal support is done during free time.  
 If you are willing to pay to get your problem fixed, communicate this from the start to get faster responses.
- 
  
 If you need consulting, support, training or help regarding Magento and Composer,
 you have the chance to hire one of the following people/companies.
  
 * Daniel Fahlke aka Flyingmana (Maintainer): flyingmana@googlemail.com [@Flyingmana](https://twitter.com/Flyingmana)
 * brandung - Magento Team: magento-team@brandung.de (http://brandung.de)
-* Your Name here
-* Your Name here
-* Your Company Name here
-* Your Company Name here
  
 other support contacts
  
@@ -81,7 +72,7 @@ It also allows hosting of private packages and speeds up the whole downloading p
 
 Another alternative is to look into [Satis](https://github.com/composer/satis), bare git mirrors and repository aliasing.
 
-Another way to speedup downloads over ssh(also interesting for satis users) is to improve your ssh configs.
+Another way to speedup downloads over ssh (also interesting for satis users) is to improve your ssh configs.
 At least for newer versions of openSSH you can add the following to your ```.ssh/config``` to reuse previous connections.
 ```
 Host * 
@@ -136,20 +127,16 @@ an example how your project ```composer.json``` could look like:
 }
 ```
 
-
-
 ### Auto add files to .gitignore
 
 If you want to have the deployed files automatically added to your .gitignore file, then you can just set the `auto-append-gitignore` key to true:
 
 ```json
 {
-    ...
     "extra":{
         "magento-root-dir": "htdocs/",
         "auto-append-gitignore": true
     }
-    ...
 }
 ```
 
@@ -157,14 +144,18 @@ The `.gitignore` file will be loaded from the current directory, and if it does 
 describing the module name for clarity.
 
 Multiple deploys will not add additional lines to your .gitignore, they will only ever be added once.
- 
+
+
+### Adding Composer's autoloader to Magento
+
+Documentation available [here](doc/Autoloading.md). 
 
 ### Testing
 
-First clone the magento-composer-installer, then install the dev-stuff:
+First clone the magento-composer-installer, then install the dev-stuff (installed by default):
 
 ```
-./bin/composer.phar install --dev
+./bin/composer.phar install
 ```
 
 then run ```vendor/bin/phpunit``` in project-root directory.
@@ -196,18 +187,15 @@ Note: Windows users please run ```phpunit``` with Administrator permissions.
 * Amir Tchavoshinia
 * Vinai Kopp (Maintainer)
 
-
 ## Thank You
 
 There are a few companies we want to thank for supporting this project in one way or another.
 
 #####[digital.manufaktur GmbH](https://www.digitalmanufaktur.com/)
 
-Teached me(Flyingmana) most I know about Magento and
+Teached me (Flyingmana) most I know about Magento and
 paid my participation for the hackathon were the installer got created.
 
 #####[melovely](http://www.melovely.de/)
 
-Support me(Flyingmana) as my current employer very much in my work on everything composer related.
-
-
+Support me (Flyingmana) as my current employer very much in my work on everything composer related.

@@ -6,12 +6,10 @@ Here is how to use it:
 
 ```json
 {
-    ...
     "extra":{
         "magento-root-dir": "htdocs/",
         "magento-deploystrategy": "copy"
     }
-    ...
 }
 ```
 
@@ -88,11 +86,9 @@ If you only want to place packages into the vendor directory with no linking/cop
 
 ```json
 {
-    ...
     "extra":{
         "magento-deploystrategy": "none"
     }
-    ...
 }
 ```
 
@@ -103,6 +99,3 @@ On occasions you want trigger the deploy of magento modules without the need of 
 For this case you can trigger the related event manually with an additional paramater.  
 ```composer.phar run-script post-install-cmd -vvv -- --redeploy```  
 This does remove all deployed files and redeploys every module
-
-
-
