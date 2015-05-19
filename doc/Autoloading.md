@@ -10,9 +10,12 @@ It's safe to run it multiple times: the change will be made _once_.
 
 After some consideration, it was decided that the most reliable place to push Composer's
 autoloader into Magento was `app/Mage.php`, effectively _changing_ it, including the necessary
-file just before the `Mage` class declaration. This guarantees that access to 3rd party packages
-is available in the web app, API calls, crons and shell scripts.   
+file just before the `Mage` class declaration, and after the registering of `Varien_Autoloader`. 
+This guarantees that access to 3rd party packages is available in the web app, API calls, 
+crons and shell scripts.       
 The "first Magento event dispatch" strategy was also considered, but dismissed as not so reliable.
+
+The `magento-root-dir` extra config is used to resolve the path to `app/Mage.php`.
 
 The change needs to be safe and minimal and it's more or less equivalent to
 `require 'vendor/autoloader.php'`, with the required path being relative to Mage's root.
