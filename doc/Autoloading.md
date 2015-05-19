@@ -36,3 +36,8 @@ and
 ```
 It's recommended to use the first layout with Mage root set as _web_ root, 
 so no access to other files except Magento's is granted. This also keeps Mage root clean. 
+
+Vendor folder **name** changes (e.g via `COMPOSER_VENDOR_DIR` env or `vendor-dir` config) are supported.  
+Do not confuse this with different vendor folder **paths**: only the folder _name_ is extracted from
+ the path, and not the whole path. The vendor folder will still be assumed to be a sibling of Mage root
+ or its child, so setting the vendor folder to `~/my_vendor` will not work as expected.
