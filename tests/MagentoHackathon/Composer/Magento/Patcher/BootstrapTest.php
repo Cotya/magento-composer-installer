@@ -126,7 +126,6 @@ class BootstrapTest extends \PHPUnit_Framework_TestCase
             vfsStream::url('root/app/Mage.php'),
             'File should not be modified but it is'
         );
-        $this->assertFileNotExists(vfsStream::url('root/app/bootstrap.php'));
         $this->assertFileNotExists(vfsStream::url('root/app/Mage.class.php'));
         $this->assertFileNotExists(vfsStream::url('root/app/Mage.bootstrap.php'));
         $this->assertFileNotExists(vfsStream::url('root/app/Mage.nonsense.php'));
@@ -140,7 +139,6 @@ class BootstrapTest extends \PHPUnit_Framework_TestCase
             vfsStream::url('root/app/Mage.php'),
             'File should be modified but its not'
         );
-        $this->assertFileExists(vfsStream::url('root/app/bootstrap.php'));
         $this->assertFileExists(vfsStream::url('root/app/Mage.class.php'));
         $this->assertFileExists(vfsStream::url('root/app/Mage.bootstrap.php'));
         $this->assertFileNotExists(vfsStream::url('root/app/Mage.nonsense.php'));
