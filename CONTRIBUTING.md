@@ -15,6 +15,11 @@ We may then say which branch would be best suited to target for a PR,
 or even create a new major version Branch for this.
 It would also be possible, that we merge it without the PR workflow.
 
+## Keeping the change log up to date
+You **must** update the `CHANGELOG.md` file (in the `Unreleased` section) if your change is significant in this sense.
+Keep in mind that people are reading the change log to check for new or removed features, backward incompatibilities ("BC breaks")
+or security fixes. Do not change the change log for very minor changes.   
+If you're unsure, update the change log file.
 
 ## Refactoring
 
@@ -23,7 +28,6 @@ Refactoring as part of your PRs may slow down the merge process, as refactoring 
 Refactoring only PRs will usually be postponed to the the next Major release, as they make merging and porting
 between branches a lot harder.
 There may only be a few cases, where an exception will be made.
-
 
 ## Submitting Bugs
 
