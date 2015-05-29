@@ -49,6 +49,10 @@ other support contacts
 * irc: freenode the channels #magento-composer #magento-reddit and for german speaking people #magento-de 
 * twitter: [@firegento](https://twitter.com/firegento)
 
+### changelog
+
+See [CHANGELOG.md](CHANGELOG.md).
+
 =======
 ## Known issues
 
