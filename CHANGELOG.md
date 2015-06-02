@@ -24,6 +24,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## 3.0.2 - 2015-03-28
 
-[unreleased]: https://github.com/Cotya/magento-composer-installer/compare/3.0.3-rc.2...HEAD
+[unreleased]: https://github.com/Cotya/magento-composer-installer/compare/3.0.3...HEAD
+[3.0.3]: https://github.com/Cotya/magento-composer-installer/compare/3.0.3-rc.2...3.0.3
 [3.0.3-rc.2]: https://github.com/Cotya/magento-composer-installer/compare/3.0.3-rc.1...3.0.3-rc.2
 [3.0.3-rc.1]: https://github.com/Cotya/magento-composer-installer/compare/3.0.2...3.0.3-rc.1
