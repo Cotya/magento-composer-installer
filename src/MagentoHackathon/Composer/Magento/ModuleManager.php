@@ -137,16 +137,17 @@ class ModuleManager
     public function getRemoves(array $currentComposerInstalledPackages, array $magentoInstalledPackages)
     {
         //make the package names as the array keys
-        $currentComposerInstalledPackages = array_combine(
-            array_map(
-                function (PackageInterface $package) {
-                    return $package->getPrettyName();
-                },
+        if (count($currentComposerInstalledPackages)) {
+            $currentComposerInstalledPackages = array_combine(
+                array_map(
+                    function (PackageInterface $package) {
+                        return $package->getPrettyName();
+                    },
+                    $currentComposerInstalledPackages
+                ),
                 $currentComposerInstalledPackages
-            ),
-            $currentComposerInstalledPackages
-        );
-
+            );
+        }
         return array_filter(
             $magentoInstalledPackages,
             function (InstalledPackage $package) use ($currentComposerInstalledPackages) {
