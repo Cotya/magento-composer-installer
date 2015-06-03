@@ -3,8 +3,7 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased][unreleased]
-- placeholder
-
+- Fixed error when redeploying with no modules, using PHP 5.3.
 
 ## [3.0.3] - 2015-06-02
 - Added a change log file
