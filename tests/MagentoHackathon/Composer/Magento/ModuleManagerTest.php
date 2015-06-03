@@ -117,4 +117,19 @@ class ModuleManagerTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($installedMagentoPackages, $result[0]);
         $this->assertSame($composerInstalledPackages, $result[1]);
     }
+    
+    public function testEmptyComposerInstalledPackages()
+    {
+        $installedMagentoPackages = array(
+            new InstalledPackage("vendor/package1", "1.0.0", array()),
+            new InstalledPackage("vendor/package2", "1.0.0", array()),
+        );
+
+        $this->installedPackageRepository->add($installedMagentoPackages[0]);
+        $this->installedPackageRepository->add($installedMagentoPackages[1]);
+
+        $result = $this->moduleManager->updateInstalledPackages(array());
+        $this->assertSame($installedMagentoPackages, $result[0]);
+        $this->assertEmpty($result[1]);
+    }
 }
