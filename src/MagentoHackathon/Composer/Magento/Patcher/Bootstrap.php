@@ -57,9 +57,27 @@ class Bootstrap
 
     /**
      * @return string
+     * @throws \DomainException
      */
     private function getMageClassFilePath()
     {
+        $mageFileCheck = true;
+
+        if (!is_file($this->mageClassFilePath)) {
+            $message = "{$this->mageClassFilePath} is not a file.";
+            $mageFileCheck = false;
+        } elseif (!is_readable($this->mageClassFilePath)) {
+            $message = "{$this->mageClassFilePath} is not readable.";
+            $mageFileCheck = false;
+        } elseif (!is_writable($this->mageClassFilePath)) {
+            $message = "{$this->mageClassFilePath} is not writable.";
+            $mageFileCheck = false;
+        }
+
+        if (!$mageFileCheck) {
+            throw new \DomainException($message);
+        }
+
         return $this->mageClassFilePath;
     }
 
@@ -67,27 +85,9 @@ class Bootstrap
      * Path to the Mage.php file which the patch will be applied on.
      *
      * @param string $mageClassFilePath
-     * @throws \InvalidArgumentException
      */
     private function setMageClassFilePath($mageClassFilePath)
     {
-        $mageFileCheck = true;
-
-        if (!is_file($mageClassFilePath)) {
-            $message = "{$mageClassFilePath} is not a file";
-            $mageFileCheck = false;
-        } elseif (!is_readable($mageClassFilePath)) {
-            $message = "{$mageClassFilePath} is not readable";
-            $mageFileCheck = false;
-        } elseif (!is_writable($mageClassFilePath)) {
-            $message = "{$mageClassFilePath} is not writable";
-            $mageFileCheck = false;
-        }
-
-        if (!$mageFileCheck) {
-            throw new \InvalidArgumentException($message);
-        }
-
         $this->mageClassFilePath = $mageClassFilePath;
     }
 
@@ -104,17 +104,16 @@ class Bootstrap
      */
     public function canApplyPatch()
     {
-        $mageClassPath = $this->getMageClassFilePath();
-
-        $result = true;
-        $message = "<info>Autoloader patch to {$mageClassPath} was applied successfully</info>";
-
-        if ($this->isPatchAlreadyApplied()) {
-            $message = "<comment>{$mageClassPath} was already patched</comment>";
-            $result = false;
-        } elseif (!$this->getConfig()->mustApplyBootstrapPatch()) {
+        // check the config first
+        if (!$this->getConfig()->mustApplyBootstrapPatch()) {
             $message = "<comment>Magento autoloader patching skipped because of configuration flag</comment>";
             $result = false;
+        } elseif ($this->isPatchAlreadyApplied()) {
+            $message = "<comment>{$this->getMageClassFilePath()} was already patched</comment>";
+            $result = false;
+        } else {
+            $result = true;
+            $message = "<info>Autoloader patch to {$this->getMageClassFilePath()} was applied successfully</info>";
         }
 
         $this->getIo()->write($message);
@@ -127,7 +126,7 @@ class Bootstrap
      */
     public function patch()
     {
-        return $this->canApplyPatch() ? $this->writeComposerAutoloaderPatch(): false;
+        return $this->canApplyPatch() ? $this->writeComposerAutoloaderPatch() : false;
     }
 
     /**

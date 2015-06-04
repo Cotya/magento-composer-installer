@@ -4,6 +4,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased][unreleased]
 - Fixed error when redeploying with no modules, using PHP 5.3.
+- Fixed the Patcher throwing an exception if `app/Mage.php` was missing, 
+  even when `with-bootstrap-patch` was set to `false`.
 
 ## [3.0.3] - 2015-06-02
 - Added a change log file
