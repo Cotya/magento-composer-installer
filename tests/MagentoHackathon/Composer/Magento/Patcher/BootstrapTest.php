@@ -100,4 +100,40 @@ class BootstrapTest extends \PHPUnit_Framework_TestCase
         );
         return $data;
     }
+
+    public function testPatchingDoesNotThrowIfDisabledAndRunWithMissingMagePhpFile()
+    {
+        vfsStream::setup('root', null, array()); // empty FS
+
+        $config = new ProjectConfig(
+            array(
+                ProjectConfig::EXTRA_WITH_BOOTSTRAP_PATCH_KEY => false,
+                ProjectConfig::MAGENTO_ROOT_DIR_KEY => vfsStream::url('root'),
+            ),
+            array()
+        );
+
+        $patcher = Bootstrap::fromConfig($config);
+
+        $this->assertFalse($patcher->canApplyPatch());
+        $this->assertFalse($patcher->patch());
+    }
+
+    /**
+     * @expectedException DomainException
+     */
+    public function testPatchingThrowsIfEnabledAndRunWithMissingMagePhpFile()
+    {
+        vfsStream::setup('root', null, array()); // empty FS
+
+        $config = new ProjectConfig(
+            array(
+                ProjectConfig::EXTRA_WITH_BOOTSTRAP_PATCH_KEY => true,
+                ProjectConfig::MAGENTO_ROOT_DIR_KEY => vfsStream::url('root'),
+            ),
+            array()
+        );
+
+        Bootstrap::fromConfig($config)->patch();
+    }
 }
