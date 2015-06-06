@@ -6,6 +6,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Fixed error when redeploying with no modules, using PHP 5.3.
 - Fixed the Patcher throwing an exception if `app/Mage.php` was missing, 
   even when `with-bootstrap-patch` was set to `false`.
+- Add sourceReference support for installed.json, fixes issues with updates for dev-master type repositories
+  where version is not a good indication of updates.
+- Remove exception for `InstalledPackageFileSystemRepository::add()` method,
+  the function is used for both updates and new installs.
 
 ## [3.0.3] - 2015-06-02
 - Added a change log file
