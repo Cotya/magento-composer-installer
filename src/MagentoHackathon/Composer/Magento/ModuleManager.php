@@ -102,7 +102,8 @@ class ModuleManager
             $this->installedPackageRepository->add(new InstalledPackage(
                 $install->getName(),
                 $install->getVersion(),
-                $files
+                $files,
+                $install->getSourceReference()
             ));
         }
 
@@ -169,9 +170,12 @@ class ModuleManager
     {
         $repo = $this->installedPackageRepository;
         $packages = array_filter($currentComposerInstalledPackages, function(PackageInterface $package) use ($repo) {
-            return !$repo->has($package->getName(), $package->getVersion());
+            return (
+                !$repo->has($package->getName(), $package->getVersion())
+                || !$repo->hasReference($package->getName(),$package->getSourceReference())
+            );
         });
-        
+
         $config = $this->config;
         usort($packages, function(PackageInterface $aObject, PackageInterface $bObject) use ($config) {
             $a = $config->getModuleSpecificSortValue($aObject->getName());
@@ -186,7 +190,7 @@ class ModuleManager
             }
             return ($a < $b) ? -1 : 1;
         });
-        
+
         return $packages;
     }
 

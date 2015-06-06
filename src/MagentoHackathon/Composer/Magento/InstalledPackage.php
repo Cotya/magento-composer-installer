@@ -20,6 +20,11 @@ class InstalledPackage
     protected $version;
 
     /**
+     * @var string
+     */
+    protected $sourceReference;
+
+    /**
      * @var array
      */
     protected $installedFiles;
@@ -28,12 +33,14 @@ class InstalledPackage
      * @param string $name
      * @param string $version
      * @param array $files
+     * @param string $reference
      */
-    public function __construct($name, $version, array $files)
+    public function __construct($name, $version, array $files, $reference = null)
     {
         $this->name = $name;
         $this->installedFiles = $files;
         $this->version = $version;
+        $this->sourceReference = $reference;
     }
 
     /**
@@ -50,6 +57,14 @@ class InstalledPackage
     public function getVersion()
     {
         return $this->version;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSourceReference()
+    {
+        return $this->sourceReference;
     }
 
     /**

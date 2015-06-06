@@ -40,4 +40,12 @@ interface InstalledPackageRepositoryInterface
      * @return bool
      */
     public function has($packageName, $version = null);
+
+    /**
+     * @param string $packageName
+     * @param string $reference
+     * @return bool
+     */
+
+    public function hasReference($packageName, $reference = null);
 }
