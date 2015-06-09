@@ -236,7 +236,11 @@ class Plugin implements PluginInterface, EventSubscriberInterface
 
         $patcher = Bootstrap::fromConfig($this->config);
         $patcher->setIo($this->io);
-        $patcher->patch();
+        try {
+            $patcher->patch();
+        } catch (\DomainException $e) {
+            $this->io->write('<comment>'.$e->getMessage().'</comment>');
+        }
     }
 
     /**
