@@ -10,6 +10,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
   where version is not a good indication of updates.
 - Remove exception for `InstalledPackageFileSystemRepository::add()` method,
   the function is used for both updates and new installs.
+- Relaxed the Plugin API constraint to `^1.0` so that the next version 
+  bump won't exclude this installer.
+- Updated dependencies' versions.
 
 ## [3.0.3] - 2015-06-02
 - Added a change log file
