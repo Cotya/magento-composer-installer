@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "fb9f3c5f889118016d402c83e647a9c5",
+    "hash": "75e34c3773f0f171bc7883af5c226e91",
     "packages": [
         {
             "name": "eloquent/composer-config-reader",
@@ -457,12 +457,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Cotya/composer-test-framework.git",
-                "reference": "9a2d10f93a4eae8660da428c3ca21de64c50dc36"
+                "reference": "f3e1a7b6a4aa7cac2fcbe899198538682d747877"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Cotya/composer-test-framework/zipball/9a2d10f93a4eae8660da428c3ca21de64c50dc36",
-                "reference": "9a2d10f93a4eae8660da428c3ca21de64c50dc36",
+                "url": "https://api.github.com/repos/Cotya/composer-test-framework/zipball/f3e1a7b6a4aa7cac2fcbe899198538682d747877",
+                "reference": "f3e1a7b6a4aa7cac2fcbe899198538682d747877",
                 "shasum": ""
             },
             "require": {
@@ -492,7 +492,7 @@
                 }
             ],
             "description": "a framework to easier build tests for composer installer and plugins",
-            "time": "2015-02-23 20:11:46"
+            "time": "2015-06-09 22:44:22"
         },
         {
             "name": "doctrine/instantiator",
