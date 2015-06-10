@@ -82,6 +82,15 @@ class InstalledFilesFilesystemRepositoryTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('MagentoHackathon\Composer\Magento\InstalledPackage', $package);
     }
 
+    public function testExceptionIsThrownIfDuplicatePackageIsAdded()
+    {
+        $this->setExpectedException('Exception', 'Package: "some-package" is already installed');
+
+        $package = new InstalledPackage('some-package', '1.0.0', array());
+        $this->repository->add($package);
+        $this->repository->add($package);
+    }
+
     public function testAddInstalledMappings()
     {
         $files = array(
@@ -94,7 +103,6 @@ class InstalledFilesFilesystemRepositoryTest extends \PHPUnit_Framework_TestCase
             'packageName' => 'some-package',
             'version' => '1.0.0',
             'installedFiles' => $files,
-            'sourceReference' => null
         ));
         $package = new InstalledPackage('some-package', '1.0.0', $files);
         $this->repository->add($package);

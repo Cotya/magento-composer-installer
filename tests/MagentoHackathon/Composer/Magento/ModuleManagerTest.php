@@ -2,6 +2,7 @@
 
 namespace MagentoHackathon\Composer\Magento;
 
+use Composer\Package\AliasPackage;
 use Composer\Package\Package;
 use MagentoHackathon\Composer\Magento\Deploystrategy\None;
 use MagentoHackathon\Composer\Magento\Event\EventManager;
@@ -17,6 +18,9 @@ use org\bovigo\vfs\vfsStream;
  */
 class ModuleManagerTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * @var ModuleManager
+     */
     protected $moduleManager;
     protected $installedPackageRepository;
     protected $unInstallStrategy;
@@ -131,5 +135,31 @@ class ModuleManagerTest extends \PHPUnit_Framework_TestCase
         $result = $this->moduleManager->updateInstalledPackages(array());
         $this->assertSame($installedMagentoPackages, $result[0]);
         $this->assertEmpty($result[1]);
+    }
+
+    public function testDevMasterAndLikeVersionsTriggerReInstallOnNewVersions()
+    {
+        $packageOld = new Package("vendor/package", "9999999-dev", "vendor/package");
+        $packageOld->setSourceReference("7a120f9589db758b626f3b7011e4ab922239f1f4");
+
+        $packageNew = new Package("vendor/package", "9999999-dev", "vendor/package");
+        $packageNew->setSourceReference("aeb485dc658ac02c2136200a592bcdc5ee1ea9f9");
+
+        $this->assertCount(0, $this->installedPackageRepository->findAll());
+        $this->moduleManager->updateInstalledPackages([$packageOld]);
+
+        $this->assertCount(1, $this->installedPackageRepository->findAll());
+        $this->assertEquals(
+            '9999999-dev-7a120f9589db758b626f3b7011e4ab922239f1f4',
+            $this->installedPackageRepository->findByPackageName('vendor/package')->getVersion()
+        );
+
+        $this->moduleManager->updateInstalledPackages([$packageNew]);
+
+        $this->assertCount(1, $this->installedPackageRepository->findAll());
+        $this->assertEquals(
+            '9999999-dev-aeb485dc658ac02c2136200a592bcdc5ee1ea9f9',
+            $this->installedPackageRepository->findByPackageName('vendor/package')->getVersion()
+        );
     }
 }

@@ -15,10 +15,9 @@ class InstalledPackageDumper
     public function dump(InstalledPackage $installedPackage)
     {
         return array(
-            'packageName' => $installedPackage->getName(),
-            'version' => $installedPackage->getVersion(),
-            'installedFiles' => $installedPackage->getInstalledFiles(),
-            'sourceReference' => $installedPackage->getSourceReference(),
+            'packageName'       => $installedPackage->getName(),
+            'version'           => $installedPackage->getVersion(),
+            'installedFiles'    => $installedPackage->getInstalledFiles(),
         );
     }
 
@@ -28,12 +27,6 @@ class InstalledPackageDumper
      */
     public function restore(array $data)
     {
-        $data['sourceReference'] = isset($data['sourceReference']) ? $data['sourceReference'] : null;
-        return new InstalledPackage(
-            $data['packageName'],
-            $data['version'],
-            $data['installedFiles'],
-            $data['sourceReference']
-        );
+        return new InstalledPackage($data['packageName'], $data['version'], $data['installedFiles']);
     }
 }

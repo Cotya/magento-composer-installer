@@ -10,6 +10,7 @@ namespace MagentoHackathon\Composer\Magento;
 
 use Composer\Config;
 use Composer\Installer;
+use Composer\Package\AliasPackage;
 use Composer\Script\Event;
 use MagentoHackathon\Composer\Helper;
 use MagentoHackathon\Composer\Magento\Event\EventManager;
@@ -77,6 +78,16 @@ class Plugin implements PluginInterface, EventSubscriberInterface
      * @var EntryFactory
      */
     protected $entryFactory;
+
+    /**
+     * @var EventManager
+     */
+    private $eventManager;
+
+    /**
+     * @var ModuleManager
+     */
+    private $moduleManager;
 
     /**
      * init the DeployManager
@@ -147,15 +158,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
         );
 
         $this->initDeployManager($composer, $io, $this->getEventManager());
-
         $this->writeDebug('activate magento plugin');
-
-        /*
-        $moduleInstaller = new ModuleInstaller($io, $composer, $this->entryFactory);
-        $moduleInstaller->setDeployManager($this->deployManager);
-
-        $composer->getInstallationManager()->addInstaller($moduleInstaller);
-        /**/
     }
 
     /**
@@ -200,6 +203,9 @@ class Plugin implements PluginInterface, EventSubscriberInterface
         $magentoModules = array_filter(
             $this->composer->getRepositoryManager()->getLocalRepository()->getPackages(),
             function (PackageInterface $package) use ($packageTypeToMatch) {
+                if ($package instanceof AliasPackage) {
+                    return false;
+                }
                 return $package->getType() === $packageTypeToMatch;
             }
         );
@@ -213,25 +219,14 @@ class Plugin implements PluginInterface, EventSubscriberInterface
             $vendorDir
         );
 
-        $eventManager = new EventManager;
-        $this->applyEvents($eventManager);
-        $moduleManager = new ModuleManager(
-            new InstalledPackageFileSystemRepository(
-                $vendorDir.'/installed.json',
-                new InstalledPackageDumper()
-            ),
-            $eventManager,
-            $this->config,
-            new UnInstallStrategy($this->filesystem),
-            new InstallStrategyFactory($this->config, new ParserFactory($this->config))
-        );
+        $this->applyEvents($this->getEventManager());
 
         if (in_array('--redeploy', $event->getArguments())) {
             $this->writeDebug('remove all deployed modules');
-            $moduleManager->updateInstalledPackages(array());
+            $this->getModuleManager()->updateInstalledPackages(array());
         }
         $this->writeDebug('start magento module deploy via moduleManager');
-        $moduleManager->updateInstalledPackages($magentoModules);
+        $this->getModuleManager()->updateInstalledPackages($magentoModules);
         $this->deployLibraries();
 
         $patcher = Bootstrap::fromConfig($this->config);
@@ -411,14 +406,6 @@ class Plugin implements PluginInterface, EventSubscriberInterface
     }
 
     /**
-     * @return EventManager
-     */
-    public function getEventManager()
-    {
-        return new EventManager;
-    }
-
-    /**
      * @param PackageInterface $package
      * @return string
      */
@@ -426,5 +413,38 @@ class Plugin implements PluginInterface, EventSubscriberInterface
     {
         $vendorDir = realpath(rtrim($this->composer->getConfig()->get('vendor-dir'), '/'));
         return sprintf('%s/%s', $vendorDir, $package->getPrettyName());
+    }
+
+    /**
+     * @return EventManager
+     */
+    protected function getEventManager()
+    {
+        if (null === $this->eventManager) {
+            $this->eventManager = new EventManager;
+        }
+
+        return $this->eventManager;
+    }
+
+    /**
+     * @return ModuleManager
+     */
+    protected function getModuleManager()
+    {
+        if (null === $this->moduleManager) {
+            $this->moduleManager = new ModuleManager(
+                new InstalledPackageFileSystemRepository(
+                    rtrim($this->composer->getConfig()->get(self::VENDOR_DIR_KEY), '/') . '/installed.json',
+                    new InstalledPackageDumper()
+                ),
+                $this->getEventManager(),
+                $this->config,
+                new UnInstallStrategy($this->filesystem),
+                new InstallStrategyFactory($this->config, new ParserFactory($this->config))
+            );
+        }
+
+        return $this->moduleManager;
     }
 }

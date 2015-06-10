@@ -114,30 +114,6 @@ class InstalledPackageFileSystemRepository implements InstalledPackageRepository
     }
 
     /**
-     * If source reference specified, perform a strict check,
-     * which only returns true if repository has the package in the specified source reference
-     *
-     * @param string $packageName
-     * @param string $reference
-     * @return bool
-     */
-    public function hasReference($packageName, $reference = null)
-    {
-        $this->load();
-        try {
-            $package = $this->findByPackageName($packageName);
-
-            if (null === $reference) {
-                return true;
-            }
-
-            return $package->getSourceReference() === $reference;
-        } catch (\Exception $e) {
-            return false;
-        }
-    }
-
-    /**
      * @param InstalledPackage $package
      * @throws \Exception
      */
@@ -145,20 +121,15 @@ class InstalledPackageFileSystemRepository implements InstalledPackageRepository
     {
         $this->load();
 
-        $this->hasChanges = true;
-
         try {
             $this->findByPackageName($package->getName());
-            foreach ($this->packages as &$installedPackage) {
-                if ($installedPackage->getName() === $package->getName()) {
-                    $installedPackage = $package;
-                }
-            }
         } catch (\Exception $e) {
             $this->packages[] = $package;
+            $this->hasChanges = true;
             return;
         }
 
+        throw new \Exception(sprintf('Package: "%s" is already installed', $package->getName()));
     }
 
     /**

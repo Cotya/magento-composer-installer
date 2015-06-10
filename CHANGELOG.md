@@ -3,8 +3,9 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased][unreleased]
-- 
-
+- Reverted PR [#34](https://github.com/Cotya/magento-composer-installer/pull/34) in favor of a simpler solution without breaking BC
+- Fixed issue [#7](https://github.com/Cotya/magento-composer-installer/issues/7) by filtering out Aliased Packages. This was with branch-aliasing where composer gave us two packages for the same module when it was setup to use branch aliasing
+- Fixed issue [#33](https://github.com/Cotya/magento-composer-installer/issues/33) by using the source reference from the composer package as part of the internal version number for tracking packages
 
 ## [3.0.4-beta1] - 2015-06-10
 - Fixed error when redeploying with no modules, using PHP 5.3.
