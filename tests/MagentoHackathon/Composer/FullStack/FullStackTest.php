@@ -11,20 +11,6 @@ class FullStackTest extends FullStack\AbstractTest
     public static function setUpBeforeClass()
     {
         parent::setUpBeforeClass();
-        $packagesPath    = self::getProjectRoot() .'/tests/res/packages';
-        $directory = new \DirectoryIterator($packagesPath);
-        /** @var \DirectoryIterator $fileinfo */
-        foreach ($directory as $file) {
-            if (!$file->isDot() && $file->isDir()) {
-                $args = ' archive --format=zip --dir="../../../../tests/FullStackTest/artifact" -vvv';
-                $process = new Process(
-                    self::getComposerCommand() . $args,
-                    $file->getPathname()
-                );
-                $process->run();
-                parent::printProcessMessageIfError($process);
-            }
-        }
     }
 
     public static function tearDownAfterClass()

@@ -12,31 +12,12 @@ abstract class AbstractTest extends \PHPUnit_Framework_TestCase
 
     public static function setUpBeforeClass()
     {
-        $command = 'perl -pi.bak -e \'s/"test_version"/"version"/g\' ./composer.json';
-        $process = self::runInProjectRoot($command);
-        self::printProcessMessageIfError($process);
-
-        @unlink(self::getProjectRoot().'/vendor/theseer/directoryscanner/tests/_data/linkdir');
-        @unlink(self::getBasePath().'/magento/vendor/theseer/directoryscanner/tests/_data/linkdir');
-        @unlink(self::getBasePath().'/magento-modules/vendor/theseer/directoryscanner/tests/_data/linkdir');
-        @unlink(self::getProjectRoot().'/vendor/theseer/directoryscanner/tests/_data/nested/empty');
-        @unlink(self::getBasePath().'/magento/vendor/theseer/directoryscanner/tests/_data/nested/empty');
-        @unlink(self::getBasePath().'/magento-modules/vendor/theseer/directoryscanner/tests/_data/nested/empty');
-
-        $command = self::getComposerCommand().' archive --format=zip --dir="tests/FullStackTest/artifact" -vvv';
-        $process = self::runInProjectRoot($command);
-
-        if ($process->getExitCode() !== 0) {
-            self::printProcessMessageIfError($process);
-        } else {
-            self::logProcessOutput($process, 'createComposerArtifact');
-        }
+        parent::setUpBeforeClass();
     }
 
     public static function tearDownAfterClass()
     {
-        $process = self::runInProjectRoot('perl -pi.bak -e \'s/"version"/"test_version"/g\' ./composer.json');
-        self::printProcessMessageIfError($process);
+        parent::tearDownAfterClass();
     }
 
     protected static function getBasePath()
