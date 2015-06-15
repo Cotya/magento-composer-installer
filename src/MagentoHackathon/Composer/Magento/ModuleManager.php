@@ -101,9 +101,8 @@ class ModuleManager
             );
             $this->installedPackageRepository->add(new InstalledPackage(
                 $install->getName(),
-                $install->getVersion(),
-                $files,
-                $install->getSourceReference()
+                $this->createVersion($install),
+                $files
             ));
         }
 
@@ -157,7 +156,7 @@ class ModuleManager
                 }
 
                 $composerPackage = $currentComposerInstalledPackages[$package->getName()];
-                return $package->getUniqueName() !== $composerPackage->getUniqueName();
+                return $package->getVersion() !== $this->createVersion($composerPackage);
             }
         );
     }
@@ -170,10 +169,7 @@ class ModuleManager
     {
         $repo = $this->installedPackageRepository;
         $packages = array_filter($currentComposerInstalledPackages, function(PackageInterface $package) use ($repo) {
-            return (
-                !$repo->has($package->getName(), $package->getVersion())
-                || !$repo->hasReference($package->getName(),$package->getSourceReference())
-            );
+            return !$repo->has($package->getName(), $this->createVersion($package));
         });
 
         $config = $this->config;
@@ -209,5 +205,26 @@ class ModuleManager
 
         $path = realpath($path);
         return $path;
+    }
+
+    /**
+     * Create a version string which is unique. dev-master
+     * packages report a version of 9999999-dev. We need a unique version
+     * so we can detect changes. here we use the source reference which
+     * in the case of git is the commit hash
+     *
+     * @param PackageInterface $package
+     *
+     * @return string
+     */
+    private function createVersion(PackageInterface $package)
+    {
+        $version = $package->getVersion();
+
+        if (null !== $package->getSourceReference()) {
+            $version = sprintf('%s-%s', $version, $package->getSourceReference());
+        }
+
+        return $version;
     }
 }
