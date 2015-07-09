@@ -4,6 +4,8 @@ require_once(__DIR__.'/bootstrap.php');
 
 use Symfony\Component\Process\Process;
 
+echo "Artifact Generation started".PHP_EOL;
+
 $function = function() {
     $projectPath = realpath(__DIR__ . '/../');
 
@@ -87,8 +89,12 @@ $function = function() {
             echo $message;
         }
     };
-    $createComposerInstallerArtifact();
 
+    echo "start create Composer Artifact".PHP_EOL;
+    $createComposerInstallerArtifact();
+    echo "finish create Composer Artifact".PHP_EOL;
+
+    echo "start create Composer Mock Artifact".PHP_EOL;
     $directory = new \DirectoryIterator($packagesPath);
     /** @var \DirectoryIterator $fileinfo */
     foreach ($directory as $file) {
@@ -116,7 +122,10 @@ $function = function() {
             }
         }
     };
+    echo "finish create Composer Mock Artifact".PHP_EOL;
 };
     
 $function();
 unset($function);
+
+echo "Artifact Generation finished".PHP_EOL;
