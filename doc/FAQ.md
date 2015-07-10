@@ -16,6 +16,16 @@ Which makes absolutely no sense for a module.
 
 currently No. As we need special configs this makes things a lot more complicated then installing on project level.
 
+### Can I disable repository suggestions?
+
+Yes, use the extra configuration option 'skip-suggest-repositories', like
+
+```json
+"extra": {
+    ...,
+    "skip-suggest-repositories": true
+}
+```
 
 ### I want to use the composer autoloader or some other different from magento one, how do I do this?
 

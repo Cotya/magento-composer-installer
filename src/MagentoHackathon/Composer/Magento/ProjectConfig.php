@@ -40,6 +40,8 @@ class ProjectConfig
 
     const EXTRA_WITH_BOOTSTRAP_PATCH_KEY = 'with-bootstrap-patch';
 
+    const EXTRA_WITH_SKIP_SUGGEST_KEY = 'skip-suggest-repositories';
+
     protected $libraryPath;
     protected $libraryPackages;
     protected $extra;
@@ -450,5 +452,13 @@ class ProjectConfig
     public function mustApplyBootstrapPatch()
     {
         return (bool) $this->fetchVarFromExtraConfig(self::EXTRA_WITH_BOOTSTRAP_PATCH_KEY, true);
+    }
+
+    /**
+     * @return boolean
+     */
+    public function skipSuggestComposerRepositories()
+    {
+        return (bool) $this->fetchVarFromExtraConfig(self::EXTRA_WITH_SKIP_SUGGEST_KEY, false);
     }
 }
