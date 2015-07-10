@@ -149,7 +149,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
         $this->filesystem = new Filesystem();
         $this->config = new ProjectConfig($composer->getPackage()->getExtra(), $composer->getConfig()->all());
 
-        $this->veryfiyComposerRepositories();
+        $this->suggestComposerRepositories();
 
         $this->entryFactory = new EntryFactory(
             $this->config,
@@ -241,7 +241,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
     /**
      * test configured repositories and give message about adding recommended ones
      */
-    protected function veryfiyComposerRepositories()
+    protected function suggestComposerRepositories()
     {
         $foundFiregento = false;
         $foundMagento   = false;
