@@ -140,6 +140,23 @@ class PluginTest extends \PHPUnit_Framework_TestCase
         $this->plugin->onNewCodeEvent(new \Composer\Script\Event('event', $this->composer, $this->io));
     }
 
+    /**
+     * Given Magento Composer Installer is configured to skip repository suggestions
+     * When the plugin object is activated
+     * Then no suggestions will be given.
+     */
+    public function testSkipSuggestRepositories()
+    {
+        $rootPackage = $this->createRootPackage(array(
+            ProjectConfig::EXTRA_WITH_SKIP_SUGGEST_KEY => true
+        ));
+        $this->composer->setPackage($rootPackage);
+        $this->io
+            ->expects($this->never())
+            ->method('write');
+        $this->plugin->activate($this->composer, $this->io);
+    }
+
     public function testAliasPackagesAreFilteredOut()
     {
         $this->composer->setPackage($this->createRootPackage());
