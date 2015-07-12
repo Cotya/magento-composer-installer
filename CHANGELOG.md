@@ -10,9 +10,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Fixed issue [#39](https://github.com/Cotya/magento-composer-installer/issues/39) Symlinks were not removed correctly on module remove
 
 ## [3.0.4-beta1] - 2015-06-10
-- Fixed error when redeploying with no modules, using PHP 5.3.
+- Fixed error when redeploying with no modules, using PHP 5.3. [Issue #16](https://github.com/Cotya/magento-composer-installer/issues/16) [PR #29](https://github.com/Cotya/magento-composer-installer/pull/29)
 - Fixed the Patcher throwing an exception if `app/Mage.php` was missing, 
-  even when `with-bootstrap-patch` was set to `false`.
+  even when `with-bootstrap-patch` was set to `false`. [Issue #31](https://github.com/Cotya/magento-composer-installer/issues/31) [PR #32](https://github.com/Cotya/magento-composer-installer/pull/32)
 - Changed Patcher throwing an exception to just output a *comment* Message
 - Add sourceReference support for installed.json, fixes issues with updates for dev-master type repositories
   where version is not a good indication of updates.
