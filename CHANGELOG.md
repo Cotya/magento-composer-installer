@@ -3,6 +3,9 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased][unreleased]
+
+
+## [3.0.4] - 2015-07-12
 - Added PR [#40](https://github.com/Cotya/magento-composer-installer/pull/40): extra config option to skip repository suggestions
 - Reverted PR [#34](https://github.com/Cotya/magento-composer-installer/pull/34) in favor of a simpler solution without breaking BC
 - Fixed issue [#7](https://github.com/Cotya/magento-composer-installer/issues/7) by filtering out Aliased Packages. This was with branch-aliasing where composer gave us two packages for the same module when it was setup to use branch aliasing
@@ -40,7 +43,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## 3.0.2 - 2015-03-28
 
-[unreleased]: https://github.com/Cotya/magento-composer-installer/compare/3.0.4-beta1...HEAD
+[unreleased]: https://github.com/Cotya/magento-composer-installer/compare/3.0.4...HEAD
+[3.0.4]: https://github.com/Cotya/magento-composer-installer/compare/3.0.4-beta1...3.0.4
 [3.0.4-beta1]: https://github.com/Cotya/magento-composer-installer/compare/3.0.3...3.0.4-beta1
 [3.0.3]: https://github.com/Cotya/magento-composer-installer/compare/3.0.3-rc.2...3.0.3
 [3.0.3-rc.2]: https://github.com/Cotya/magento-composer-installer/compare/3.0.3-rc.1...3.0.3-rc.2
