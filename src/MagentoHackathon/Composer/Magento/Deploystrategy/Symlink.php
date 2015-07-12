@@ -100,7 +100,11 @@ class Symlink extends DeploystrategyAbstract
 
         // Create symlink
         if (false === $this->symlink($relSourcePath, $destPath, $sourcePath)) {
-            throw new \ErrorException("An error occured while creating symlink" . $relSourcePath);
+            $msg = "An error occured while creating symlink\n" . $relSourcePath . " -> " . $destPath;
+            if ('\\' === DIRECTORY_SEPARATOR) {
+                $msg .= "\nDo you have admin privileges?";
+            }
+            throw new \ErrorException($msg);
         }
 
         // Check we where able to create the symlink
@@ -112,15 +116,21 @@ class Symlink extends DeploystrategyAbstract
         return true;
     }
 
+    /**
+     * @param $relSourcePath
+     * @param $destPath
+     * @param $absSourcePath
+     *
+     * @return bool
+     */
     protected function symlink($relSourcePath, $destPath, $absSourcePath)
     {
+        $sourcePath = $relSourcePath;
+        // make symlinks always absolute on windows because of #142
         if (strtoupper(substr(PHP_OS, 0, 3)) == 'WIN') {
-            $relSourcePath = str_replace('/', '\\', $relSourcePath);
-            $param = is_dir($absSourcePath) ? ' /D' : '';
-            exec('mklink' . escapeshellarg($param) . ' "' . escapeshellarg($destPath) . '" "' . escapeshellarg($relSourcePath) . '"');
-        } else {
-            symlink($relSourcePath, $destPath);
+            $sourcePath = str_replace('/', '\\', $absSourcePath);
         }
+        return symlink($sourcePath, $destPath);
     }
 
     /**
