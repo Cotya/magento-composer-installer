@@ -43,7 +43,7 @@ class Wrapper
     protected function getComposerCommand()
     {
 
-        if (getenv('APPVEYOR') == "true") {
+        if (getenv('APPVEYOR') == "True") {
             $command = 'php '.$this->executable->getRealPath();
         } else {
             $command = '/usr/bin/env php '.$this->executable->getRealPath();
