@@ -19,10 +19,13 @@ install:
   - echo date.timezone="UTC" >> php.ini
   - echo extension_dir=ext >> php.ini
   - echo extension=php_openssl.dll >> php.ini
+  - php -r "readfile('http://getcomposer.org/installer');" | php
+  - echo @php "%~dp0composer.phar" %*>composer.bat
   - SET PATH=C:\tools\php;%PATH%
   - cd C:\projects\random\customer\magento
+  - composer -V
   - php -r "readfile('http://getcomposer.org/installer');" | php
-  - php composer.phar install --prefer-dist --no-interaction
+  - composer install --prefer-dist --no-interaction
 test_script:
   - cd C:\projects\random\customer\magento
   - vendor\bin\phpunit.bat
