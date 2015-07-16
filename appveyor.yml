@@ -4,8 +4,12 @@ build: off
 clone_folder: C:\projects\random\customer\magento
 environment:
   COMPOSER_NO_INTERACTION: 1
+  COMPOSER_HOME: C:\Users\appveyor\AppData\Roaming\Composer
+  COMPOSER_CACHE_DIR: C:\projects\composer_cache
 cache:
   - C:\Users\appveyor\AppData\Roaming\Composer
+  - C:\projects\composer_cache
+  - C:\projects\random\customer\magento\vendor -> C:\projects\random\customer\magento\composer.lock 
 install: 
   - cinst OpenSSL.Light
   - SET PATH=C:\Program Files\OpenSSL;%PATH%
