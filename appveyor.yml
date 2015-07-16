@@ -23,6 +23,7 @@ install:
   - echo @php "%~dp0composer.phar" %*>composer.bat
   - SET PATH=C:\tools\php;%PATH%
   - cd C:\projects\random\customer\magento
+  - echo %PATH%
   - composer -V
   - php -r "readfile('http://getcomposer.org/installer');" | php
   - composer install --prefer-dist --no-interaction
