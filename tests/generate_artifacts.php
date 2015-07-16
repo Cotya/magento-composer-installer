@@ -20,6 +20,8 @@ $function = function() {
     $composerCommand = 'composer';
     if (getenv('TRAVIS') == "true") {
         $composerCommand = $projectPath . '/composer.phar';
+    } elseif (getenv('APPVEYOR') == "true") {
+        $composerCommand = 'php composer.phar';
     } elseif ($runInProjectRoot('composer.phar')->getExitCode() === 0) {
         $composerCommand = 'composer.phar';
     }
