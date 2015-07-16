@@ -118,7 +118,7 @@ class ModuleManager
     public function doRemoves(array $packagesToRemove)
     {
         $magentoRootDir = $this->config->getMagentoRootDir();
-        $addBasePath = function($path) use ($magentoRootDir) {
+        $addBasePath = function ($path) use ($magentoRootDir) {
             return $magentoRootDir.$path;
         };
         foreach ($packagesToRemove as $remove) {
@@ -168,12 +168,12 @@ class ModuleManager
     public function getInstalls(array $currentComposerInstalledPackages)
     {
         $repo = $this->installedPackageRepository;
-        $packages = array_filter($currentComposerInstalledPackages, function(PackageInterface $package) use ($repo) {
+        $packages = array_filter($currentComposerInstalledPackages, function (PackageInterface $package) use ($repo) {
             return !$repo->has($package->getName(), $this->createVersion($package));
         });
 
         $config = $this->config;
-        usort($packages, function(PackageInterface $aObject, PackageInterface $bObject) use ($config) {
+        usort($packages, function (PackageInterface $aObject, PackageInterface $bObject) use ($config) {
             $a = $config->getModuleSpecificSortValue($aObject->getName());
             $b = $config->getModuleSpecificSortValue($bObject->getName());
             if ($a == $b) {

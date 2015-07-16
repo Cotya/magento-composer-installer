@@ -73,7 +73,7 @@ class DeployManager
     protected function sortPackages()
     {
         $sortPriority = $this->sortPriority;
-        $getPriorityValue = function(Entry $object) use ($sortPriority) {
+        $getPriorityValue = function (Entry $object) use ($sortPriority) {
             $result = 100;
             if (isset($sortPriority[$object->getPackageName()])) {
                 $result = $sortPriority[$object->getPackageName()];
@@ -84,7 +84,7 @@ class DeployManager
         };
         usort(
             $this->packages,
-            function($a, $b) use ($getPriorityValue) {
+            function ($a, $b) use ($getPriorityValue) {
                 /** @var Entry $a */
                 /** @var Entry $b */
                 $aVal = $getPriorityValue($a);

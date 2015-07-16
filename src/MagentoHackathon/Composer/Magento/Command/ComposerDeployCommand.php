@@ -49,7 +49,7 @@ class ComposerDeployCommand extends \Composer\Command\Command
 
         $io = $this->getIo();
         if ($io->isDebug()) {
-            $eventManager->listen('pre-package-deploy', function(PackageDeployEvent $event) use ($io) {
+            $eventManager->listen('pre-package-deploy', function (PackageDeployEvent $event) use ($io) {
                 $io->write('Start magento deploy for ' . $event->getDeployEntry()->getPackageName());
             });
         }

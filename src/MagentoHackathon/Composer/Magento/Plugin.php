@@ -113,7 +113,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
 
         $io = $this->io;
         if ($this->io->isDebug()) {
-            $eventManager->listen('pre-package-deploy', function(PackageDeployEvent $event) use ($io) {
+            $eventManager->listen('pre-package-deploy', function (PackageDeployEvent $event) use ($io) {
                 $io->write('Start magento deploy for ' . $event->getDeployEntry()->getPackageName());
             });
         }
