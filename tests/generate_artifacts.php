@@ -4,6 +4,12 @@ require_once(__DIR__.'/bootstrap.php');
 
 use Symfony\Component\Process\Process;
 
+var_dump(
+    [
+        "TRAVIS" => getenv('TRAVIS'),
+        "APPVEYOR" => getenv('APPVEYOR'),
+    ]);
+
 echo "Artifact Generation started".PHP_EOL;
 
 $function = function() {
