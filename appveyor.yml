@@ -21,8 +21,11 @@ install:
   - echo extension=php_openssl.dll >> php.ini
   - cd C:\tools\php
   - php -r "readfile('http://getcomposer.org/installer');" | php
-  - echo @php "%~dp0composer.phar" %*>composer.bat
   - SET PATH=C:\tools\php;%PATH%
+  - SET PATHEXT=.PHAR;.PHP;%PATHEXT%
+  - assoc .php=phpfile
+  - assoc .phar=phpfile
+  - ftype phpfile="C:\tools\php\php.exe" -f "%1" -- %~2
   - cd C:\projects\random\customer\magento
   - echo %PATH%
   - echo %PATHEXT%
