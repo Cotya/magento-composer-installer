@@ -14,16 +14,18 @@ install:
   - cinst OpenSSL.Light
   - SET PATH=C:\Program Files\OpenSSL;%PATH%
   - cinst php 
-  - cd c:\tools\php
+  - cd C:\tools\php
   - copy php.ini-production php.ini
   - echo date.timezone="UTC" >> php.ini
   - echo extension_dir=ext >> php.ini
   - echo extension=php_openssl.dll >> php.ini
+  - cd C:\tools\php
   - php -r "readfile('http://getcomposer.org/installer');" | php
   - echo @php "%~dp0composer.phar" %*>composer.bat
   - SET PATH=C:\tools\php;%PATH%
   - cd C:\projects\random\customer\magento
   - echo %PATH%
+  - echo %PATHEXT%
   - composer -V
   - php -r "readfile('http://getcomposer.org/installer');" | php
   - composer install --prefer-dist --no-interaction
