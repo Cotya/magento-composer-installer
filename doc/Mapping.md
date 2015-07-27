@@ -20,24 +20,22 @@ The Magento root directory must be specified in the ```composer.json``` under ``
 
 **NOTE:** modman's include and bash feature will never get supported!
 
-
-
-### Mapping per JSON
+### Mapping with composer.json
 If you don't like modman files, you can define mappings in a package composer.json file instead.
 
 ```json
 {
    "name": "test/test",
    "type": "magento-module",
-    "extra": {
-        "map": [
-            ["themes/default/skin", "public/skin/frontend/foo/default"],
-            ["themes/default/design", "public/app/design/frontend/foo/default"],
-            ["modules/My_Module/My_Module.xml", "public/app/etc/modules/My_Module.xml"],
-            ["modules/My_Module/code", "public/app/code/local/My/Module"],
-            ["modules/My_Module/frontend/layout/mymodule.xml", "public/app/design/frontend/base/default/layout/mymodule.xml"]
-        ]
-    }
+   "extra": {
+      "map": [
+         ["themes/default/skin", "public/skin/frontend/foo/default"],
+         ["themes/default/design", "public/app/design/frontend/foo/default"],
+         ["modules/My_Module/My_Module.xml", "public/app/etc/modules/My_Module.xml"],
+         ["modules/My_Module/code", "public/app/code/local/My/Module"],
+         ["modules/My_Module/frontend/layout/mymodule.xml", "public/app/design/frontend/base/default/layout/mymodule.xml"]
+      ]
+   }
 }
 ```
 
@@ -47,24 +45,35 @@ So sample `module` is provided by `company` with version `*`.
 Here is the entry for composer.json:
 ```
 {
-    "require": {
-        ...
-        "company/module": "*"
-    },
-    "repositories": [
-        ...
-    ],
-    "extra": {
-        ...
-        "magento-map-overwrite": {
-            "company/module": [
-                ["app/code/community/CompanyDir/ModuleDir/*", "app/code/local/CompanyDir/ModuleDir"]
-            ]
-        }
-    }
+   "require": {
+      ...
+      "company/module": "*"
+   },
+   "repositories": [
+      ...
+   ],
+   "extra": {
+      ...
+      "magento-map-overwrite": {
+         "company/module": [
+            ["app/code/community/CompanyDir/ModuleDir/*", "app/code/local/CompanyDir/ModuleDir"]
+         ]
+      }
+   }
 }
-
 ```
+
 so `company/module` is an array of mapping entries - arrays where first key is source path and second key is destination path.
 
+### Mapping with package.xml
+If you wish to convert an existing Magento Connect repository with a minimum amount of effort, you use the existing package.xml. To enable that, simply specify `"extra": { "package-xml": "package.xml" }` in your composer.json. For example:
 
+```json
+{
+   "name": "test/test",
+   "type": "magento-module",
+   "extra": {
+		"package-xml": "package.xml"
+	}
+}
+```
