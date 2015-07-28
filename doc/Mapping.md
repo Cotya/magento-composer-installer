@@ -25,17 +25,17 @@ If you don't like modman files, you can define mappings in a package composer.js
 
 ```json
 {
-   "name": "test/test",
-   "type": "magento-module",
-   "extra": {
-      "map": [
-         ["themes/default/skin", "public/skin/frontend/foo/default"],
-         ["themes/default/design", "public/app/design/frontend/foo/default"],
-         ["modules/My_Module/My_Module.xml", "public/app/etc/modules/My_Module.xml"],
-         ["modules/My_Module/code", "public/app/code/local/My/Module"],
-         ["modules/My_Module/frontend/layout/mymodule.xml", "public/app/design/frontend/base/default/layout/mymodule.xml"]
-      ]
-   }
+    "name": "test/test",
+    "type": "magento-module",
+    "extra": {
+        "map": [
+            ["themes/default/skin", "public/skin/frontend/foo/default"],
+            ["themes/default/design", "public/app/design/frontend/foo/default"],
+            ["modules/My_Module/My_Module.xml", "public/app/etc/modules/My_Module.xml"],
+            ["modules/My_Module/code", "public/app/code/local/My/Module"],
+            ["modules/My_Module/frontend/layout/mymodule.xml", "public/app/design/frontend/base/default/layout/mymodule.xml"]
+        ]
+    }
 }
 ```
 
@@ -45,21 +45,21 @@ So sample `module` is provided by `company` with version `*`.
 Here is the entry for composer.json:
 ```
 {
-   "require": {
-      ...
-      "company/module": "*"
-   },
-   "repositories": [
-      ...
-   ],
-   "extra": {
-      ...
-      "magento-map-overwrite": {
-         "company/module": [
-            ["app/code/community/CompanyDir/ModuleDir/*", "app/code/local/CompanyDir/ModuleDir"]
-         ]
-      }
-   }
+    "require": {
+        ...
+        "company/module": "*"
+    },
+    "repositories": [
+        ...
+    ],
+    "extra": {
+        ...
+        "magento-map-overwrite": {
+            "company/module": [
+                ["app/code/community/CompanyDir/ModuleDir/*", "app/code/local/CompanyDir/ModuleDir"]
+            ]
+        }
+    }
 }
 ```
 
@@ -70,10 +70,10 @@ If you wish to convert an existing Magento Connect repository with a minimum amo
 
 ```json
 {
-   "name": "test/test",
-   "type": "magento-module",
-   "extra": {
-		"package-xml": "package.xml"
-	}
+    "name": "test/test",
+    "type": "magento-module",
+    "extra": {
+        "package-xml": "package.xml"
+    }
 }
 ```
