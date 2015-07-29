@@ -29,11 +29,11 @@ class GitIgnoreTest extends \PHPUnit_Framework_TestCase
 
     public function testIfFileExistsExistingLinesAreLoaded()
     {
-        $lines = array('line1', 'line2');
+        $lines = array('/line1', '/line2');
         file_put_contents($this->gitIgnoreFile, implode("\n", $lines));
         $gitIgnore = new GitIgnore($this->gitIgnoreFile);
         $this->assertFileExists($this->gitIgnoreFile);
-        $this->assertSame($lines, $gitIgnore->getEntries());
+        $this->assertSame(['/line1', '/line2'], $gitIgnore->getEntries());
     }
 
     public function testAddEntryDoesNotAddDuplicates()
@@ -57,26 +57,34 @@ class GitIgnoreTest extends \PHPUnit_Framework_TestCase
 
     public function testCanRemoveEntry()
     {
-        $lines = array('line1', 'line2');
+        $lines = array('/line1', '/line2');
         file_put_contents($this->gitIgnoreFile, implode("\n", $lines));
         $gitIgnore = new GitIgnore($this->gitIgnoreFile);
         $gitIgnore->removeEntry('line1');
-        $this->assertEquals(array('line2'), $gitIgnore->getEntries());
+        $this->assertEquals(array('/line2'), $gitIgnore->getEntries());
     }
 
     public function testCanAddMultipleEntries()
     {
         $gitIgnore = new GitIgnore($this->gitIgnoreFile);
         $gitIgnore->addMultipleEntries(array('file1.txt', 'file2.txt'));
-        $this->assertSame(array('file1.txt', 'file2.txt'), $gitIgnore->getEntries());
+        $this->assertSame(array('/file1.txt', '/file2.txt'), $gitIgnore->getEntries());
     }
 
     public function testCanRemoveMultipleEntries()
     {
-        $lines = array('line1', 'line2');
+        $lines = array('/line1', '/line2');
         file_put_contents($this->gitIgnoreFile, implode("\n", $lines));
         $gitIgnore = new GitIgnore($this->gitIgnoreFile);
         $gitIgnore->removeMultipleEntries(array('line1', 'line2'));
         $this->assertSame(array(), $gitIgnore->getEntries());
+    }
+
+    public function testForwardSlashIsPrePendedToPath()
+    {
+        $gitIgnore = new GitIgnore($this->gitIgnoreFile);
+        $gitIgnore->addEntry('file1.txt');
+        $gitIgnore->addEntry('/file2.txt');
+        $this->assertSame(['/file1.txt', '/file2.txt'], $gitIgnore->getEntries());
     }
 }
