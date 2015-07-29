@@ -78,16 +78,24 @@ class ModuleManager
         $packagesToInstall  = $this->getInstalls($currentComposerInstalledPackages);
 
         $this->doRemoves($packagesToRemove);
-        //$this->doInstalls($packagesToInstall);
+        $this->doInstalls($packagesToInstall);
 
+        return array(
+            $packagesToRemove,
+            $packagesToInstall
+        );
+    }
 
-
+    /**
+     * @param PackageInterface[] $packagesToInstall
+     */
+    public function doInstalls(array $packagesToInstall)
+    {
         foreach ($packagesToInstall as $install) {
             $installStrategy = $this->installStrategyFactory->make(
                 $install,
                 $this->getPackageSourceDirectory($install)
             );
-
 
             $deployEntry = new Entry();
             $deployEntry->setPackageName($install->getPrettyName());
@@ -105,11 +113,6 @@ class ModuleManager
                 $files
             ));
         }
-
-        return array(
-            $packagesToRemove,
-            $packagesToInstall
-        );
     }
 
     /**
@@ -117,13 +120,9 @@ class ModuleManager
      */
     public function doRemoves(array $packagesToRemove)
     {
-        $magentoRootDir = $this->config->getMagentoRootDir();
-        $addBasePath = function ($path) use ($magentoRootDir) {
-            return $magentoRootDir.$path;
-        };
         foreach ($packagesToRemove as $remove) {
             $this->eventManager->dispatch(new PackageUnInstallEvent('pre-package-uninstall', $remove));
-            $this->unInstallStrategy->unInstall(array_map($addBasePath, $remove->getInstalledFiles()));
+            $this->unInstallStrategy->unInstall($remove->getInstalledFiles());
             $this->eventManager->dispatch(new PackageUnInstallEvent('post-package-uninstall', $remove));
             $this->installedPackageRepository->remove($remove);
         }

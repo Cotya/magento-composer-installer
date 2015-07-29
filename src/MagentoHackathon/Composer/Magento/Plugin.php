@@ -445,7 +445,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
                 ),
                 $this->getEventManager(),
                 $this->config,
-                new UnInstallStrategy($this->filesystem),
+                new UnInstallStrategy($this->filesystem, $this->config->getMagentoRootDir()),
                 new InstallStrategyFactory($this->config, new ParserFactory($this->config))
             );
         }

@@ -6,6 +6,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Fixed issue [#48](https://github.com/Cotya/magento-composer-installer/issues/48): Package XML mappings have './' prepended to them which breaks git-ignore functionality. Also explicitly adds a fw-slash to git-ignore paths, if one does not exist already.
 - Added functionality to remove entries from the git-ignore file when a module is uninstalled
 
+- Fixed an issue where empty directories were left behind after un-installing a module. If a structure like `/folder1/folder2/file1.txt` was created, and both folders were created by the module. Only `folder2` would be removed. It now traverses up-to the root-dir removing any empty directories. 
 
 ## [3.0.4] - 2015-07-12
 - Added PR [#40](https://github.com/Cotya/magento-composer-installer/pull/40): extra config option to skip repository suggestions
