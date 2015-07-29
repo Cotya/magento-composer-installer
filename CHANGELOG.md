@@ -3,6 +3,7 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased][unreleased]
+- Added functionality to remove entries from the git-ignore file when a module is uninstalled
 
 
 ## [3.0.4] - 2015-07-12

@@ -108,7 +108,10 @@ class Plugin implements PluginInterface, EventSubscriberInterface
 
         if ($this->config->hasAutoAppendGitignore()) {
             $gitIgnoreLocation = sprintf('%s/.gitignore', $this->config->getMagentoRootDir());
-            $eventManager->listen('post-package-deploy', new GitIgnoreListener(new GitIgnore($gitIgnoreLocation)));
+            $gitIgnore = new GitIgnoreListener(new GitIgnore($gitIgnoreLocation));
+
+            $eventManager->listen('post-package-deploy', [$gitIgnore, 'addNewInstalledFiles']);
+            $eventManager->listen('post-package-uninstall', [$gitIgnore, 'removeUnInstalledFiles']);
         }
 
         $io = $this->io;
