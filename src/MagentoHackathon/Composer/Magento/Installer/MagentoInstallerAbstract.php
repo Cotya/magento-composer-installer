@@ -476,7 +476,7 @@ abstract class MagentoInstallerAbstract extends LibraryInstaller implements Inst
 
             return $parser;
         } else {
-            throw new \ErrorException('Unable to find deploy strategy for module: no known mapping');
+            throw new \ErrorException('Unable to find deploy strategy for module ' . $package->getName() . ': no known mapping');
         }
     }
 
