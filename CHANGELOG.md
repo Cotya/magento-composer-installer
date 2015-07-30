@@ -3,7 +3,7 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased][unreleased]
-
+- Added documentation for package.xml mapping (PR [#47](https://github.com/Cotya/magento-composer-installer/pull/47))
 
 ## [3.0.4] - 2015-07-12
 - Added PR [#40](https://github.com/Cotya/magento-composer-installer/pull/40): extra config option to skip repository suggestions
