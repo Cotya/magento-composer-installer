@@ -99,7 +99,7 @@ class PackageXmlParser implements Parser
      */
     protected function getTargetsDefinitions()
     {
-        if (!$this->targets) {
+        if (empty($this->targets)) {
             $targets = simplexml_load_file(__DIR__ . '/../../../../../res/target.xml');
             foreach ($targets as $target) {
                 $attributes = $target->attributes();

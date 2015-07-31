@@ -3,6 +3,7 @@
 namespace MagentoHackathon\Composer\Magento\Factory;
 
 use Composer\Package\PackageInterface;
+use MagentoHackathon\Composer\Magento\Parser\Parser;
 
 /**
  * Interface ParserFactoryInterface
