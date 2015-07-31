@@ -370,7 +370,7 @@ abstract class DeploystrategyAbstract
         if (!file_exists($sourcePath)) {
             // Handle globing
             $matches = glob($sourcePath);
-            if ($matches) {
+            if (!empty($matches)) {
                 foreach ($matches as $match) {
                     $absolutePath           = sprintf('%s/%s', $this->removeTrailingSlash($destPath), basename($match));
                     $relativeDestination    = substr($absolutePath, strlen($this->getDestDir())); //strip off dest dir
@@ -405,7 +405,7 @@ abstract class DeploystrategyAbstract
         if (!file_exists($sourcePath)) {
             // Handle globing
             $matches = glob($sourcePath);
-            if ($matches) {
+            if (!empty($matches)) {
                 foreach ($matches as $match) {
                     $newDest = substr($destPath . '/' . basename($match), strlen($this->getDestDir()));
                     $newDest = ltrim($newDest, ' \\/');

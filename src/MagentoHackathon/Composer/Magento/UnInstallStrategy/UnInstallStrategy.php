@@ -13,7 +13,7 @@ class UnInstallStrategy implements UnInstallStrategyInterface
 {
 
     /**
-     * @var FileSystem
+     * @var Filesystem
      */
     protected $fileSystem;
 
@@ -25,10 +25,10 @@ class UnInstallStrategy implements UnInstallStrategyInterface
     protected $rootDir;
 
     /**
-     * @param FileSystem $fileSystem
+     * @param Filesystem $fileSystem
      * @param string     $rootDir
      */
-    public function __construct(FileSystem $fileSystem, $rootDir)
+    public function __construct(Filesystem $fileSystem, $rootDir)
     {
         $this->fileSystem   = $fileSystem;
         $this->rootDir      = $rootDir;
