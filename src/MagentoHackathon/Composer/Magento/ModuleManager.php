@@ -122,9 +122,9 @@ class ModuleManager
             return $magentoRootDir.$path;
         };
         foreach ($packagesToRemove as $remove) {
-            //$this->eventManager->dispatch(new PackageUnInstallEvent('pre-package-uninstall', $remove));
+            $this->eventManager->dispatch(new PackageUnInstallEvent('pre-package-uninstall', $remove));
             $this->unInstallStrategy->unInstall(array_map($addBasePath, $remove->getInstalledFiles()));
-            //$this->eventManager->dispatch(new PackageUnInstallEvent('post-package-uninstall', $remove));
+            $this->eventManager->dispatch(new PackageUnInstallEvent('post-package-uninstall', $remove));
             $this->installedPackageRepository->remove($remove);
         }
     }

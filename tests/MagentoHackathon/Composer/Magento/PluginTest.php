@@ -86,9 +86,14 @@ class PluginTest extends \PHPUnit_Framework_TestCase
         $this->composer->setPackage($rootPackage);
 
         $this->eventManager
-            ->expects($this->once())
+            ->expects($this->at(0))
             ->method('listen')
-            ->with('post-package-deploy', $this->isInstanceOf('MagentoHackathon\Composer\Magento\GitIgnoreListener'));
+            ->with('post-package-deploy', $this->isType('array'));
+
+        $this->eventManager
+            ->expects($this->at(1))
+            ->method('listen')
+            ->with('post-package-uninstall', $this->isType('array'));
 
         $this->plugin->activate($this->composer, $this->io);
     }
