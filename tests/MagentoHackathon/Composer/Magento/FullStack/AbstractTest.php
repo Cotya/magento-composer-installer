@@ -22,24 +22,25 @@ abstract class AbstractTest extends \PHPUnit_Framework_TestCase
 
     protected static function getBasePath()
     {
-        return realpath(__DIR__.'/../../../../FullStackTest');
+        return str_replace('\\', '/', realpath(__DIR__.'/../../../../FullStackTest'));
     }
 
     protected static function getProjectRoot()
     {
-        return realpath(__DIR__.'/../../../../..');
+        return str_replace('\\', '/', realpath(__DIR__.'/../../../../..'));
     }
 
     private static function resolveComposerCommand()
     {
         if (getenv('TRAVIS') == "true") {
-            $command = self::getProjectRoot().'/composer.phar';
-        } elseif (self::runInProjectRoot('composer.phar --version')->getExitCode() === 0) {
+            $command = self::getProjectRoot() . '/composer.phar';
+        } elseif (getenv('APPVEYOR') == 'True ') {
+            $command = 'php composer.phar';
+        } elseif (self::runInProjectRoot('./composer.phar --version')->getExitCode() === 0) {
             $command = 'composer.phar';
         } else {
             $command = 'composer';
         }
-
         return $command;
     }
 
@@ -62,8 +63,14 @@ abstract class AbstractTest extends \PHPUnit_Framework_TestCase
             $name = self::$processLogCounter;
             self::$processLogCounter++;
         }
+        $classParts = explode('\\', get_called_class());
+        $class = end($classParts);
+
+        $log = sprintf("%s/%s_%sOutput.log", self::getBasePath(), $class, $name);
+        $log = str_replace('\\', '/', $log);
+
         file_put_contents(
-            sprintf("%s/%s_%sOutput.log", self::getBasePath(), get_called_class(), $name),
+            $log,
             sprintf("%s\n\n%s", $process->getCommandLine(), $process->getOutput())
         );
     }

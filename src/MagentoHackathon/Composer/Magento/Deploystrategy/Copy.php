@@ -84,6 +84,7 @@ class Copy extends DeploystrategyAbstract
             if (is_dir($destPath)) {
                 $destPath .= '/' . basename($sourcePath);
             }
+            $destPath = str_replace('\\', '/', $destPath);
             $this->addDeployedFile($destPath);
             return copy($sourcePath, $destPath);
         }
@@ -107,6 +108,7 @@ class Copy extends DeploystrategyAbstract
                     mkdir($subDestPath, 0777, true);
                 }
             } else {
+                $subDestPath = str_replace('\\', '/', $subDestPath);
                 copy($item, $subDestPath);
                 $this->addDeployedFile($subDestPath);
             }

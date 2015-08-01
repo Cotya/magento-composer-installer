@@ -31,12 +31,12 @@ class CopyTest extends AbstractTest
         $sourceRoot = 'root';
         $sourceContents = "subdir/subdir/test.xml";
 
-        $this->mkdir($this->sourceDir . DS . $sourceRoot . DS . dirname($sourceContents));
-        touch($this->sourceDir . DS . $sourceRoot . DS . $sourceContents);
+        $this->mkdir(sprintf('%s/%s/%s', $this->sourceDir, $sourceRoot, dirname($sourceContents)));
+        touch(sprintf('%s/%s/%s', $this->sourceDir, $sourceRoot, $sourceContents));
 
         // intentionally using a differnt name to verify solution doesn't rely on identical src/dest paths
         $dest = "dest/root";
-        $this->mkdir($this->destDir . DS . $dest);
+        $this->mkdir(sprintf('%s/%s', $this->destDir, $dest));
 
         $testTarget = $this->destDir . DS . $dest . DS . $sourceContents;
         $this->strategy->setCurrentMapping(array($sourceRoot, $dest));
@@ -55,15 +55,14 @@ class CopyTest extends AbstractTest
         $sourceContents = "app/code/test.php";
         
         //create target directory before
-        $this->mkdir($this->destDir . DS . 'app' . DS . 'code');
-
-        $this->mkdir($this->sourceDir . DS . dirname($sourceContents));
-        touch($this->sourceDir . DS . $sourceContents);
+        $this->mkdir(sprintf('%s/app/code', $this->destDir));
+        $this->mkdir(sprintf('%s/app/code', $this->sourceDir));
+        touch(sprintf('%s/%s', $this->sourceDir, $sourceContents));
 
         $dest = "dest/root";
-        $this->mkdir($this->destDir . DS . $dest);
+        $this->mkdir(sprintf('%s/%s/', $this->destDir, $dest));
 
-        $testTarget = $this->destDir . DS . $sourceContents;
+        $testTarget = sprintf('%s/%s', $this->destDir, $sourceContents);
         $this->strategy->setMappings(array(array('*', '/')));
 
         $this->strategy->deploy();
@@ -72,7 +71,7 @@ class CopyTest extends AbstractTest
         $this->strategy->setIsForced(true);
         $this->strategy->deploy();
 
-        $this->assertFileNotExists($this->destDir . DS . 'app' . DS . 'app' . DS . 'code' . DS . 'test.php');
+        $this->assertFileNotExists(sprintf('%s/app/app/code/test.php', $this->destDir));
         
     }
 
@@ -90,9 +89,6 @@ class CopyTest extends AbstractTest
 
         $testTarget = $this->destDir . DS . $dest . DS . $sourceContents;
         $this->strategy->setCurrentMapping(array($sourceRoot, $dest));
-
-        $this->strategy->create($sourceRoot, $dest);
-        $this->assertFileExists($testTarget);
 
         $this->strategy->setIsForced(true);
         $this->strategy->create($sourceRoot, $dest);

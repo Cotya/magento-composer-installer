@@ -21,4 +21,4 @@ install:
   - php composer.phar install --prefer-dist --no-interaction
 test_script:
   - cd C:\projects\random\customer\magento
-  - vendor\bin\phpunit.bat
+  - vendor\bin\phpunit.bat --testsuite Unit

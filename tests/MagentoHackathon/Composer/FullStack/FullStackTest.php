@@ -128,11 +128,11 @@ class FullStackTest extends FullStack\AbstractTest
                     }
                     if ($method==="copy_force") {
                         $this->assertStringEqualsFile(
-                            self::getBasePath().'/htdocs/'.'app/design/frontend/test/default/installSort/test1.phtml',
+                            self::getBasePath().'/htdocs/app/design/frontend/test/default/installSort/test1.phtml',
                             'testcontent2'
                         );
                         $this->assertStringEqualsFile(
-                            self::getBasePath().'/htdocs/'.'app/design/frontend/test/default/installSort/test2.phtml',
+                            self::getBasePath().'/htdocs/app/design/frontend/test/default/installSort/test2.phtml',
                             'testcontent3'
                         );
                     }

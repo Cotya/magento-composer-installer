@@ -7,12 +7,13 @@ use Symfony\Component\Process\Process;
 echo "Artifact Generation started".PHP_EOL;
 
 $function = function() {
-    $projectPath = realpath(__DIR__ . '/../');
+    $projectPath = str_replace('\\', '/', realpath(__DIR__ . '/../'));
 
     $packagesPath = $projectPath . '/tests/res/packages';
     
     $runInProjectRoot = function ($command) use ($projectPath) {
         $process = new Process($command, $projectPath);
+        $process->setTimeout(120);
         $process->run();
         return $process;
     };
@@ -20,7 +21,9 @@ $function = function() {
     $composerCommand = 'composer';
     if (getenv('TRAVIS') == "true") {
         $composerCommand = $projectPath . '/composer.phar';
-    } elseif ($runInProjectRoot('composer.phar')->getExitCode() === 0) {
+    } elseif (getenv('APPVEYOR') == 'True') {
+        $composerCommand = 'php ' . $projectPath . '/composer.phar';
+    } elseif ($runInProjectRoot('./composer.phar')->getExitCode() === 0) {
         $composerCommand = 'composer.phar';
     }
     
@@ -104,6 +107,7 @@ $function = function() {
                 $composerCommand . $args,
                 $file->getPathname()
             );
+            $process->setTimeout(120);
             $process->run();
             if ($process->getExitCode() !== 0) {
                 $message = sprintf(
