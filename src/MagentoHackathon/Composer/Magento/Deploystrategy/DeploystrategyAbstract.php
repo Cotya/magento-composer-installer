@@ -481,8 +481,11 @@ abstract class DeploystrategyAbstract
      */
     public function addDeployedFile($file)
     {
-        //strip of destination deploy location
-        $file = preg_replace(sprintf('/^%s/', preg_quote($this->getDestDir(), '/')), '', $file);
+       $destination = str_replace('\\', '/', $this->getDestDir());
+        //strip of destination deploy
+        $quoted = preg_quote($destination, '/');
+        $regex = sprintf('/^%s/', $quoted);
+        $file = preg_replace($regex, '', $file);
         $this->deployedFiles[] = $file;
     }
 

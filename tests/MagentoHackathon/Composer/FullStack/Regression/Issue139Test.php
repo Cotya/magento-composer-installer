@@ -13,7 +13,6 @@ use Cotya\ComposerTestFramework;
 class Issue139Test extends ComposerTestFramework\PHPUnit\FullStackTestCase
 {
 
-
     /**
      * @group regression
      */
@@ -27,33 +26,31 @@ class Issue139Test extends ComposerTestFramework\PHPUnit\FullStackTestCase
 
 
         $composerJson = new  \SplTempFileObject();
-        $composerJsonContent = <<<JSON
-{
-    "repositories": [
-        {
-            "type": "composer",
-            "url": "http://packages.firegento.com"
-        },
-        {
-            "type": "artifact",
-            "url": "$artifactDirectory/"
-        }
-    ],
-    "require": {
-        "connect20/mage_all_latest": "*",
-        "magento-hackathon/magento-composer-installer": "*",
-        "composer/composer": "*@dev"
-    },
-    "extra": {
-        "magento-deploysttrategy": "copy",
-        "magento-force": "override",
-        "magento-root-dir": "./web"
-    }
 
-}
-JSON;
+        $json = [
+            'repositories' => [
+                [
+                    'type' => 'composer',
+                    'url' => 'http://packages.firegento.com'
+                ],
+                [
+                    'type' => 'artifact',
+                    'url' => $artifactDirectory->getRealPath(),
+                ]
+            ],
+            'require' => [
+                'connect20/mage_all_latest' => '*',
+                'magento-hackathon/magento-composer-installer' => '*',
+                'composer/composer' => '*@dev'
+            ],
+            'extra' => [
+                'magento-deploysttrategy' => 'copy',
+                'magento-force' => 'override',
+                'magento-root-dir' => './web'
+            ]
+        ];
 
-        $composerJson->fwrite($composerJsonContent);
+        $composerJson->fwrite(json_encode($json, JSON_PRETTY_PRINT));
 
         $composer->install($projectDirectory, $composerJson);
 

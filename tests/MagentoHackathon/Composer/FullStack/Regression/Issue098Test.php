@@ -23,31 +23,32 @@ class Issue098Test extends ComposerTestFramework\PHPUnit\FullStackTestCase
         $projectDirectory = new \SplFileInfo(self::getTempComposerProjectPath());
 
 
-        $artifactDirectory = new \SplFileInfo(__DIR__.'/../../../../../tests/FullStackTest/artifact');
+        $path = str_replace('\\', '/', __DIR__);
+        $artifactDirectory = new \SplFileInfo($path .'/../../../../../tests/FullStackTest/artifact');
 
 
         $composerJson = new  \SplTempFileObject();
-        $composerJsonContent = <<<JSON
-{
-    "repositories": [
-        {
-            "type": "artifact",
-            "url": "$artifactDirectory/"
-        }
-    ],
-    "require": {
-        "magento-hackathon/magento-composer-installer-test-sort1": "1.0.0"
-    },
-    "extra": {
-        "magento-deploysttrategy": "copy",
-        "magento-force": "override",
-        "magento-root-dir": "./magento"
-    }
 
-}
-JSON;
+        $dir = $artifactDirectory->getRealPath();
 
-        $composerJson->fwrite($composerJsonContent);
+        $json = [
+            'repositories' => [
+                [
+                    'type' => 'artifact',
+                    'url' => $artifactDirectory->getRealPath(),
+                ]
+            ],
+            'require' => [
+                'magento-hackathon/magento-composer-installer-test-sort1' => '1.0.0',
+            ],
+            'extra' => [
+                'magento-deploysttrategy' => 'copy',
+                'magento-force' => 'override',
+                'magento-root-dir' => './magento'
+            ]
+        ];
+
+        $composerJson->fwrite(json_encode($json, JSON_PRETTY_PRINT));
 
         $composer->install($projectDirectory, $composerJson);
 
@@ -56,32 +57,30 @@ JSON;
         );
 
         $composerJson = new  \SplTempFileObject();
-        $composerJsonContent = <<<JSON
-{
-    "repositories": [
-        {
-            "type": "artifact",
-            "url": "$artifactDirectory/"
-        }
-    ],
-    "require": {
-        "magento-hackathon/magento-composer-installer-test-sort1": "1.0.0",
-        "magento-hackathon/magento-composer-installer": "*"
-    },
-    "extra": {
-        "magento-deploysttrategy": "copy",
-        "magento-force": "override",
-        "magento-root-dir": "./magento"
-    }
 
-}
-JSON;
+        $json = [
+            'repositories' => [
+                [
+                    'type' => 'artifact',
+                    'url' => $artifactDirectory->getRealPath(),
+                ]
+            ],
+            'require' => [
+                'magento-hackathon/magento-composer-installer-test-sort1' => '1.0.0',
+                'magento-hackathon/magento-composer-installer' => '*'
+            ],
+            'extra' => [
+                'magento-deploysttrategy' => 'copy',
+                'magento-force' => 'override',
+                'magento-root-dir' => './magento'
+            ]
+        ];
 
-        $composerJson->fwrite($composerJsonContent);
-        
+        $composerJson->fwrite(json_encode($json, JSON_PRETTY_PRINT));
+
         $composer->update($projectDirectory, $composerJson);
-        
-        
+
+
         $this->assertFileExists(
             $projectDirectory->getPathname().'/magento/app/design/frontend/test/default/installSort/test1.phtml'
         );
