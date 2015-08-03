@@ -23,9 +23,7 @@ matrix:
 
 sudo: false
 
-cache:
-  directories:
-  - $HOME/.composer/cache
+cache: false
 
 install:
   - pecl install SPL_Types
