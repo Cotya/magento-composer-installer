@@ -34,7 +34,7 @@ abstract class AbstractTest extends \PHPUnit_Framework_TestCase
     {
         if (getenv('TRAVIS') == "true") {
             $command = self::getProjectRoot().'/composer.phar';
-        } elseif (self::runInProjectRoot('composer.phar --version')->getExitCode() === 0) {
+        } elseif (self::runInProjectRoot('./composer.phar --version')->getExitCode() === 0) {
             $command = 'composer.phar';
         } else {
             $command = 'composer';
@@ -62,8 +62,16 @@ abstract class AbstractTest extends \PHPUnit_Framework_TestCase
             $name = self::$processLogCounter;
             self::$processLogCounter++;
         }
+
+        $class = get_called_class();
+        $class = explode('\\', $class);
+        $class = end($class);
+
+        $log = sprintf("%s/%s_%sOutput.log", self::getBasePath(), $class, $name);
+        $log = str_replace('\\', '/', $log);
+
         file_put_contents(
-            sprintf("%s/%s_%sOutput.log", self::getBasePath(), get_called_class(), $name),
+            $log,
             sprintf("%s\n\n%s", $process->getCommandLine(), $process->getOutput())
         );
     }
