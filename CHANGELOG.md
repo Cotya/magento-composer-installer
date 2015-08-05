@@ -3,10 +3,15 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased][unreleased]
+
+
+## [3.0.5] - 2015-08-05
+- Fixed Issue [#20](https://github.com/Cotya/magento-composer-installer/issues/20): 'mklink""' is not recognized as an internal or external command, operable program or batch file.
 - Fixed issue [#48](https://github.com/Cotya/magento-composer-installer/issues/48): Package XML mappings have './' prepended to them which breaks git-ignore functionality. Also explicitly adds a fw-slash to git-ignore paths, if one does not exist already.
 - Added functionality to remove entries from the git-ignore file when a module is uninstalled
 - Fixed an issue where empty directories were left behind after un-installing a module. If a structure like `/folder1/folder2/file1.txt` was created, and both folders were created by the module. Only `folder2` would be removed. It now traverses up-to the root-dir removing any empty directories. 
 - Added documentation for package.xml mapping (PR [#47](https://github.com/Cotya/magento-composer-installer/pull/47))
+- set 5.4 as minimum required Version
 
 ## [3.0.4] - 2015-07-12
 - Added PR [#40](https://github.com/Cotya/magento-composer-installer/pull/40): extra config option to skip repository suggestions
@@ -46,7 +51,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## 3.0.2 - 2015-03-28
 
-[unreleased]: https://github.com/Cotya/magento-composer-installer/compare/3.0.4...HEAD
+[unreleased]: https://github.com/Cotya/magento-composer-installer/compare/3.0.5...HEAD
+[3.0.5]: https://github.com/Cotya/magento-composer-installer/compare/3.0.4...3.0.5
 [3.0.4]: https://github.com/Cotya/magento-composer-installer/compare/3.0.4-beta1...3.0.4
 [3.0.4-beta1]: https://github.com/Cotya/magento-composer-installer/compare/3.0.3...3.0.4-beta1
 [3.0.3]: https://github.com/Cotya/magento-composer-installer/compare/3.0.3-rc.2...3.0.3
