@@ -1,5 +1,7 @@
 <?php
 
+namespace MagentoHackathon\Composer\Magento\UnInstallStrategy;
+
 use Composer\Util\Filesystem;
 use MagentoHackathon\Composer\Magento\UnInstallStrategy\UnInstallStrategy;
 
@@ -7,7 +9,7 @@ use MagentoHackathon\Composer\Magento\UnInstallStrategy\UnInstallStrategy;
  * Class UnInstallStrategyTest
  * @author Aydin Hassan <aydin@hotmail.co.uk>
  */
-class UnInstallStrategyTest extends PHPUnit_Framework_TestCase
+class UnInstallStrategyTest extends \PHPUnit_Framework_TestCase
 {
     protected $testDirectory;
 
