@@ -162,4 +162,17 @@ class ModuleManagerTest extends \PHPUnit_Framework_TestCase
             $this->installedPackageRepository->findByPackageName('vendor/package')->getVersion()
         );
     }
+
+    public function testPackageCaseDoesNotAffectModuleComparisons()
+    {
+        $this->assertCount(0, $this->installedPackageRepository->findAll());
+
+        $package = new Package('connect20/Kreativkonzentrat_Glossary', '0.5.0', '0.5.0');
+        $this->moduleManager->updateInstalledPackages([$package]);
+
+        $this->assertCount(1, $this->installedPackageRepository->findAll());
+
+        $this->moduleManager->updateInstalledPackages([$package]);
+        $this->assertCount(1, $this->installedPackageRepository->findAll());
+    }
 }
