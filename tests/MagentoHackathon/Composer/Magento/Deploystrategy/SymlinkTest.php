@@ -36,22 +36,48 @@ class SymlinkTest extends AbstractTest
         $this->assertFalse(is_readable($this->destDir . DIRECTORY_SEPARATOR . $dest));
     }
 
-    public function testChangeLink()
+    public function testChangeLinkLinux()
     {
-        $wrongFile = $this->sourceDir . DS . 'wrong';
-        $rightFile = $this->sourceDir . DS . 'right';
-        $link = $this->destDir . DS . 'link';
+	if ($this->isWindows()) {
+            $this->markTestSkipped('Test only runs on Linux');
+        }
+
+        $wrongFile  = sprintf('%s/%s', $this->sourceDir, 'wrong');
+        $rightFile  = sprintf('%s/%s', $this->sourceDir, 'right');
+        $link       = sprintf('%s/link', $this->destDir);
 
         touch($wrongFile);
         touch($rightFile);
         @unlink($link);
 
         symlink($wrongFile, $link);
-        $this->assertEquals($wrongFile, readlink($link));
+        $this->assertEquals($wrongFile, $this->replaceSlashes(readlink($link)));
 
         $this->strategy->create(basename($rightFile), basename($link));
         $this->assertEquals(realpath($rightFile), realpath(dirname($rightFile) . DS . readlink($link)));
     }
+
+    public function testChangeLinkWindows()
+    {
+        if (!$this->isWindows()) {
+            $this->markTestSkipped('Test only runs on Windows');
+        }
+
+        $wrongFile  = sprintf('%s/%s', $this->sourceDir, 'wrong');
+        $rightFile  = sprintf('%s/%s', $this->sourceDir, 'right');
+        $link       = sprintf('%s/link', $this->destDir);
+
+        touch($wrongFile);
+        touch($rightFile);
+        @unlink($link);
+
+        symlink($wrongFile, $link);
+        $this->assertEquals($wrongFile, $this->replaceSlashes(readlink($link)));
+
+        $this->strategy->create(basename($rightFile), basename($link));
+        $this->assertEquals($this->replaceSlashes(realpath($rightFile)), $this->replaceSlashes(readlink($link)));
+    }
+
 
     public function testTargetDirWithChildDirExists()
     {
@@ -119,16 +145,16 @@ class SymlinkTest extends AbstractTest
 
     public function testDeployedFilesAreStored()
     {
-        $src = 'local1.xml';
-        $dest = 'local2.xml';
-        touch($this->sourceDir . DIRECTORY_SEPARATOR . $src);
-        $this->assertTrue(is_readable($this->sourceDir . DIRECTORY_SEPARATOR . $src));
-        $this->assertFalse(is_readable($this->destDir . DIRECTORY_SEPARATOR . $dest));
-        $this->strategy->create($src, $dest);
-        $this->assertTrue(is_readable($this->destDir . DIRECTORY_SEPARATOR . $dest));
-        unlink($this->destDir . DIRECTORY_SEPARATOR . $dest);
-        $this->strategy->clean($this->destDir . DIRECTORY_SEPARATOR . $dest);
-        $this->assertFalse(is_readable($this->destDir . DIRECTORY_SEPARATOR . $dest));
+        $source         = sprintf('%s/local1.xml', $this->sourceDir);
+        $destination    = sprintf('%s/local2.xml', $this->destDir);
+        touch($source);
+        $this->assertTrue(is_readable($source));
+        $this->assertFalse(is_readable($destination));
+        $this->strategy->create('local1.xml', 'local2.xml');
+        $this->assertTrue(is_readable($destination));
+        unlink($destination);
+        $this->strategy->clean($destination);
+        $this->assertFalse(is_readable($destination));
 
         $this->assertSame(
             array('/local2.xml'),
@@ -155,4 +181,10 @@ class SymlinkTest extends AbstractTest
         sort($result);
         $this->assertEquals($expected, $result);
     }
+ 
+    public function isWindows()
+    {
+        return strtoupper(substr(PHP_OS, 0, 3)) === 'WIN';
+    }
+	
 }

@@ -23,68 +23,60 @@ class IssueC039Test extends ComposerTestFramework\PHPUnit\FullStackTestCase
             '/build/app/design/frontend/test/default/updateFileRemove/design/test1.phtml';
 
         $composerJson = new  \SplTempFileObject();
-        $composerJsonContent = <<<JSON
-{
-    "repositories": [
-        {
-            "type": "composer",
-            "url": "http://packages.firegento.com"
-        },
-        {
-            "type": "artifact",
-            "url": "$artifactDirectory/"
-        }
-    ],
-    "require": {
-        "magento-hackathon/magento-composer-installer": "999.0.0",
-        "magento-hackathon/magento-composer-installer-test-updateFileRemove": "1.0.0"
-    },
-    "extra": {
-        "magento-deploysttrategy": "symlink",
-        "magento-root-dir": "./build"
-    }
 
-}
-JSON;
+        $json = [
+            'repositories' => [
+                [
+                    'type' => 'composer',
+                    'url' => 'http://packages.firegento.com'
+                ],
+                [
+                    'type' => 'artifact',
+                    'url' => $artifactDirectory->getRealPath(),
+                ]
+            ],
+            'require' => [
+                'magento-hackathon/magento-composer-installer' => '999.0.0',
+                'magento-hackathon/magento-composer-installer-test-updateFileRemove' => '1.0.0'
+            ],
+            'extra' => [
+                'magento-deploysttrategy' => 'symlink',
+                'magento-root-dir' => './build'
+            ]
+        ];
 
-        $composerJson->fwrite($composerJsonContent);
-
+        $composerJson->fwrite(json_encode($json, JSON_PRETTY_PRINT));
         $composer->install($projectDirectory, $composerJson);
-
         $this->assertFileExists($testFilePath);
 
 
 
         $composerJson = new  \SplTempFileObject();
-        $composerJsonContent = <<<JSON
-{
-    "repositories": [
-        {
-            "type": "composer",
-            "url": "http://packages.firegento.com"
-        },
-        {
-            "type": "artifact",
-            "url": "$artifactDirectory/"
-        }
-    ],
-    "require": {
-        "magento-hackathon/magento-composer-installer": "*"
-    },
-    "extra": {
-        "magento-deploysttrategy": "symlink",
-        "magento-root-dir": "./build"
-    }
 
-}
-JSON;
+        $json = [
+            'repositories' => [
+                [
+                    'type' => 'composer',
+                    'url' => 'http://packages.firegento.com'
+                ],
+                [
+                    'type' => 'artifact',
+                    'url' => $artifactDirectory->getRealPath(),
+                ]
+            ],
+            'require' => [
+                'magento-hackathon/magento-composer-installer' => '*',
+            ],
+            'extra' => [
+                'magento-deploysttrategy' => 'symlink',
+                'magento-root-dir' => './build'
+            ]
+        ];
 
-        $composerJson->fwrite($composerJsonContent);
-
+        $composerJson->fwrite(json_encode($json, JSON_PRETTY_PRINT));
         $composer->update($projectDirectory, $composerJson);
 
         $this->assertFileNotExists($testFilePath);
         $this->assertFalse(is_link($testFilePath), 'There is still a link');
-        
     }
 }
