@@ -69,9 +69,9 @@ we handle this topic in our [FAQ](doc/FAQ.md).
 ### Timeouts and slow downloading. 
 
 Mostly caused by outtages of Github, Repositories or the Internet. This is a common problem with having all 
-packges remote.
+packages remote.
 
-For all of this Issues you can make use of the commercial [Toran Proxy](https://toranproxy.com/).
+For all of this issues you can make use of the commercial [Toran Proxy](https://toranproxy.com/).
 It also allows hosting of private packages and speeds up the whole downloading process.
 
 Another alternative is to look into [Satis](https://github.com/composer/satis), bare git mirrors and repository aliasing.
@@ -134,7 +134,7 @@ an example how your project ```composer.json``` could look like:
 
 ### Auto add files to .gitignore
 
-If you want to have the deployed files automatically added to your .gitignore file, then you can just set the `auto-append-gitignore` key to true:
+If you want to have the deployed files automatically added to your `.gitignore file`, then you can just set the `auto-append-gitignore` key to true:
 
 ```json
 {
@@ -148,7 +148,7 @@ If you want to have the deployed files automatically added to your .gitignore fi
 The `.gitignore` file will be loaded from the current directory, and if it does not exist, it will be created. Every set of module files, will have a comment above them
 describing the module name for clarity.
 
-Multiple deploys will not add additional lines to your .gitignore, they will only ever be added once.
+Multiple deploys will not add additional lines to your `.gitignore`, they will only ever be added once.
 
 
 ### Adding Composer's autoloader to Magento
