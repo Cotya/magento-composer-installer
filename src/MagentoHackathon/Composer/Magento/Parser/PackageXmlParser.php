@@ -54,7 +54,7 @@ class PackageXmlParser implements Parser
     {
         $map = array();
 
-        /** @var $package SimpleXMLElement */
+        /** @var $package \SimpleXMLElement */
         $package = simplexml_load_file($this->file->getPathname());
         if (isset($package)) {
             foreach ($package->xpath('//contents/target') as $target) {
@@ -100,8 +100,10 @@ class PackageXmlParser implements Parser
     protected function getTargetsDefinitions()
     {
         if (empty($this->targets)) {
+            /** @var $targets \SimpleXMLElement */
             $targets = simplexml_load_file(__DIR__ . '/../../../../../res/target.xml');
             foreach ($targets as $target) {
+                /** @var $target \SimpleXMLElement */
                 $attributes = $target->attributes();
                 $this->targets["{$attributes->name}"] = "{$attributes->uri}";
             }
