@@ -65,7 +65,9 @@ class PackageXmlParser implements Parser
                         foreach ($this->getElementPaths($child) as $elementPath) {
                             $relativePath = $basePath . '/' . $elementPath;
                             //remove the any trailing './' or '.' from the targets base-path.
-                            $relativePath = preg_replace('#^[\/\.]*#', '', $relativePath);
+                            if (strpos($relativePath, './') === 0) {
+                                $relativePath = substr($relativePath, 2);
+                            }
                             $map[] = array($relativePath, $relativePath);
                         }
                     }
