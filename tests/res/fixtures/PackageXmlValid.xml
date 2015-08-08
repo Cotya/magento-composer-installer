@@ -52,6 +52,11 @@
                 <file name="Some_Module.xml" hash="e4d297a9b401c4548acb47aea1ae41d9"/>
             </dir>
         </target>
+        <target name="mage">
+            <dir name=".">
+                <file name=".htaccess.sample" hash="1092ea05412986094c17f9143dff774a"/>
+            </dir>
+        </target>
         <target name="mageskin">
             <dir name="frontend">
                 <dir name="base">

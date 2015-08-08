@@ -56,6 +56,10 @@ class PackageXmlParserTest extends \PHPUnit_Framework_TestCase
                 'app/etc/modules/Some_Module.xml'
             ),
             array(
+                '.htaccess.sample',
+                '.htaccess.sample',
+            ),
+            array(
                 'skin/frontend/base/default/images/somemodule/image.png',
                 'skin/frontend/base/default/images/somemodule/image.png'
             ),
