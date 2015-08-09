@@ -24,14 +24,14 @@
 		"composer/composer": "dev-master"
 	},
 	"repositories": [
+        {
+          "type": "artifact",
+          "url": "../artifact/"
+        },
 		{
 			"type": "composer",
 			"url": "http://packages.firegento.com"
-		},
-        {
-            "type": "artifact",
-            "url": "../artifact/"
-        }
+		}
 	],
 	"extra":{
 		"magento-deploystrategy": "copy",

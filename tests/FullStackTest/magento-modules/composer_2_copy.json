@@ -6,14 +6,14 @@
         "magento-hackathon/magento-composer-installer-test-updateFileRemove": "2.*"
 	},
 	"repositories": [
+        {
+          "type": "artifact",
+          "url": "../artifact/"
+        },
 		{
 			"type": "composer",
 			"url": "http://packages.firegento.com"
-		},
-        {
-            "type": "artifact",
-            "url": "../artifact/"
-        }
+		}
 	],
 	"extra":{
 		"magento-deploystrategy": "copy",

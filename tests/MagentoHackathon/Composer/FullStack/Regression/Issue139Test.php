@@ -31,12 +31,12 @@ class Issue139Test extends ComposerTestFramework\PHPUnit\FullStackTestCase
 {
     "repositories": [
         {
-            "type": "composer",
-            "url": "http://packages.firegento.com"
-        },
-        {
             "type": "artifact",
             "url": "$artifactDirectory/"
+        },
+        {
+            "type": "composer",
+            "url": "http://packages.firegento.com"
         }
     ],
     "require": {

@@ -60,12 +60,12 @@ JSON;
 {
     "repositories": [
         {
-            "type": "composer",
-            "url": "http://packages.firegento.com"
-        },
-        {
             "type": "artifact",
             "url": "$artifactDirectory/"
+        },
+        {
+            "type": "composer",
+            "url": "http://packages.firegento.com"
         }
     ],
     "require": {
