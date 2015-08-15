@@ -34,10 +34,24 @@ class ModmanParserTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($expected, $parser->getMappings());
     }
 
-    public function testExceptionIsThrownIfLineLessThan2Parts()
+    /**
+     * @covers MagentoHackathon\Composer\Magento\Parser\ModmanParser::getMappings
+     */
+    public function testGetMappingsNew()
+    {
+        $parser = new ModmanParser(vfsStream::url('root/modman.new_format'));
+        
+        $expected = array(
+            array('line/one', 'line/one'),
+            array('line/two', 'line/two'),
+        );
+        $this->assertSame($expected, $parser->getMappings());
+    }
+
+    public function testExceptionIsThrownIfLineMoreThan2Parts()
     {
         $parser = new ModmanParser(vfsStream::url('root/ModmanInvalid'));
-        $this->setExpectedException('ErrorException', 'Invalid row on line 0 has 1 parts, expected 2');
+        $this->setExpectedException('ErrorException', 'Invalid row on line 0 has 3 parts, expected 2');
         $parser->getMappings();
     }
 

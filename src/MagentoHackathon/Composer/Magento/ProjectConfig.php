@@ -38,6 +38,10 @@ class ProjectConfig
     // Default Values
     const DEFAULT_MAGENTO_ROOT_DIR = 'root';
 
+    const EXTRA_WITH_BOOTSTRAP_PATCH_KEY = 'with-bootstrap-patch';
+
+    const EXTRA_WITH_SKIP_SUGGEST_KEY = 'skip-suggest-repositories';
+
     protected $libraryPath;
     protected $libraryPackages;
     protected $extra;
@@ -58,11 +62,11 @@ class ProjectConfig
     }
 
     /**
-     * @param      $array
-     * @param      $key
-     * @param null $default
+     * @param array $array
+     * @param string|integer $key
+     * @param mixed $default
      *
-     * @return null
+     * @return mixed
      */
     protected function fetchVarFromConfigArray($array, $key, $default = null)
     {
@@ -144,7 +148,7 @@ class ProjectConfig
     {
         return $this->hasExtraField(self::MAGENTO_ROOT_DIR_KEY);
     }
-    
+
     public function getMagentoVarDir()
     {
         return $this->getMagentoRootDir().'var'.DIRECTORY_SEPARATOR;
@@ -291,7 +295,7 @@ class ProjectConfig
     {
         return $this->hasExtraField(self::MAGENTO_FORCE_KEY);
     }
-    
+
     public function getMagentoForceByPackageName($packagename)
     {
         return $this->getMagentoForce();
@@ -423,6 +427,11 @@ class ProjectConfig
         return array_change_key_case($array, CASE_LOWER);
     }
 
+    public function getComposerRepositories()
+    {
+        return $this->fetchVarFromConfigArray($this->composerConfig, 'repositories', array());
+    }
+
     /**
      * Get Composer vendor directory
      *
@@ -430,6 +439,26 @@ class ProjectConfig
      */
     public function getVendorDir()
     {
-        return $this->fetchVarFromConfigArray($this->composerConfig, 'vendor-dir', 'vendor');
+        return $this->fetchVarFromConfigArray(
+            isset($this->composerConfig['config']) ? $this->composerConfig['config'] : array(),
+            'vendor-dir',
+            getcwd() . '/vendor'
+        );
+    }
+
+    /**
+     * @return boolean
+     */
+    public function mustApplyBootstrapPatch()
+    {
+        return (bool) $this->fetchVarFromExtraConfig(self::EXTRA_WITH_BOOTSTRAP_PATCH_KEY, true);
+    }
+
+    /**
+     * @return boolean
+     */
+    public function skipSuggestComposerRepositories()
+    {
+        return (bool) $this->fetchVarFromExtraConfig(self::EXTRA_WITH_SKIP_SUGGEST_KEY, false);
     }
 }

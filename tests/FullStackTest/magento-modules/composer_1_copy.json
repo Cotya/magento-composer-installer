@@ -8,7 +8,6 @@
 		"firegento/psr0autoloader": "dev-master",
         "connect20/aw_blog": "*",
         "connect20/aw_onpulse": "*",
-        "connect20/aw_aheadmetrics": "*",
         "connect20/aw_fps": "*",
         "magento-hackathon/magento-composer-installer-test-issue-87": "1.*",
         "magento-hackathon/magento-composer-installer-test-updateFileRemove": "1.*",

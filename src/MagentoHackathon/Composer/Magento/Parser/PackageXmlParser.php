@@ -64,6 +64,8 @@ class PackageXmlParser implements Parser
                     foreach ($target->children() as $child) {
                         foreach ($this->getElementPaths($child) as $elementPath) {
                             $relativePath = $basePath . '/' . $elementPath;
+                            //remove the any trailing './' or '.' from the targets base-path.
+                            $relativePath = preg_replace('#^[\/\.]*#', '', $relativePath);
                             $map[] = array($relativePath, $relativePath);
                         }
                     }
@@ -97,7 +99,7 @@ class PackageXmlParser implements Parser
      */
     protected function getTargetsDefinitions()
     {
-        if (!$this->targets) {
+        if (empty($this->targets)) {
             $targets = simplexml_load_file(__DIR__ . '/../../../../../res/target.xml');
             foreach ($targets as $target) {
                 $attributes = $target->attributes();

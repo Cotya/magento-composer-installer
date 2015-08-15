@@ -10,7 +10,8 @@ namespace MagentoHackathon\Composer\Magento;
 
 use Composer\Config;
 use Composer\Installer;
-use Composer\Script\CommandEvent;
+use Composer\Package\AliasPackage;
+use Composer\Script\Event;
 use MagentoHackathon\Composer\Helper;
 use MagentoHackathon\Composer\Magento\Event\EventManager;
 use MagentoHackathon\Composer\Magento\Event\PackageDeployEvent;
@@ -18,8 +19,6 @@ use MagentoHackathon\Composer\Magento\Factory\DeploystrategyFactory;
 use MagentoHackathon\Composer\Magento\Factory\EntryFactory;
 use MagentoHackathon\Composer\Magento\Factory\ParserFactory;
 use MagentoHackathon\Composer\Magento\Factory\PathTranslationParserFactory;
-use MagentoHackathon\Composer\Magento\Installer\MagentoInstallerAbstract;
-use MagentoHackathon\Composer\Magento\Installer\ModuleInstaller;
 use MagentoHackathon\Composer\Magento\Patcher\Bootstrap;
 use MagentoHackathon\Composer\Magento\Repository\InstalledPackageFileSystemRepository;
 use MagentoHackathon\Composer\Magento\UnInstallStrategy\UnInstallStrategy;
@@ -41,7 +40,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
      * The type of packages this plugin supports
      */
     const PACKAGE_TYPE = 'magento-module';
-    
+
     const VENDOR_DIR_KEY = 'vendor-dir';
 
     const BIN_DIR_KEY = 'bin-dir';
@@ -81,6 +80,16 @@ class Plugin implements PluginInterface, EventSubscriberInterface
     protected $entryFactory;
 
     /**
+     * @var EventManager
+     */
+    private $eventManager;
+
+    /**
+     * @var ModuleManager
+     */
+    private $moduleManager;
+
+    /**
      * init the DeployManager
      *
      * @param Composer    $composer
@@ -93,18 +102,21 @@ class Plugin implements PluginInterface, EventSubscriberInterface
 
         $this->applyEvents($eventManager);
     }
-    
+
     protected function applyEvents(EventManager $eventManager)
     {
 
         if ($this->config->hasAutoAppendGitignore()) {
             $gitIgnoreLocation = sprintf('%s/.gitignore', $this->config->getMagentoRootDir());
-            $eventManager->listen('post-package-deploy', new GitIgnoreListener(new GitIgnore($gitIgnoreLocation)));
+            $gitIgnore = new GitIgnoreListener(new GitIgnore($gitIgnoreLocation));
+
+            $eventManager->listen('post-package-deploy', [$gitIgnore, 'addNewInstalledFiles']);
+            $eventManager->listen('post-package-uninstall', [$gitIgnore, 'removeUnInstalledFiles']);
         }
 
         $io = $this->io;
         if ($this->io->isDebug()) {
-            $eventManager->listen('pre-package-deploy', function(PackageDeployEvent $event) use ($io) {
+            $eventManager->listen('pre-package-deploy', function (PackageDeployEvent $event) use ($io) {
                 $io->write('Start magento deploy for ' . $event->getDeployEntry()->getPackageName());
             });
         }
@@ -140,6 +152,10 @@ class Plugin implements PluginInterface, EventSubscriberInterface
         $this->filesystem = new Filesystem();
         $this->config = new ProjectConfig($composer->getPackage()->getExtra(), $composer->getConfig()->all());
 
+        if (!$this->config->skipSuggestComposerRepositories()) {
+            $this->suggestComposerRepositories();
+        }
+
         $this->entryFactory = new EntryFactory(
             $this->config,
             new DeploystrategyFactory($this->config),
@@ -147,15 +163,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
         );
 
         $this->initDeployManager($composer, $io, $this->getEventManager());
-
         $this->writeDebug('activate magento plugin');
-
-        /*
-        $moduleInstaller = new ModuleInstaller($io, $composer, $this->entryFactory);
-        $moduleInstaller->setDeployManager($this->deployManager);
-
-        $composer->getInstallationManager()->addInstaller($moduleInstaller);
-        /**/
     }
 
     /**
@@ -191,15 +199,18 @@ class Plugin implements PluginInterface, EventSubscriberInterface
     /**
      * event listener is named this way, as it listens for events leading to changed code files
      *
-     * @param CommandEvent $event
+     * @param Event $event
      */
-    public function onNewCodeEvent(CommandEvent $event)
+    public function onNewCodeEvent(Event $event)
     {
 
         $packageTypeToMatch = static::PACKAGE_TYPE;
         $magentoModules = array_filter(
             $this->composer->getRepositoryManager()->getLocalRepository()->getPackages(),
             function (PackageInterface $package) use ($packageTypeToMatch) {
+                if ($package instanceof AliasPackage) {
+                    return false;
+                }
                 return $package->getType() === $packageTypeToMatch;
             }
         );
@@ -213,32 +224,55 @@ class Plugin implements PluginInterface, EventSubscriberInterface
             $vendorDir
         );
 
-        $eventManager = new EventManager;
-        $this->applyEvents($eventManager);
-        $moduleManager = new ModuleManager(
-            new InstalledPackageFileSystemRepository(
-                $vendorDir.'/installed.json',
-                new InstalledPackageDumper()
-            ),
-            $eventManager,
-            $this->config,
-            new UnInstallStrategy($this->filesystem),
-            new InstallStrategyFactory($this->config, new ParserFactory($this->config))
-        );
+        $this->applyEvents($this->getEventManager());
 
         if (in_array('--redeploy', $event->getArguments())) {
             $this->writeDebug('remove all deployed modules');
-            $moduleManager->updateInstalledPackages(array());
+            $this->getModuleManager()->updateInstalledPackages(array());
         }
         $this->writeDebug('start magento module deploy via moduleManager');
-        $moduleManager->updateInstalledPackages($magentoModules);
+        $this->getModuleManager()->updateInstalledPackages($magentoModules);
         $this->deployLibraries();
 
-        if (file_exists($this->config->getMagentoRootDir() . '/app/Mage.php')) {
-            $patcher = new Bootstrap($this->config->getMagentoRootDir());
+        $patcher = Bootstrap::fromConfig($this->config);
+        $patcher->setIo($this->io);
+        try {
             $patcher->patch();
+        } catch (\DomainException $e) {
+            $this->io->write('<comment>'.$e->getMessage().'</comment>');
         }
-        
+    }
+
+    /**
+     * test configured repositories and give message about adding recommended ones
+     */
+    protected function suggestComposerRepositories()
+    {
+        $foundFiregento = false;
+        $foundMagento   = false;
+
+        foreach ($this->config->getComposerRepositories() as $repository) {
+            if (!isset($repository["type"]) || $repository["type"] !== "composer") {
+                continue;
+            }
+            if (strpos($repository["url"], "packages.firegento.com") !== false) {
+                $foundFiregento = true;
+            }
+            if (strpos($repository["url"], "packages.magento.com") !== false) {
+                $foundMagento = true;
+            }
+        };
+        $message1 = "<comment>you may want to add the %s repository to composer.</comment>";
+        $message2 = "<comment>add it with:</comment> composer.phar config -g repositories.%s composer %s";
+        if (!$foundFiregento) {
+            $this->io->write(sprintf($message1, 'packages.firegento.com'));
+            $this->io->write(sprintf($message2, 'firegento', 'http://packages.firegento.com'));
+        }
+        if (!$foundMagento) {
+            $this->io->write(sprintf($message1, 'packages.magento.com'));
+            $this->io->write(sprintf($message2, 'magento', 'https?://packages.magento.com'));
+        }
+
     }
 
     /**
@@ -377,14 +411,6 @@ class Plugin implements PluginInterface, EventSubscriberInterface
     }
 
     /**
-     * @return EventManager
-     */
-    public function getEventManager()
-    {
-        return new EventManager;
-    }
-
-    /**
      * @param PackageInterface $package
      * @return string
      */
@@ -392,5 +418,38 @@ class Plugin implements PluginInterface, EventSubscriberInterface
     {
         $vendorDir = realpath(rtrim($this->composer->getConfig()->get('vendor-dir'), '/'));
         return sprintf('%s/%s', $vendorDir, $package->getPrettyName());
+    }
+
+    /**
+     * @return EventManager
+     */
+    protected function getEventManager()
+    {
+        if (null === $this->eventManager) {
+            $this->eventManager = new EventManager;
+        }
+
+        return $this->eventManager;
+    }
+
+    /**
+     * @return ModuleManager
+     */
+    protected function getModuleManager()
+    {
+        if (null === $this->moduleManager) {
+            $this->moduleManager = new ModuleManager(
+                new InstalledPackageFileSystemRepository(
+                    rtrim($this->composer->getConfig()->get(self::VENDOR_DIR_KEY), '/') . '/installed.json',
+                    new InstalledPackageDumper()
+                ),
+                $this->getEventManager(),
+                $this->config,
+                new UnInstallStrategy($this->filesystem, $this->config->getMagentoRootDir()),
+                new InstallStrategyFactory($this->config, new ParserFactory($this->config))
+            );
+        }
+
+        return $this->moduleManager;
     }
 }

@@ -184,7 +184,7 @@ class InstalledPackageFileSystemRepository implements InstalledPackageRepository
                 $data[] = $this->dumper->dump($installedPackage);
             }
 
-            file_put_contents($this->filePath, json_encode($data));
+            file_put_contents($this->filePath, json_encode($data, JSON_PRETTY_PRINT));
         }
     }
 }

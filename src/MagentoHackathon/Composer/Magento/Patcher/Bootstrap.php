@@ -1,87 +1,210 @@
 <?php
-/**
- *
- *
- *
- *
- */
 
 namespace MagentoHackathon\Composer\Magento\Patcher;
 
+use Composer\IO\NullIO;
+use Composer\IO\IOInterface;
+use MagentoHackathon\Composer\Magento\ProjectConfig;
+
 class Bootstrap
 {
-    protected $magentoBasePath;
+    /**
+     * String inserted as a PHP comment, before and after the patch code.
+     */
+    const PATCH_MARK = 'AUTOLOADER PATCH';
 
-    public function __construct($magentoBasePath)
+    /**
+     * @var ProjectConfig
+     */
+    private $config;
+
+    /**
+     * @var IOInterface
+     */
+    private $io;
+
+    /**
+     * @var string
+     */
+    private $mageClassFilePath;
+
+    /**
+     * @param string $mageClassFilePath Path to the Mage.php file which the patch will be applied on.
+     * @param ProjectConfig $config
+     */
+    private function __construct($mageClassFilePath, ProjectConfig $config)
     {
-        $this->magentoBasePath = $magentoBasePath;
+        $this->setMageClassFilePath($mageClassFilePath);
+        $this->config = $config;
     }
 
-
-    public function patch()
+    /**
+     * @param ProjectConfig $config
+     * @return $this
+     */
+    public static function fromConfig(ProjectConfig $config)
     {
-        $this->splitOriginalMage();
-        $this->generateBootstrapFile();
+        return new self($config->getMagentoRootDir() . '/app/Mage.php', $config);
     }
 
-    protected function getAppPath()
+    /**
+     * @return ProjectConfig
+     */
+    private function getConfig()
     {
-        return $this->magentoBasePath . '/app';
+        return $this->config;
     }
 
-    protected function splitOriginalMage()
+    /**
+     * @return string
+     * @throws \DomainException
+     */
+    private function getMageClassFilePath()
     {
-        $appPath = $this->getAppPath();
-        if (file_exists($appPath . '/Mage.class.php')) {
-            return;
+        $mageFileCheck = true;
+
+        if (!is_file($this->mageClassFilePath)) {
+            $message = "{$this->mageClassFilePath} is not a file.";
+            $mageFileCheck = false;
+        } elseif (!is_readable($this->mageClassFilePath)) {
+            $message = "{$this->mageClassFilePath} is not readable.";
+            $mageFileCheck = false;
+        } elseif (!is_writable($this->mageClassFilePath)) {
+            $message = "{$this->mageClassFilePath} is not writable.";
+            $mageFileCheck = false;
         }
 
-        $mageFileContent = file($appPath . '/Mage.php');
+        if (!$mageFileCheck) {
+            throw new \DomainException($message);
+        }
 
-        $mageClassFile = '';
-        $mageBootstrapFile = '<?php' . PHP_EOL;
-        $isBootstrapPart = false;
+        return $this->mageClassFilePath;
+    }
+
+    /**
+     * Path to the Mage.php file which the patch will be applied on.
+     *
+     * @param string $mageClassFilePath
+     */
+    private function setMageClassFilePath($mageClassFilePath)
+    {
+        $this->mageClassFilePath = $mageClassFilePath;
+    }
+
+    /**
+     * @return bool
+     */
+    private function isPatchAlreadyApplied()
+    {
+        return strpos(file_get_contents($this->getMageClassFilePath()), self::PATCH_MARK) !== false;
+    }
+
+    /**
+     * @return bool
+     */
+    public function canApplyPatch()
+    {
+        // check the config first
+        if (!$this->getConfig()->mustApplyBootstrapPatch()) {
+            $message = "<comment>Magento autoloader patching skipped because of configuration flag</comment>";
+            $result = false;
+        } elseif ($this->isPatchAlreadyApplied()) {
+            $message = "<comment>{$this->getMageClassFilePath()} was already patched</comment>";
+            $result = false;
+        } else {
+            $result = true;
+            $message = "<info>Autoloader patch to {$this->getMageClassFilePath()} was applied successfully</info>";
+        }
+
+        $this->getIo()->write($message);
+
+        return $result;
+    }
+
+    /**
+     * @return bool
+     */
+    public function patch()
+    {
+        return $this->canApplyPatch() ? $this->writeComposerAutoloaderPatch() : false;
+    }
+
+    /**
+     * @return string
+     */
+    protected function getAppPath()
+    {
+        return $this->getConfig()->getMagentoRootDir() . '/app';
+    }
+
+    /**
+     * @return bool
+     */
+    protected function writeComposerAutoloaderPatch()
+    {
+        $mageFileContent = file($this->getMageClassFilePath());
+
+        $mageFileBootstrapPart = '';
+        $mageFileClassDeclarationPart = '';
+        $isBootstrapPart = true;
+
         foreach ($mageFileContent as $row) {
-            if (strpos($row, 'define') === 0) {
-                $isBootstrapPart = true;
-            }
             if ($isBootstrapPart) {
-                $mageBootstrapFile .= $row;
+                $mageFileBootstrapPart .= $row;
             } else {
-                $mageClassFile .= $row;
+                $mageFileClassDeclarationPart .= $row;
             }
             if (strpos($row, 'Varien_Autoload') === 0) {
                 $isBootstrapPart = false;
             }
         }
-        $mageClassFile .= PHP_EOL;
-        $mageBootstrapFile .= PHP_EOL;
-        file_put_contents($appPath . '/Mage.class.php', $mageClassFile);
-        file_put_contents($appPath . '/Mage.bootstrap.php', $mageBootstrapFile);
 
-        $mageFileReplacement
-            = <<<php
-<?php
-require __DIR__ . '/bootstrap.php';
+        $mageFileReplacement = $mageFileBootstrapPart . PHP_EOL
+                             . $this->getAutoloaderPatchString() . PHP_EOL
+                             . $mageFileClassDeclarationPart;
 
-php;
-        file_put_contents($appPath . '/Mage.php', $mageFileReplacement);
-
-
+        return file_put_contents($this->getMageClassFilePath(), $mageFileReplacement) !== false;
     }
 
-    protected function generateBootstrapFile()
+    /**
+     * @param IOInterface $io
+     */
+    public function setIo(IOInterface $io)
     {
-        $appPath = $this->getAppPath();
-        $bootstrapFile
-            = <<<php
-<?php
-require __DIR__ . '/Mage.class.php';
-require __DIR__ . '/Mage.bootstrap.php';
+        $this->io = $io;
+    }
 
-php;
-        if (!file_exists($appPath . '/bootstrap.php')) {
-            file_put_contents($appPath . '/bootstrap.php', $bootstrapFile);
+    /**
+     * @return IOInterface
+     */
+    public function getIo()
+    {
+        if (!$this->io) {
+            $this->io = new NullIO;
         }
+        return $this->io;
+    }
+
+    /**
+     * @return string
+     */
+    private function getAutoloaderPatchString()
+    {
+        $patchMark = self::PATCH_MARK;
+
+        // get the vendor folder name from Config, in case it's changed
+        $vendorFolderName = basename($this->getConfig()->getVendorDir());
+
+        $autoloadPhp = $vendorFolderName . '/autoload.php';
+
+        return <<<PATCH
+/** $patchMark **/
+if (file_exists(\$autoloaderPath = BP . DS . '../{$autoloadPhp}') ||
+    file_exists(\$autoloaderPath = BP . DS . '{$autoloadPhp}')
+) {
+    require \$autoloaderPath;
+}
+/** $patchMark **/
+PATCH;
     }
 }

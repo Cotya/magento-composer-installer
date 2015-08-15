@@ -16,6 +16,26 @@ Which makes absolutely no sense for a module.
 
 currently No. As we need special configs this makes things a lot more complicated then installing on project level.
 
+### Can I disable repository suggestions?
+
+Yes, use the extra configuration option 'skip-suggest-repositories', like
+
+```json
+"extra": {
+    ...,
+    "skip-suggest-repositories": true
+}
+```
+
+### I want to use the composer autoloader or some other different from magento one, how do I do this?
+
+This installer patches the Mage.php in a very special way, which allows to add own bootstrapping code in a file
+located at `/app/bootstrap.php`. This file gets not overwritten once created.
+You can add the composer autoloader there,
+and it will work for any script in magento kontext from the very first moment.  
+Other solutions and existing autolaod modules needed to rewrite core classes or did not work by default when requests
+happened outside the default webserver request flow. Like for example `/shell/some_script.php` calls or external code
+using magento via `Mage::app()`
 
 ### There was some part about installing Magento-Core some time ago
 

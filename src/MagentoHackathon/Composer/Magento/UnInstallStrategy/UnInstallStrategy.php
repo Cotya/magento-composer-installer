@@ -13,17 +13,25 @@ class UnInstallStrategy implements UnInstallStrategyInterface
 {
 
     /**
-     * @var FileSystem
+     * @var Filesystem
      */
     protected $fileSystem;
 
     /**
-     * @param FileSystem $fileSystem
+     * The root dir for uninstalling from. Should be project root.
+     *
+     * @var string
      */
-    public function __construct(FileSystem $fileSystem)
-    {
+    protected $rootDir;
 
-        $this->fileSystem = $fileSystem;
+    /**
+     * @param Filesystem $fileSystem
+     * @param string     $rootDir
+     */
+    public function __construct(Filesystem $fileSystem, $rootDir)
+    {
+        $this->fileSystem   = $fileSystem;
+        $this->rootDir      = $rootDir;
     }
 
     /**
@@ -34,17 +42,23 @@ class UnInstallStrategy implements UnInstallStrategyInterface
     public function unInstall(array $files)
     {
         foreach ($files as $file) {
+            $file = $this->rootDir . $file;
+
             /*
             because of different reasons the file can be already gone.
             example:
             - file got deployed by multiple modules(should only happen with copy force)
             - user did things
+            
+            when the file is a symlink, but the target is already gone, file_exists returns false
             */
-            if (file_exists($file)) {
+            if (file_exists($file) xor is_link($file)) {
                 $this->fileSystem->unlink($file);
 
-                if ($this->fileSystem->isDirEmpty(dirname($file))) {
-                    $this->fileSystem->removeDirectory(dirname($file));
+                $parentDir = dirname($file);
+                while ($this->fileSystem->isDirEmpty($parentDir) && $parentDir !== $this->rootDir) {
+                    $this->fileSystem->removeDirectory($parentDir);
+                    $parentDir = dirname($parentDir);
                 }
             }
         }

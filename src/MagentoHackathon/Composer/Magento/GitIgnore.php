@@ -40,6 +40,7 @@ class GitIgnore
      */
     public function addEntry($file)
     {
+        $file = $this->prependSlashIfNotExist($file);
         $file = str_replace(DIRECTORY_SEPARATOR, '/', $file);
         if (!isset($this->lines[$file])) {
             $this->lines[$file] = $file;
@@ -62,6 +63,7 @@ class GitIgnore
      */
     public function removeEntry($file)
     {
+        $file = $this->prependSlashIfNotExist($file);
         $file = str_replace(DIRECTORY_SEPARATOR, '/', $file);
         if (isset($this->lines[$file])) {
             unset($this->lines[$file]);
@@ -95,5 +97,17 @@ class GitIgnore
         if ($this->hasChanges) {
             file_put_contents($this->gitIgnoreLocation, implode("\n", array_flip($this->lines)));
         }
+    }
+
+    /**
+     * Prepend a forward slash to a path
+     * if it does not already start with one.
+     *
+     * @param string $file
+     * @return string
+     */
+    private function prependSlashIfNotExist($file)
+    {
+        return sprintf('/%s', ltrim($file, '/'));
     }
 }

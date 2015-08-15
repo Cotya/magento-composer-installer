@@ -2,6 +2,7 @@
 
 namespace MagentoHackathon\Composer\Magento;
 
+use Composer\Package\AliasPackage;
 use Composer\Package\Package;
 use MagentoHackathon\Composer\Magento\Deploystrategy\None;
 use MagentoHackathon\Composer\Magento\Event\EventManager;
@@ -17,6 +18,9 @@ use org\bovigo\vfs\vfsStream;
  */
 class ModuleManagerTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * @var ModuleManager
+     */
     protected $moduleManager;
     protected $installedPackageRepository;
     protected $unInstallStrategy;
@@ -30,7 +34,7 @@ class ModuleManagerTest extends \PHPUnit_Framework_TestCase
             new InstalledPackageDumper()
         );
 
-        $config = new ProjectConfig(array(), array('vendor-dir' => 'vendor'));
+        $config = new ProjectConfig(array(), array('config' => array('vendor-dir' => 'vendor')));
         $this->unInstallStrategy =
             $this->getMock('MagentoHackathon\Composer\Magento\UnInstallStrategy\UnInstallStrategyInterface');
 
@@ -116,5 +120,59 @@ class ModuleManagerTest extends \PHPUnit_Framework_TestCase
         $result = $this->moduleManager->updateInstalledPackages($composerInstalledPackages);
         $this->assertSame($installedMagentoPackages, $result[0]);
         $this->assertSame($composerInstalledPackages, $result[1]);
+    }
+    
+    public function testEmptyComposerInstalledPackages()
+    {
+        $installedMagentoPackages = array(
+            new InstalledPackage("vendor/package1", "1.0.0", array()),
+            new InstalledPackage("vendor/package2", "1.0.0", array()),
+        );
+
+        $this->installedPackageRepository->add($installedMagentoPackages[0]);
+        $this->installedPackageRepository->add($installedMagentoPackages[1]);
+
+        $result = $this->moduleManager->updateInstalledPackages(array());
+        $this->assertSame($installedMagentoPackages, $result[0]);
+        $this->assertEmpty($result[1]);
+    }
+
+    public function testDevMasterAndLikeVersionsTriggerReInstallOnNewVersions()
+    {
+        $packageOld = new Package("vendor/package", "9999999-dev", "vendor/package");
+        $packageOld->setSourceReference("7a120f9589db758b626f3b7011e4ab922239f1f4");
+
+        $packageNew = new Package("vendor/package", "9999999-dev", "vendor/package");
+        $packageNew->setSourceReference("aeb485dc658ac02c2136200a592bcdc5ee1ea9f9");
+
+        $this->assertCount(0, $this->installedPackageRepository->findAll());
+        $this->moduleManager->updateInstalledPackages([$packageOld]);
+
+        $this->assertCount(1, $this->installedPackageRepository->findAll());
+        $this->assertEquals(
+            '9999999-dev-7a120f9589db758b626f3b7011e4ab922239f1f4',
+            $this->installedPackageRepository->findByPackageName('vendor/package')->getVersion()
+        );
+
+        $this->moduleManager->updateInstalledPackages([$packageNew]);
+
+        $this->assertCount(1, $this->installedPackageRepository->findAll());
+        $this->assertEquals(
+            '9999999-dev-aeb485dc658ac02c2136200a592bcdc5ee1ea9f9',
+            $this->installedPackageRepository->findByPackageName('vendor/package')->getVersion()
+        );
+    }
+
+    public function testPackageCaseDoesNotAffectModuleComparisons()
+    {
+        $this->assertCount(0, $this->installedPackageRepository->findAll());
+
+        $package = new Package('connect20/Kreativkonzentrat_Glossary', '0.5.0', '0.5.0');
+        $this->moduleManager->updateInstalledPackages([$package]);
+
+        $this->assertCount(1, $this->installedPackageRepository->findAll());
+
+        $this->moduleManager->updateInstalledPackages([$package]);
+        $this->assertCount(1, $this->installedPackageRepository->findAll());
     }
 }

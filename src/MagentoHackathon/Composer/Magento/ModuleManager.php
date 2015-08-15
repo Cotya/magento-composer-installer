@@ -78,16 +78,24 @@ class ModuleManager
         $packagesToInstall  = $this->getInstalls($currentComposerInstalledPackages);
 
         $this->doRemoves($packagesToRemove);
-        //$this->doInstalls($packagesToInstall);
+        $this->doInstalls($packagesToInstall);
 
+        return array(
+            $packagesToRemove,
+            $packagesToInstall
+        );
+    }
 
-
+    /**
+     * @param PackageInterface[] $packagesToInstall
+     */
+    public function doInstalls(array $packagesToInstall)
+    {
         foreach ($packagesToInstall as $install) {
             $installStrategy = $this->installStrategyFactory->make(
                 $install,
                 $this->getPackageSourceDirectory($install)
             );
-
 
             $deployEntry = new Entry();
             $deployEntry->setPackageName($install->getPrettyName());
@@ -101,15 +109,10 @@ class ModuleManager
             );
             $this->installedPackageRepository->add(new InstalledPackage(
                 $install->getName(),
-                $install->getVersion(),
+                $this->createVersion($install),
                 $files
             ));
         }
-
-        return array(
-            $packagesToRemove,
-            $packagesToInstall
-        );
     }
 
     /**
@@ -117,14 +120,10 @@ class ModuleManager
      */
     public function doRemoves(array $packagesToRemove)
     {
-        $magentoRootDir = $this->config->getMagentoRootDir();
-        $addBasePath = function($path) use ($magentoRootDir) {
-            return $magentoRootDir.$path;
-        };
         foreach ($packagesToRemove as $remove) {
-            //$this->eventManager->dispatch(new PackageUnInstallEvent('pre-package-uninstall', $remove));
-            $this->unInstallStrategy->unInstall(array_map($addBasePath, $remove->getInstalledFiles()));
-            //$this->eventManager->dispatch(new PackageUnInstallEvent('post-package-uninstall', $remove));
+            $this->eventManager->dispatch(new PackageUnInstallEvent('pre-package-uninstall', $remove));
+            $this->unInstallStrategy->unInstall($remove->getInstalledFiles());
+            $this->eventManager->dispatch(new PackageUnInstallEvent('post-package-uninstall', $remove));
             $this->installedPackageRepository->remove($remove);
         }
     }
@@ -137,16 +136,17 @@ class ModuleManager
     public function getRemoves(array $currentComposerInstalledPackages, array $magentoInstalledPackages)
     {
         //make the package names as the array keys
-        $currentComposerInstalledPackages = array_combine(
-            array_map(
-                function (PackageInterface $package) {
-                    return $package->getPrettyName();
-                },
+        if (count($currentComposerInstalledPackages)) {
+            $currentComposerInstalledPackages = array_combine(
+                array_map(
+                    function (PackageInterface $package) {
+                        return $package->getName();
+                    },
+                    $currentComposerInstalledPackages
+                ),
                 $currentComposerInstalledPackages
-            ),
-            $currentComposerInstalledPackages
-        );
-
+            );
+        }
         return array_filter(
             $magentoInstalledPackages,
             function (InstalledPackage $package) use ($currentComposerInstalledPackages) {
@@ -155,7 +155,7 @@ class ModuleManager
                 }
 
                 $composerPackage = $currentComposerInstalledPackages[$package->getName()];
-                return $package->getUniqueName() !== $composerPackage->getUniqueName();
+                return $package->getVersion() !== $this->createVersion($composerPackage);
             }
         );
     }
@@ -167,12 +167,12 @@ class ModuleManager
     public function getInstalls(array $currentComposerInstalledPackages)
     {
         $repo = $this->installedPackageRepository;
-        $packages = array_filter($currentComposerInstalledPackages, function(PackageInterface $package) use ($repo) {
-            return !$repo->has($package->getName(), $package->getVersion());
+        $packages = array_filter($currentComposerInstalledPackages, function (PackageInterface $package) use ($repo) {
+            return !$repo->has($package->getName(), $this->createVersion($package));
         });
-        
+
         $config = $this->config;
-        usort($packages, function(PackageInterface $aObject, PackageInterface $bObject) use ($config) {
+        usort($packages, function (PackageInterface $aObject, PackageInterface $bObject) use ($config) {
             $a = $config->getModuleSpecificSortValue($aObject->getName());
             $b = $config->getModuleSpecificSortValue($bObject->getName());
             if ($a == $b) {
@@ -185,7 +185,7 @@ class ModuleManager
             }
             return ($a < $b) ? -1 : 1;
         });
-        
+
         return $packages;
     }
 
@@ -204,5 +204,26 @@ class ModuleManager
 
         $path = realpath($path);
         return $path;
+    }
+
+    /**
+     * Create a version string which is unique. dev-master
+     * packages report a version of 9999999-dev. We need a unique version
+     * so we can detect changes. here we use the source reference which
+     * in the case of git is the commit hash
+     *
+     * @param PackageInterface $package
+     *
+     * @return string
+     */
+    private function createVersion(PackageInterface $package)
+    {
+        $version = $package->getVersion();
+
+        if (null !== $package->getSourceReference()) {
+            $version = sprintf('%s-%s', $version, $package->getSourceReference());
+        }
+
+        return $version;
     }
 }
