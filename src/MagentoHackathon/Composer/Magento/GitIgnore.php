@@ -41,7 +41,7 @@ class GitIgnore
     public function addEntry($file)
     {
         $file = $this->prependSlashIfNotExist($file);
-        $file = str_replace(DIRECTORY_SEPARATOR, '/', $file);
+        $file = $this->normalizePath($file);
         if (!isset($this->lines[$file])) {
             $this->lines[$file] = $file;
         }
@@ -64,7 +64,7 @@ class GitIgnore
     public function removeEntry($file)
     {
         $file = $this->prependSlashIfNotExist($file);
-        $file = str_replace(DIRECTORY_SEPARATOR, '/', $file);
+        $file = $this->normalizePath($file);
         if (isset($this->lines[$file])) {
             unset($this->lines[$file]);
             $this->hasChanges = true;
@@ -110,4 +110,16 @@ class GitIgnore
     {
         return sprintf('/%s', ltrim($file, '/'));
     }
+
+    /**
+     * Normalizes paths to UNIX format
+     *
+     * @param string $file
+     * @return string
+     */
+    private function normalizePath($file)
+    {
+        return str_replace(DIRECTORY_SEPARATOR, '/', $file);
+    }
+
 }
