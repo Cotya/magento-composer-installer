@@ -35,6 +35,8 @@ class ProjectConfig
 
     const PATH_MAPPINGS_TRANSLATIONS_KEY = 'path-mapping-translations';
 
+    const INCLUDE_ROOT_PACKAGE_KEY = 'include-root-package';
+
     // Default Values
     const DEFAULT_MAGENTO_ROOT_DIR = 'root';
 
@@ -460,5 +462,21 @@ class ProjectConfig
     public function skipSuggestComposerRepositories()
     {
         return (bool) $this->fetchVarFromExtraConfig(self::EXTRA_WITH_SKIP_SUGGEST_KEY, false);
+    }
+
+    /**
+     * @param $includeRootPackage
+     */
+    public function setIncludeRootPackage($includeRootPackage)
+    {
+        $this->updateExtraConfig(self::INCLUDE_ROOT_PACKAGE_KEY, trim($includeRootPackage));
+    }
+
+    /**
+     * @return bool
+     */
+    public function getIncludeRootPackage()
+    {
+        return (bool)$this->fetchVarFromExtraConfig(self::INCLUDE_ROOT_PACKAGE_KEY);
     }
 }

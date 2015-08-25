@@ -3,7 +3,7 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased][unreleased]
-
+- Added functionality to include root package when deploying modules
 
 ## [3.0.5] - 2015-08-05
 - Fixed Issue [#20](https://github.com/Cotya/magento-composer-installer/issues/20): 'mklink""' is not recognized as an internal or external command, operable program or batch file.

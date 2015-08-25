@@ -215,6 +215,12 @@ class Plugin implements PluginInterface, EventSubscriberInterface
             }
         );
 
+        if ($this->composer->getPackage()->getType() === static::PACKAGE_TYPE
+            && $this->config->getIncludeRootPackage() === true
+        ) {
+            $magentoModules[] = $this->composer->getPackage();
+        }
+
         $vendorDir = rtrim($this->composer->getConfig()->get(self::VENDOR_DIR_KEY), '/');
 
         Helper::initMagentoRootDir(

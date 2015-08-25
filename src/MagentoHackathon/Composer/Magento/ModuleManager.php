@@ -3,6 +3,7 @@
 namespace MagentoHackathon\Composer\Magento;
 
 use Composer\Package\PackageInterface;
+use Composer\Package\RootPackage;
 use MagentoHackathon\Composer\Magento\Deploy\Manager\Entry;
 use MagentoHackathon\Composer\Magento\Event\EventManager;
 use MagentoHackathon\Composer\Magento\Event\PackageDeployEvent;
@@ -195,7 +196,12 @@ class ModuleManager
      */
     private function getPackageSourceDirectory(PackageInterface $package)
     {
-        $path = sprintf("%s/%s", $this->config->getVendorDir(), $package->getPrettyName());
+        if ($package instanceof RootPackage) {
+            $path = sprintf("%s/..", $this->config->getVendorDir());
+        } else {
+            $path = sprintf("%s/%s", $this->config->getVendorDir(), $package->getPrettyName());
+        }
+
         $targetDir = $package->getTargetDir();
 
         if ($targetDir) {
