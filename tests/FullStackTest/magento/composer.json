@@ -21,7 +21,7 @@
         "magento-root-dir": "../htdocs/"
     },
     "require": {
-        "magento-hackathon/magento-composer-installer": "*",
+        "magento-hackathon/magento-composer-installer": ">50.0",
         "theseer/autoload": "~1.14",
         "zetacomponents/console-tools": "dev-master",
         "connect20/mage_all_latest": "*"
