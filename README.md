@@ -33,6 +33,11 @@ which you probably should add as composer repository (globally)
 
 ```composer config -g repositories.firegento composer http://packages.firegento.com```
 
+### supported PHP Versions
+
+We dont officially support PHP versions which are [End of Life](https://secure.php.net/eol.php) means which dont get [security patches](https://secure.php.net/supported-versions.php) anymore. Even if the install requirement still allows them.  
+This will change, as soon someone is willing to pay for supporting them.
+
 ### support contacts
  
 If you have problems please have patience, as normal support is done during free time.  
