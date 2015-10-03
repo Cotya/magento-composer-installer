@@ -32,4 +32,7 @@ install:
 
 test_script:
   - cd C:\projects\random\customer\magento
+  - vendor\bin\phpunit.bat --help
+  - vendor\bin\phpunit.bat --version
+  - vendor\bin\phpunit.bat -v
   - vendor\bin\phpunit.bat --verbose
