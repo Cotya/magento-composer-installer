@@ -99,6 +99,7 @@ class Symlink extends DeploystrategyAbstract
         $relSourcePath = $this->getRelativePath($destPath, $sourcePath);
 
         // Create symlink
+        $destPath = str_replace('\\', '/', $destPath);
         if (false === $this->symlink($relSourcePath, $destPath, $sourcePath)) {
             $msg = "An error occured while creating symlink\n" . $relSourcePath . " -> " . $destPath;
             if ('\\' === DIRECTORY_SEPARATOR) {

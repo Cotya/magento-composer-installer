@@ -51,8 +51,9 @@ abstract class AbstractTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->filesystem = new \Composer\Util\Filesystem();
-        $this->sourceDir = sys_get_temp_dir() . DS . $this->getName() . DS . "module_dir";
-        $this->destDir = sys_get_temp_dir() . DS . $this->getName() . DS . "magento_dir";
+        $tmpDir = $this->replaceSlashes(sys_get_temp_dir());
+        $this->sourceDir = sprintf('%s/%s/module_dir', $tmpDir, $this->getName());
+        $this->destDir = sprintf('%s/%s/magento_dir', $tmpDir, $this->getName());
         $this->filesystem->ensureDirectoryExists($this->sourceDir);
         $this->filesystem->ensureDirectoryExists($this->destDir);
 
@@ -437,5 +438,14 @@ abstract class AbstractTest extends \PHPUnit_Framework_TestCase
             array($file1, $file2),
             $this->strategy->getRemovedFiles()
         );
+    }
+
+    /**
+     * @param string $str
+     * @return string
+     */
+    protected function replaceSlashes($str)
+    {
+        return str_replace('\\', '/', $str);
     }
 }
