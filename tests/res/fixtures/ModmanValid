@@ -2,6 +2,7 @@
 line/with/tab    record/one
 line/with/space record/two
 line/with/space/and/tab  record/three
+line/with containing/space record/with containing/space
 
 #this is a comment which will be ignored
 

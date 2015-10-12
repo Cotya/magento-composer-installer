@@ -29,7 +29,8 @@ class ModmanParserTest extends \PHPUnit_Framework_TestCase
         $expected = array(
             array('line/with/tab', 'record/one'),
             array('line/with/space', 'record/two'),
-            array('line/with/space/and/tab', 'record/three')
+            array('line/with/space/and/tab', 'record/three'),
+            array('line/with containing/space', 'record/with containing/space')
         );
         $this->assertSame($expected, $parser->getMappings());
     }
@@ -40,7 +41,7 @@ class ModmanParserTest extends \PHPUnit_Framework_TestCase
     public function testGetMappingsNew()
     {
         $parser = new ModmanParser(vfsStream::url('root/modman.new_format'));
-        
+
         $expected = array(
             array('line/one', 'line/one'),
             array('line/two', 'line/two'),
