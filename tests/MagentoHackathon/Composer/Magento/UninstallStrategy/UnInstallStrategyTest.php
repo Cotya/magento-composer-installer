@@ -85,6 +85,34 @@ class UnInstallStrategyTest extends \PHPUnit_Framework_TestCase
         $this->assertFileExists($rootDir . '/child4/secondlevelchild4/file5.txt');
     }
 
+    public function testUnInstallDoesNotFollowSymlinks()
+    {
+        $this->testDirectory    = sprintf('%s/%s', realpath(sys_get_temp_dir()), $this->getName());
+        $this->testDirectory    = str_replace('\\', '/', $this->testDirectory);
+        $rootDir                = $this->testDirectory . '/root';
+        mkdir($rootDir, 0777, true);
+
+        $strategy   = new UnInstallStrategy(new FileSystem, $rootDir);
+        
+        $symLinkDestination     = sprintf('%s/symlink_dest_dir', realpath(sys_get_temp_dir()));
+        $symLinkDestination     = str_replace('\\', '/', $symLinkDestination);
+        
+        mkdir($symLinkDestination, 0777, true);
+        mkdir($symLinkDestination . '/childfolder', 0777, true);
+        touch($symLinkDestination . '/childfile', 0777, true);
+        
+        symlink($symLinkDestination, $rootDir . '/link');
+
+        $strategy->unInstall(['/link']);
+
+        $this->assertFileExists($rootDir);
+        $this->assertFileNotExists($rootDir . '/link');
+
+        $this->assertFileExists($symLinkDestination);
+        $this->assertFileExists($symLinkDestination . '/childfolder');
+        $this->assertFileExists($symLinkDestination . '/childfile');
+    }
+
     public function tearDown()
     {
         $fs = new Filesystem;
