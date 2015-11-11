@@ -117,7 +117,7 @@ class FullStackTest extends FullStack\AbstractTest
                 ($run===1) ? 'install' : 'update'
             );
 
-            switch($run){
+            switch ($run) {
                 case 1:
                 case 3:
                     foreach ($this->getFirstOnlyFileTestSet() + $this->getFirstExistTestSet() as $file) {
