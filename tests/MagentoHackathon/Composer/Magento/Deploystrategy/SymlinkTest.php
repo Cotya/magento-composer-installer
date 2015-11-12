@@ -38,7 +38,7 @@ class SymlinkTest extends AbstractTest
 
     public function testChangeLinkLinux()
     {
-	if ($this->isWindows()) {
+        if ($this->isWindows()) {
             $this->markTestSkipped('Test only runs on Linux');
         }
 
@@ -186,5 +186,4 @@ class SymlinkTest extends AbstractTest
     {
         return strtoupper(substr(PHP_OS, 0, 3)) === 'WIN';
     }
-	
 }

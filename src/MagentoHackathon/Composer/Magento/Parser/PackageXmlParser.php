@@ -63,7 +63,7 @@ class PackageXmlParser implements Parser
 
                     foreach ($target->children() as $child) {
                         foreach ($this->getElementPaths($child) as $elementPath) {
-                            if ( pathinfo($elementPath, PATHINFO_EXTENSION) == 'txt') {
+                            if (pathinfo($elementPath, PATHINFO_EXTENSION) == 'txt') {
                                 continue;
                             }
                             $relativePath = $basePath . '/' . $elementPath;
