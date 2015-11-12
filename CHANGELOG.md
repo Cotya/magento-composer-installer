@@ -3,6 +3,7 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased][unreleased]
+- Fixed an issue where symlinks were follwed when removing a module, causing files in vendor to be removed
 
 ## [3.0.6] - 2015-10-21
 - Fix problems with magento connect packages referencing non existent files
