@@ -52,14 +52,19 @@ class UnInstallStrategy implements UnInstallStrategyInterface
             
             when the file is a symlink, but the target is already gone, file_exists returns false
             */
-            if (file_exists($file) xor is_link($file)) {
-                $this->fileSystem->unlink($file);
 
-                $parentDir = dirname($file);
-                while ($this->fileSystem->isDirEmpty($parentDir) && $parentDir !== $this->rootDir) {
-                    $this->fileSystem->removeDirectory($parentDir);
-                    $parentDir = dirname($parentDir);
-                }
+            if (is_link($file)) {
+                $this->fileSystem->unlink($file);
+            }
+            
+            if (file_exists($file)) {
+                $this->fileSystem->remove($file);
+            }
+
+            $parentDir = dirname($file);
+            while ($this->fileSystem->isDirEmpty($parentDir) && $parentDir !== $this->rootDir) {
+                $this->fileSystem->removeDirectory($parentDir);
+                $parentDir = dirname($parentDir);
             }
         }
     }
