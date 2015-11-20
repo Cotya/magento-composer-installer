@@ -25,6 +25,12 @@ Also you should see:
 
  * [Using composer correctly (confoo) by Igor Wiedler](https://speakerdeck.com/igorw/using-composer-correctly-confoo)
  
+ 
+## Magento 2
+
+Congratulation to work with Magento 2. Dont try to use it together with this project.
+Your princess is in [another Castle](http://devdocs.magento.com/guides/v2.0/install-gde/prereq/integrator_install.html#integrator-first-composer-ce)
+ 
 ## Project Details
  
 This project only covers the custom installer for composer. If you have problems with outdated versions,
