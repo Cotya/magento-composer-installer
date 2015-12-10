@@ -1,21 +1,21 @@
 language: php
 php:
+  - hhvm
+  - 7.0
   - 5.6
   - 5.5
   - 5.4
-  #- hhvm
-  
+
 env:
   - TEST_SUITE=Unit
   - TEST_SUITE=Fullstack
-  
+
 matrix:
   fast_finish: true
   include:
     - php: 5.6
       env: TEST_SUITE=Static
   allow_failures:
-    - php: hhvm
     - env: TEST_SUITE=Static
 
 sudo: false
@@ -25,18 +25,18 @@ cache:
   - $HOME/.composer/cache
 
 install:
-  - pecl install SPL_Types
+  - if [[ $TRAVIS_PHP_VERSION != 'hhvm' ]] ; then pecl install SPL_Types; fi;
   - curl -sS https://getcomposer.org/installer | php
   - chmod +x ./composer.phar
   - ./composer.phar --version
-  - ./composer.phar install
-  
+  - ./composer.phar install -n --prefer-source
+
 script:
   - >
-    sh -c "if [ '$TEST_SUITE' = 'Unit' ] || [ '$TEST_SUITE' = 'Fullstack' ]; then 
+    sh -c "if [ '$TEST_SUITE' = 'Unit' ] || [ '$TEST_SUITE' = 'Fullstack' ]; then
     ./vendor/bin/phpunit --coverage-clover=coverage.clover --testsuite=$TEST_SUITE;
     fi"
-  - > 
+  - >
     sh -c "if [ '$TEST_SUITE' = 'Static' ]; then
     ./vendor/bin/phpcs --standard=PSR2 ./src/;
     ./vendor/bin/phpcs --standard=PSR2 ./tests/MagentoHackathon;

@@ -1,9 +1,10 @@
 ## Change Log
-All notable changes to this project will be documented in this file.  
+All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased][unreleased]
 - Fixed an issue where symlinks were follwed when removing a module, causing files in vendor to be removed
+- Added PHP 7.0, HHVM to Travis CI. Removed allow_failures for HHVM.
 
 ## [3.0.6] - 2015-10-21
 - Fix problems with magento connect packages referencing non existent files
@@ -14,7 +15,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Fixed Issue [#20](https://github.com/Cotya/magento-composer-installer/issues/20): 'mklink""' is not recognized as an internal or external command, operable program or batch file.
 - Fixed issue [#48](https://github.com/Cotya/magento-composer-installer/issues/48): Package XML mappings have './' prepended to them which breaks git-ignore functionality. Also explicitly adds a fw-slash to git-ignore paths, if one does not exist already.
 - Added functionality to remove entries from the git-ignore file when a module is uninstalled
-- Fixed an issue where empty directories were left behind after un-installing a module. If a structure like `/folder1/folder2/file1.txt` was created, and both folders were created by the module. Only `folder2` would be removed. It now traverses up-to the root-dir removing any empty directories. 
+- Fixed an issue where empty directories were left behind after un-installing a module. If a structure like `/folder1/folder2/file1.txt` was created, and both folders were created by the module. Only `folder2` would be removed. It now traverses up-to the root-dir removing any empty directories.
 - Added documentation for package.xml mapping (PR [#47](https://github.com/Cotya/magento-composer-installer/pull/47))
 - set 5.4 as minimum required Version
 
@@ -27,14 +28,14 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [3.0.4-beta1] - 2015-06-10
 - Fixed error when redeploying with no modules, using PHP 5.3. [Issue #16](https://github.com/Cotya/magento-composer-installer/issues/16) [PR #29](https://github.com/Cotya/magento-composer-installer/pull/29)
-- Fixed the Patcher throwing an exception if `app/Mage.php` was missing, 
+- Fixed the Patcher throwing an exception if `app/Mage.php` was missing,
   even when `with-bootstrap-patch` was set to `false`. [Issue #31](https://github.com/Cotya/magento-composer-installer/issues/31) [PR #32](https://github.com/Cotya/magento-composer-installer/pull/32)
 - Changed Patcher throwing an exception to just output a *comment* Message
 - Add sourceReference support for installed.json, fixes issues with updates for dev-master type repositories
   where version is not a good indication of updates.
 - Remove exception for `InstalledPackageFileSystemRepository::add()` method,
   the function is used for both updates and new installs.
-- Relaxed the Plugin API constraint to `~1.0` so that the next version 
+- Relaxed the Plugin API constraint to `~1.0` so that the next version
   bump won't exclude this installer.
 - Updated dependencies' versions.
 
