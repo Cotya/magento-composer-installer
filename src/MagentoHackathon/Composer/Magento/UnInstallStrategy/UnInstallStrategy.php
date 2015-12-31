@@ -49,14 +49,14 @@ class UnInstallStrategy implements UnInstallStrategyInterface
             example:
             - file got deployed by multiple modules(should only happen with copy force)
             - user did things
-            
+
             when the file is a symlink, but the target is already gone, file_exists returns false
             */
 
             if (is_link($file)) {
                 $this->fileSystem->unlink($file);
             }
-            
+
             if (file_exists($file)) {
                 $this->fileSystem->remove($file);
             }
