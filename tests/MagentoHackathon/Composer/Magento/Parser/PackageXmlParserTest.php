@@ -101,4 +101,18 @@ class PackageXmlParserTest extends \PHPUnit_Framework_TestCase
 
         $this->assertSame($expected, $parser->getMappings());
     }
+
+    public function testNestedDirMappingsDontContainDoubleSlashes()
+    {
+        $parser = new PackageXmlParser(vfsStream::url('root/PackageXmlNestedDirs.xml'));
+
+        $expected = array (
+            array(
+                'app/design/frontend/base/default/template/module/folder/view.phtml',
+                'app/design/frontend/base/default/template/module/folder/view.phtml',
+            ),
+        );
+
+        $this->assertSame($expected, $parser->getMappings());
+    }
 }

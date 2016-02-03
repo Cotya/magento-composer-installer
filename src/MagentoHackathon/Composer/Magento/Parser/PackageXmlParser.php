@@ -66,7 +66,7 @@ class PackageXmlParser implements Parser
                             if (pathinfo($elementPath, PATHINFO_EXTENSION) == 'txt') {
                                 continue;
                             }
-                            $relativePath = $basePath . '/' . $elementPath;
+                            $relativePath = str_replace('//', '/', $basePath . '/' . $elementPath);
                             //remove the any trailing './' or '.' from the targets base-path.
                             if (strpos($relativePath, './') === 0) {
                                 $relativePath = substr($relativePath, 2);
