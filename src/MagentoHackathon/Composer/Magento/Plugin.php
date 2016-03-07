@@ -270,7 +270,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
         }
         if (!$foundMagento) {
             $this->io->write(sprintf($message1, 'packages.magento.com'));
-            $this->io->write(sprintf($message2, 'magento', 'https?://packages.magento.com'));
+            $this->io->write(sprintf($message2, 'magento', 'https://packages.magento.com'));
         }
 
     }
