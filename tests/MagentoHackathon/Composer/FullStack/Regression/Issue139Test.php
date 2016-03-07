@@ -34,7 +34,7 @@ class Issue139Test extends ComposerTestFramework\PHPUnit\FullStackTestCase
                 ],
                 [
                     'type' => 'composer',
-                    'url' => 'http://packages.firegento.com'
+                    'url' => 'https://packages.firegento.com'
                 ],
             ],
             'require' => [

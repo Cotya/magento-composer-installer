@@ -266,7 +266,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
         $message2 = "<comment>add it with:</comment> composer.phar config -g repositories.%s composer %s";
         if (!$foundFiregento) {
             $this->io->write(sprintf($message1, 'packages.firegento.com'));
-            $this->io->write(sprintf($message2, 'firegento', 'http://packages.firegento.com'));
+            $this->io->write(sprintf($message2, 'firegento', 'https://packages.firegento.com'));
         }
         if (!$foundMagento) {
             $this->io->write(sprintf($message1, 'packages.magento.com'));
