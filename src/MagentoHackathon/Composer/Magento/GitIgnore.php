@@ -31,7 +31,7 @@ class GitIgnore
     {
         $this->gitIgnoreLocation = $fileLocation;
         if (file_exists($fileLocation)) {
-            $this->lines = array_flip(file($fileLocation, FILE_IGNORE_NEW_LINES));
+            $this->lines = $this->removeDuplicates(file($fileLocation, FILE_IGNORE_NEW_LINES));
         }
     }
 
@@ -41,8 +41,8 @@ class GitIgnore
     public function addEntry($file)
     {
         $file = $this->prependSlashIfNotExist($file);
-        if (!isset($this->lines[$file])) {
-            $this->lines[$file] = $file;
+        if (!in_array($file, $this->lines)) {
+            $this->lines[] = $file;
         }
         $this->hasChanges = true;
     }
@@ -63,9 +63,13 @@ class GitIgnore
     public function removeEntry($file)
     {
         $file = $this->prependSlashIfNotExist($file);
-        if (isset($this->lines[$file])) {
-            unset($this->lines[$file]);
+        $key = array_search($file, $this->lines);
+        if (false !== $key) {
+            unset($this->lines[$key]);
             $this->hasChanges = true;
+
+            // renumber array
+            $this->lines = array_values($this->lines);
         }
     }
 
@@ -84,7 +88,7 @@ class GitIgnore
      */
     public function getEntries()
     {
-        return array_values(array_flip($this->lines));
+        return $this->lines;
     }
 
     /**
@@ -93,7 +97,7 @@ class GitIgnore
     public function write()
     {
         if ($this->hasChanges) {
-            file_put_contents($this->gitIgnoreLocation, implode("\n", array_flip($this->lines)));
+            file_put_contents($this->gitIgnoreLocation, implode("\n", $this->lines));
         }
     }
 
@@ -107,5 +111,45 @@ class GitIgnore
     private function prependSlashIfNotExist($file)
     {
         return sprintf('/%s', ltrim($file, '/'));
+    }
+
+    /**
+     * Removes duplicate patterns from the input array, without touching comments, line breaks etc.
+     * Will remove the last duplicate pattern.
+     *
+     * @param array $lines
+     * @return array
+     */
+    private function removeDuplicates($lines)
+    {
+        // remove empty lines
+        $duplicates = array_filter($lines);
+
+        // remove comments
+        $duplicates = array_filter($duplicates, function ($line) {
+            return strpos($line, '#') !== 0;
+        });
+
+        // check if duplicates exist
+        if (count($duplicates) !== count(array_unique($duplicates))) {
+            $duplicates = array_filter(array_count_values($duplicates), function ($count) {
+                return $count > 1;
+            });
+
+            // search from bottom to top
+            $lines = array_reverse($lines);
+            foreach ($duplicates as $duplicate => $count) {
+                // remove all duplicates, except the first one
+                for ($i = 1; $i < $count; $i++) {
+                    $key = array_search($duplicate, $lines);
+                    unset($lines[$key]);
+                }
+            }
+
+            // restore original order
+            $lines = array_values(array_reverse($lines));
+        }
+
+        return $lines;
     }
 }

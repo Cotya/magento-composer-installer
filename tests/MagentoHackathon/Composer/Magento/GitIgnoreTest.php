@@ -87,4 +87,22 @@ class GitIgnoreTest extends \PHPUnit_Framework_TestCase
         $gitIgnore->addEntry('/file2.txt');
         $this->assertSame(['/file1.txt', '/file2.txt'], $gitIgnore->getEntries());
     }
+
+    public function testDuplicatesRemoved()
+    {
+        $lines = array('/line1', '/line1');
+        file_put_contents($this->gitIgnoreFile, implode("\n", $lines));
+
+        $gitIgnore = new GitIgnore($this->gitIgnoreFile);
+        $this->assertCount(1, $gitIgnore->getEntries());
+    }
+
+    public function testEmptyLinesNotRemoved()
+    {
+        $lines = array('/line1', '', '/line1');
+        file_put_contents($this->gitIgnoreFile, implode("\n", $lines));
+
+        $gitIgnore = new GitIgnore($this->gitIgnoreFile);
+        $this->assertSame(array('/line1', ''), $gitIgnore->getEntries());
+    }
 }
