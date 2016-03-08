@@ -11,6 +11,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Fix problems with magento connect packages referencing non existent files
 - Fix PHP TestSetup for windows with PR [#69](https://github.com/Cotya/magento-composer-installer/pull/69)
 - Added PR [#73](https://github.com/Cotya/magento-composer-installer/pull/73): add workaround for paths with containing whitespace
+- Added functionality to include root package when deploying modules
 
 ## [3.0.5] - 2015-08-05
 - Fixed Issue [#20](https://github.com/Cotya/magento-composer-installer/issues/20): 'mklink""' is not recognized as an internal or external command, operable program or batch file.

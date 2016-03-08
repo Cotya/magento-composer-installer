@@ -167,6 +167,25 @@ Multiple deploys will not add additional lines to your `.gitignore`, they will o
 
 Documentation available [here](doc/Autoloading.md). 
 
+### Include your project in deployment
+
+When the magento-composer-installer is run, it only looks for magento-modules among your project's dependencies. Thus, if
+your project is a magento-module and you want to test it, you will need a second `composer.json` for deployment, 
+where your project is configured as a required package.
+
+If you wish to deploy your project's files (a.k.a. root package), too, you need to setup your `composer.json` as follows:
+
+```
+{
+    "type": "magento-module",
+    ...
+    "extra": {
+        "magento-root-dir": "htdocs/",
+        "include-root-package": true
+    }
+}
+```
+
 ### Testing
 
 First clone the magento-composer-installer, then install the dev-stuff (installed by default):

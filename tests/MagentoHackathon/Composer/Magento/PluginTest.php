@@ -145,6 +145,37 @@ class PluginTest extends \PHPUnit_Framework_TestCase
         $this->plugin->onNewCodeEvent(new \Composer\Script\Event('event', $this->composer, $this->io));
     }
 
+    public function testRootPackageIsIncludedIfConfigPermits()
+    {
+        $rootPackage = $this->createRootPackage(array("include-root-package" => true), "magento-module");
+        $this->composer->setPackage($rootPackage);
+        $this->plugin->activate($this->composer, $this->io);
+        $moduleManagerMock = $this->getMockBuilder('\MagentoHackathon\Composer\Magento\ModuleManager')
+            ->disableOriginalConstructor()
+            ->setMethods(['updateInstalledPackages'])
+            ->getMock();
+
+        $this->plugin
+            ->expects($this->any())
+            ->method('getModuleManager')
+            ->will($this->returnValue($moduleManagerMock));
+
+        $mPackage1      = $this->createPackage('magento/module1', 'magento-module');
+        $mPackage2      = $this->createPackage('magento/module2', 'magento-module');
+        $normalPackage  = $this->createPackage('normal/module', 'other-module');
+        $lRepository    = $this->composer->getRepositoryManager()->getLocalRepository();
+        $lRepository->addPackage($mPackage1);
+        $lRepository->addPackage($mPackage2);
+        $lRepository->addPackage($normalPackage);
+
+        $moduleManagerMock
+            ->expects($this->once())
+            ->method('updateInstalledPackages')
+            ->with([$mPackage1, $mPackage2, $rootPackage]);
+
+        $this->plugin->onNewCodeEvent(new \Composer\Script\Event('event', $this->composer, $this->io));
+    }
+
     /**
      * Given Magento Composer Installer is configured to skip repository suggestions
      * When the plugin object is activated
@@ -193,11 +224,17 @@ class PluginTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @param array $extra
+     * @param string $type
      * @return RootPackage
      */
-    private function createRootPackage(array $extra = array())
+    private function createRootPackage(array $extra = array(), $type = null)
     {
         $package = new RootPackage("root/package", "1.0.0", "root/package");
+
+        if ($type) {
+            $package->setType($type);
+        }
+
         $extra['magento-root-dir'] = vfsStream::url('root/htdocs');
         $package->setExtra($extra);
         return $package;
