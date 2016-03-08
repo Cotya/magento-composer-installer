@@ -32,7 +32,7 @@ class IssueC039Test extends ComposerTestFramework\PHPUnit\FullStackTestCase
                 ],
                 [
                     'type' => 'composer',
-                    'url' => 'http://packages.firegento.com'
+                    'url' => 'https://packages.firegento.com'
                 ],
 
             ],
@@ -61,7 +61,7 @@ class IssueC039Test extends ComposerTestFramework\PHPUnit\FullStackTestCase
                 ],
                 [
                     'type' => 'composer',
-                    'url' => 'http://packages.firegento.com'
+                    'url' => 'https://packages.firegento.com'
                 ],
             ],
             'require' => [
