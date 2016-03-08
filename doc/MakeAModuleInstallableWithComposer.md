@@ -20,11 +20,11 @@ To make a Magento module installable with composer, this is how to set up the ``
 ```
 
 
-If you would like to publish your module on http://packages.firegento.com/, please fork
+If you would like to publish your module on https://packages.firegento.com/, please fork
 https://github.com/magento-hackathon/composer-repository, add your module to the [satis.json](https://github.com/magento-hackathon/composer-repository/blob/master/satis.json)  on the master branch and
 open a pull request.
 
-If you want to install your module without publishing it on http://packages.firegento.com/, you can add your repository
+If you want to install your module without publishing it on https://packages.firegento.com/, you can add your repository
 to your projects composer.json directly and it will install, too.
 
 ```json

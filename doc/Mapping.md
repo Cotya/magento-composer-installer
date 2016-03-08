@@ -14,7 +14,7 @@ As long as one of these mappings can be found, Magento modules are installable.
 The package files are symlinked into the Magento instance by default. You can also use a copy or hardlink deploy strategy
 by configuring it in the root composer.json (see below).
 
-A repository of composer ready Magento modules can be found on http://packages.firegento.com/
+A repository of composer ready Magento modules can be found on https://packages.firegento.com/
 
 The Magento root directory must be specified in the ```composer.json``` under ```extra.magento-root-dir```.
 

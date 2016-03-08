@@ -69,7 +69,7 @@ MODMAN;
     "repositories": [
         {
             "type": "composer",
-            "url": "http://packages.firegento.com"
+            "url": "https://packages.firegento.com"
         },
         {
             "type": "artifact",
@@ -110,7 +110,7 @@ JSON;
     "repositories": [
         {
             "type": "composer",
-            "url": "http://packages.firegento.com"
+            "url": "https://packages.firegento.com"
         },
         {
             "type": "artifact",
@@ -152,7 +152,7 @@ JSON;
     "repositories": [
         {
             "type": "composer",
-            "url": "http://packages.firegento.com"
+            "url": "https://packages.firegento.com"
         },
         {
             "type": "artifact",
