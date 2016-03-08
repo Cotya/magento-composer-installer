@@ -112,7 +112,7 @@ further information can be found on [wikibooks](http://en.wikibooks.org/wiki/Ope
 as this is a composer plugin, you should only use this both commands to update the installer
 
 ``` 
-composer require --no-update  magento-hackathon/magento-composer-installer=3.0.*
+composer require --no-update  magento-hackathon/magento-composer-installer
 composer update --no-plugins --no-scripts magento-hackathon/magento-composer-installer
 ```
 
