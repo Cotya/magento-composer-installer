@@ -208,7 +208,10 @@ class ModuleManager
             $path = sprintf("%s/%s", $path, $targetDir);
         }
 
-        $path = realpath($path);
+        if (!is_link($path)) {
+            $path = realpath($path);
+        }
+
         return $path;
     }
 
