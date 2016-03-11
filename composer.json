@@ -39,7 +39,7 @@
         }
     ],
     "require":{
-        "php": ">=5.4",
+        "php": ">=5.5",
         "eloquent/composer-config-reader": "2.*",
         "symfony/console": "~2.5",
         "composer-plugin-api": "~1.0"
