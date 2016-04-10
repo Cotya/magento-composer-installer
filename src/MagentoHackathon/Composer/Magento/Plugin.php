@@ -264,9 +264,6 @@ class Plugin implements PluginInterface, EventSubscriberInterface
             if (strpos($repository["url"], "packages.firegento.com") !== false) {
                 $foundFiregento = true;
             }
-            if (strpos($repository["url"], "packages.magento.com") !== false) {
-                $foundMagento = true;
-            }
         };
         $message1 = "<comment>you may want to add the %s repository to composer.</comment>";
         $message2 = "<comment>add it with:</comment> composer.phar config -g repositories.%s composer %s";
@@ -274,11 +271,6 @@ class Plugin implements PluginInterface, EventSubscriberInterface
             $this->io->write(sprintf($message1, 'packages.firegento.com'));
             $this->io->write(sprintf($message2, 'firegento', 'https://packages.firegento.com'));
         }
-        if (!$foundMagento) {
-            $this->io->write(sprintf($message1, 'packages.magento.com'));
-            $this->io->write(sprintf($message2, 'magento', 'https://packages.magento.com'));
-        }
-
     }
 
     /**
