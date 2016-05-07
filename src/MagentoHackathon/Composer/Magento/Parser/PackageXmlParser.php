@@ -74,7 +74,6 @@ class PackageXmlParser implements Parser
                             $map[] = array($relativePath, $relativePath);
                         }
                     }
-
                 } catch (\RuntimeException $e) {
                     // Skip invalid targets
                     continue;

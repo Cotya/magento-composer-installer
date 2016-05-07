@@ -307,7 +307,6 @@ abstract class AbstractTest extends \PHPUnit_Framework_TestCase
             $testTarget = $this->destDir . DS . $dest . DS . $file;
             $this->assertFileExists($testTarget);
             $this->assertFileType($testTarget, $this->getTestDeployStrategyFiletype());
-
         }
     }
 

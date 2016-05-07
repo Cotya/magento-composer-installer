@@ -62,8 +62,7 @@ class UnInstallStrategy implements UnInstallStrategyInterface
             }
 
             $parentDir = dirname($file);
-            while (
-                is_dir($parentDir)
+            while (is_dir($parentDir)
                 && $this->fileSystem->isDirEmpty($parentDir)
                 && $parentDir !== $this->rootDir
             ) {
