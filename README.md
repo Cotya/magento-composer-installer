@@ -126,7 +126,7 @@ make sure to use [the public Magento module repository](http://packages.firegent
 ```composer config -g repositories.firegento composer http://packages.firegento.com```
 
 configure your `magento root dir`, the directory where your magento resides:  
-```composer config extra.magento-root-dir composer "htdocs/"```
+```composer config extra.magento-root-dir "htdocs/"```
  
 an example how your project ```composer.json``` could look like:
 
