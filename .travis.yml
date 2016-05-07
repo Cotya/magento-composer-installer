@@ -50,11 +50,6 @@ notifications:
       - flyingmana@googlemail.com
     on_success: never
     on_failure: always
-  irc:
-    channels:
-      - "irc.freenode.org#magento-composer"
-    on_success: change # default: always
-    on_failure: always # default: always
   webhooks:
     urls:
       - https://webhooks.gitter.im/e/c5ef1e9abfc452125de8
