@@ -94,7 +94,7 @@ class UnInstallStrategyTest extends \PHPUnit_Framework_TestCase
 
         $strategy   = new UnInstallStrategy(new FileSystem, $rootDir);
         
-        $symLinkDestination     = sprintf('%s/symlink_dest_dir', realpath(sys_get_temp_dir()));
+        $symLinkDestination     = $this->testDirectory . '/symlink_dest_dir';
         $symLinkDestination     = str_replace('\\', '/', $symLinkDestination);
         
         mkdir($symLinkDestination, 0777, true);
