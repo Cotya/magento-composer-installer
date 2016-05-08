@@ -9,9 +9,11 @@
 namespace MagentoHackathon\Composer\Magento;
 
 use Composer\Config;
+use Composer\DependencyResolver\Rule;
 use Composer\Installer;
 use Composer\Package\AliasPackage;
 use Composer\Script\Event;
+use Composer\Script\PackageEvent;
 use MagentoHackathon\Composer\Helper;
 use MagentoHackathon\Composer\Magento\Event\EventManager;
 use MagentoHackathon\Composer\Magento\Event\PackageDeployEvent;
@@ -187,6 +189,9 @@ class Plugin implements PluginInterface, EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return array(
+            Installer\PackageEvents::PRE_PACKAGE_UPDATE => array(
+                array('onPackageUpdate', 0),
+            ),
             ScriptEvents::POST_INSTALL_CMD => array(
                 array('onNewCodeEvent', 0),
             ),
@@ -249,6 +254,22 @@ class Plugin implements PluginInterface, EventSubscriberInterface
         }
     }
 
+    public function onPackageUpdate(PackageEvent $event)
+    {
+        /** @var Rule $rule */
+        $rule = $event->getOperation()->getReason();
+        if ($event->getOperation()->getJobType() === 'update') {
+            if ($rule->getJob()['packageName'] === 'magento-hackathon/magento-composer-installer') {
+                throw new \Exception(
+                    'Dont update the "magento-hackathon/magento-composer-installer" with active plugins.' . PHP_EOL .
+                    'Consult the documentation on how to update the Installer' . PHP_EOL .
+                    'https://github.com/Cotya/magento-composer-installer#update-the-installer' . PHP_EOL
+                );
+            }
+        }
+        
+    }
+    
     /**
      * test configured repositories and give message about adding recommended ones
      */
