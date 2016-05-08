@@ -49,7 +49,7 @@
         "phpunit/phpunit-mock-objects": "~2.3",
         "squizlabs/php_codesniffer": "~2.1",
         "cotya/composer-test-framework": "dev-master",
-        "composer/composer":"1.0.*@dev",
+        "composer/composer":"1.0.*",
         "symfony/process":"~2.5",
         "mikey179/vfsStream":"~1.4"
     },
