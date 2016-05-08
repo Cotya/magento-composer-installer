@@ -94,6 +94,11 @@ $function = function() {
     };
 
     echo "start create Composer Artifact".PHP_EOL;
+    $command = 'perl -pi.bak -e \'s/999/997/g\' ./composer.json';
+    $process = $runInProjectRoot($command);
+    $createComposerInstallerArtifact();
+    $command = 'perl -pi.bak -e \'s/997/999/g\' ./composer.json';
+    $process = $runInProjectRoot($command);
     $createComposerInstallerArtifact();
     echo "finish create Composer Artifact".PHP_EOL;
 
