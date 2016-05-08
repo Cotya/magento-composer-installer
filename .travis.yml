@@ -24,7 +24,6 @@ cache:
   - $HOME/.composer/cache
 
 install:
-  - if [[ $TRAVIS_PHP_VERSION != 'hhvm' ]] ; then pecl install SPL_Types; fi;
   - curl -sS https://getcomposer.org/installer | php
   - chmod +x ./composer.phar
   - ./composer.phar --version
