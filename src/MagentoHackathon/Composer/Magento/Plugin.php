@@ -258,14 +258,18 @@ class Plugin implements PluginInterface, EventSubscriberInterface
     {
         /** @var Rule $rule */
         $rule = $event->getOperation()->getReason();
-        if ($event->getOperation()->getJobType() === 'update') {
-            if ($rule->getJob()['packageName'] === 'magento-hackathon/magento-composer-installer') {
-                throw new \Exception(
-                    'Dont update the "magento-hackathon/magento-composer-installer" with active plugins.' . PHP_EOL .
-                    'Consult the documentation on how to update the Installer' . PHP_EOL .
-                    'https://github.com/Cotya/magento-composer-installer#update-the-installer' . PHP_EOL
-                );
+        if ($rule instanceof Rule) {
+            if ($event->getOperation()->getJobType() === 'update') {
+                if ($rule->getJob()['packageName'] === 'magento-hackathon/magento-composer-installer') {
+                    throw new \Exception(
+                        'Dont update the "magento-hackathon/magento-composer-installer" with active plugins.' . PHP_EOL .
+                        'Consult the documentation on how to update the Installer' . PHP_EOL .
+                        'https://github.com/Cotya/magento-composer-installer#update-the-installer' . PHP_EOL
+                    );
+                }
             }
+        } else {
+            
         }
         
     }
