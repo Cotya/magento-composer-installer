@@ -8,14 +8,21 @@ php:
 env:
   - TEST_SUITE=Unit
   - TEST_SUITE=Fullstack
+  - COMPOSER_VERSION=1.0.3
 
 matrix:
   fast_finish: true
   include:
     - php: 5.6
       env: TEST_SUITE=Static
+    - php: 7.0
+      env: COMPOSER_VERSION=beta
+    - php: 7.0
+      env: COMPOSER_VERSION=dev
   allow_failures:
     - env: TEST_SUITE=Static
+    - env: COMPOSER_VERSION=beta
+    - env: COMPOSER_VERSION=dev
 
 sudo: false
 
@@ -24,7 +31,7 @@ cache:
   - $HOME/.composer/cache
 
 install:
-  - curl -sS https://getcomposer.org/installer | php
+  - php ./tests/prepare_composer.php
   - chmod +x ./composer.phar
   - ./composer.phar --version
   - ./composer.phar install -n --prefer-source
