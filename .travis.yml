@@ -7,8 +7,9 @@ php:
 
 env:
   - TEST_SUITE=Unit
+    COMPOSER_VERSION=1.0.3
   - TEST_SUITE=Fullstack
-  - COMPOSER_VERSION=1.0.3
+    COMPOSER_VERSION=1.0.3
 
 matrix:
   fast_finish: true
