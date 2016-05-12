@@ -142,24 +142,4 @@ class CoreInstaller extends MagentoInstallerAbstract
         $deployStrategy->setIsForced($this->isForced);
         return $deployStrategy;
     }
-
-    /**
-     * Returns the installation path of a package
-     * We don't use the parent class for this because Magento Core should never be installed in  the modman-root-dir
-     *
-     * @param  PackageInterface $package
-     * @return string           path
-     */
-    public function getInstallPath(PackageInterface $package)
-    {
-        $targetDir = $package->getTargetDir();
-        $installPath = $this->getPackageBasePath($package) . ($targetDir ? '/'.$targetDir : '');
-
-        // Make install path absolute. This is needed in the symlink deploy strategies.
-        if (DIRECTORY_SEPARATOR !== $installPath[0] && $installPath[1] !== ':') {
-            $installPath = getcwd() . "/$installPath";
-        }
-
-        return $installPath;
-    }
 }
