@@ -41,7 +41,7 @@
     "require":{
         "php": ">=5.3.2",
         "eloquent/composer-config-reader": "2.*",
-        "composer-plugin-api": "1.0.0"
+        "composer-plugin-api": "~1.0"
     },
     "require-dev":{
         "phpunit/phpunit":"*",
