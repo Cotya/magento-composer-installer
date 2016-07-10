@@ -42,7 +42,7 @@ which you probably should add as composer repository (globally)
 
 ### supported PHP Versions
 
-We dont officially support PHP versions which are [End of Life](https://secure.php.net/eol.php) means which dont get [security patches](https://secure.php.net/supported-versions.php) anymore. Even if the install requirement still allows them.  
+We don't officially support PHP versions which are [End of Life](https://secure.php.net/eol.php) means which dont get [security patches](https://secure.php.net/supported-versions.php) anymore. Even if the install requirement still allows them.  
 This will change, as soon someone is willing to pay for supporting them.
 
 ### support contacts
@@ -80,7 +80,7 @@ we handle this topic in our [FAQ](doc/FAQ.md).
 
 ### Timeouts and slow downloading. 
 
-Mostly caused by outtages of Github, Repositories or the Internet. This is a common problem with having all 
+Mostly caused by outages of Github, Repositories or the Internet. This is a common problem with having all 
 packages remote.
 
 For all of this issues you can make use of the commercial [Toran Proxy](https://toranproxy.com/).
@@ -103,7 +103,7 @@ mkdir ~/.ssh/controlmasters
 chmod go-xr ~/.ssh/controlmasters
 ```
 
-further information can be found on [wikibooks](http://en.wikibooks.org/wiki/OpenSSH/Cookbook/Multiplexing) 
+further information can be found on [wikibooks](https://en.wikibooks.org/wiki/OpenSSH/Cookbook/Multiplexing) 
 
 ## Usage
 
@@ -121,9 +121,9 @@ Depending on your workflow with composer, you may want to use more explicite ver
 
 ### Install a module in your project
 
-make sure to use [the public Magento module repository](http://packages.firegento.com) as composer repository:
+make sure to use [the public Magento module repository](https://packages.firegento.com) as composer repository:
 
-```composer config -g repositories.firegento composer http://packages.firegento.com```
+```composer config -g repositories.firegento composer https://packages.firegento.com```
 
 configure your `magento root dir`, the directory where your magento resides:  
 ```composer config extra.magento-root-dir "htdocs/"```
@@ -135,7 +135,7 @@ an example how your project ```composer.json``` could look like:
     "repositories": [
         {
             "type": "composer",
-            "url": "http://packages.firegento.com"
+            "url": "https://packages.firegento.com"
         }
     ],
     "extra":{
