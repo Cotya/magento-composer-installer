@@ -7,12 +7,21 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Added PHP 7.0, HHVM to Travis CI. Removed allow_failures for HHVM.
 - Changes the way gitignore files are being processed. Retains the layout and other duplicates (comments, empty lines, etc.)
 - README example snippet uses https to prevent 'configuration does not allow connections to' errors
+- added PR [#90](https://github.com/Cotya/magento-composer-installer/pull/90): Added check to see if directory exists (for redeploy command)
+- added PR [#91](https://github.com/Cotya/magento-composer-installer/pull/91): Resolve package.xml mappings edge case: Replace double slashes in mappings
+- added regression test covering pull request [#65](https://github.com/Cotya/magento-composer-installer/pull/65)
+- Added functionality to include root package when deploying modules
+- remove eol php version (4.5) from tests
+- add test for updating the installer
+- annoy people when they try to update the installer with active plugins
+- test the installer against different composer versions on Travis
+- allow Symfony/console 3.x as parallel dependency
+
 
 ## [3.0.6] - 2015-10-21
 - Fix problems with magento connect packages referencing non existent files
 - Fix PHP TestSetup for windows with PR [#69](https://github.com/Cotya/magento-composer-installer/pull/69)
 - Added PR [#73](https://github.com/Cotya/magento-composer-installer/pull/73): add workaround for paths with containing whitespace
-- Added functionality to include root package when deploying modules
 
 ## [3.0.5] - 2015-08-05
 - Fixed Issue [#20](https://github.com/Cotya/magento-composer-installer/issues/20): 'mklink""' is not recognized as an internal or external command, operable program or batch file.
