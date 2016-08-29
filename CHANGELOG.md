@@ -3,6 +3,10 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased][unreleased]
+-
+-
+
+## [3.0.7] - 2016-08-29
 - Fixed an issue where symlinks were follwed when removing a module, causing files in vendor to be removed
 - Added PHP 7.0, HHVM to Travis CI. Removed allow_failures for HHVM.
 - Changes the way gitignore files are being processed. Retains the layout and other duplicates (comments, empty lines, etc.)
