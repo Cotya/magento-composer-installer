@@ -199,8 +199,8 @@ class Bootstrap
 
         return <<<PATCH
 /** $patchMark **/
-if (file_exists(\$autoloaderPath = BP . DS . '../{$autoloadPhp}') ||
-    file_exists(\$autoloaderPath = BP . DS . '{$autoloadPhp}')
+if (file_exists(\$autoloaderPath = BP . DS . '{$autoloadPhp}') ||
+    file_exists(\$autoloaderPath = BP . DS . '../{$autoloadPhp}')
 ) {
     require \$autoloaderPath;
 }
