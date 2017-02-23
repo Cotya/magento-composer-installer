@@ -37,7 +37,11 @@ class IssueC118Test extends ComposerTestFramework\PHPUnit\FullStackTestCase
                 [
                     'type' => 'artifact',
                     'url' => $artifactDirectory->getRealPath(),
-                ]
+                ],
+                [
+                    'type' => 'composer',
+                    'url' => 'https://packages.firegento.com'
+                ],
             ],
             'require' => [
                 'connect20/firegento_pdf' => '1.3.0',
@@ -62,7 +66,11 @@ class IssueC118Test extends ComposerTestFramework\PHPUnit\FullStackTestCase
                 [
                     'type' => 'artifact',
                     'url' => $artifactDirectory->getRealPath(),
-                ]
+                ],
+                [
+                    'type' => 'composer',
+                    'url' => 'https://packages.firegento.com'
+                ],
             ],
             'require' => [
                 'connect20/firegento_pdf' => '1.2.0',
