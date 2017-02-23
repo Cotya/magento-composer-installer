@@ -13,7 +13,7 @@ use Composer\DependencyResolver\Rule;
 use Composer\Installer;
 use Composer\Package\AliasPackage;
 use Composer\Script\Event;
-use Composer\Script\PackageEvent;
+use Composer\Installer\PackageEvent;
 use MagentoHackathon\Composer\Helper;
 use MagentoHackathon\Composer\Magento\Event\EventManager;
 use MagentoHackathon\Composer\Magento\Event\PackageDeployEvent;
