@@ -54,7 +54,11 @@ class UnInstallStrategy implements UnInstallStrategyInterface
             */
 
             if (is_link($file)) {
-                $this->fileSystem->unlink($file);
+                if (strtoupper(substr(PHP_OS, 0, 3)) == 'WIN') {
+                    @unlink($file) || @rmdir($file);
+                } else {
+                    $this->fileSystem->unlink($file);
+                }
             }
 
             if (file_exists($file)) {

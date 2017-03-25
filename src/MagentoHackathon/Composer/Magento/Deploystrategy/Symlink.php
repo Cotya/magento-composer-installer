@@ -127,11 +127,22 @@ class Symlink extends DeploystrategyAbstract
     protected function symlink($relSourcePath, $destPath, $absSourcePath)
     {
         $sourcePath = $relSourcePath;
-        // make symlinks always absolute on windows because of #142
+        // use console native windows tool to create relative windows symlinks
         if (strtoupper(substr(PHP_OS, 0, 3)) == 'WIN') {
-            $sourcePath = str_replace('/', '\\', $absSourcePath);
+            $sourcePath = str_replace('/', '\\', $sourcePath);
+            $symlinkDir = dirname($destPath);
+            $currentDir = getcwd();
+            chdir($symlinkDir);
+
+            $flag = is_dir($symlinkDir . '\\' . $sourcePath) ? '/D ' : '';
+            $pathInfo = pathinfo($destPath);
+            $res = exec('mklink ' . $flag . $pathInfo['basename'] .' '. $sourcePath);
+
+            chdir($currentDir);
+            return $res;
+        } else {
+            return symlink($sourcePath, $destPath);
         }
-        return symlink($sourcePath, $destPath);
     }
 
     /**
