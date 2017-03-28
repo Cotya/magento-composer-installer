@@ -22,10 +22,11 @@ class DeploystrategyFactory
      * @var array
      */
     protected static $strategies = array(
-        'copy'      => '\MagentoHackathon\Composer\Magento\Deploystrategy\Copy',
-        'symlink'   => '\MagentoHackathon\Composer\Magento\Deploystrategy\Symlink',
-        'link'      => '\MagentoHackathon\Composer\Magento\Deploystrategy\Link',
-        'none'      => '\MagentoHackathon\Composer\Magento\Deploystrategy\None',
+        'copy'            => '\MagentoHackathon\Composer\Magento\Deploystrategy\Copy',
+        'symlink'         => '\MagentoHackathon\Composer\Magento\Deploystrategy\Symlink',
+        'absolutesymlink' => '\MagentoHackathon\Composer\Magento\Deploystrategy\AbsoluteSymlink',
+        'link'            => '\MagentoHackathon\Composer\Magento\Deploystrategy\Link',
+        'none'            => '\MagentoHackathon\Composer\Magento\Deploystrategy\None',
     );
 
     /**
