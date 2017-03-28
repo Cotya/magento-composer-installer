@@ -6,7 +6,7 @@
 namespace MagentoHackathon\Composer\Magento\Deploystrategy;
 
 /**
- * Symlink deploy strategy
+ * Absolute Symlink deploy strategy
  */
 class AbsoluteSymlink extends Symlink
 {
