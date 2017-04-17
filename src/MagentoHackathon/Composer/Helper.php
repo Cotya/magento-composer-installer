@@ -86,12 +86,11 @@ class Helper
         $vendorDir
     ) {
         if (false === $projectConfig->hasMagentoRootDir()) {
-            $projectConfig->setMagentoRootDir(
-                $io->ask(
-                    sprintf('please define your magento root dir [%s]', ProjectConfig::DEFAULT_MAGENTO_ROOT_DIR),
-                    ProjectConfig::DEFAULT_MAGENTO_ROOT_DIR
-                )
+            $path = $io->ask(
+                sprintf('please define your magento root dir [%s]', ProjectConfig::DEFAULT_MAGENTO_ROOT_DIR),
+                ProjectConfig::DEFAULT_MAGENTO_ROOT_DIR
             );
+            $projectConfig->setMagentoRootDir(str_replace('\\', '/', $path));
         }
 
         $magentoRootDirPath = $projectConfig->getMagentoRootDir();
