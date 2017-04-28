@@ -13,8 +13,7 @@
         "magento-hackathon/magento-composer-installer-test-updateFileRemove": "1.*",
         "magento-hackathon/magento-composer-installer-test-wildcard": "1.*",
         "magento-hackathon/magento-composer-installer-test-wildcard2": "1.*",
-        "magento-hackathon/magento-composer-installer-test-library": "1.*",
-		"firegento/magesetup": "*"
+        "magento-hackathon/magento-composer-installer-test-library": "1.*"
 	},
 	"require-dev": {
 		"magento-hackathon/composer-command-integrator": "*",
