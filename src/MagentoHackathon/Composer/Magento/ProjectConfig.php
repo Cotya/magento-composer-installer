@@ -44,10 +44,17 @@ class ProjectConfig
 
     const EXTRA_WITH_SKIP_SUGGEST_KEY = 'skip-suggest-repositories';
 
+    const EXTRA_DEV_MODE_APPEND = '-dev';
+
     protected $libraryPath;
     protected $libraryPackages;
     protected $extra;
     protected $composerConfig;
+
+    /**
+     * @var bool
+     */
+    protected $isDevMode;
 
     /**
      * @param array $extra
@@ -57,6 +64,8 @@ class ProjectConfig
     {
         $this->extra = $extra;
         $this->composerConfig = $composerConfig;
+
+        $this->isDevMode = false;
 
         if (!is_null($projectConfig = $this->fetchVarFromConfigArray($this->extra, self::MAGENTO_PROJECT_KEY))) {
             $this->applyMagentoConfig($projectConfig);
@@ -74,7 +83,10 @@ class ProjectConfig
     {
         $array = (array)$array;
         $result = $default;
-        if (isset($array[$key])) {
+
+        if ($this->isDevMode && isset($array[$key . self::EXTRA_DEV_MODE_APPEND])) {
+            $result = $array[$key . self::EXTRA_DEV_MODE_APPEND];
+        } elseif (isset($array[$key])) {
             $result = $array[$key];
         }
 
@@ -479,4 +491,31 @@ class ProjectConfig
     {
         return (bool)$this->fetchVarFromExtraConfig(self::INCLUDE_ROOT_PACKAGE_KEY);
     }
+
+    /**
+     * Get dev mode
+     *
+     * @return bool
+     */
+    public function isDevMode()
+    {
+        return $this->isDevMode;
+    }
+
+    /**
+     * Dev mode
+     */
+    public function setDevMode()
+    {
+        $this->isDevMode = true;
+    }
+
+    /**
+     * No dev mode
+     */
+    public function setNoDevMode()
+    {
+        $this->isDevMode = false;
+    }
+
 }
