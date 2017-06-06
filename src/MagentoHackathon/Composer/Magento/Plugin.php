@@ -235,6 +235,10 @@ class Plugin implements PluginInterface, EventSubscriberInterface
             $vendorDir
         );
 
+        if ($event->isDevMode()) {
+            $this->config->setDevMode();
+        }
+
         $this->applyEvents($this->getEventManager());
 
         if (in_array('--redeploy', $event->getArguments())) {
