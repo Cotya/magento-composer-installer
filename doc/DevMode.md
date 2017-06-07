@@ -12,7 +12,7 @@ For example:
 {
     "extra":{
         "magento-root-dir": "htdocs/",
-        "magento-deploystrategy": "copy"
+        "magento-deploystrategy": "copy",
         "magento-deploystrategy-dev": "symlink"
     }
 }
