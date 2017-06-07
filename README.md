@@ -167,6 +167,20 @@ Multiple deploys will not add additional lines to your `.gitignore`, they will o
 
 Documentation available [here](doc/Autoloading.md). 
 
+### Overwriting a production setting (DevMode)
+
+```json
+{
+    "extra":{
+        "magento-deploystrategy": "copy",
+        "magento-deploystrategy-dev": "symlink"
+    }
+}
+```
+
+Example in [devmode doc](doc/DevMode.md).
+
+
 ### Include your project in deployment
 
 When the magento-composer-installer is run, it only looks for magento-modules among your project's dependencies. Thus, if

@@ -1,21 +1,29 @@
 # Dev mode
 
-You can run composer in two modes `--dev` (default) and `--no-dev` (production).
-There is built-in support for this for the config parameters.
+Composer supports two modes `--dev` (default) and `--no-dev` (production).
+Overwrite any `extra.*` parameter by adding `-dev` to it.
 
-In dev mode any extra parameter can also be overwritten with a `-dev` variant.
+In dev mode any extra `-dev` variant will overwrite the original.
 
-For example:
-
+The next example:
+- will use copy strategy on production and symlink locally
+- will only append to .gitignore on dev machines
+- will only force on production
 
 ```json
 {
     "extra":{
         "magento-root-dir": "htdocs/",
+        
         "magento-deploystrategy": "copy",
-        "magento-deploystrategy-dev": "symlink"
+        "magento-deploystrategy-dev": "symlink",
+        
+        "auto-append-gitignore-dev": true,
+        
+        "magento-force": true,
+        "magento-force-dev": false
     }
 }
 ```
 
-In production(`composer install --no-dev`) the copy strategy will be used and on your development symlinks will be used instead.
+In production run `composer install --no-dev` and all `*-dev` will be ignored. 

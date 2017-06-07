@@ -3,8 +3,6 @@
 In the `extra` section of a `composer.json` file you can add some extra configuration parameters.
 Here a overview of all available parameters.
 
-\* Not all are documented yet, feel free to enhance.
-
 ## Project
 
 - magento-root-dir : `"../relative/path"` [README - root dir](../README.md#install-a-module-in-your-project)
