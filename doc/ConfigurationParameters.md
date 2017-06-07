@@ -7,18 +7,19 @@ Here a overview of all available parameters.
 
 ## Project
 
-- magento-root-dir : `"../relative/path"` [README.md](../README.md#install-a-module-in-your-project)
-- magento-project : `{"libraryPath": "../relative/path", "libraries": {"composer/library": "../relative/path"}}`
-- with-bootstrap-patch : `true|false` [Autoloading.md](Autoloading.md)
+- magento-root-dir : `"../relative/path"` [README](../README.md#install-a-module-in-your-project)
+- magento-project : `{"libraryPath": "../relative/path", "libraries": {"vendor/package": "../relative/path", ...}}`
+- with-bootstrap-patch : `true|false` [Autoloading](Autoloading.md)
+- magento-map-overwrite : `{"vendor/package": {"virtual/path/file.php": "real/path/file.php", ...}, ...}` [Mapping](Mapping.md)
+  - package-xml : `"path/to/package.xml"` [Mapping Package XML](Mapping.md#mapping-with-packagexml)
 
 ## Deploy
 
-- magento-deploystrategy : `"copy|symlink|absoluteSymlink|link|none"` 
-- magento-deploystrategy-overwrite : `{"project/name": "copy|symlink|absoluteSymlink|link|none"}` [Deploy.md](Deploy.md#overwrite-deploy-method-per-module)
-- magento-map-overwrite
-- magento-deploy-sort-priority
-- magento-deploy-ignore
-- magento-force
+- magento-deploystrategy : `"copy|symlink|absoluteSymlink|link|none"` [Deploy strategy](Deploy.md)
+- magento-deploystrategy-overwrite : `{"vendor/package": "copy|symlink|absoluteSymlink|link|none", ...}` [Deploy.md](Deploy.md#overwrite-deploy-method-per-module)
+- magento-deploy-sort-priority : `{"vendor/package": 200, ...}` (Deploy.md)[Deploy.md#define-order-in-which-you-want-your-magento-packages-deployed]
+- magento-deploy-ignore : `{"vendor/package": ["file/to/exclude.php"], ...}` [Deploy.md](Deploy.md#prevent-single-files-from-deploy)
+- magento-force : `true|false` [Deploy.md](Deploy.md#define-order-in-which-you-want-your-magento-packages-deployed)
 
 ## Developer
 
