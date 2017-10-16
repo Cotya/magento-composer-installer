@@ -38,7 +38,7 @@ This project only covers the custom installer for composer. If you have problems
 need to install magento connect modules or similar, you need to look for [packages.firegento.com](http://packages.firegento.com/)
 which you probably should add as composer repository (globally)
 
-```composer config -g repositories.firegento composer http://packages.firegento.com```
+```composer config -g repositories.firegento composer https://packages.firegento.com```
 
 ### supported PHP Versions
 
