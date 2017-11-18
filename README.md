@@ -6,6 +6,8 @@
 [![Code Coverage](https://scrutinizer-ci.com/g/Cotya/magento-composer-installer/badges/coverage.png)](https://scrutinizer-ci.com/g/Cotya/magento-composer-installer/)
 [![Bountysource](https://www.bountysource.com/badge/tracker?tracker_id=284872)](https://www.bountysource.com/trackers/284872-magento-hackathon-magento-composer-installer?utm_source=284872&utm_medium=shield&utm_campaign=TRACKER_BADGE)
 
+!!! support the maintainer of this project via Patreon: [https://www.patreon.com/Flyingmana](https://www.patreon.com/Flyingmana)
+
 # Magento Composer Installer 
 
 The purpose of this project is to 
