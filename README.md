@@ -5,11 +5,8 @@
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/Cotya/magento-composer-installer/badges/quality-score.png)](https://scrutinizer-ci.com/g/Cotya/magento-composer-installer/)
 [![Code Coverage](https://scrutinizer-ci.com/g/Cotya/magento-composer-installer/badges/coverage.png)](https://scrutinizer-ci.com/g/Cotya/magento-composer-installer/)
 [![Bountysource](https://www.bountysource.com/badge/tracker?tracker_id=284872)](https://www.bountysource.com/trackers/284872-magento-hackathon-magento-composer-installer?utm_source=284872&utm_medium=shield&utm_campaign=TRACKER_BADGE)
-[![GetBadges Game](https://cotya-magento-composer-installer.getbadges.io/shield/company/cotya-magento-composer-installer)](https://cotya-magento-composer-installer.getbadges.io/?ref=shield-game)
 
 # Magento Composer Installer 
-[![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/magento-hackathon/magento-composer-installer?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-
 
 The purpose of this project is to 
 enable [composer](https://github.com/composer/composer) to install Magento modules,
