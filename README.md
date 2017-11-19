@@ -7,6 +7,7 @@
 [![Bountysource](https://www.bountysource.com/badge/tracker?tracker_id=284872)](https://www.bountysource.com/trackers/284872-magento-hackathon-magento-composer-installer?utm_source=284872&utm_medium=shield&utm_campaign=TRACKER_BADGE)
 
 !!! support the maintainer of this project via Patreon: [https://www.patreon.com/Flyingmana](https://www.patreon.com/Flyingmana)
+
 [![Become a Patreon](doc/become_a_patron_button.png)](https://www.patreon.com/Flyingmana)
 
 # Magento Composer Installer 
