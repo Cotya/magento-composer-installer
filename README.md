@@ -21,7 +21,7 @@ If you want to install the Magento Core, you should try
 [AydinHassan/magento-core-composer-installer](https://github.com/AydinHassan/magento-core-composer-installer)
 as additional plugin.
 
-We strongly recommend you to also read the general composer documentations on [getcomposer.org](http://getcomposer.org)
+We strongly recommend you to also read the general composer documentations on [getcomposer.org](https://getcomposer.org)
 
 Also you should see:
 
@@ -36,10 +36,10 @@ Your princess is in [another Castle](http://devdocs.magento.com/guides/v2.0/inst
 ## Project Details
  
 This project only covers the custom installer for composer. If you have problems with outdated versions,
-need to install magento connect modules or similar, you need to look for [packages.firegento.com](http://packages.firegento.com/)
+need to install magento connect modules or similar, you need to look for [packages.firegento.com](https://packages.firegento.com/)
 which you probably should add as composer repository (globally)
 
-```composer config -g repositories.firegento composer http://packages.firegento.com```
+```composer config -g repositories.firegento composer https://packages.firegento.com```
 
 ### supported PHP Versions
 
