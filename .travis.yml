@@ -1,6 +1,5 @@
 language: php
 os:
-  - windows
   - linux
 php:
   - 7.2
@@ -18,10 +17,13 @@ matrix:
     - php: 5.6
       env: TEST_SUITE=Static
     - php: 7.0
+      os: windows
+    - php: 7.0
       env: COMPOSER_VERSION=beta
     - php: 7.0
       env: COMPOSER_VERSION=dev
   allow_failures:
+    - os: windows
     - env: TEST_SUITE=Static
     - env: COMPOSER_VERSION=beta
     - env: COMPOSER_VERSION=dev
