@@ -22,8 +22,6 @@ matrix:
     - env: COMPOSER_VERSION=beta
     - env: COMPOSER_VERSION=dev
 
-sudo: false
-
 cache:
   directories:
   - $HOME/.composer/cache
