@@ -109,7 +109,7 @@ class Copy extends DeploystrategyAbstract
                 }
             } else {
                 $subDestPath = str_replace('\\', '/', $subDestPath);
-                copy($item, $subDestPath);
+                $this->transfer($item, $subDestPath);
                 $this->addDeployedFile($subDestPath);
             }
             if (!is_readable($subDestPath)) {
@@ -118,5 +118,18 @@ class Copy extends DeploystrategyAbstract
         }
 
         return true;
+    }
+
+    /**
+     * transfer by copy files
+     *
+     * @param string $item
+     * @param string $subDestPath
+     * @return void
+     */
+
+    protected function transfer($item, $subDestPath)
+    {
+        copy($item, $subDestPath);
     }
 }

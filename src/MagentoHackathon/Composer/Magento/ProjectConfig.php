@@ -238,7 +238,8 @@ class ProjectConfig
             $sortValue = $sortPriorityArray[$packagename];
         } else {
             $sortValue = 100;
-            if ($this->getModuleSpecificDeployStrategy($packagename) === 'copy') {
+            if ($this->getModuleSpecificDeployStrategy($packagename) === 'copy'
+                || $this->getModuleSpecificDeployStrategy($packagename) === 'move') {
                 $sortValue++;
             }
         }

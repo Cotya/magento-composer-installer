@@ -13,8 +13,8 @@ Here a overview of all available parameters.
 
 ## Deploy
 
-- magento-deploystrategy : `"copy|symlink|absoluteSymlink|link|none"` [Deploy strategy](Deploy.md)
-- magento-deploystrategy-overwrite : `{"vendor/package": "copy|symlink|absoluteSymlink|link|none", ...}` [Deploy overwrite](Deploy.md#overwrite-deploy-method-per-module)
+- magento-deploystrategy : `"copy|symlink|absoluteSymlink|link|none|move"` [Deploy strategy](Deploy.md)
+- magento-deploystrategy-overwrite : `{"vendor/package": "copy|symlink|absoluteSymlink|link|none|move", ...}` [Deploy overwrite](Deploy.md#overwrite-deploy-method-per-module)
 - magento-deploy-sort-priority : `{"vendor/package": 200, ...}` (Deploy sort priority)[Deploy.md#define-order-in-which-you-want-your-magento-packages-deployed]
 - magento-deploy-ignore : `{"vendor/package": ["file/to/exclude.php"], ...}` [Deploy ignore files](Deploy.md#prevent-single-files-from-deploy)
 - magento-force : `true|false` [Deploy force overwrite](Deploy.md#define-order-in-which-you-want-your-magento-packages-deployed)
