@@ -6,7 +6,8 @@
 namespace MagentoHackathon\Composer\Magento\Deploystrategy;
 
 /**
- * Symlink deploy strategy
+ * Move deploy strategy
+ * Ref: https://github.com/Cotya/magento-composer-installer/issues/176
  */
 class Move extends Copy
 {
@@ -15,11 +16,11 @@ class Move extends Copy
      *
      * @param string $item
      * @param string $subDestPath
-     * @return void
+     * @return bool
      */
     protected function transfer($item, $subDestPath)
     {
-        rename($item, $subDestPath);
+        return rename($item, $subDestPath);
     }
 
     /**
@@ -34,26 +35,36 @@ class Move extends Copy
         }
     }
 
+    /**
+     * Recursively remove files and folders from given path
+     *
+     * @param $path
+     * @return void
+     * @throws \Exception
+     */
     private function removeDir($path)
     {
         $iterator = new \RecursiveIteratorIterator(
             new \RecursiveDirectoryIterator($path, \RecursiveDirectoryIterator::SKIP_DOTS),
             \RecursiveIteratorIterator::CHILD_FIRST
         );
-        foreach ($iterator as $fileinfo) {
-            $filename = $fileinfo->getFilename();
+        foreach ($iterator as $fileInfo) {
+            $filename = $fileInfo->getFilename();
             if($filename != '..' || $filename != '.') {
-                $removeAction = ($fileinfo->isDir() ? 'rmdir' : 'unlink');
+                $removeAction = ($fileInfo->isDir() ? 'rmdir' : 'unlink');
                 try {
-                    $removeAction($fileinfo->getRealPath());
+                    $removeAction($fileInfo->getRealPath());
                 } catch (\Exception $e) {
                     if (strpos($e->getMessage(), 'Directory not empty')) {
-                        $this->removeDir($fileinfo->getRealPath());
+                        $this->removeDir($fileInfo->getRealPath());
+                    } else {
+                        throw new Exception(sprintf('%s could not be removed.', $fileInfo->getRealPath()));
                     }
+
                 }
             }
         }
-        rmdir($this->sourceDir);
+        rmdir($path);
     }
 
 }

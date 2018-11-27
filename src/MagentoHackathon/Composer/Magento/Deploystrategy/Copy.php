@@ -6,7 +6,7 @@
 namespace MagentoHackathon\Composer\Magento\Deploystrategy;
 
 /**
- * Symlink deploy strategy
+ * Copy deploy strategy
  */
 class Copy extends DeploystrategyAbstract
 {
@@ -86,7 +86,7 @@ class Copy extends DeploystrategyAbstract
             }
             $destPath = str_replace('\\', '/', $destPath);
             $this->addDeployedFile($destPath);
-            return copy($sourcePath, $destPath);
+            return $this->transfer($sourcePath, $destPath);
         }
 
         // Copy dir to dir
@@ -125,11 +125,11 @@ class Copy extends DeploystrategyAbstract
      *
      * @param string $item
      * @param string $subDestPath
-     * @return void
+     * @return bool
      */
 
     protected function transfer($item, $subDestPath)
     {
-        copy($item, $subDestPath);
+        return copy($item, $subDestPath);
     }
 }
