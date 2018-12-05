@@ -11,6 +11,7 @@ namespace MagentoHackathon\Composer\Magento;
 use Composer\IO\IOInterface;
 use MagentoHackathon\Composer\Magento\Deploy\Manager\Entry;
 use MagentoHackathon\Composer\Magento\Deploystrategy\Copy;
+use MagentoHackathon\Composer\Magento\Deploystrategy\Move;
 use MagentoHackathon\Composer\Magento\Event\EventManager;
 use MagentoHackathon\Composer\Magento\Event\PackageDeployEvent;
 
@@ -77,7 +78,7 @@ class DeployManager
             $result = 100;
             if (isset($sortPriority[$object->getPackageName()])) {
                 $result = $sortPriority[$object->getPackageName()];
-            } elseif ($object->getDeployStrategy() instanceof Copy) {
+            } elseif ($object->getDeployStrategy() instanceof Copy || $object->getDeployStrategy() instanceof Move) {
                 $result = 101;
             }
             return $result;

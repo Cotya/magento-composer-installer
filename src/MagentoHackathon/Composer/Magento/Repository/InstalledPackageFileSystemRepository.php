@@ -109,7 +109,6 @@ class InstalledPackageFileSystemRepository implements InstalledPackageRepository
 
             return $package->getVersion() === $version;
         } catch (\Exception $e) {
-            // @todo add logging
             return false;
         }
     }

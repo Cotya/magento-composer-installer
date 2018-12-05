@@ -13,6 +13,34 @@ Here is how to use it:
 }
 ```
 
+
+### Deploy per Move instead of Copy
+
+There is a deploy per move strategy. This can only be configured in the root composer.json, it can't be configured on a per-package level.
+Here is how to use it:
+
+```json
+{
+    "extra":{
+        "magento-root-dir": "htdocs/",
+        "magento-deploystrategy": "move"
+    }
+}
+```
+
+Instead of copy, files are moved.
+The source folder, located in vendor folder, will be removed. 
+
+The goal with this option is to limit unwanted file copy procedures during deployment to a server.
+Since all the file exist inside Magento root, having to copy the same files in vendor to the server is pointless,
+and doubles deployment time.
+
+This only affects Magento module. Vendor specific code, which are not placed in Magento structure, is left in place.
+Usually, this option is used in conjunction with DevMode, allowing developers to retain the copy of files in 
+vendor.
+
+** this is a new feature, and still requires feedback **
+
 ### overwrite deploy method per module
 
 Caution: this feature is new, so doku may be wrong, not uptodate or we have a bug somewhere.
