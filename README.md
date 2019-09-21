@@ -13,13 +13,13 @@
 The purpose of this project is to 
 enable [composer](https://github.com/composer/composer) to install Magento modules,
 and automatically integrate them into a Magento installation and add Composer's vendor autoloader
-ability the Magento's so that Composer-compatible 3rd party tools can be used.
+ability to Magento's so that Composer-compatible 3rd party tools can be used.
 
 If you want to install the Magento Core, you should try
 [AydinHassan/magento-core-composer-installer](https://github.com/AydinHassan/magento-core-composer-installer)
-as additional plugin.
+as an additional plugin.
 
-We strongly recommend you to also read the general composer documentations on [getcomposer.org](https://getcomposer.org)
+We strongly recommend you to also read the general composer documentation at [getcomposer.org](https://getcomposer.org)
 
 Also you should see:
 
@@ -28,7 +28,7 @@ Also you should see:
  
 ## Magento 2
 
-Congratulation to work with Magento 2. Dont try to use it together with this project.
+Congratulation to be working with Magento 2. Don't try to use it together with this project.
 Your princess is in [another Castle](http://devdocs.magento.com/guides/v2.0/install-gde/prereq/integrator_install.html#integrator-first-composer-ce)
  
 ## Project Details
@@ -41,8 +41,8 @@ which you probably should add as composer repository (globally)
 
 ### supported PHP Versions
 
-We don't officially support PHP versions which are [End of Life](https://secure.php.net/eol.php) means which dont get [security patches](https://secure.php.net/supported-versions.php) anymore. Even if the install requirement still allows them.  
-This will change, as soon someone is willing to pay for supporting them.
+We don't officially support PHP versions which are [End of Life](https://secure.php.net/eol.php) means which they don't get [security patches](https://secure.php.net/supported-versions.php) anymore. Even if the install requirement still allows them.  
+This will change, as soon as someone is willing to pay for supporting them.
 
 ### support contacts
  
@@ -108,7 +108,7 @@ further information can be found on [wikibooks](https://en.wikibooks.org/wiki/Op
 
 ### Update the Installer
 
-as this is a composer plugin, you should only use this both commands to update the installer
+as this is a composer plugin, you should only use these two commands to update the installer
 
 ``` 
 composer require --no-update  magento-hackathon/magento-composer-installer="3.2.*"
@@ -116,7 +116,7 @@ composer update --no-plugins --no-scripts magento-hackathon/magento-composer-ins
 ```
 
 the second command needs maybe a `--with-dependencies`  
-Depending on your workflow with composer, you may want to use more explicite versions
+Depending on your workflow with composer, you may want to use more explicit versions
 
 ### Install a module in your project
 
