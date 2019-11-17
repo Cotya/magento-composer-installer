@@ -10,14 +10,27 @@ $function = function() {
     $projectPath = str_replace('\\', '/', realpath(__DIR__ . '/../'));
 
     $packagesPath = $projectPath . '/tests/res/packages';
-    
+
     $runInProjectRoot = function ($command) use ($projectPath) {
         $process = new Process($command, $projectPath);
         $process->setTimeout(120);
         $process->run();
         return $process;
     };
-    
+
+    $addTestVersionToComposerJson = function () use ($projectPath) {
+        $filePath = $projectPath.'/composer.json';
+        $jsonObject = json_decode(file_get_contents($filePath), true);
+        $jsonObject['version'] = "999.0.0";
+        file_put_contents($filePath, json_encode($jsonObject, JSON_PRETTY_PRINT));
+    };
+    $removeTestVersionFromComposerJson = function () use ($projectPath) {
+        $filePath = $projectPath.'/composer.json';
+        $jsonObject = json_decode(file_get_contents($filePath), true);
+        unset($jsonObject['version']);
+        file_put_contents($filePath, json_encode($jsonObject, JSON_PRETTY_PRINT));
+    };
+
     $composerCommand = 'composer';
     if (getenv('TRAVIS') == "true") {
         $composerCommand = $projectPath . '/composer.phar';
@@ -26,26 +39,17 @@ $function = function() {
     } elseif ($runInProjectRoot('./composer.phar')->getExitCode() === 0) {
         $composerCommand = 'composer.phar';
     }
-    
-    $createComposerInstallerArtifact = function () use ($projectPath, $runInProjectRoot, $composerCommand) {
 
-        $command = 'perl -pi.bak -e \'s/"test_version"/"version"/g\' ./composer.json';
-        $process = $runInProjectRoot($command);
-        if ($process->getExitCode() !== 0) {
-            $message = sprintf(
-                "process for <code>%s</code> exited with %s: %s%sError Message:%s%s%sOutput:%s%s",
-                $process->getCommandLine(),
-                $process->getExitCode(),
-                $process->getExitCodeText(),
-                PHP_EOL,
-                PHP_EOL,
-                $process->getErrorOutput(),
-                PHP_EOL,
-                PHP_EOL,
-                $process->getOutput()
-            );
-            echo $message;
-        }
+    $createComposerInstallerArtifact = function ()
+    use (
+        $projectPath,
+        $addTestVersionToComposerJson,
+        $removeTestVersionFromComposerJson,
+        $runInProjectRoot,
+        $composerCommand
+    ) {
+
+        $addTestVersionToComposerJson();
 
         $basePath = $projectPath . '/tests/FullStackTest';
         @unlink($projectPath.'/vendor/theseer/directoryscanner/tests/_data/linkdir');
@@ -75,22 +79,7 @@ $function = function() {
         } else {
             // everything fine, I assume
         }
-        $process = $runInProjectRoot('perl -pi.bak -e \'s/"version"/"test_version"/g\' ./composer.json');
-        if ($process->getExitCode() !== 0) {
-            $message = sprintf(
-                "process for <code>%s</code> exited with %s: %s%sError Message:%s%s%sOutput:%s%s",
-                $process->getCommandLine(),
-                $process->getExitCode(),
-                $process->getExitCodeText(),
-                PHP_EOL,
-                PHP_EOL,
-                $process->getErrorOutput(),
-                PHP_EOL,
-                PHP_EOL,
-                $process->getOutput()
-            );
-            echo $message;
-        }
+        $removeTestVersionFromComposerJson();
     };
 
     echo "start create Composer Artifact".PHP_EOL;
@@ -133,7 +122,7 @@ $function = function() {
     };
     echo "finish create Composer Mock Artifact".PHP_EOL;
 };
-    
+
 $function();
 unset($function);
 
