@@ -51,7 +51,7 @@
         "cotya/composer-test-framework": "dev-master",
         "composer/composer":"1.0.*",
         "symfony/process":"~2.5",
-        "mikey179/vfsStream":"~1.4"
+        "mikey179/vfsstream":"~1.4"
     },
     "suggest":{
         "theseer/autoload": "~1.14",
