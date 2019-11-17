@@ -1,11 +1,15 @@
 {
-    "name":"magento-hackathon/magento-composer-installer",
-    "description":"Composer installer for Magento modules",
-    "keywords":[ "composer-installer", "magento", "openmage"],
-    "minimum-stability":"stable",
-    "type":"composer-plugin",
-    "license":"OSL-3.0",
-    "homepage":"https://github.com/magento-hackathon/magento-composer-installer",
+    "name": "magento-hackathon/magento-composer-installer",
+    "description": "Composer installer for Magento modules",
+    "keywords": [
+        "composer-installer",
+        "magento",
+        "openmage"
+    ],
+    "minimum-stability": "stable",
+    "type": "composer-plugin",
+    "license": "OSL-3.0",
+    "homepage": "https://github.com/magento-hackathon/magento-composer-installer",
     "repositories": [
         {
             "type": "composer",
@@ -17,60 +21,60 @@
             "php": "5.6"
         }
     },
-    "authors":[
+    "authors": [
         {
-            "name":"Daniel Fahlke aka Flyingmana",
-            "email":"flyingmana@googlemail.com"
+            "name": "Daniel Fahlke aka Flyingmana",
+            "email": "flyingmana@googlemail.com"
         },
         {
-            "name":"Jörg Weller",
-            "email":"weller@flagbit.de"
+            "name": "Jörg Weller",
+            "email": "weller@flagbit.de"
         },
         {
-            "name":"Karl Spies",
-            "email":"karl.spies@gmx.net"
+            "name": "Karl Spies",
+            "email": "karl.spies@gmx.net"
         },
         {
-            "name":"Tobias Vogt",
-            "email":"tobi@webguys.de"
+            "name": "Tobias Vogt",
+            "email": "tobi@webguys.de"
         },
         {
-            "name":"David Fuhr",
-            "email":"fuhr@flagbit.de"
+            "name": "David Fuhr",
+            "email": "fuhr@flagbit.de"
         },
         {
-            "name":"Vinai Kopp",
-            "email":"vinai@netzarbeiter.com"
+            "name": "Vinai Kopp",
+            "email": "vinai@netzarbeiter.com"
         }
     ],
-    "require":{
+    "require": {
         "php": ">=5.5",
         "eloquent/composer-config-reader": "2.*",
         "symfony/console": "^2.5|^3.0",
         "composer-plugin-api": "^1.0"
     },
-    "require-dev":{
-        "phpunit/phpunit":"~4.3",
+    "require-dev": {
+        "phpunit/phpunit": "~4.3",
         "phpunit/phpunit-mock-objects": "~2.3",
         "squizlabs/php_codesniffer": "~2.1",
         "cotya/composer-test-framework": "dev-master",
-        "composer/composer":"1.0.*",
-        "symfony/process":"~2.5",
-        "mikey179/vfsstream":"~1.4",
+        "composer/composer": "1.0.*",
+        "symfony/process": "~2.5",
+        "mikey179/vfsstream": "~1.4",
         "ext-json": "*"
     },
-    "suggest":{
+    "suggest": {
         "theseer/autoload": "~1.14",
         "colinmollenhour/modman": "*"
     },
-    "autoload":{
-        "psr-0":{
-            "MagentoHackathon\\Composer":"src/"
+    "autoload": {
+        "psr-0": {
+            "MagentoHackathon\\Composer": "src/"
         }
     },
-    "autoload-dev":{
-        "psr-0":{
-            "MagentoHackathon\\Composer\\Magento":"tests/"
+    "autoload-dev": {
+        "psr-0": {
+            "MagentoHackathon\\Composer\\Magento": "tests/"
         }
     },
     "bin": [
@@ -82,7 +86,7 @@
             "/tests/FullStackTest/"
         ]
     },
-    "extra":{
-        "class":"MagentoHackathon\\Composer\\Magento\\Plugin"
+    "extra": {
+        "class": "MagentoHackathon\\Composer\\Magento\\Plugin"
     }
 }

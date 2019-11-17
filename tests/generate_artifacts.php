@@ -18,17 +18,18 @@ $function = function() {
         return $process;
     };
 
-    $addTestVersionToComposerJson = function () use ($projectPath) {
+    $composerJsonOptions = JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE  ;
+    $addTestVersionToComposerJson = function () use ($projectPath, $composerJsonOptions) {
         $filePath = $projectPath.'/composer.json';
         $jsonObject = json_decode(file_get_contents($filePath), true);
         $jsonObject['version'] = "999.0.0";
-        file_put_contents($filePath, json_encode($jsonObject, JSON_PRETTY_PRINT));
+        file_put_contents($filePath, json_encode($jsonObject, $composerJsonOptions));
     };
-    $removeTestVersionFromComposerJson = function () use ($projectPath) {
+    $removeTestVersionFromComposerJson = function () use ($projectPath, $composerJsonOptions) {
         $filePath = $projectPath.'/composer.json';
         $jsonObject = json_decode(file_get_contents($filePath), true);
         unset($jsonObject['version']);
-        file_put_contents($filePath, json_encode($jsonObject, JSON_PRETTY_PRINT));
+        file_put_contents($filePath, json_encode($jsonObject, $composerJsonOptions));
     };
 
     $composerCommand = 'composer';
