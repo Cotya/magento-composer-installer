@@ -12,6 +12,11 @@
             "url": "https://packages.firegento.com"
         }
     ],
+    "config": {
+        "platform": {
+            "php": "5.6"
+        }
+    },
     "authors":[
         {
             "name":"Daniel Fahlke aka Flyingmana",
