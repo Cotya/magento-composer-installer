@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b5c75ac853742dd384067beb0070b4c9",
+    "content-hash": "97686b9d89fcf91292e739e769c8493b",
     "packages": [
         {
             "name": "eloquent/composer-config-reader",
@@ -2395,7 +2395,9 @@
         "php": ">=5.5",
         "composer-plugin-api": "^1.0"
     },
-    "platform-dev": [],
+    "platform-dev": {
+        "ext-json": "*"
+    },
     "platform-overrides": {
         "php": "5.6"
     }
