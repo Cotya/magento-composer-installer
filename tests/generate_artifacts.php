@@ -19,10 +19,10 @@ $function = function() {
     };
 
     $composerJsonOptions = JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE  ;
-    $addTestVersionToComposerJson = function () use ($projectPath, $composerJsonOptions) {
+    $addTestVersionToComposerJson = function ($version = "999.0.0") use ($projectPath, $composerJsonOptions) {
         $filePath = $projectPath.'/composer.json';
         $jsonObject = json_decode(file_get_contents($filePath), true);
-        $jsonObject['version'] = "999.0.0";
+        $jsonObject['version'] = $version;
         file_put_contents($filePath, json_encode($jsonObject, $composerJsonOptions));
     };
     $removeTestVersionFromComposerJson = function () use ($projectPath, $composerJsonOptions) {
@@ -50,7 +50,6 @@ $function = function() {
         $composerCommand
     ) {
 
-        $addTestVersionToComposerJson();
 
         $basePath = $projectPath . '/tests/FullStackTest';
         @unlink($projectPath.'/vendor/theseer/directoryscanner/tests/_data/linkdir');
@@ -60,6 +59,28 @@ $function = function() {
         @unlink($basePath.'/magento/vendor/theseer/directoryscanner/tests/_data/nested/empty');
         @unlink($basePath.'/magento-modules/vendor/theseer/directoryscanner/tests/_data/nested/empty');
 
+        $addTestVersionToComposerJson("999.0.0");
+        $command = $composerCommand.' archive --format=zip --dir="tests/FullStackTest/artifact" -vvv';
+        $process = $runInProjectRoot($command);
+
+        if ($process->getExitCode() !== 0) {
+            $message = sprintf(
+                "process for <code>%s</code> exited with %s: %s%sError Message:%s%s%sOutput:%s%s",
+                $process->getCommandLine(),
+                $process->getExitCode(),
+                $process->getExitCodeText(),
+                PHP_EOL,
+                PHP_EOL,
+                $process->getErrorOutput(),
+                PHP_EOL,
+                PHP_EOL,
+                $process->getOutput()
+            );
+            echo $message;
+        } else {
+            // everything fine, I assume
+        }
+        $addTestVersionToComposerJson("997.0.0");
         $command = $composerCommand.' archive --format=zip --dir="tests/FullStackTest/artifact" -vvv';
         $process = $runInProjectRoot($command);
 
