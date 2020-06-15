@@ -29,10 +29,8 @@ class EventManagerTest extends \PHPUnit_Framework_TestCase
     public function testAddListener()
     {
         $this->eventManager->listen('some-event', function () {
-
         });
         $this->eventManager->listen('some-event', function () {
-
         });
     }
 

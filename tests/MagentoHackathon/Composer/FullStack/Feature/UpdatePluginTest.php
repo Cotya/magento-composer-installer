@@ -80,7 +80,5 @@ class UpdatePluginTest extends ComposerTestFramework\PHPUnit\FullStackTestCase
         } catch (\Exception $e) {
             $this->assertContains('Dont update the', $e->getMessage());
         }
-        
-
     }
 }

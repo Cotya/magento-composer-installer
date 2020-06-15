@@ -7,17 +7,15 @@ use Symfony\Component\Process\Process;
 
 class GlobalPluginTest extends AbstractTest
 {
-    
+
     protected static $processLogCounter = 1;
 
     protected function setUp()
     {
-        
     }
-    
+
     protected function tearDown()
     {
-        
     }
 
     protected function prepareCleanDirectories()
@@ -40,7 +38,7 @@ class GlobalPluginTest extends AbstractTest
         $process->run();
         $this->assertProcess($process);
     }
-    
+
     public function testGlobalUpdate()
     {
         $this->markTestSkipped('This has not been implemented yet.');

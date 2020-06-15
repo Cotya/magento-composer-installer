@@ -25,7 +25,7 @@ class CopyTest extends AbstractTest
 
         return self::TEST_FILETYPE_FILE;
     }
-    
+
     public function testCopyDirToDirOfSameName()
     {
         $sourceRoot = 'root';
@@ -53,7 +53,7 @@ class CopyTest extends AbstractTest
     public function testWildcardCopyToExistingDir()
     {
         $sourceContents = "app/code/test.php";
-        
+
         //create target directory before
         $this->mkdir(sprintf('%s/app/code', $this->destDir));
         $this->mkdir(sprintf('%s/app/code', $this->sourceDir));
@@ -72,7 +72,6 @@ class CopyTest extends AbstractTest
         $this->strategy->deploy();
 
         $this->assertFileNotExists(sprintf('%s/app/app/code/test.php', $this->destDir));
-        
     }
 
     public function testDeployedFilesAreStored()

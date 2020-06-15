@@ -151,7 +151,6 @@ class InstalledFilesFilesystemRepositoryTest extends \PHPUnit_Framework_TestCase
         $this->repository->add($package);
         $this->assertCount(1, $this->repository->findAll());
         $this->assertSame(array($package), $this->repository->findAll());
-
     }
 
     public function tearDown()

@@ -113,7 +113,6 @@ abstract class DeploystrategyAbstract
      */
     protected function beforeDeploy()
     {
-
     }
 
     /**
@@ -123,7 +122,6 @@ abstract class DeploystrategyAbstract
      */
     protected function afterDeploy()
     {
-
     }
 
     /**
@@ -150,7 +148,6 @@ abstract class DeploystrategyAbstract
      */
     protected function beforeClean()
     {
-
     }
 
     /**
@@ -160,7 +157,6 @@ abstract class DeploystrategyAbstract
      */
     protected function afterClean()
     {
-
     }
 
     /**

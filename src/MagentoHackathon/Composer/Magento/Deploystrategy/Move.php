@@ -30,7 +30,7 @@ class Move extends Copy
      */
     protected function afterDeploy()
     {
-        if(is_dir($this->sourceDir)) {
+        if (is_dir($this->sourceDir)) {
             $this->removeDir($this->sourceDir);
         }
     }
@@ -50,7 +50,7 @@ class Move extends Copy
         );
         foreach ($iterator as $fileInfo) {
             $filename = $fileInfo->getFilename();
-            if($filename != '..' || $filename != '.') {
+            if ($filename != '..' || $filename != '.') {
                 $removeAction = ($fileInfo->isDir() ? 'rmdir' : 'unlink');
                 try {
                     $removeAction($fileInfo->getRealPath());
@@ -60,11 +60,9 @@ class Move extends Copy
                     } else {
                         throw new Exception(sprintf('%s could not be removed.', $fileInfo->getRealPath()));
                     }
-
                 }
             }
         }
         rmdir($path);
     }
-
 }

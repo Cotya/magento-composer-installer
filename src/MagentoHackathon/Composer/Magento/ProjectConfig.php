@@ -518,5 +518,4 @@ class ProjectConfig
     {
         $this->isDevMode = false;
     }
-
 }
