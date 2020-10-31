@@ -42,6 +42,8 @@ install:
 
 script:
   - >
+    echo 'error_reporting = E_ALL & ~E_DEPRECATED' >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
+  - >
     sh -c "if [ '$TEST_SUITE' = 'Unit' ] || [ '$TEST_SUITE' = 'Fullstack' ]; then
     ./vendor/bin/phpunit --coverage-clover=coverage.clover --testsuite=$TEST_SUITE;
     fi"
