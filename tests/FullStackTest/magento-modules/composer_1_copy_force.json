@@ -21,7 +21,7 @@
 	},
 	"require-dev": {
 		"magento-hackathon/composer-command-integrator": "*",
-		"composer/composer": "dev-master"
+		"composer/composer": "1.9.*"
 	},
 	"repositories": [
         {
