@@ -67,7 +67,7 @@
         "phpunit/phpunit": "~4.3",
         "phpunit/phpunit-mock-objects": "~2.3",
         "squizlabs/php_codesniffer": "~2.1",
-        "cotya/composer-test-framework": "dev-master",
+        "cotya/composer-test-framework": "~1.1",
         "composer/composer": "1.*",
         "symfony/process": "~2.5",
         "mikey179/vfsstream": "~1.4",
