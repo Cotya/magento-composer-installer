@@ -121,7 +121,7 @@ class ModuleManagerTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($installedMagentoPackages, $result[0]);
         $this->assertSame($composerInstalledPackages, $result[1]);
     }
-    
+
     public function testEmptyComposerInstalledPackages()
     {
         $installedMagentoPackages = array(
@@ -167,7 +167,7 @@ class ModuleManagerTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertCount(0, $this->installedPackageRepository->findAll());
 
-        $package = new Package('connect20/Kreativkonzentrat_Glossary', '0.5.0', '0.5.0');
+        $package = new Package('openmage-module-fostering/kreativkonzentrat_glossary', '0.5.0', '0.5.0');
         $this->moduleManager->updateInstalledPackages([$package]);
 
         $this->assertCount(1, $this->installedPackageRepository->findAll());

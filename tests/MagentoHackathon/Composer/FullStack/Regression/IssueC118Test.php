@@ -44,7 +44,7 @@ class IssueC118Test extends ComposerTestFramework\PHPUnit\FullStackTestCase
                 ],
             ],
             'require' => [
-                'connect20/firegento_pdf' => '1.3.0',
+                'firegento/pdf' => '1.2.0',
                 'magento-hackathon/magento-composer-installer' => '*'
             ],
             'extra' => [
@@ -73,7 +73,7 @@ class IssueC118Test extends ComposerTestFramework\PHPUnit\FullStackTestCase
                 ],
             ],
             'require' => [
-                'connect20/firegento_pdf' => '1.2.0',
+                'firegento/pdf' => '1.2.0',
                 'magento-hackathon/magento-composer-installer' => '*'
             ],
             'extra' => [
@@ -88,7 +88,7 @@ class IssueC118Test extends ComposerTestFramework\PHPUnit\FullStackTestCase
         $composer->update($projectDirectory, $composerJson);
         $this->assertNoDeprecatedNotice($composer->getLastRunProcessObject());
     }
-    
+
     private function assertNoDeprecatedNotice(Process $process)
     {
         $this->assertNotContains(
