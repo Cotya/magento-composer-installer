@@ -47,6 +47,16 @@
             "email": "vinai@netzarbeiter.com"
         }
     ],
+    "funding": [
+        {
+            "type": "patreon",
+            "url": "https://www.patreon.com/Flyingmana"
+        },
+        {
+            "type": "github",
+            "url": "https://github.com/sponsors/Flyingmana"
+        }
+    ],
     "require": {
         "php": ">=5.5",
         "eloquent/composer-config-reader": "2.*",
