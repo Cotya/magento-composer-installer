@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ea7cf48ac5df820023afd0fab98ffbad",
+    "content-hash": "d40d958c9d2dbe5f9e16c73604087a00",
     "packages": [
         {
             "name": "eloquent/composer-config-reader",
@@ -772,16 +772,16 @@
         },
         {
             "name": "cotya/composer-test-framework",
-            "version": "v1.1.0",
+            "version": "v2.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Cotya/composer-test-framework.git",
-                "reference": "798a85f9b317962772b32ba76083730e559e7a6b"
+                "reference": "fc9a6ea11b21b8a70c8a06694f27ba03fbb91ae1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Cotya/composer-test-framework/zipball/798a85f9b317962772b32ba76083730e559e7a6b",
-                "reference": "798a85f9b317962772b32ba76083730e559e7a6b",
+                "url": "https://api.github.com/repos/Cotya/composer-test-framework/zipball/fc9a6ea11b21b8a70c8a06694f27ba03fbb91ae1",
+                "reference": "fc9a6ea11b21b8a70c8a06694f27ba03fbb91ae1",
                 "shasum": ""
             },
             "require": {
@@ -811,7 +811,7 @@
                 }
             ],
             "description": "a framework to easier build tests for composer installer and plugins",
-            "time": "2020-10-31T11:30:03+00:00"
+            "time": "2020-11-05T19:32:38+00:00"
         },
         {
             "name": "doctrine/instantiator",

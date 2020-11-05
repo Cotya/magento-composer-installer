@@ -67,11 +67,11 @@
         "phpunit/phpunit": "~4.3",
         "phpunit/phpunit-mock-objects": "~2.3",
         "squizlabs/php_codesniffer": "~2.1",
-        "cotya/composer-test-framework": "~1.1",
         "composer/composer": "2.*",
         "symfony/process": "~2.5",
         "mikey179/vfsstream": "~1.4",
-        "ext-json": "*"
+        "ext-json": "*",
+        "cotya/composer-test-framework": "~2.0"
     },
     "suggest": {
         "theseer/autoload": "~1.14",

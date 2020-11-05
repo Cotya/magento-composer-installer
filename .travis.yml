@@ -9,9 +9,7 @@ php:
 
 env:
   - TEST_SUITE=Unit
-    COMPOSER_VERSION=1.9.2
   - TEST_SUITE=Fullstack
-    COMPOSER_VERSION=1.9.2
 
 matrix:
   fast_finish: true
