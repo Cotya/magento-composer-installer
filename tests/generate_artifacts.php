@@ -127,7 +127,8 @@ $function = function() {
             $process->run();
             if ($process->getExitCode() !== 0) {
                 $message = sprintf(
-                    "process for <code>%s</code> exited with %s: %s%sError Message:%s%s%sOutput:%s%s",
+                    "process in <code>%s</code> for <code>%s</code> exited with %s: %s%sError Message:%s%s%sOutput:%s%s",
+                    $file->getPathname(),
                     $process->getCommandLine(),
                     $process->getExitCode(),
                     $process->getExitCodeText(),
