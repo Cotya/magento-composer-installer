@@ -35,6 +35,7 @@ use Composer\EventDispatcher\EventSubscriberInterface;
 use Composer\Script\ScriptEvents;
 use Composer\Util\Filesystem;
 use Symfony\Component\Process\Process;
+use Composer\DependencyResolver\Operation\UpdateOperation;
 
 class Plugin implements PluginInterface, EventSubscriberInterface
 {
@@ -169,6 +170,28 @@ class Plugin implements PluginInterface, EventSubscriberInterface
     }
 
     /**
+     * Deactivate plugin
+     *
+     * @param Composer    $composer
+     * @param IOInterface $io
+     */
+    public function deactivate(Composer $composer, IOInterface $io)
+    {
+
+    }
+
+    /**
+     * Uninstall plugin
+     *
+     * @param Composer    $composer
+     * @param IOInterface $io
+     */
+    public function uninstall(Composer $composer, IOInterface $io)
+    {
+
+    }
+
+    /**
      * Returns an array of event names this subscriber wants to listen to.
      *
      * The array keys are event names and the value can be:
@@ -260,21 +283,18 @@ class Plugin implements PluginInterface, EventSubscriberInterface
 
     public function onPackageUpdate(PackageEvent $event)
     {
-        /** @var Rule $rule */
-        $rule = $event->getOperation()->getReason();
-        if ($rule instanceof Rule) {
-            if ($event->getOperation()->getJobType() === 'update') {
-                if (
-                    $rule->getJob()
-                    && $rule->getJob()['packageName'] === 'magento-hackathon/magento-composer-installer') {
-                    throw new \Exception(
-                        'Dont update the "magento-hackathon/magento-composer-installer" with active plugins.'
-                        . PHP_EOL .
-                        'Consult the documentation on how to update the Installer' . PHP_EOL .
-                        'https://github.com/Cotya/magento-composer-installer#update-the-installer' . PHP_EOL
-                    );
-                }
-            }
+        /** @var UpdateOperation $operation */
+        $operation = $event->getOperation();
+        if (
+            $operation->getInitialPackage() &&
+            $operation->getInitialPackage()->getName() === 'magento-hackathon/magento-composer-installer'
+        ) {
+            throw new \Exception(
+                'Dont update the "magento-hackathon/magento-composer-installer" with active plugins.'
+                . PHP_EOL .
+                'Consult the documentation on how to update the Installer' . PHP_EOL .
+                'https://github.com/Cotya/magento-composer-installer#update-the-installer' . PHP_EOL
+            );
         }
     }
 
