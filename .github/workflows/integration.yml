@@ -1,0 +1,65 @@
+name: "Integration Tests"
+on:
+  push:
+  pull_request:
+
+
+jobs:
+  unit:
+    name: Unit Tests on ${{ matrix.php-versions }}
+    runs-on: ${{ matrix.operating-system }}
+    strategy:
+      max-parallel: 5
+      matrix:
+        operating-system: [ubuntu-latest]
+        php-versions: ['7.2', '7.3', '7.4']
+    steps:
+      - uses: actions/checkout@v1
+      - name: Setup PHP
+        uses: shivammathur/setup-php@master
+        with:
+          php-version: ${{ matrix.php-versions }}
+          extension-csv: mbstring #optional, setup extensions
+          ini-values-csv: post_max_size=256M, short_open_tag=On #optional, setup php.ini configuration
+          coverage: none #optional, setup coverage driver
+          pecl: true #optional, setup PECL
+      - name: Prepare
+        run: |
+          php -v
+          php ./tests/prepare_composer.php
+          chmod +x ./composer.phar
+          ./composer.phar --version
+          ./composer.phar install -n --prefer-source
+      - name: Run Unit Tests
+        run: ./vendor/bin/phpunit --coverage-clover=coverage.clover --testsuite=Unit;
+
+
+  fullstack:
+    name: Fullstack Tests on ${{ matrix.php-versions }}
+    runs-on: ${{ matrix.operating-system }}
+    needs: unit
+    strategy:
+      max-parallel: 1
+      matrix:
+        operating-system: [ ubuntu-latest ]
+        php-versions: [ '7.2', '7.3', '7.4' ]
+    steps:
+      - uses: actions/checkout@v1
+      - name: Setup PHP
+        uses: shivammathur/setup-php@master
+        with:
+          php-version: ${{ matrix.php-versions }}
+          extension-csv: mbstring #optional, setup extensions
+          ini-values-csv: post_max_size=256M, short_open_tag=On #optional, setup php.ini configuration
+          coverage: none #optional, setup coverage driver
+          pecl: true #optional, setup PECL
+      - name: Prepare
+        run: |
+          php -v
+          php ./tests/prepare_composer.php
+          chmod +x ./composer.phar
+          ./composer.phar --version
+          ./composer.phar install -n --prefer-source
+      - name: Run Fullstack Tests
+        run: ./vendor/bin/phpunit --coverage-clover=coverage.clover --testsuite=Fullstack;
+
