@@ -37,7 +37,7 @@ class PluginTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->io = new \Composer\IO\NullIO();
+        $this->io = $this->getMock('\Composer\IO\NullIO');
         $this->composer = $this->buildComposerObject();
         $this->config = $this->getMock('Composer\Config');
         $this->composer->setConfig($this->config);
