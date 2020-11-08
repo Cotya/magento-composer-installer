@@ -12,10 +12,6 @@
     "homepage": "https://github.com/magento-hackathon/magento-composer-installer",
     "repositories": [
         {
-            "type": "github",
-            "url": "https://github.com/Flyingmana/composer-config-reader"
-        },
-        {
             "type": "composer",
             "url": "https://packages.firegento.com"
         }
@@ -63,7 +59,7 @@
     ],
     "require": {
         "php": ">=5.5",
-        "eloquent/composer-config-reader": "dev-patch-1",
+        "flyingmana/composer-config-reader": "*",
         "symfony/console": "^2.5|^3.0|^4.0|^5.0",
         "composer-plugin-api": "^2.0"
     },
