@@ -4,61 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "078877be416c64ccfe30c9c3d7f5353f",
+    "content-hash": "e6af3e7546e6facb4accdc55965d47ec",
     "packages": [
-        {
-            "name": "eloquent/composer-config-reader",
-            "version": "dev-patch-1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/Flyingmana/composer-config-reader.git",
-                "reference": "62f2da543e2db9238231d56107fb7f5ba59d5d2a"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/Flyingmana/composer-config-reader/zipball/62f2da543e2db9238231d56107fb7f5ba59d5d2a",
-                "reference": "62f2da543e2db9238231d56107fb7f5ba59d5d2a",
-                "shasum": ""
-            },
-            "require": {
-                "eloquent/enumeration": "^5",
-                "justinrainbow/json-schema": "^5",
-                "php": ">=5.3"
-            },
-            "require-dev": {
-                "eloquent/liberator": "^2",
-                "eloquent/phony": "0.14.4",
-                "phpunit/phpunit": "^4"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Eloquent\\Composer\\Configuration\\": "src"
-                }
-            },
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Erin Millard",
-                    "email": "ezzatron@gmail.com",
-                    "homepage": "http://ezzatron.com/"
-                }
-            ],
-            "description": "A light-weight component for reading Composer configuration files.",
-            "homepage": "https://github.com/eloquent/composer-config-reader",
-            "keywords": [
-                "composer",
-                "configuration",
-                "parser",
-                "reader"
-            ],
-            "support": {
-                "source": "https://github.com/Flyingmana/composer-config-reader/tree/patch-1"
-            },
-            "time": "2020-11-05T21:04:38+00:00"
-        },
         {
             "name": "eloquent/enumeration",
             "version": "5.1.1",
@@ -113,6 +60,60 @@
                 "source": "https://github.com/eloquent/enumeration/tree/master"
             },
             "time": "2015-11-03T22:21:38+00:00"
+        },
+        {
+            "name": "flyingmana/composer-config-reader",
+            "version": "20.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Flyingmana/composer-config-reader.git",
+                "reference": "47d398306f82b756d69628e13a366537f0f05973"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Flyingmana/composer-config-reader/zipball/47d398306f82b756d69628e13a366537f0f05973",
+                "reference": "47d398306f82b756d69628e13a366537f0f05973",
+                "shasum": ""
+            },
+            "require": {
+                "eloquent/enumeration": "^5",
+                "justinrainbow/json-schema": "^5",
+                "php": ">=5.3"
+            },
+            "require-dev": {
+                "eloquent/liberator": "^2",
+                "eloquent/phony": "0.14.4",
+                "phpunit/phpunit": "^4"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Eloquent\\Composer\\Configuration\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Erin Millard",
+                    "email": "ezzatron@gmail.com",
+                    "homepage": "http://ezzatron.com/"
+                }
+            ],
+            "description": "a fork of eloquent/composer-config-reader, A light-weight component for reading Composer configuration files.",
+            "homepage": "https://github.com/eloquent/composer-config-reader",
+            "keywords": [
+                "composer",
+                "configuration",
+                "parser",
+                "reader"
+            ],
+            "support": {
+                "source": "https://github.com/Flyingmana/composer-config-reader/tree/20.0.1"
+            },
+            "time": "2020-11-08T09:03:06+00:00"
         },
         {
             "name": "justinrainbow/json-schema",
@@ -517,16 +518,16 @@
         },
         {
             "name": "composer/composer",
-            "version": "2.0.4",
+            "version": "2.0.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer/composer.git",
-                "reference": "4053eab90a7cdf0b81dd93073dc6c18c15d487fd"
+                "reference": "d5789bd8e2d852a6b98fe944ca2ff82e921eb43d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer/composer/zipball/4053eab90a7cdf0b81dd93073dc6c18c15d487fd",
-                "reference": "4053eab90a7cdf0b81dd93073dc6c18c15d487fd",
+                "url": "https://api.github.com/repos/composer/composer/zipball/d5789bd8e2d852a6b98fe944ca2ff82e921eb43d",
+                "reference": "d5789bd8e2d852a6b98fe944ca2ff82e921eb43d",
                 "shasum": ""
             },
             "require": {
@@ -594,7 +595,7 @@
             "support": {
                 "irc": "irc://irc.freenode.org/composer",
                 "issues": "https://github.com/composer/composer/issues",
-                "source": "https://github.com/composer/composer/tree/2.0.4"
+                "source": "https://github.com/composer/composer/tree/2.0.6"
             },
             "funding": [
                 {
@@ -610,7 +611,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2020-10-30T21:39:11+00:00"
+            "time": "2020-11-07T10:21:17+00:00"
         },
         {
             "name": "composer/semver",
@@ -2637,9 +2638,7 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "eloquent/composer-config-reader": 20
-    },
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
