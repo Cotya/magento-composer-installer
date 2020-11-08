@@ -30,6 +30,7 @@
         },
 		{
 			"type": "composer",
+            "canonical": false,
 			"url": "https://packages.firegento.com"
 		}
 	],
