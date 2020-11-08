@@ -269,6 +269,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
             $this->getModuleManager()->updateInstalledPackages(array());
         }
         $this->writeDebug('start magento module deploy via moduleManager');
+        $magentoModules = array_values($magentoModules);
         $this->getModuleManager()->updateInstalledPackages($magentoModules);
         $this->deployLibraries();
 
