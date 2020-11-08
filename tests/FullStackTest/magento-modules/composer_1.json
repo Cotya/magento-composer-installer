@@ -10,7 +10,7 @@
         "openmage-module-fostering/aw_onpulse": "*",
         "openmage-module-fostering/aw_fps": "*",
         "magento-hackathon/magento-composer-installer-test-issue-87": "1.*",
-        "magento-hackathon/magento-composer-installer-test-updateFileRemove": "1.*",
+        "magento-hackathon/magento-composer-installer-test-updatefileremove": "1.*",
         "magento-hackathon/magento-composer-installer-test-wildcard": "1.*",
         "magento-hackathon/magento-composer-installer-test-library": "1.*"
 	},

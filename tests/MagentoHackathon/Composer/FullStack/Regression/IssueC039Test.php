@@ -38,7 +38,7 @@ class IssueC039Test extends ComposerTestFramework\PHPUnit\FullStackTestCase
             ],
             'require' => [
                 'magento-hackathon/magento-composer-installer' => '999.0.0',
-                'magento-hackathon/magento-composer-installer-test-updateFileRemove' => '1.0.0'
+                'magento-hackathon/magento-composer-installer-test-updatefileremove' => '1.0.0'
             ],
             'extra' => [
                 'magento-deploysttrategy' => 'symlink',

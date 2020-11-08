@@ -3,7 +3,7 @@
         "magento-hackathon/magento-composer-installer": ">50.0",
         "theseer/autoload": "~1.14",
         "zetacomponents/console-tools": "dev-master",
-        "magento-hackathon/magento-composer-installer-test-updateFileRemove": "2.*"
+        "magento-hackathon/magento-composer-installer-test-updatefileremove": "2.*"
 	},
 	"repositories": [
         {
