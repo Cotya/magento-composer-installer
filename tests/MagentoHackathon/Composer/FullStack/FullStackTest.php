@@ -36,7 +36,7 @@ class FullStackTest extends FullStack\AbstractTest
             self::getComposerCommand().' install '.self::getComposerArgs().' --working-dir="./"',
             self::getBasePath().'/magento'
         );
-        $process->setTimeout(300);
+        $process->setTimeout(60*10);
         $process->run();
         self::logProcessOutput($process, 'installBaseMagento');
         $this->assertProcess($process);
