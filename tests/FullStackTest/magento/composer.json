@@ -1,18 +1,17 @@
 {
     "repositories": [
         {
+            "type": "artifact",
+            "url": "../artifact/"
+        },
+        {
             "type": "composer",
-            "canonical": false,
             "url": "https://packages.firegento.com"
         },
         {
             "type": "github",
             "canonical": false,
             "url": "https://github.com/OpenMageModuleFostering/mage_all_latest"
-        },
-        {
-            "type": "artifact",
-            "url": "../artifact/"
         }
     ],
     "extra": {
