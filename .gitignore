@@ -3,3 +3,4 @@
 /vendor
 /composer.json.bak
 covarage-clover.xml
+junit.xml

@@ -31,17 +31,10 @@ jobs:
           ./composer.phar --version
           ./composer.phar install -n --prefer-source
       - name: Run Unit Tests
-        run: ./vendor/bin/phpunit --coverage-clover=coverage.clover --testsuite=Unit;
-
-  sonarcloud:
-    name: SonarCloud
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-        with:
-          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+        run: ./vendor/bin/phpunit --coverage-clover=coverage.clover --log-junit=junit.xml --testsuite=Unit;
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@master
+        if: ${{ matrix.php-version == '7.4' }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
