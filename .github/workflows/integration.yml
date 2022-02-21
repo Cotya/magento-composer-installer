@@ -35,8 +35,10 @@ jobs:
       - name: prepare SonarCloud Scan Data
         if: ${{ matrix.php-versions == '7.4' }}
         run: |
+          ls -la
           sed -i 's@'$GITHUB_WORKSPACE'@/github/workspace/@g' junit.xml
           sed -i 's@'$GITHUB_WORKSPACE'@/github/workspace/@g' coverage.clover
+          ls -la
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@master
         if: ${{ matrix.php-versions == '7.4' }}
