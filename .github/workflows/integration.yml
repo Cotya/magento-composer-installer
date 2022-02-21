@@ -21,7 +21,7 @@ jobs:
           php-version: ${{ matrix.php-versions }}
           extension-csv: mbstring #optional, setup extensions
           ini-values-csv: post_max_size=256M, short_open_tag=On #optional, setup php.ini configuration
-          coverage: none #optional, setup coverage driver
+          coverage: xdebug #optional, setup coverage driver
           pecl: true #optional, setup PECL
       - name: Prepare
         run: |
@@ -35,8 +35,10 @@ jobs:
       - name: prepare SonarCloud Scan Data
         if: ${{ matrix.php-versions == '7.4' }}
         run: |
-          sed -i 's@'$GITHUB_WORKSPACE'@/github/workspace/@g' junit.xml
-          sed -i 's@'$GITHUB_WORKSPACE'@/github/workspace/@g' coverage.clover
+          ls -la
+          sed -i 's@'$GITHUB_WORKSPACE'/@/github/workspace/@g' junit.xml
+          sed -i 's@'$GITHUB_WORKSPACE'/@/github/workspace/@g' coverage.clover
+          ls -la
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@master
         if: ${{ matrix.php-versions == '7.4' }}
