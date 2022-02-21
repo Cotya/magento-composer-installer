@@ -32,6 +32,12 @@ jobs:
           ./composer.phar install -n --prefer-source
       - name: Run Unit Tests
         run: ./vendor/bin/phpunit --coverage-clover=coverage.clover --log-junit=junit.xml --testsuite=Unit;
+      - name: prepare SonarCloud Scan Data
+        if: ${{ matrix.php-versions == '7.4' }}
+        run: |
+          sed -i 's@'$GITHUB_WORKSPACE'@/github/workspace/@g' junit.xml
+	        sed -i 's@'$GITHUB_WORKSPACE'@/github/workspace/@g' coverage.clover
+
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@master
         if: ${{ matrix.php-versions == '7.4' }}
