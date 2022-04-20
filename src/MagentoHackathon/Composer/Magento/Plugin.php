@@ -369,7 +369,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
 
             $params = $this->getTheseerAutoloadParams($libraryPath, $autoloadDirectories);
 
-            $process = new Process($executable . $params);
+            $process = new Process([$executable, $params]);
             $process->run();
         }
     }
