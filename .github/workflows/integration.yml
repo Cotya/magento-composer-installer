@@ -34,6 +34,7 @@ jobs:
         run: ./vendor/bin/phpunit --coverage-clover=coverage.clover --log-junit=junit.xml --testsuite=Unit;
       - name: prepare SonarCloud Scan Data
         if: ${{ matrix.php-versions == '7.4' }}
+        continue-on-error: true
         run: |
           ls -la
           sed -i 's@'$GITHUB_WORKSPACE'/@/github/workspace/@g' junit.xml
@@ -42,6 +43,7 @@ jobs:
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@master
         if: ${{ matrix.php-versions == '7.4' }}
+        continue-on-error: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
