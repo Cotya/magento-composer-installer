@@ -183,8 +183,8 @@ class FullStackTest extends FullStack\AbstractTest
             'app/etc/modules/Aoe_Profiler.xml',
             'app/design/frontend/test/default/issue76/Foobar/issue76.phtml',
             'app/design/frontend/wildcard/wildcard.phtml',
-            'composer_lib/autoload.php',
-            'composer_lib/magento-hackathon/magento-composer-installer-test-library/composer.json',
+//            'composer_lib/autoload.php',
+//            'composer_lib/magento-hackathon/magento-composer-installer-test-library/composer.json',
             'app/design/frontend/test/default/updateFileRemove/design/test2.phtml',
         );
     }
