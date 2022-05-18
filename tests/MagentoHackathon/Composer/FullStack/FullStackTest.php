@@ -7,7 +7,6 @@ use Symfony\Component\Process\Process;
 
 class FullStackTest extends FullStack\AbstractTest
 {
-
     public static function setUpBeforeClass()
     {
         parent::setUpBeforeClass();

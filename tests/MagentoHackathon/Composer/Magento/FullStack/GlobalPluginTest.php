@@ -7,7 +7,6 @@ use Symfony\Component\Process\Process;
 
 class GlobalPluginTest extends AbstractTest
 {
-
     protected static $processLogCounter = 1;
 
     protected function setUp()

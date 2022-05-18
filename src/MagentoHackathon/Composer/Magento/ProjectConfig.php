@@ -1,10 +1,4 @@
 <?php
-/**
- *
- *
- *
- *
- */
 
 namespace MagentoHackathon\Composer\Magento;
 

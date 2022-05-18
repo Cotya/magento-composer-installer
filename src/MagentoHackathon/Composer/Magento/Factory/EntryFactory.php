@@ -14,7 +14,6 @@ use MagentoHackathon\Composer\Magento\ProjectConfig;
  */
 class EntryFactory
 {
-
     /**
      * @var ProjectConfig
      */

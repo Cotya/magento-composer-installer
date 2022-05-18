@@ -12,7 +12,6 @@ use MagentoHackathon\Composer\Magento\InstalledPackageDumper;
  */
 class InstalledPackageFileSystemRepository implements InstalledPackageRepositoryInterface
 {
-
     /**
      * @var string Path to state file
      */

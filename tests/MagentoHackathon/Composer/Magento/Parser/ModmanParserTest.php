@@ -10,7 +10,6 @@ use org\bovigo\vfs\vfsStream;
  */
 class ModmanParserTest extends \PHPUnit_Framework_TestCase
 {
-
     /**
      * @var string
      */

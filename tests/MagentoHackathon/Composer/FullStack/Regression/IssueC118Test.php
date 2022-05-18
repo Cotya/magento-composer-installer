@@ -1,10 +1,4 @@
 <?php
-/**
- *
- *
- *
- *
- */
 
 namespace MagentoHackathon\Composer\Magento\Regression;
 
@@ -13,8 +7,6 @@ use Symfony\Component\Process\Process;
 
 class IssueC118Test extends ComposerTestFramework\PHPUnit\FullStackTestCase
 {
-
-
     /**
      * @group regression
      */

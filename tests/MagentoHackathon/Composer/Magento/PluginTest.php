@@ -21,7 +21,6 @@ use ReflectionObject;
  */
 class PluginTest extends \PHPUnit_Framework_TestCase
 {
-
     protected $composer;
     protected $io;
     protected $config;

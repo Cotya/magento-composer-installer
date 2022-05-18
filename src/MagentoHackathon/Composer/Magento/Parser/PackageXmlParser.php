@@ -13,7 +13,6 @@ namespace MagentoHackathon\Composer\Magento\Parser;
  */
 class PackageXmlParser implements Parser
 {
-
     /**
      * @var \SplFileObject The package.xml file
      */

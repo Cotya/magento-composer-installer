@@ -1,8 +1,8 @@
 <?php
 
-class ComposerTestFileClass{
-    
-    public function __construct(){
-        
+class ComposerTestFileClass {
+
+    public function __construct() {
+
     }
 }

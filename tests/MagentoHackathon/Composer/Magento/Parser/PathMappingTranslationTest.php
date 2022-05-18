@@ -11,7 +11,6 @@ use Composer\Config;
  */
 class PathMappingTranslationTest extends \PHPUnit_Framework_TestCase
 {
-
     public function testTranslate()
     {
         $mappings = array(

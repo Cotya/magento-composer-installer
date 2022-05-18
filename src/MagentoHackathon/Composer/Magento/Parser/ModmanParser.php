@@ -10,7 +10,6 @@ namespace MagentoHackathon\Composer\Magento\Parser;
  */
 class ModmanParser implements Parser
 {
-
     /**
      * @var \SplFileObject The modman file
      */

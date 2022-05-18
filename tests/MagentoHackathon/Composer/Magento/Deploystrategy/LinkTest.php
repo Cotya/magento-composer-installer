@@ -1,4 +1,5 @@
 <?php
+
 namespace MagentoHackathon\Composer\Magento\Deploystrategy;
 
 class LinkTest extends AbstractTest
