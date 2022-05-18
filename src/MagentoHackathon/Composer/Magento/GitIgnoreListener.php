@@ -12,7 +12,6 @@ use MagentoHackathon\Composer\Magento\Event\PackageUnInstallEvent;
  */
 class GitIgnoreListener
 {
-
     /**
      * @var GitIgnore
      */

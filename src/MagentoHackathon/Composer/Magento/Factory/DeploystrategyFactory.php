@@ -12,7 +12,6 @@ use MagentoHackathon\Composer\Magento\Deploystrategy\DeploystrategyAbstract;
  */
 class DeploystrategyFactory
 {
-
     /**
      * @var ProjectConfig
      */

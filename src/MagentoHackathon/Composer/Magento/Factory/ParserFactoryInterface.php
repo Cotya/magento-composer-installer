@@ -12,7 +12,6 @@ use MagentoHackathon\Composer\Magento\Parser\Parser;
  */
 interface ParserFactoryInterface
 {
-
     /**
      * @param PackageInterface $package
      * @param string $sourceDir

@@ -11,7 +11,6 @@ use Composer\Util\Filesystem;
  */
 class UnInstallStrategy implements UnInstallStrategyInterface
 {
-
     /**
      * @var Filesystem
      */

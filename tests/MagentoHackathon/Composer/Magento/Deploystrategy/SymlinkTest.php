@@ -1,4 +1,5 @@
 <?php
+
 namespace MagentoHackathon\Composer\Magento\Deploystrategy;
 
 class SymlinkTest extends AbstractTest
@@ -132,13 +133,13 @@ class SymlinkTest extends AbstractTest
         $this->mkdir($this->sourceDir . $directory);
         touch($this->sourceDir . $file);
         $this->strategy->setMappings(array(array($file, $file)));
-        
+
         $this->strategy->deploy();
-        
+
         $this->assertFileExists($this->destDir . $file);
 
         $this->strategy->clean();
-        
+
         $this->assertFileNotExists($this->destDir . $file);
         $this->assertFileNotExists($this->destDir . $directory);
     }
@@ -181,7 +182,7 @@ class SymlinkTest extends AbstractTest
         sort($result);
         $this->assertEquals($expected, $result);
     }
- 
+
     public function isWindows()
     {
         return strtoupper(substr(PHP_OS, 0, 3)) === 'WIN';

@@ -1,10 +1,4 @@
 <?php
-/**
- *
- *
- *
- *
- */
 
 namespace MagentoHackathon\Composer\Magento\Regression;
 
@@ -12,8 +6,6 @@ use Cotya\ComposerTestFramework;
 
 class UpdatePluginTest extends ComposerTestFramework\PHPUnit\FullStackTestCase
 {
-
-
     /**
      * @group regression
      */

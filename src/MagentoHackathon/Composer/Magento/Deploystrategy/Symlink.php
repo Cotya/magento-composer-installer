@@ -166,7 +166,7 @@ class Symlink extends DeploystrategyAbstract
         } elseif(\file_exists(dirname($from))) {
             $from = \realpath(dirname($from)) . '/' . \basename($from);
         }
-        
+
         $from = explode('/', $from);
         $to = explode('/', $to);
 

@@ -1,10 +1,4 @@
 <?php
-/**
- *
- *
- *
- *
- */
 
 namespace MagentoHackathon\Composer\Magento;
 
@@ -17,7 +11,6 @@ use MagentoHackathon\Composer\Magento\Event\PackageDeployEvent;
 
 class DeployManager
 {
-
     const SORT_PRIORITY_KEY = 'magento-deploy-sort-priority';
 
     /**

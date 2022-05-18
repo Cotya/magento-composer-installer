@@ -8,7 +8,6 @@ namespace MagentoHackathon\Composer\Magento\Parser;
  */
 class MapParserTest extends \PHPUnit_Framework_TestCase
 {
-
     public function testGetMappings()
     {
         $expected = array(

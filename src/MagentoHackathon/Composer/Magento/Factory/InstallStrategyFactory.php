@@ -12,7 +12,6 @@ use MagentoHackathon\Composer\Magento\ProjectConfig;
  */
 class InstallStrategyFactory
 {
-
     /**
      * @var ProjectConfig
      */

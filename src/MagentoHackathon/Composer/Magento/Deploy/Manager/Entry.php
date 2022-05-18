@@ -1,16 +1,9 @@
 <?php
-/**
- *
- *
- *
- *
- */
 
 namespace MagentoHackathon\Composer\Magento\Deploy\Manager;
 
 class Entry
 {
-
     protected $packageName;
 
     /**

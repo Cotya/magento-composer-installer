@@ -6,8 +6,6 @@ use Cotya\ComposerTestFramework;
 
 class IssueC039Test extends ComposerTestFramework\PHPUnit\FullStackTestCase
 {
-
-
     /**
      * @group regression
      */

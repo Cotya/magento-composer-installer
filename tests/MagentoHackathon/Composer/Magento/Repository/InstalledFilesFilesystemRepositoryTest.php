@@ -14,7 +14,6 @@ use Symfony\Component\Yaml\Dumper;
  */
 class InstalledFilesFilesystemRepositoryTest extends \PHPUnit_Framework_TestCase
 {
-
     /**
      * @var InstalledFilesFilesystemRepository
      */

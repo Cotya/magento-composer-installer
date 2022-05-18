@@ -1,10 +1,4 @@
 <?php
-/**
- *
- *
- *
- *
- */
 
 namespace MagentoHackathon\Composer;
 
@@ -31,7 +25,7 @@ class Helper
             throw new \InvalidArgumentException('no composer.json found in project root');
         }
         $this->projectRoot = $projectRoot;
-        
+
         $reader = new \Eloquent\Composer\Configuration\ConfigurationReader;
         $composerJsonObject = $reader->read($this->projectRoot.'/composer.json');
         $this->magentoProjectConfig = new ProjectConfig(
@@ -39,7 +33,7 @@ class Helper
             (array)$composerJsonObject
         );
     }
-    
+
     public function getVendorDirectory()
     {
         /*
@@ -49,10 +43,10 @@ class Helper
         */
         return new \SplFileInfo($this->projectRoot.'/vendor');
     }
-    
+
     public function getInstalledPackages()
     {
-        
+
         $installedJsonObject = json_decode(file_get_contents(
             $this->getVendorDirectory()->getPathname().'/composer/installed.json'
         ), true);
@@ -66,7 +60,7 @@ class Helper
     {
         return $this->magentoProjectConfig;
     }
-    
+
     public function getPackageByName($name)
     {
         $result = null;
@@ -78,7 +72,7 @@ class Helper
         }
         return $result;
     }
-    
+
     public static function initMagentoRootDir(
         ProjectConfig $projectConfig,
         \Composer\IO\IOInterface $io,

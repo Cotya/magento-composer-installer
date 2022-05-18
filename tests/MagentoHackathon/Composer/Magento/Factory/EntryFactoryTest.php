@@ -14,7 +14,6 @@ use org\bovigo\vfs\vfsStream;
  */
 class EntryFactoryTest extends \PHPUnit_Framework_TestCase
 {
-
     protected $root;
 
     public function setUp()

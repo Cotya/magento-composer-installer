@@ -93,14 +93,14 @@ class UnInstallStrategyTest extends \PHPUnit_Framework_TestCase
         mkdir($rootDir, 0777, true);
 
         $strategy   = new UnInstallStrategy(new FileSystem, $rootDir);
-        
+
         $symLinkDestination     = $this->testDirectory . '/symlink_dest_dir';
         $symLinkDestination     = str_replace('\\', '/', $symLinkDestination);
-        
+
         mkdir($symLinkDestination, 0777, true);
         mkdir($symLinkDestination . '/childfolder', 0777, true);
         touch($symLinkDestination . '/childfile', 0777, true);
-        
+
         symlink($symLinkDestination, $rootDir . '/link');
 
         $strategy->unInstall(['/link']);

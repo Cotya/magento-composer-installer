@@ -16,7 +16,6 @@ use MagentoHackathon\Composer\Magento\ProjectConfig;
  */
 class ParserFactory implements ParserFactoryInterface
 {
-
     /**
      * @var ProjectConfig
      */

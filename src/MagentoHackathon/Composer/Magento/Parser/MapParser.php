@@ -11,7 +11,6 @@ namespace MagentoHackathon\Composer\Magento\Parser;
  */
 class MapParser implements Parser
 {
-
     /**
      * @var array
      */
