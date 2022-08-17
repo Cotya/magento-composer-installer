@@ -28,6 +28,10 @@ class Copy extends DeploystrategyAbstract
         $sourcePath = $this->getSourceDir() . '/' . $this->removeTrailingSlash($source);
         $destPath = $this->getDestDir() . '/' . $this->removeTrailingSlash($dest);
 
+        //remove symlink to avoid unlink files from vendor directory
+        if (is_link($destPath)) {
+            unlink($destPath);
+        }
 
         // Create all directories up to one below the target if they don't exist
         $destDir = dirname($destPath);
