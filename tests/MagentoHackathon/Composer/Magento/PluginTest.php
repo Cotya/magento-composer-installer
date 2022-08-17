@@ -30,9 +30,15 @@ class PluginTest extends \PHPUnit_Framework_TestCase
     protected $plugin;
     protected $eventManager;
 
+    private function buildComposerObject()
+    {
+        return \Composer\Factory::create($this->io);
+    }
+
     public function setUp()
     {
-        $this->composer = new Composer;
+        $this->io = $this->getMock('\Composer\IO\NullIO');
+        $this->composer = $this->buildComposerObject();
         $this->config = $this->getMock('Composer\Config');
         $this->composer->setConfig($this->config);
         $this->root = vfsStream::setup('root', null, array('vendor' => array('bin' => array()), 'htdocs' => array()));
@@ -58,17 +64,16 @@ class PluginTest extends \PHPUnit_Framework_TestCase
                 ),
             )));
 
-        $this->composer->setInstallationManager(new InstallationManager());
-
-        $this->io = $this->getMock('Composer\IO\IOInterface');
 
         $this->plugin = $this->getMockBuilder('MagentoHackathon\Composer\Magento\Plugin')
             ->setMethods(array('getEventManager', 'getModuleManager'))
             ->getMock();
 
-        $repoManager    = new RepositoryManager($this->io, $this->config);
-        $repoManager->setLocalRepository(new WritableArrayRepository);
-        $this->composer->setRepositoryManager($repoManager);
+        $repoManager    = \Composer\Repository\RepositoryFactory::manager(
+            $this->io,
+            $this->config,
+            \Composer\Factory::createHttpDownloader($this->io, $this->config)
+        );
 
         $this->eventManager = $this->getMock('MagentoHackathon\Composer\Magento\Event\EventManager');
         $this->plugin

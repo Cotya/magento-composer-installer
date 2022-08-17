@@ -422,7 +422,7 @@ class ProjectConfig
         $manipulator = new JsonManipulator($contents);
 
         foreach ($new as $childKey => $childValue) {
-            if (!$manipulator->addLink($rootKey, $childKey, $childValue)) {
+            if (!$manipulator->addProperty($rootKey . '.' . $childKey,  $childValue)) {
                 return false;
             }
         }

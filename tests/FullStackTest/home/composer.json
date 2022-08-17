@@ -1,12 +1,12 @@
 {
     "repositories": [
         {
-            "type": "composer",
-            "url": "https://packages.firegento.com"
-        },
-        {
             "type": "artifact",
             "url": "../artifact/"
+        },
+        {
+            "type": "composer",
+            "url": "https://packages.firegento.com"
         }
     ],
     "require": {

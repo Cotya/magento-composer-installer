@@ -57,6 +57,11 @@ class ParserFactory implements ParserFactoryInterface
             return new ModmanParser($modmanFile);
         }
 
+        $connectPackageXmlFile = sprintf('%s/package.xml', $sourceDir);
+        if (file_exists($connectPackageXmlFile)) {
+            return new PackageXmlParser($connectPackageXmlFile);
+        }
+
         throw new \ErrorException(
             sprintf(
                 'Unable to find deploy strategy for module: "%s" no known mapping'.PHP_EOL

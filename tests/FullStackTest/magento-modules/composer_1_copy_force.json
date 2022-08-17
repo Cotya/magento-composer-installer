@@ -6,11 +6,11 @@
         "theseer/autoload": "~1.14",
         "zetacomponents/console-tools": "dev-master",
 		"firegento/psr0autoloader": "dev-master",
-        "connect20/aw_blog": "*",
-        "connect20/aw_onpulse": "*",
-        "connect20/aw_fps": "*",
+        "openmage-module-fostering/aw_blog": "*",
+        "openmage-module-fostering/aw_onpulse": "*",
+        "openmage-module-fostering/aw_fps": "*",
         "magento-hackathon/magento-composer-installer-test-issue-87": "1.*",
-        "magento-hackathon/magento-composer-installer-test-updateFileRemove": "1.*",
+        "magento-hackathon/magento-composer-installer-test-updatefileremove": "1.*",
         "magento-hackathon/magento-composer-installer-test-wildcard": "1.*",
         "magento-hackathon/magento-composer-installer-test-wildcard2": "1.*",
         "magento-hackathon/magento-composer-installer-test-library": "1.*",
@@ -21,7 +21,7 @@
 	},
 	"require-dev": {
 		"magento-hackathon/composer-command-integrator": "*",
-		"composer/composer": "dev-master"
+		"composer/composer": "*"
 	},
 	"repositories": [
         {
@@ -30,6 +30,7 @@
         },
 		{
 			"type": "composer",
+            "canonical": false,
 			"url": "https://packages.firegento.com"
 		}
 	],

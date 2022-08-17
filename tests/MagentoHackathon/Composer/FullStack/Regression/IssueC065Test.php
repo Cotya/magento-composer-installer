@@ -68,12 +68,12 @@ MODMAN;
     "type": "magento-module",
     "repositories": [
         {
-            "type": "composer",
-            "url": "https://packages.firegento.com"
-        },
-        {
             "type": "artifact",
             "url": "$this->artifactDirectory/"
+        },
+        {
+            "type": "composer",
+            "url": "https://packages.firegento.com"
         }
     ],
     "require": {
@@ -109,12 +109,12 @@ JSON;
     "type": "magento-module",
     "repositories": [
         {
-            "type": "composer",
-            "url": "https://packages.firegento.com"
-        },
-        {
             "type": "artifact",
             "url": "$this->artifactDirectory/"
+        },
+        {
+            "type": "composer",
+            "url": "https://packages.firegento.com"
         }
     ],
     "require": {
@@ -151,12 +151,12 @@ JSON;
     "type": "magento-module",
     "repositories": [
         {
-            "type": "composer",
-            "url": "https://packages.firegento.com"
-        },
-        {
             "type": "artifact",
             "url": "$this->artifactDirectory/"
+        },
+        {
+            "type": "composer",
+            "url": "https://packages.firegento.com"
         }
     ],
     "require": {

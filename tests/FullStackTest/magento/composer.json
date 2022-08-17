@@ -1,20 +1,25 @@
 {
     "repositories": [
         {
+            "type": "artifact",
+            "url": "../artifact/"
+        },
+        {
             "type": "composer",
             "url": "https://packages.firegento.com"
         },
         {
-            "type": "artifact",
-            "url": "../artifact/"
+            "type": "github",
+            "canonical": false,
+            "url": "https://github.com/OpenMageModuleFostering/mage_all_latest"
         }
     ],
     "extra": {
         "magento-deploystrategy": "copy",
         "magento-deploy-ignore": {
             "*": ["/index.php"],
-            "connect20/mage_downloader": ["/shell/log.php"],
-            "connect20/mage_core_modules": ["/shell/compiler.php"]
+            "openmage/magento-lts": ["/shell/log.php"],
+            "openmage/magento-lts": ["/shell/compiler.php"]
         },
         "auto-append-gitignore": true,
         "magento-force": "override",
@@ -24,6 +29,6 @@
         "magento-hackathon/magento-composer-installer": ">50.0",
         "theseer/autoload": "~1.14",
         "zetacomponents/console-tools": "dev-master",
-        "connect20/mage_all_latest": "*"
+        "openmage/magento-lts": "1.9.1.1"
     }
 }

@@ -100,7 +100,7 @@ for this you can use `magento-deploy-ignore` which works either global or on mod
         "magento-force": true,
         "magento-deploy-ignore": {
             "*": ["/index.php"],
-            "connect20/mage_core_modules": ["/shell/compiler.php"]
+            "openmage/magento-lts": ["/shell/compiler.php"]
         },
 	}
 }

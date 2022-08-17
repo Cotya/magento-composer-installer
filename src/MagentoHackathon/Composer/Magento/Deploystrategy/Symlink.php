@@ -159,6 +159,14 @@ class Symlink extends DeploystrategyAbstract
         $from = str_replace(array('/./', '//'), '/', $from);
         $to = str_replace(array('/./', '//'), '/', $to);
 
+        // calculate relative link from realpath $from, to handle cases where $from folder is already inside another symlink
+        // e.g. when symlinking files from one module to another
+        if (\file_exists($from)) {
+            $from = \realpath($from);
+        } elseif(\file_exists(dirname($from))) {
+            $from = \realpath(dirname($from)) . '/' . \basename($from);
+        }
+        
         $from = explode('/', $from);
         $to = explode('/', $to);
 
