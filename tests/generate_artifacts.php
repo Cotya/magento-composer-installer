@@ -11,8 +11,16 @@ $function = function() {
 
     $packagesPath = $projectPath . '/tests/res/packages';
 
-    $runInProjectRoot = function ($command) use ($projectPath) {
-        $process = new Process($command, $projectPath);
+    $createProcess = function ($command, $workingDirectory) {
+        if (method_exists(Process::class, 'fromShellCommandline')) {
+            return Process::fromShellCommandline($command, $workingDirectory);
+        }
+
+        return new Process($command, $workingDirectory);
+    };
+
+    $runInProjectRoot = function ($command) use ($projectPath, $createProcess) {
+        $process = $createProcess($command, $projectPath);
         $process->setTimeout(120);
         $process->run();
         return $process;
@@ -119,10 +127,7 @@ $function = function() {
     foreach ($directory as $file) {
         if (!$file->isDot() && $file->isDir()) {
             $args = ' archive --format=zip --dir="'.$projectPath.'/tests/FullStackTest/artifact" -vvv';
-            $process = new Process(
-                $composerCommand . $args,
-                $file->getPathname()
-            );
+            $process = $createProcess($composerCommand . $args, $file->getPathname());
             $process->setTimeout(120);
             $process->run();
             if ($process->getExitCode() !== 0) {
