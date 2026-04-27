@@ -9,11 +9,10 @@ use org\bovigo\vfs\vfsStream;
  * @package MagentoHackathon\Composer\Magento
  * @author  Aydin Hassan <aydin@hotmail.co.uk>
  */
-class GitIgnoreTest extends \PHPUnit_Framework_TestCase
+class GitIgnoreTest extends \PHPUnit\Framework\TestCase
 {
     protected $gitIgnoreFile;
-
-    public function setUp()
+    protected function setUp(): void
     {
         vfsStream::setup('root');
         $this->gitIgnoreFile = vfsStream::url('root/.gitignore');

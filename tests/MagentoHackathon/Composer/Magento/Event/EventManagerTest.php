@@ -8,21 +8,21 @@ use Composer\EventDispatcher\Event;
  * Class EventManagerTest
  * @author Aydin Hassan <aydin@hotmail.co.uk>
  */
-class EventManagerTest extends \PHPUnit_Framework_TestCase
+class EventManagerTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var EventManager
      */
     protected $eventManager;
-
-    public function setUp()
+    protected function setUp(): void
     {
         $this->eventManager = new EventManager();
     }
 
     public function testListenThrowsExceptionIfArgument2NotCallable()
     {
-        $this->setExpectedException('InvalidArgumentException', 'Second argument should be a callable. Got: "NULL"');
+        $this->expectException('InvalidArgumentException');
+        $this->expectExceptionMessage('Second argument should be a callable. Got: "NULL"');
         $this->eventManager->listen('some-event', null);
     }
 
@@ -41,7 +41,9 @@ class EventManagerTest extends \PHPUnit_Framework_TestCase
 
     public function testListenerIsCalledForAppropriateEvent()
     {
-        $mockCallback = $this->getMock('stdClass', array('callback'));
+        $mockCallback = $this->getMockBuilder('stdClass')
+            ->addMethods(['callback'])
+            ->getMock();
         $mockCallback->expects($this->exactly(2))
             ->method('callback')
             ->will($this->returnValue(true));

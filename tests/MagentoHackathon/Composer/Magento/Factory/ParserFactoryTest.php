@@ -11,11 +11,10 @@ use org\bovigo\vfs\vfsStream;
  * @package MagentoHackathon\Composer\Magento\Parser
  * @author  Aydin Hassan <aydin@hotmail.co.uk>
  */
-class ParserFactoryTest extends \PHPUnit_Framework_TestCase
+class ParserFactoryTest extends \PHPUnit\Framework\TestCase
 {
     protected $root;
-
-    public function setUp()
+    protected function setUp(): void
     {
         $this->root = vfsStream::setup('root');
     }
@@ -70,10 +69,8 @@ class ParserFactoryTest extends \PHPUnit_Framework_TestCase
 
     public function testExceptionIsThrownIfNoParserConditionsAreMet()
     {
-        $this->setExpectedException(
-            'ErrorException',
-            'Unable to find deploy strategy for module: "module-package" no known mapping'
-        );
+        $this->expectException('ErrorException');
+        $this->expectExceptionMessage('Unable to find deploy strategy for module: "module-package" no known mapping');
 
         $package = new Package('module-package', '1.0.0', 'module-package');
 

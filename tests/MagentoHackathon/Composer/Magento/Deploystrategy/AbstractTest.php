@@ -5,7 +5,7 @@ if (! defined('DS')) {
     define('DS', DIRECTORY_SEPARATOR);
 }
 
-abstract class AbstractTest extends \PHPUnit_Framework_TestCase
+abstract class AbstractTest extends \PHPUnit\Framework\TestCase
 {
     const TEST_FILETYPE_FILE = 'file';
     const TEST_FILETYPE_LINK = 'link';
@@ -48,7 +48,7 @@ abstract class AbstractTest extends \PHPUnit_Framework_TestCase
      * Sets up the fixture, for example, opens a network connection.
      * This method is called before a test is executed.
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->filesystem = new \Composer\Util\Filesystem();
         $tmpDir = $this->replaceSlashes(sys_get_temp_dir());
@@ -64,7 +64,7 @@ abstract class AbstractTest extends \PHPUnit_Framework_TestCase
      * Tears down the fixture, for example, closes a network connection.
      * This method is called after a test is executed.
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->filesystem->remove($this->sourceDir);
         $this->filesystem->remove($this->destDir);
@@ -434,9 +434,9 @@ abstract class AbstractTest extends \PHPUnit_Framework_TestCase
 
         $this->strategy->clean();
 
-        $this->assertFileNotExists($this->destDir . $file1);
-        $this->assertFileNotExists($this->destDir . $file2);
-        $this->assertFileNotExists($this->destDir . $directory);
+        $this->assertFileDoesNotExist($this->destDir . $file1);
+        $this->assertFileDoesNotExist($this->destDir . $file2);
+        $this->assertFileDoesNotExist($this->destDir . $directory);
 
         $this->assertEquals(
             array($file1, $file2),

@@ -9,7 +9,7 @@ use MagentoHackathon\Composer\Magento\Event\PackageDeployEvent;
  * Class PackageDeployEventTest
  * @author Aydin Hassan <aydin@hotmail.co.uk>
  */
-class PackageDeployEventTest extends \PHPUnit_Framework_TestCase
+class PackageDeployEventTest extends \PHPUnit\Framework\TestCase
 {
     public function testGetters()
     {

@@ -9,12 +9,10 @@ class GlobalPluginTest extends AbstractTest
 {
 
     protected static $processLogCounter = 1;
-
-    protected function setUp()
+    protected function setUp(): void
     {
     }
-
-    protected function tearDown()
+    protected function tearDown(): void
     {
     }
 

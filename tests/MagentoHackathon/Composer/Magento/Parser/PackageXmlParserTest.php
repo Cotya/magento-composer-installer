@@ -9,14 +9,13 @@ use org\bovigo\vfs\vfsStream;
  * @package MagentoHackathon\Composer\Magento\Parser
  * @author Aydin Hassan <aydin@hotmail.co.uk>
  */
-class PackageXmlParserTest extends \PHPUnit_Framework_TestCase
+class PackageXmlParserTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var string
      */
     protected $fixtureDir;
-
-    public function setUp()
+    protected function setUp(): void
     {
         $root = vfsStream::setup('root');
         vfsStream::copyFromFileSystem(realpath(__DIR__ . '/../../../../res/fixtures'), $root);
@@ -72,7 +71,8 @@ class PackageXmlParserTest extends \PHPUnit_Framework_TestCase
     {
         $parser = new PackageXmlParser(vfsStream::url('root/PackageXmlValid.xml'));
         chmod(vfsStream::url('root/PackageXmlValid.xml'), 0000);
-        $this->setExpectedException('ErrorException', 'Package file "vfs://root/PackageXmlValid.xml" not readable');
+        $this->expectException('ErrorException');
+        $this->expectExceptionMessage('Package file "vfs://root/PackageXmlValid.xml" not readable');
         $parser->getMappings();
     }
 

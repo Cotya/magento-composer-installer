@@ -4,6 +4,7 @@ namespace MagentoHackathon\Composer\Magento;
 
 use Composer\Composer;
 use Composer\Config;
+use Composer\IO\IOInterface;
 use Composer\Installer\InstallationManager;
 use Composer\Package\AliasPackage;
 use Composer\Package\Package;
@@ -19,7 +20,7 @@ use ReflectionObject;
  * @package MagentoHackathon\Composer\Magento
  * @author  Aydin Hassan <aydin@hotmail.co.uk>
  */
-class PluginTest extends \PHPUnit_Framework_TestCase
+class PluginTest extends \PHPUnit\Framework\TestCase
 {
 
     protected $composer;
@@ -34,12 +35,11 @@ class PluginTest extends \PHPUnit_Framework_TestCase
     {
         return \Composer\Factory::create($this->io);
     }
-
-    public function setUp()
+    protected function setUp(): void
     {
-        $this->io = $this->getMock('\Composer\IO\NullIO');
+        $this->io = $this->createMock(IOInterface::class);
         $this->composer = $this->buildComposerObject();
-        $this->config = $this->getMock('Composer\Config');
+        $this->config = $this->createMock('Composer\Config');
         $this->composer->setConfig($this->config);
         $this->root = vfsStream::setup('root', null, array('vendor' => array('bin' => array()), 'htdocs' => array()));
 
@@ -66,7 +66,7 @@ class PluginTest extends \PHPUnit_Framework_TestCase
 
 
         $this->plugin = $this->getMockBuilder('MagentoHackathon\Composer\Magento\Plugin')
-            ->setMethods(array('getEventManager', 'getModuleManager'))
+            ->onlyMethods(array('getEventManager', 'getModuleManager'))
             ->getMock();
 
         $repoManager    = \Composer\Repository\RepositoryFactory::manager(
@@ -75,7 +75,7 @@ class PluginTest extends \PHPUnit_Framework_TestCase
             \Composer\Factory::createHttpDownloader($this->io, $this->config)
         );
 
-        $this->eventManager = $this->getMock('MagentoHackathon\Composer\Magento\Event\EventManager');
+        $this->eventManager = $this->createMock('MagentoHackathon\Composer\Magento\Event\EventManager');
         $this->plugin
             ->expects($this->any())
             ->method('getEventManager')
@@ -90,17 +90,25 @@ class PluginTest extends \PHPUnit_Framework_TestCase
 
         $this->composer->setPackage($rootPackage);
 
-        $this->eventManager
-            ->expects($this->at(0))
-            ->method('listen')
-            ->with('post-package-deploy', $this->isType('array'));
+        $seenEvents = [];
 
         $this->eventManager
-            ->expects($this->at(1))
+            ->expects($this->exactly(2))
             ->method('listen')
-            ->with('post-package-uninstall', $this->isType('array'));
+            ->with(
+                $this->logicalOr(
+                    $this->equalTo('post-package-deploy'),
+                    $this->equalTo('post-package-uninstall')
+                ),
+                $this->isType('array')
+            )
+            ->willReturnCallback(function ($eventName) use (&$seenEvents) {
+                $seenEvents[] = $eventName;
+            });
 
         $this->plugin->activate($this->composer, $this->io);
+
+        $this->assertSame(['post-package-deploy', 'post-package-uninstall'], $seenEvents);
     }
 
     public function testDebugListenerIsAttached()
@@ -126,7 +134,7 @@ class PluginTest extends \PHPUnit_Framework_TestCase
         $this->plugin->activate($this->composer, $this->io);
         $moduleManagerMock = $this->getMockBuilder('\MagentoHackathon\Composer\Magento\ModuleManager')
             ->disableOriginalConstructor()
-            ->setMethods(['updateInstalledPackages'])
+            ->onlyMethods(['updateInstalledPackages'])
             ->getMock();
 
         $this->plugin
@@ -157,7 +165,7 @@ class PluginTest extends \PHPUnit_Framework_TestCase
         $this->plugin->activate($this->composer, $this->io);
         $moduleManagerMock = $this->getMockBuilder('\MagentoHackathon\Composer\Magento\ModuleManager')
             ->disableOriginalConstructor()
-            ->setMethods(['updateInstalledPackages'])
+            ->onlyMethods(['updateInstalledPackages'])
             ->getMock();
 
         $this->plugin
@@ -204,7 +212,7 @@ class PluginTest extends \PHPUnit_Framework_TestCase
         $this->plugin->activate($this->composer, $this->io);
         $moduleManagerMock = $this->getMockBuilder('\MagentoHackathon\Composer\Magento\ModuleManager')
             ->disableOriginalConstructor()
-            ->setMethods(['updateInstalledPackages'])
+            ->onlyMethods(['updateInstalledPackages'])
             ->getMock();
 
         $this->plugin

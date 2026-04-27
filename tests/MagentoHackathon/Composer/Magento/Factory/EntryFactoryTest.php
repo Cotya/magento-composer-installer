@@ -12,12 +12,11 @@ use org\bovigo\vfs\vfsStream;
  * @package MagentoHackathon\Composer\Magento\Factory
  * @author  Aydin Hassan <aydin@hotmail.co.uk>
  */
-class EntryFactoryTest extends \PHPUnit_Framework_TestCase
+class EntryFactoryTest extends \PHPUnit\Framework\TestCase
 {
 
     protected $root;
-
-    public function setUp()
+    protected function setUp(): void
     {
         $this->root = vfsStream::setup('root', null, array('vendor' => array(), 'htdocs' => array()));
     }
@@ -30,7 +29,7 @@ class EntryFactoryTest extends \PHPUnit_Framework_TestCase
         $deployStrategyFactory = $this
             ->getMockBuilder('MagentoHackathon\Composer\Magento\Factory\DeploystrategyFactory')
             ->disableOriginalConstructor()
-            ->setMethods(array('make'))
+            ->onlyMethods(array('make'))
             ->getMock();
 
         $deployStrategy = new None('src', 'dest');
@@ -41,12 +40,12 @@ class EntryFactoryTest extends \PHPUnit_Framework_TestCase
             ->with($package, $packageSourceDir)
             ->will($this->returnValue($deployStrategy));
 
-        $parser = $this->getMock('MagentoHackathon\Composer\Magento\Parser\Parser');
+        $parser = $this->createMock('MagentoHackathon\Composer\Magento\Parser\Parser');
         $parser->expects($this->once())
             ->method('getMappings')
             ->will($this->returnValue(array()));
 
-        $parserFactory = $this->getMock('MagentoHackathon\Composer\Magento\Factory\ParserFactoryInterface');
+        $parserFactory = $this->createMock('MagentoHackathon\Composer\Magento\Factory\ParserFactoryInterface');
         $parserFactory
             ->expects($this->once())
             ->method('make')

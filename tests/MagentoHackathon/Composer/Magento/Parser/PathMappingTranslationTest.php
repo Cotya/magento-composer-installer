@@ -9,7 +9,7 @@ use Composer\Config;
  * Test that path mapping translations work correctly, including different
  * prefix types (i.e. 'js/...' vs './js/...').
  */
-class PathMappingTranslationTest extends \PHPUnit_Framework_TestCase
+class PathMappingTranslationTest extends \PHPUnit\Framework\TestCase
 {
 
     public function testTranslate()

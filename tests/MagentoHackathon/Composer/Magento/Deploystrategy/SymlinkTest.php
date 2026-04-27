@@ -94,7 +94,8 @@ class SymlinkTest extends AbstractTest
         $testTarget = $this->destDir . DS . $dest . DS . basename($globSource) . DS . basename($sourceContents);
 
         $this->strategy->setIsForced(false);
-        $this->setExpectedException('ErrorException', "Target targetdir/childdir already exists");
+        $this->expectException('ErrorException');
+        $this->expectExceptionMessage("Target targetdir/childdir already exists");
         $this->strategy->create($globSource, $dest);
         //passthru("tree {$this->destDir}/$dest");
     }
@@ -139,8 +140,8 @@ class SymlinkTest extends AbstractTest
 
         $this->strategy->clean();
         
-        $this->assertFileNotExists($this->destDir . $file);
-        $this->assertFileNotExists($this->destDir . $directory);
+        $this->assertFileDoesNotExist($this->destDir . $file);
+        $this->assertFileDoesNotExist($this->destDir . $directory);
     }
 
     public function testDeployedFilesAreStored()

@@ -76,7 +76,7 @@ class IssueC039Test extends ComposerTestFramework\PHPUnit\FullStackTestCase
         $composerJson->fwrite(json_encode($json, JSON_PRETTY_PRINT));
         $composer->update($projectDirectory, $composerJson);
 
-        $this->assertFileNotExists($testFilePath);
+        $this->assertFileDoesNotExist($testFilePath);
         $this->assertFalse(is_link($testFilePath), 'There is still a link');
     }
 }

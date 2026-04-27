@@ -12,7 +12,7 @@ use MagentoHackathon\Composer\Magento\Event\PackageUnInstallEvent;
  * @package MagentoHackathon\Composer\Magento
  * @author  Aydin Hassan <aydin@hotmail.co.uk>
  */
-class GitIgnoreListenerTest extends \PHPUnit_Framework_TestCase
+class GitIgnoreListenerTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var GitIgnoreListener
@@ -23,8 +23,7 @@ class GitIgnoreListenerTest extends \PHPUnit_Framework_TestCase
      * @var GitIgnore
      */
     protected $gitIgnore;
-
-    public function setUp()
+    protected function setUp(): void
     {
         $this->gitIgnore = $this->getMockBuilder('MagentoHackathon\Composer\Magento\GitIgnore')
             ->disableOriginalConstructor()

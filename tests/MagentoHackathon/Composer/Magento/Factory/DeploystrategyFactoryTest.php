@@ -11,11 +11,10 @@ use org\bovigo\vfs\vfsStream;
  * @package MagentoHackathon\Composer\Magento\Factory
  * @author  Aydin Hassan <aydin@hotmail.co.uk>
  */
-class DeploystrategyFactoryTest extends \PHPUnit_Framework_TestCase
+class DeploystrategyFactoryTest extends \PHPUnit\Framework\TestCase
 {
     protected $root;
-
-    public function setUp()
+    protected function setUp(): void
     {
         $this->root = vfsStream::setup('root', null, array('vendor' => array(), 'htdocs' => array()));
     }

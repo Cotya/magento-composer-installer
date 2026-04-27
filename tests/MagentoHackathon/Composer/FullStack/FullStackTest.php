@@ -7,13 +7,11 @@ use Symfony\Component\Process\Process;
 
 class FullStackTest extends FullStack\AbstractTest
 {
-
-    public static function setUpBeforeClass()
+    public static function setUpBeforeClass(): void
     {
         parent::setUpBeforeClass();
     }
-
-    public static function tearDownAfterClass()
+    public static function tearDownAfterClass(): void
     {
         parent::tearDownAfterClass();
     }
@@ -124,7 +122,7 @@ class FullStackTest extends FullStack\AbstractTest
                         $this->assertFileExists(self::getBasePath().'/htdocs/'.$file);
                     }
                     foreach ($this->getFirstNotExistTestSet() as $file) {
-                        $this->assertFileNotExists(self::getBasePath().'/htdocs/'.$file);
+                        $this->assertFileDoesNotExist(self::getBasePath().'/htdocs/'.$file);
                     }
                     if ($method==="copy_force") {
                         $this->assertStringEqualsFile(
@@ -140,7 +138,7 @@ class FullStackTest extends FullStack\AbstractTest
                 case 2:
                     if ($method==="symlink") {
                         foreach ($this->getFirstOnlyFileTestSet() as $file) {
-                            $this->assertFileNotExists(self::getBasePath().'/htdocs/'.$file);
+                            $this->assertFileDoesNotExist(self::getBasePath().'/htdocs/'.$file);
                         }
                     }
                     foreach ($this->getSecondExistTestSet() as $file) {

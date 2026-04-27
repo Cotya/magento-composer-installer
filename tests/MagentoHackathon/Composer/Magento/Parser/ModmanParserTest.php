@@ -8,15 +8,14 @@ use org\bovigo\vfs\vfsStream;
  * Class ModmanParserTest
  * @package MagentoHackathon\Composer\Magento\Parser
  */
-class ModmanParserTest extends \PHPUnit_Framework_TestCase
+class ModmanParserTest extends \PHPUnit\Framework\TestCase
 {
 
     /**
      * @var string
      */
     protected $fixtureDir;
-
-    public function setUp()
+    protected function setUp(): void
     {
         $root = vfsStream::setup('root');
         vfsStream::copyFromFileSystem(realpath(__DIR__ . '/../../../../res/fixtures'), $root);
@@ -52,7 +51,8 @@ class ModmanParserTest extends \PHPUnit_Framework_TestCase
     public function testExceptionIsThrownIfLineMoreThan2Parts()
     {
         $parser = new ModmanParser(vfsStream::url('root/ModmanInvalid'));
-        $this->setExpectedException('ErrorException', 'Invalid row on line 0 has 3 parts, expected 2');
+        $this->expectException('ErrorException');
+        $this->expectExceptionMessage('Invalid row on line 0 has 3 parts, expected 2');
         $parser->getMappings();
     }
 
@@ -60,7 +60,8 @@ class ModmanParserTest extends \PHPUnit_Framework_TestCase
     {
         $parser = new ModmanParser(vfsStream::url('root/ModmanValid'));
         chmod(vfsStream::url('root/ModmanValid'), 0000);
-        $this->setExpectedException('ErrorException', 'modman file "vfs://root/ModmanValid" not readable');
+        $this->expectException('ErrorException');
+        $this->expectExceptionMessage('modman file "vfs://root/ModmanValid" not readable');
         $parser->getMappings();
     }
 }

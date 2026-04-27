@@ -8,7 +8,7 @@ use org\bovigo\vfs\vfsStream;
 /**
  * @group patcher
  */
-class BootstrapTest extends \PHPUnit_Framework_TestCase
+class BootstrapTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @dataProvider mageFileProvider
@@ -119,12 +119,11 @@ class BootstrapTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($patcher->patch());
     }
 
-    /**
-     * @expectedException DomainException
-     */
     public function testPatchingThrowsIfEnabledAndRunWithMissingMagePhpFile()
     {
         vfsStream::setup('root', null, array()); // empty FS
+
+        $this->expectException('DomainException');
 
         $config = new ProjectConfig(
             array(

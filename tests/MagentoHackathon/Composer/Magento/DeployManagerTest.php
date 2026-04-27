@@ -10,7 +10,7 @@ use MagentoHackathon\Composer\Magento\Deploystrategy\None;
  * @package MagentoHackathon\Composer\Magento
  * @author  Aydin Hassan <aydin@hotmail.co.uk>
  */
-class DeployManagerTest extends \PHPUnit_Framework_TestCase
+class DeployManagerTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var DeployManager
@@ -21,10 +21,9 @@ class DeployManagerTest extends \PHPUnit_Framework_TestCase
      * @var \MagentoHackathon\Composer\Magento\Event\EventManager
      */
     protected $eventManager;
-
-    public function setUp()
+    protected function setUp(): void
     {
-        $this->eventManager = $this->getMock('MagentoHackathon\Composer\Magento\Event\EventManager');
+        $this->eventManager = $this->createMock('MagentoHackathon\Composer\Magento\Event\EventManager');
         $this->deployManager = new DeployManager($this->eventManager);
     }
 

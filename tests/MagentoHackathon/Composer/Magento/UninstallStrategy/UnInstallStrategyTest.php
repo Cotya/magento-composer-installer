@@ -9,7 +9,7 @@ use MagentoHackathon\Composer\Magento\UnInstallStrategy\UnInstallStrategy;
  * Class UnInstallStrategyTest
  * @author Aydin Hassan <aydin@hotmail.co.uk>
  */
-class UnInstallStrategyTest extends \PHPUnit_Framework_TestCase
+class UnInstallStrategyTest extends \PHPUnit\Framework\TestCase
 {
     protected $testDirectory;
 
@@ -42,10 +42,10 @@ class UnInstallStrategyTest extends \PHPUnit_Framework_TestCase
         $strategy->unInstall($files);
 
         $this->assertFileExists($rootDir);
-        $this->assertFileNotExists($rootDir . '/child1');
-        $this->assertFileNotExists($rootDir . '/child2');
-        $this->assertFileNotExists($rootDir . '/child3');
-        $this->assertFileNotExists($rootDir . '/child4');
+        $this->assertFileDoesNotExist($rootDir . '/child1');
+        $this->assertFileDoesNotExist($rootDir . '/child2');
+        $this->assertFileDoesNotExist($rootDir . '/child3');
+        $this->assertFileDoesNotExist($rootDir . '/child4');
     }
 
     public function testUnInstallDoesNotRemoveOtherFiles()
@@ -78,10 +78,10 @@ class UnInstallStrategyTest extends \PHPUnit_Framework_TestCase
         $strategy->unInstall($files);
 
         $this->assertFileExists($rootDir);
-        $this->assertFileNotExists($rootDir . '/child1');
-        $this->assertFileNotExists($rootDir . '/child2');
-        $this->assertFileNotExists($rootDir . '/child3');
-        $this->assertFileNotExists($rootDir . '/child4/secondlevelchild4/file4.txt');
+        $this->assertFileDoesNotExist($rootDir . '/child1');
+        $this->assertFileDoesNotExist($rootDir . '/child2');
+        $this->assertFileDoesNotExist($rootDir . '/child3');
+        $this->assertFileDoesNotExist($rootDir . '/child4/secondlevelchild4/file4.txt');
         $this->assertFileExists($rootDir . '/child4/secondlevelchild4/file5.txt');
     }
 
@@ -106,14 +106,13 @@ class UnInstallStrategyTest extends \PHPUnit_Framework_TestCase
         $strategy->unInstall(['/link']);
 
         $this->assertFileExists($rootDir);
-        $this->assertFileNotExists($rootDir . '/link');
+        $this->assertFileDoesNotExist($rootDir . '/link');
 
         $this->assertFileExists($symLinkDestination);
         $this->assertFileExists($symLinkDestination . '/childfolder');
         $this->assertFileExists($symLinkDestination . '/childfile');
     }
-
-    public function tearDown()
+    protected function tearDown(): void
     {
         $fs = new Filesystem;
         $fs->remove($this->testDirectory);

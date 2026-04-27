@@ -12,7 +12,7 @@ use Symfony\Component\Yaml\Dumper;
  * @package MagentoHackathon\Composer\Magento\Repository
  * @author Aydin Hassan <aydin@wearejh.com>
  */
-class InstalledFilesFilesystemRepositoryTest extends \PHPUnit_Framework_TestCase
+class InstalledFilesFilesystemRepositoryTest extends \PHPUnit\Framework\TestCase
 {
 
     /**
@@ -25,8 +25,7 @@ class InstalledFilesFilesystemRepositoryTest extends \PHPUnit_Framework_TestCase
      */
     protected $filePath;
     protected $root;
-
-    public function setUp()
+    protected function setUp(): void
     {
         $this->root         = vfsStream::setup('root');
         $this->filePath     = vfsStream::url('root/mappings.json');
@@ -37,7 +36,8 @@ class InstalledFilesFilesystemRepositoryTest extends \PHPUnit_Framework_TestCase
     {
         vfsStream::newFile('mappings.json')->at($this->root);
         chmod($this->filePath, 0400);
-        $this->setExpectedException('Exception', 'File "vfs://root/mappings.json" is not writable');
+        $this->expectException('Exception');
+        $this->expectExceptionMessage('File "vfs://root/mappings.json" is not writable');
         new InstalledPackageFilesystemRepository($this->filePath, new InstalledPackageDumper);
     }
 
@@ -45,20 +45,23 @@ class InstalledFilesFilesystemRepositoryTest extends \PHPUnit_Framework_TestCase
     {
         vfsStream::newFile('mappings.json')->at($this->root);
         chmod($this->filePath, 0200);
-        $this->setExpectedException('Exception', 'File "vfs://root/mappings.json" is not readable');
+        $this->expectException('Exception');
+        $this->expectExceptionMessage('File "vfs://root/mappings.json" is not readable');
         new InstalledPackageFilesystemRepository($this->filePath, new InstalledPackageDumper);
     }
 
     public function testExceptionIsThrownIfDbDoesNotExistAndFolderIsNotWritable()
     {
         chmod(dirname($this->filePath), 0400);
-        $this->setExpectedException('Exception', 'Directory "vfs://root" is not writable');
+        $this->expectException('Exception');
+        $this->expectExceptionMessage('Directory "vfs://root" is not writable');
         new InstalledPackageFilesystemRepository($this->filePath, new InstalledPackageDumper);
     }
 
     public function testGetInstalledMappingsThrowsExceptionIfPackageNotFound()
     {
-        $this->setExpectedException('Exception', 'Package Installed Files for: "not-here" not found');
+        $this->expectException('Exception');
+        $this->expectExceptionMessage('Package Installed Files for: "not-here" not found');
         $this->repository->findByPackageName('not-here');
     }
 
@@ -84,8 +87,8 @@ class InstalledFilesFilesystemRepositoryTest extends \PHPUnit_Framework_TestCase
 
     public function testExceptionIsThrownIfDuplicatePackageIsAdded()
     {
-        $this->setExpectedException('Exception', 'Package: "some-package" is already installed');
-
+        $this->expectException('Exception');
+        $this->expectExceptionMessage('Package: "some-package" is already installed');
         $package = new InstalledPackage('some-package', '1.0.0', array());
         $this->repository->add($package);
         $this->repository->add($package);
@@ -112,7 +115,8 @@ class InstalledFilesFilesystemRepositoryTest extends \PHPUnit_Framework_TestCase
 
     public function testExceptionIsThrownIfRemovingMappingsWhichDoNotExist()
     {
-        $this->setExpectedException('Exception', 'Package: "some-package" not found');
+        $this->expectException('Exception');
+        $this->expectExceptionMessage('Package: "some-package" not found');
         $this->repository->remove(new InstalledPackage('some-package', '1.0.0', array()));
     }
 
@@ -152,8 +156,7 @@ class InstalledFilesFilesystemRepositoryTest extends \PHPUnit_Framework_TestCase
         $this->assertCount(1, $this->repository->findAll());
         $this->assertSame(array($package), $this->repository->findAll());
     }
-
-    public function tearDown()
+    protected function tearDown(): void
     {
         unset($this->repository);
     }

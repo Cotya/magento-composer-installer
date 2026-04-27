@@ -16,7 +16,7 @@ use org\bovigo\vfs\vfsStream;
  * @package MagentoHackathon\Composer\Magento
  * @author  Aydin Hassan <aydin@hotmail.co.uk>
  */
-class ModuleManagerTest extends \PHPUnit_Framework_TestCase
+class ModuleManagerTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var ModuleManager
@@ -25,8 +25,7 @@ class ModuleManagerTest extends \PHPUnit_Framework_TestCase
     protected $installedPackageRepository;
     protected $unInstallStrategy;
     protected $installStrategyFactory;
-
-    public function setUp()
+    protected function setUp(): void
     {
         vfsStream::setup('root');
         $this->installedPackageRepository = new InstalledPackageFileSystemRepository(
@@ -36,9 +35,9 @@ class ModuleManagerTest extends \PHPUnit_Framework_TestCase
 
         $config = new ProjectConfig(array(), array('config' => array('vendor-dir' => 'vendor')));
         $this->unInstallStrategy =
-            $this->getMock('MagentoHackathon\Composer\Magento\UnInstallStrategy\UnInstallStrategyInterface');
+            $this->createMock('MagentoHackathon\Composer\Magento\UnInstallStrategy\UnInstallStrategyInterface');
 
-        $parserFactory = $this->getMock('MagentoHackathon\Composer\Magento\Factory\ParserFactoryInterface');
+        $parserFactory = $this->createMock('MagentoHackathon\Composer\Magento\Factory\ParserFactoryInterface');
         $parserFactory
             ->expects($this->any())
             ->method('make')

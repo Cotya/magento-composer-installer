@@ -47,7 +47,7 @@ class CopyTest extends AbstractTest
         $this->strategy->setIsForced(true);
         $this->strategy->create($sourceRoot, $dest);
 
-        $this->assertFileNotExists(dirname(dirname($testTarget)) . DS . basename($testTarget));
+        $this->assertFileDoesNotExist(dirname(dirname($testTarget)) . DS . basename($testTarget));
     }
 
     public function testWildcardCopyToExistingDir()
@@ -71,7 +71,7 @@ class CopyTest extends AbstractTest
         $this->strategy->setIsForced(true);
         $this->strategy->deploy();
 
-        $this->assertFileNotExists(sprintf('%s/app/app/code/test.php', $this->destDir));
+        $this->assertFileDoesNotExist(sprintf('%s/app/app/code/test.php', $this->destDir));
     }
 
     public function testDeployedFilesAreStored()
@@ -92,7 +92,7 @@ class CopyTest extends AbstractTest
         $this->strategy->setIsForced(true);
         $this->strategy->create($sourceRoot, $dest);
 
-        $this->assertFileNotExists(dirname(dirname($testTarget)) . DS . basename($testTarget));
+        $this->assertFileDoesNotExist(dirname(dirname($testTarget)) . DS . basename($testTarget));
 
         $this->assertSame(
             array('/dest/root/subdir/subdir/test.xml'),

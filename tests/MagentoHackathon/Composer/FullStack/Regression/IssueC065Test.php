@@ -31,8 +31,7 @@ class IssueC065Test extends ComposerTestFramework\PHPUnit\FullStackTestCase
 
     /** @var  string */
     protected $testFilePath;
-
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->composer = new ComposerTestFramework\Composer\Wrapper();
         $this->projectDirectory = new \SplFileInfo(self::getTempComposerProjectPath());
@@ -91,7 +90,7 @@ JSON;
 
         $this->composer->install($this->projectDirectory, $composerJson);
 
-        $this->assertFileNotExists($this->testFilePath);
+        $this->assertFileDoesNotExist($this->testFilePath);
     }
 
     /**
@@ -133,7 +132,7 @@ JSON;
 
         $this->composer->install($this->projectDirectory, $composerJson);
 
-        $this->assertFileNotExists($this->testFilePath);
+        $this->assertFileDoesNotExist($this->testFilePath);
     }
 
     /**

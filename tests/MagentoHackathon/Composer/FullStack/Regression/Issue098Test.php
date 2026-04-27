@@ -52,7 +52,7 @@ class Issue098Test extends ComposerTestFramework\PHPUnit\FullStackTestCase
 
         $composer->install($projectDirectory, $composerJson);
 
-        $this->assertFileNotExists(
+        $this->assertFileDoesNotExist(
             $projectDirectory->getPathname().'/magento/app/design/frontend/test/default/installSort/test1.phtml'
         );
 

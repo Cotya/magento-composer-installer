@@ -12,7 +12,7 @@ use org\bovigo\vfs\vfsStream;
  * @package MagentoHackathon\Composer\Magento\Parser
  * @author  Aydin Hassan <aydin@hotmail.co.uk>
  */
-class PathTranslationParserFactoryTest extends \PHPUnit_Framework_TestCase
+class PathTranslationParserFactoryTest extends \PHPUnit\Framework\TestCase
 {
     public function testFactoryReturnsInstanceOfPathTranslationParserIfConfigSet()
     {
@@ -23,12 +23,12 @@ class PathTranslationParserFactoryTest extends \PHPUnit_Framework_TestCase
         $extra = array('path-mapping-translations' => array());
         $config = new ProjectConfig($extra, array());
 
-        $mockParserFactory = $this->getMock('MagentoHackathon\Composer\Magento\Factory\ParserFactoryInterface');
+        $mockParserFactory = $this->createMock('MagentoHackathon\Composer\Magento\Factory\ParserFactoryInterface');
         $mockParserFactory
             ->expects($this->once())
             ->method('make')
             ->with($package, vfsStream::url('root'))
-            ->will($this->returnValue($this->getMock('MagentoHackathon\Composer\Magento\Parser\Parser')));
+            ->will($this->returnValue($this->createMock('MagentoHackathon\Composer\Magento\Parser\Parser')));
 
         $factory = new PathTranslationParserFactory($mockParserFactory, $config);
         $instance = $factory->make($package, vfsStream::url('root'));
@@ -41,9 +41,9 @@ class PathTranslationParserFactoryTest extends \PHPUnit_Framework_TestCase
         $package = new Package('module-package', '1.0.0', 'module-package');
         $config = new ProjectConfig(array(), array());
 
-        $parser = $this->getMock('MagentoHackathon\Composer\Magento\Parser\Parser');
+        $parser = $this->createMock('MagentoHackathon\Composer\Magento\Parser\Parser');
 
-        $mockParserFactory = $this->getMock('MagentoHackathon\Composer\Magento\Factory\ParserFactoryInterface');
+        $mockParserFactory = $this->createMock('MagentoHackathon\Composer\Magento\Factory\ParserFactoryInterface');
         $mockParserFactory
             ->expects($this->once())
             ->method('make')

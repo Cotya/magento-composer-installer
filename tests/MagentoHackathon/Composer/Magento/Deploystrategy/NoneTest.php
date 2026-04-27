@@ -2,13 +2,12 @@
 namespace MagentoHackathon\Composer\Magento\Deploystrategy;
 
 use org\bovigo\vfs\vfsStream;
-use PHPUnit_Framework_TestCase;
 
 if (!defined('DS')) {
     define('DS', DIRECTORY_SEPARATOR);
 }
 
-class NoneTest extends PHPUnit_Framework_TestCase
+class NoneTest extends \PHPUnit\Framework\TestCase
 {
     const URL_VFS_ROOT = 'vfsroot';
 
@@ -35,8 +34,7 @@ class NoneTest extends PHPUnit_Framework_TestCase
     {
         return vfsStream::url(self::URL_VFS_ROOT . DS . $input);
     }
-
-    protected function setUp()
+    protected function setUp(): void
     {
         vfsStream::setup(self::URL_VFS_ROOT);
         $this->sourceDir = $this->getVfsUrl('sourceDir');
