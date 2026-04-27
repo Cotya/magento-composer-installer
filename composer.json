@@ -65,10 +65,9 @@
     },
     "require-dev": {
         "phpunit/phpunit": "~9.6",
-        "phpunit/phpunit-mock-objects": "*",
         "squizlabs/php_codesniffer": "~2.1",
         "composer/composer": "2.*",
-        "symfony/process": "~2.5",
+        "symfony/process": "*",
         "mikey179/vfsstream": "~1.4",
         "ext-json": "*",
         "cotya/composer-test-framework": "~2.0"
