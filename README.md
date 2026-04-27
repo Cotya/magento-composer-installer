@@ -1,12 +1,17 @@
-[![Build Status](https://travis-ci.org/Cotya/magento-composer-installer.svg)](https://travis-ci.org/Cotya/magento-composer-installer)
+
 [![Windows Build status](https://ci.appveyor.com/api/projects/status/1bm54s9jv3603xl5?svg=true)](https://ci.appveyor.com/project/Flyingmana/magento-composer-installer-396)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/Cotya/magento-composer-installer/badges/quality-score.png)](https://scrutinizer-ci.com/g/Cotya/magento-composer-installer/)
 [![Code Coverage](https://scrutinizer-ci.com/g/Cotya/magento-composer-installer/badges/coverage.png)](https://scrutinizer-ci.com/g/Cotya/magento-composer-installer/)
-[![Bountysource](https://www.bountysource.com/badge/tracker?tracker_id=284872)](https://www.bountysource.com/trackers/284872-magento-hackathon-magento-composer-installer?utm_source=284872&utm_medium=shield&utm_campaign=TRACKER_BADGE)
 
-!!! support the maintainer of this project via Patreon: [https://www.patreon.com/Flyingmana](https://www.patreon.com/Flyingmana)
 
-[![Become a Patreon](doc/become_a_patron_button.png)](https://www.patreon.com/Flyingmana)
+> [!WARNING] 
+> Support for This Repository is for now provided only for paying supporters.
+> This can be either via [Patreon](https://www.patreon.com/Flyingmana), Github Sponsors, or by requesting a german based invoice from me.
+
+> [!TIP] 
+> Anyone forking this repository to continue this project has my full approval.
+
+
 
 # Magento Composer Installer 
 
