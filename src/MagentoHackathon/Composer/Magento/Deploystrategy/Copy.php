@@ -28,6 +28,9 @@ class Copy extends DeploystrategyAbstract
         $sourcePath = $this->getSourceDir() . '/' . $this->removeTrailingSlash($source);
         $destPath = $this->getDestDir() . '/' . $this->removeTrailingSlash($dest);
 
+        if ($this->isForced() && strcasecmp($source, $cleanDest) === 0 && is_dir($destPath) && !$this->deleteDir($destPath)) {
+            throw new \ErrorException("Destination $destPath exists and could not delete.");
+        }
 
         // Create all directories up to one below the target if they don't exist
         $destDir = dirname($destPath);
@@ -118,6 +121,19 @@ class Copy extends DeploystrategyAbstract
         }
 
         return true;
+    }
+
+    protected function deleteDir($path)
+    {
+        if (!is_dir($path)) {
+            throw new \ErrorException("Path {$path} is not a directory");
+        }
+        $items = array_diff(scandir($path), array('.', '..'));
+        foreach ($items as $item) {
+            $itemPath = $path . DIRECTORY_SEPARATOR . $item;
+            is_dir($itemPath) ? $this->deleteDir($itemPath) : unlink($itemPath);
+        }
+        return rmdir($path);
     }
 
     /**

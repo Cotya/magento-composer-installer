@@ -3,8 +3,9 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased][unreleased]
+- Avoid nested duplication if a module folder exists when using copy strategy
 -
--
+- 
 
 ## [3.0.7] - 2016-08-29
 - Fixed an issue where symlinks were follwed when removing a module, causing files in vendor to be removed
