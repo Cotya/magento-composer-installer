@@ -3,7 +3,7 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased][unreleased]
--
+- Dropped the unused symfony/console requirement (PR [#213](https://github.com/Cotya/magento-composer-installer/pull/213)): the installer no longer limits which console (and, through console 5.4, which psr/log) a project can use. Projects that use Symfony Console themselves should require it directly
 -
 
 ## [3.0.7] - 2016-08-29
